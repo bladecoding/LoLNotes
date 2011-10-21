@@ -1,0 +1,889 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NotMissing</name>
+    </assembly>
+    <members>
+        <member name="T:MIL.Html.HtmlAttribute">
+            <summary>
+            The HtmlAttribute object represents a named value associated with an HtmlElement.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlAttribute.#ctor(System.String,System.String)">
+            <summary>
+            This constructs an HtmlAttribute object with the given name and value. For wierd
+            HTML attributes that don't have a value (e.g. "NOWRAP"), specify null as the value.
+            </summary>
+            <param name="name">The name of the attribute</param>
+            <param name="value">The value of the attribute</param>
+        </member>
+        <member name="M:MIL.Html.HtmlAttribute.ToString">
+            <summary>
+            This will return an HTML-formatted version of this attribute. NB. This is
+            not SGML or XHTML safe, as it caters for null-value attributes such as "NOWRAP".
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MIL.Html.HtmlAttribute.Name">
+            <summary>
+            The name of the attribute. e.g. WIDTH
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlAttribute.Value">
+            <summary>
+            The value of the attribute. e.g. 100%
+            </summary>
+        </member>
+        <member name="T:MIL.Html.HtmlAttributeCollection">
+            <summary>
+            This is a collection of attributes. Typically, this is associated with a particular
+            element. This collection is searchable by both the index and the name of the attribute.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlAttributeCollection.#ctor(MIL.Html.HtmlElement)">
+            <summary>
+            This will create an empty collection of attributes.
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="M:MIL.Html.HtmlAttributeCollection.Add(MIL.Html.HtmlAttribute)">
+            <summary>
+            This will add an element to the collection.
+            </summary>
+            <param name="attribute">The attribute to add.</param>
+            <returns>The index at which it was added.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlAttributeCollection.FindByName(System.String)">
+            <summary>
+            This will search the collection for the named attribute. If it is not found, this
+            will return null.
+            </summary>
+            <param name="name">The name of the attribute to find.</param>
+            <returns>The attribute, or null if it wasn't found.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlAttributeCollection.IndexOf(System.String)">
+            <summary>
+            This will return the index of the attribute with the specified name. If it is
+            not found, this method will return -1.
+            </summary>
+            <param name="name">The name of the attribute to find.</param>
+            <returns>The zero-based index, or -1.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlAttributeCollection.GetAttributeValue(System.String)">
+            <summary>
+            Get the value of the attibute with the specified name.
+            </summary>
+            <param name="name">Name of attribute to get.</param>
+            <returns>Value of attribute or string.Empty</returns>
+        </member>
+        <member name="P:MIL.Html.HtmlAttributeCollection.Item(System.Int32)">
+            <summary>
+            This provides direct access to an attribute in the collection by its index.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlAttributeCollection.Item(System.String)">
+            <summary>
+            This overload allows you to have direct access to an attribute by providing
+            its name. If the attribute does not exist, null is returned.
+            </summary>
+        </member>
+        <member name="M:System.Web.HttpUtil.HtmlDecode(System.String)">
+            <summary>
+                          Converts a string that has been HTML-encoded for HTTP transmission into a decoded string.
+                      </summary>
+            <returns>
+                          A decoded string.
+                      </returns>
+            <param name="s">
+                          The string to decode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.HtmlDecode(System.String,System.IO.TextWriter)">
+            <summary>
+                          Converts a string that has been HTML-encoded into a decoded string, and sends the decoded string to a <see cref="T:System.IO.TextWriter" /> output stream.
+                      </summary>
+            <param name="s">
+                          The string to decode. 
+                      </param>
+            <param name="output">
+                          A <see cref="T:System.IO.TextWriter" /> stream of output. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.HtmlEncode(System.String)">
+            <summary>
+                          Converts a string to an HTML-encoded string.
+                      </summary>
+            <returns>
+                          An encoded string.
+                      </returns>
+            <param name="s">
+                          The string to encode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.HtmlEncode(System.String,System.IO.TextWriter)">
+            <summary>
+                          Converts a string into an HTML-encoded string, and returns the output as a <see cref="T:System.IO.TextWriter" /> stream of output.
+                      </summary>
+            <param name="s">
+                          The string to encode 
+                      </param>
+            <param name="output">
+                          A <see cref="T:System.IO.TextWriter" /> output stream. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.HtmlAttributeEncode(System.String,System.IO.TextWriter)">
+            <summary>
+                          Minimally converts a string into an HTML-encoded string and sends the encoded string to a <see cref="T:System.IO.TextWriter" /> output stream.
+                      </summary>
+            <param name="s">
+                          The string to encode 
+                      </param>
+            <param name="output">
+                          A <see cref="T:System.IO.TextWriter" /> output stream. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.ParseQueryString(System.String)">
+            <summary>
+                          Parses a query string into a <see cref="T:System.Collections.Specialized.NameValueCollection" /> using <see cref="P:System.Text.Encoding.UTF8" /> encoding.
+                      </summary>
+            <returns>
+                          A <see cref="T:System.Collections.Specialized.NameValueCollection" /> of query parameters and values.
+                      </returns>
+            <param name="query">
+                          The query string to parse.
+                      </param>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="query" /> is null. 
+                      </exception>
+        </member>
+        <member name="M:System.Web.HttpUtil.ParseQueryString(System.String,System.Text.Encoding)">
+             <summary>
+                           Parses a query string into a <see cref="T:System.Collections.Specialized.NameValueCollection" /> using the specified <see cref="T:System.Text.Encoding" />. 
+                       </summary>
+             <returns>
+                           A <see cref="T:System.Collections.Specialized.NameValueCollection" /> of query parameters and values.
+                       </returns>
+             <param name="query">
+                           The query string to parse.
+                       </param>
+             <param name="encoding">
+                           The <see cref="T:System.Text.Encoding" /> to use.
+                       </param>
+             <exception cref="T:System.ArgumentNullException">
+               <paramref name="query" /> is null.
+            
+                           - or -
+                       <paramref name="encoding" /> is null.
+                       </exception>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncode(System.String)">
+            <summary>
+                          Encodes a URL string.
+                      </summary>
+            <returns>
+                          An encoded string.
+                      </returns>
+            <param name="str">
+                          The text to encode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlPathEncode(System.String)">
+            <summary>
+                          Encodes the path portion of a URL string for reliable HTTP transmission from the Web server to a client.
+                      </summary>
+            <returns>
+                          The URL-encoded text.
+                      </returns>
+            <param name="str">
+                          The text to URL-encode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncode(System.String,System.Text.Encoding)">
+            <summary>
+                          Encodes a URL string using the specified encoding object.
+                      </summary>
+            <returns>
+                          An encoded string.
+                      </returns>
+            <param name="str">
+                          The text to encode. 
+                      </param>
+            <param name="e">
+                          The <see cref="T:System.Text.Encoding" /> object that specifies the encoding scheme. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncode(System.Byte[])">
+            <summary>
+                          Converts a byte array into an encoded URL string.
+                      </summary>
+            <returns>
+                          An encoded string.
+                      </returns>
+            <param name="bytes">
+                          The array of bytes to encode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncode(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+                          Converts a byte array into a URL-encoded string, starting at the specified position in the array and continuing for the specified number of bytes.
+                      </summary>
+            <returns>
+                          An encoded string.
+                      </returns>
+            <param name="bytes">
+                          The array of bytes to encode. 
+                      </param>
+            <param name="offset">
+                          The position in the byte array at which to begin encoding. 
+                      </param>
+            <param name="count">
+                          The number of bytes to encode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncodeToBytes(System.String)">
+            <summary>
+                          Converts a string into a URL-encoded array of bytes.
+                      </summary>
+            <returns>
+                          An encoded array of bytes.
+                      </returns>
+            <param name="str">
+                          The string to encode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncodeToBytes(System.String,System.Text.Encoding)">
+            <summary>
+                          Converts a string into a URL-encoded array of bytes using the specified encoding object.
+                      </summary>
+            <returns>
+                          An encoded array of bytes.
+                      </returns>
+            <param name="str">
+                          The string to encode 
+                      </param>
+            <param name="e">
+                          The <see cref="T:System.Text.Encoding" /> that specifies the encoding scheme. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncodeToBytes(System.Byte[])">
+            <summary>
+                          Converts an array of bytes into a URL-encoded array of bytes.
+                      </summary>
+            <returns>
+                          An encoded array of bytes.
+                      </returns>
+            <param name="bytes">
+                          The array of bytes to encode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncodeToBytes(System.Byte[],System.Int32,System.Int32)">
+             <summary>
+                           Converts an array of bytes into a URL-encoded array of bytes, starting at the specified position in the array and continuing for the specified number of bytes.
+                       </summary>
+             <returns>
+                           An encoded array of bytes.
+                       </returns>
+             <param name="bytes">
+                           The array of bytes to encode. 
+                       </param>
+             <param name="offset">
+                           The position in the byte array at which to begin encoding. 
+                       </param>
+             <param name="count">
+                           The number of bytes to encode. 
+                       </param>
+             <exception cref="T:System.ArgumentNullException">
+               <paramref name="bytes" /> is null, but <paramref name="count" /> does not equal 0.
+                       </exception>
+             <exception cref="T:System.ArgumentOutOfRangeException">
+               <paramref name="offset" /> is less than 0 or greater than the length of the <paramref name="bytes" /> array.
+            
+                           - or -
+                       <paramref name="count" /> is less than 0, or <paramref name="count" /> + <paramref name="offset" /> is greater than the length of the <paramref name="bytes" /> array.
+                       </exception>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncodeUnicode(System.String)">
+            <summary>
+                          Converts a string into a Unicode string.
+                      </summary>
+            <returns>
+                          A Unicode string in %<paramref name="UnicodeValue" /> notation.
+                      </returns>
+            <param name="str">
+                          The string to convert. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlEncodeUnicodeToBytes(System.String)">
+            <summary>
+                          Converts a Unicode string into an array of bytes.
+                      </summary>
+            <returns>
+                          A byte array.
+                      </returns>
+            <param name="str">
+                          The string to convert. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlDecode(System.String)">
+            <summary>
+                          Converts a string that has been encoded for transmission in a URL into a decoded string.
+                      </summary>
+            <returns>
+                          A decoded string.
+                      </returns>
+            <param name="str">
+                          The string to decode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlDecode(System.String,System.Text.Encoding)">
+            <summary>
+                          Converts a URL-encoded string into a decoded string, using the specified encoding object.
+                      </summary>
+            <returns>
+                          A decoded string.
+                      </returns>
+            <param name="str">
+                          The string to decode. 
+                      </param>
+            <param name="e">
+                          The <see cref="T:System.Text.Encoding" /> that specifies the decoding scheme. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlDecode(System.Byte[],System.Text.Encoding)">
+            <summary>
+                          Converts a URL-encoded byte array into a decoded string using the specified decoding object.
+                      </summary>
+            <returns>
+                          A decoded string.
+                      </returns>
+            <param name="bytes">
+                          The array of bytes to decode. 
+                      </param>
+            <param name="e">
+                          The <see cref="T:System.Text.Encoding" /> that specifies the decoding scheme. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlDecode(System.Byte[],System.Int32,System.Int32,System.Text.Encoding)">
+             <summary>
+                           Converts a URL-encoded byte array into a decoded string using the specified encoding object, starting at the specified position in the array, and continuing for the specified number of bytes.
+                       </summary>
+             <returns>
+                           A decoded string.
+                       </returns>
+             <param name="bytes">
+                           The array of bytes to decode. 
+                       </param>
+             <param name="offset">
+                           The position in the byte to begin decoding. 
+                       </param>
+             <param name="count">
+                           The number of bytes to decode. 
+                       </param>
+             <param name="e">
+                           The <see cref="T:System.Text.Encoding" /> object that specifies the decoding scheme. 
+                       </param>
+             <exception cref="T:System.ArgumentNullException">
+               <paramref name="bytes" /> is null, but <paramref name="count" /> does not equal 0.
+                       </exception>
+             <exception cref="T:System.ArgumentOutOfRangeException">
+               <paramref name="offset" /> is less than 0 or greater than the length of the <paramref name="bytes" /> array.
+            
+                           - or -
+                       <paramref name="count" /> is less than 0, or <paramref name="count" /> + <paramref name="offset" /> is greater than the length of the <paramref name="bytes" /> array.
+                       </exception>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlDecodeToBytes(System.String)">
+            <summary>
+                          Converts a URL-encoded string into a decoded array of bytes.
+                      </summary>
+            <returns>
+                          A decoded array of bytes.
+                      </returns>
+            <param name="str">
+                          The string to decode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlDecodeToBytes(System.String,System.Text.Encoding)">
+            <summary>
+                          Converts a URL-encoded string into a decoded array of bytes using the specified decoding object.
+                      </summary>
+            <returns>
+                          A decoded array of bytes.
+                      </returns>
+            <param name="str">
+                          The string to decode. 
+                      </param>
+            <param name="e">
+                          The <see cref="T:System.Text.Encoding" /> object that specifies the decoding scheme. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlDecodeToBytes(System.Byte[])">
+            <summary>
+                          Converts a URL-encoded array of bytes into a decoded array of bytes.
+                      </summary>
+            <returns>
+                          A decoded array of bytes.
+                      </returns>
+            <param name="bytes">
+                          The array of bytes to decode. 
+                      </param>
+        </member>
+        <member name="M:System.Web.HttpUtil.UrlDecodeToBytes(System.Byte[],System.Int32,System.Int32)">
+             <summary>
+                           Converts a URL-encoded array of bytes into a decoded array of bytes, starting at the specified position in the array and continuing for the specified number of bytes.
+                       </summary>
+             <returns>
+                           A decoded array of bytes.
+                       </returns>
+             <param name="bytes">
+                           The array of bytes to decode. 
+                       </param>
+             <param name="offset">
+                           The position in the byte array at which to begin decoding. 
+                       </param>
+             <param name="count">
+                           The number of bytes to decode. 
+                       </param>
+             <exception cref="T:System.ArgumentNullException">
+               <paramref name="bytes" /> is null, but <paramref name="count" /> does not equal 0.
+                       </exception>
+             <exception cref="T:System.ArgumentOutOfRangeException">
+               <paramref name="offset" /> is less than 0 or greater than the length of the <paramref name="bytes" /> array.
+            
+                           - or -
+                       <paramref name="count" /> is less than 0, or <paramref name="count" /> + <paramref name="offset" /> is greater than the length of the <paramref name="bytes" /> array.
+                       </exception>
+        </member>
+        <member name="T:System.EventHandler`1">
+            <summary>
+            Generic event handler delegate
+            </summary>
+            <typeparam name="T">EventArg Type</typeparam>
+            <param name="sender">Sender</param>
+            <param name="e">EventArgs</param>
+        </member>
+        <member name="T:MIL.Html.HtmlEncoder">
+            <summary>
+            HTML 4 Entity coding routines
+            </summary>
+        </member>
+        <member name="T:MIL.Html.HtmlParser">
+            <summary>
+            This is the main HTML parser class. I recommend you don't play around too much in here
+            as it's a little fiddly.
+            
+            Bascially, this class will build a tree containing HtmlNode elements.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.#ctor">
+            <summary>
+            This constructs a new parser. Even though this object is currently stateless,
+            in the future, parameters coping for tollerance and SGML (etc.) will be passed.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.Parse(System.String)">
+            <summary>
+            This will parse a string containing HTML and will produce a domain tree.
+            </summary>
+            <param name="html">The HTML to be parsed</param>
+            <returns>A tree representing the elements</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.MoveNodesDown(MIL.Html.HtmlNodeCollection@,System.Int32,MIL.Html.HtmlElement)">
+            <summary>
+            This will move all the nodes from the specified index to the new parent.
+            </summary>
+            <param name="nodes">The collection of nodes</param>
+            <param name="node_index">The index of the first node (in the above collection) to move</param>
+            <param name="new_parent">The node which will become the parent of the moved nodes</param>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.FindTagOpenNodeIndex(MIL.Html.HtmlNodeCollection,System.String)">
+            <summary>
+            This will find the corresponding opening tag for the named one. This is identified as
+            the most recently read node with the same name, but with no child nodes.
+            </summary>
+            <param name="nodes">The collection of nodes</param>
+            <param name="name">The name of the tag</param>
+            <returns>The index of the opening tag, or -1 if it was not found</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.RemoveWhitespace(System.String)">
+            <summary>
+            This will remove redundant whitespace from the string
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.RemoveComments(System.String)">
+            <summary>
+            This will remove all HTML comments from the input string. This will
+            not remove comment markers from inside tag attribute values.
+            </summary>
+            <param name="input">Input HTML containing comments</param>
+            <returns>HTML containing no comments</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.RemoveSGMLComments(System.String)">
+            <summary>
+            This will remove all HTML comments from the input string. This will
+            not remove comment markers from inside tag attribute values.
+            </summary>
+            <param name="input">Input HTML containing comments</param>
+            <returns>HTML containing no comments</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.PreprocessScript(System.String,System.String)">
+            <summary>
+            This will encode the scripts within the page so they get passed through the
+            parser properly. This is due to some people using comments protect the script
+            and others who don't. It also takes care of issues where the script itself has
+            HTML comments in (in strings, for example).
+            </summary>
+            <param name="input">The HTML to examine</param>
+            <returns>The HTML with the scripts marked up differently</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlParser.GetTokens(System.String)">
+            <summary>
+            This will tokenise the HTML input string.
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MIL.Html.HtmlParser.RemoveEmptyElementText">
+            <summary>
+            The default mechanism will extract a pure DOM tree, which will contain many text
+            nodes containing just whitespace (carriage returns etc.) However, with normal
+            parsing, these are useless and only serve to complicate matters. Therefore, this
+            option exists to automatically remove those empty text nodes.
+            </summary>
+        </member>
+        <member name="T:MIL.Html.HtmlParser.ParseStatus">
+            <summary>
+            Internal FSM to represent the state of the parser
+            </summary>
+        </member>
+        <member name="T:MIL.Html.HtmlDocument">
+            <summary>
+            This is the basic HTML document object used to represent a sequence of HTML.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlDocument.#ctor(System.String,System.Boolean)">
+            <summary>
+            This will create a new document object by parsing the HTML specified.
+            </summary>
+            <param name="html">The HTML to parse.</param>
+        </member>
+        <member name="M:MIL.Html.HtmlDocument.Create(System.String)">
+            <summary>
+            This will create a new document object by parsing the HTML specified.
+            </summary>
+            <param name="html">The HTML to parse.</param>
+            <returns>An instance of the newly created object.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlDocument.Create(System.String,System.Boolean)">
+            <summary>
+            This will create a new document object by parsing the HTML specified.
+            </summary>
+            <param name="html">The HTML to parse.</param>
+            <param name="wantSpaces">Set this to true if you want to preserve all whitespace from the input HTML</param>
+            <returns>An instance of the newly created object.</returns>
+        </member>
+        <member name="P:MIL.Html.HtmlDocument.Nodes">
+            <summary>
+            This is the collection of nodes used to represent this document.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlDocument.HTML">
+            <summary>
+            This will return the HTML used to represent this document.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlDocument.XHTML">
+            <summary>
+            This will return the XHTML document used to represent this document.
+            </summary>
+        </member>
+        <member name="T:fastJSON.JsonParser">
+            <summary>
+            This class encodes and decodes JSON strings.
+            Spec. details, see http://www.json.org/
+            
+            JSON uses Arrays and Objects. These correspond here to the datatypes ArrayList and Hashtable.
+            All numbers are parsed to doubles.
+            </summary>
+        </member>
+        <member name="T:MIL.Html.HtmlNode">
+            <summary>
+            The HtmlNode is the base for all objects that may appear in HTML. Currently, 
+            this implemention only supports HtmlText and HtmlElement node types.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlNode.#ctor">
+            <summary>
+            This constructor is used by the subclasses.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlNode.ToString">
+            <summary>
+            This will render the node as it would appear in HTML.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNode.IsDescendentOf(MIL.Html.HtmlNode)">
+            <summary>
+            This will return true if the node passed is a descendent of this node.
+            </summary>
+            <param name="node">The node that might be the parent or grandparent (etc.)</param>
+            <returns>True if this node is a descendent of the one passed in.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNode.IsAncestorOf(MIL.Html.HtmlNode)">
+            <summary>
+            This will return true if the node passed is one of the children or grandchildren of this node.
+            </summary>
+            <param name="node">The node that might be a child.</param>
+            <returns>True if this node is an ancestor of the one specified.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNode.GetCommonAncestor(MIL.Html.HtmlNode)">
+            <summary>
+            This will return the ancstor that is common to this node and the one specified.
+            </summary>
+            <param name="node">The possible node that is relative</param>
+            <returns>The common ancestor, or null if there is none</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNode.Remove">
+            <summary>
+            This will remove this node and all child nodes from the tree. If this
+            is a root node, this operation will do nothing.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlNode.SetParent(MIL.Html.HtmlElement)">
+            <summary>
+            Internal method to maintain the identity of the parent node.
+            </summary>
+            <param name="parentNode">The parent node of this one</param>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.Parent">
+            <summary>
+            This will return the parent of this node, or null if there is none.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.Next">
+            <summary>
+            This will return the next sibling node. If this is the last one, it will return null.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.Previous">
+            <summary>
+            This will return the previous sibling node. If this is the first one, it will return null.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.FirstChild">
+            <summary>
+            This will return the first child node. If there are no children, this
+            will return null.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.LastChild">
+            <summary>
+            This will return the last child node. If there are no children, this
+            will return null.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.Index">
+            <summary>
+            This will return the index position within the parent's nodes that this one resides.
+            If this is not in a collection, this will return -1.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.IsRoot">
+            <summary>
+            This will return true if this is a root node (has no parent).
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.IsChild">
+            <summary>
+            This will return true if this is a child node (has a parent).
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.HTML">
+            <summary>
+            This will return the full HTML to represent this node (and all child nodes).
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNode.XHTML">
+            <summary>
+            This will return the full XHTML to represent this node (and all child nodes)
+            </summary>
+        </member>
+        <member name="T:MIL.Html.HtmlNodeCollection">
+            <summary>
+            This object represents a collection of HtmlNodes, which can be either HtmlText
+            or HtmlElement objects. The order in which the nodes occur directly corresponds
+            to the order in which they appear in the original HTML document.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlNodeCollection.#ctor(MIL.Html.HtmlElement)">
+            <summary>
+            A collection is usually associated with a parent node (an HtmlElement, actually)
+            but you can pass null to implement an abstracted collection.
+            </summary>
+            <param name="parent">The parent element, or null if it is not appropriate</param>
+        </member>
+        <member name="M:MIL.Html.HtmlNodeCollection.Add(MIL.Html.HtmlNode)">
+            <summary>
+            This will add a node to the collection.
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNodeCollection.IndexOf(MIL.Html.HtmlNode)">
+            <summary>
+            This is used to identify the index of this node as it appears in the collection.
+            </summary>
+            <param name="node">The node to test</param>
+            <returns>The index of the node, or -1 if it is not in this collection</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNodeCollection.Insert(System.Int32,MIL.Html.HtmlNode)">
+            <summary>
+            This will insert a node at the given position
+            </summary>
+            <param name="index">The position at which to insert the node.</param>
+            <param name="node">The node to insert.</param>
+        </member>
+        <member name="M:MIL.Html.HtmlNodeCollection.FindByName(System.String)">
+            <summary>
+            This will search though this collection of nodes for all elements with the
+            specified name. If you want to search the subnodes recursively, you should
+            pass True as the parameter in searchChildren. This search is guaranteed to
+            return nodes in the order in which they are found in the document.
+            </summary>
+            <param name="name">The name of the element to find</param>
+            <returns>A collection of all the nodes that macth.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNodeCollection.FindByName(System.String,System.Boolean)">
+            <summary>
+            This will search though this collection of nodes for all elements with the
+            specified name. If you want to search the subnodes recursively, you should
+            pass True as the parameter in searchChildren. This search is guaranteed to
+            return nodes in the order in which they are found in the document.
+            </summary>
+            <param name="name">The name of the element to find</param>
+            <param name="searchChildren">True if you want to search sub-nodes, False to
+            only search this collection.</param>
+            <returns>A collection of all the nodes that macth.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNodeCollection.FindByAttributeName(System.String)">
+            <summary>
+            This will search though this collection of nodes for all elements with the an
+            attribute with the given name. 
+            </summary>
+            <param name="name">The name of the attribute to find</param>
+            <returns>A collection of all the nodes that macth.</returns>
+        </member>
+        <member name="M:MIL.Html.HtmlNodeCollection.FindByAttributeName(System.String,System.Boolean)">
+            <summary>
+            This will search though this collection of nodes for all elements with the an
+            attribute with the given name. 
+            </summary>
+            <param name="name">The name of the attribute to find</param>
+            <param name="searchChildren">True if you want to search sub-nodes, False to
+            only search this collection.</param>
+            <returns>A collection of all the nodes that macth.</returns>
+        </member>
+        <member name="P:MIL.Html.HtmlNodeCollection.Item(System.Int32)">
+            <summary>
+            This property allows you to change the node at a particular position in the
+            collection.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlNodeCollection.Item(System.String)">
+            <summary>
+            This allows you to directly access the first element in this colleciton with the given name.
+            If the node does not exist, this will return null.
+            </summary>
+        </member>
+        <member name="T:System.IO.Streams.StreamExt">
+            <summary>
+            BinaryReader/BinaryWriter as extension methods
+            </summary>
+        </member>
+        <member name="T:MIL.Html.HtmlText">
+            <summary>
+            The HtmlText node represents a simple piece of text from the document.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlText.#ctor(System.String)">
+            <summary>
+            This constructs a new node with the given text content.
+            </summary>
+            <param name="text"></param>
+        </member>
+        <member name="M:MIL.Html.HtmlText.ToString">
+            <summary>
+            This will return the text for outputting inside an HTML document.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MIL.Html.HtmlText.Text">
+            <summary>
+            This is the text associated with this node.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlText.HTML">
+            <summary>
+            This will return the HTML to represent this text object.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlText.XHTML">
+            <summary>
+            This will return the XHTML to represent this text object.
+            </summary>
+        </member>
+        <member name="T:MIL.Html.HtmlElement">
+            <summary>
+            The HtmlElement object represents any HTML element. An element has a name
+            and zero or more attributes.
+            </summary>
+        </member>
+        <member name="M:MIL.Html.HtmlElement.#ctor(System.String)">
+            <summary>
+            This constructs a new HTML element with the specified tag name.
+            </summary>
+            <param name="name">The name of this element</param>
+        </member>
+        <member name="M:MIL.Html.HtmlElement.ToString">
+            <summary>
+            This will return the HTML representation of this element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MIL.Html.HtmlElement.Name">
+            <summary>
+            This is the tag name of the element. e.g. BR, BODY, TABLE etc.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlElement.Nodes">
+            <summary>
+            This is the collection of all child nodes of this one. If this node is actually
+            a text node, this will throw an InvalidOperationException exception.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlElement.Attributes">
+            <summary>
+            This is the collection of attributes associated with this element.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlElement.IsTerminated">
+            <summary>
+            This flag indicates that the element is explicitly closed using the "<name/>" method.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:MIL.Html.HtmlElement.IsExplicitlyTerminated" -->
+        <member name="P:MIL.Html.HtmlElement.HTML">
+            <summary>
+            This will return the HTML for this element and all subnodes.
+            </summary>
+        </member>
+        <member name="P:MIL.Html.HtmlElement.XHTML">
+            <summary>
+            This will return the XHTML for this element and all subnodes.
+            </summary>
+        </member>
+    </members>
+</doc>
