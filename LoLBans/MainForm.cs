@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using LoLBans.Properties;
@@ -13,7 +12,7 @@ namespace LoLBans
         static readonly string LolBansPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans");
         static readonly string LoaderFile = Path.Combine(LolBansPath, "LoLLoader.dll");
 
-        LoLConnection Connection;
+        readonly LoLConnection Connection;
 
         public MainForm()
         {
@@ -45,7 +44,7 @@ namespace LoLBans
                 return;
             }
 
-            var boxs = new List<ListBox> { listBox1, listBox2 };
+            var boxs = new List<ListBox>();
 
             for (int i = 0; i < boxs.Count && i < teams.Count; i++)
             {
@@ -87,23 +86,6 @@ namespace LoLBans
                 ret.Players.Add(ply);
             }
             return ret;
-        }
-        
-        [DebuggerDisplay("Count: {Players.Count}")]
-        public class Team
-        {
-            public List<Player> Players { get; set; }
-            public Team()
-            {
-                Players = new List<Player>();
-            }
-        }
-        [DebuggerDisplay("{Name}")]
-        public class Player
-        {
-            public int Id { get; set; }
-            public string InternalName { get; set; }
-            public string Name { get; set; }
         }
 
         void Install()
