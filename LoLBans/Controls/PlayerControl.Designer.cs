@@ -34,6 +34,7 @@
             // 
             // NameLabel
             // 
+            this.NameLabel.BackColor = System.Drawing.Color.Transparent;
             this.NameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NameLabel.Location = new System.Drawing.Point(10, 10);
             this.NameLabel.Name = "NameLabel";
@@ -43,7 +44,7 @@
             // 
             // DescLabel
             // 
-            this.DescLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.DescLabel.BackColor = System.Drawing.Color.Transparent;
             this.DescLabel.Location = new System.Drawing.Point(15, 30);
             this.DescLabel.Name = "DescLabel";
             this.DescLabel.Size = new System.Drawing.Size(175, 80);
@@ -54,6 +55,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.DescLabel);
             this.Controls.Add(this.NameLabel);
             this.Name = "PlayerControl";

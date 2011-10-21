@@ -30,9 +30,13 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.GameTab = new System.Windows.Forms.TabPage();
+            this.teamControl1 = new LoLBans.Controls.TeamControl();
             this.SearchTab = new System.Windows.Forms.TabPage();
             this.SettingsTab = new System.Windows.Forms.TabPage();
+            this.InstallButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
+            this.GameTab.SuspendLayout();
+            this.SettingsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -44,47 +48,70 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(600, 541);
+            this.tabControl1.Size = new System.Drawing.Size(613, 742);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
             // GameTab
             // 
+            this.GameTab.Controls.Add(this.teamControl1);
             this.GameTab.Location = new System.Drawing.Point(4, 22);
             this.GameTab.Name = "GameTab";
             this.GameTab.Padding = new System.Windows.Forms.Padding(3);
-            this.GameTab.Size = new System.Drawing.Size(592, 515);
+            this.GameTab.Size = new System.Drawing.Size(605, 716);
             this.GameTab.TabIndex = 0;
             this.GameTab.Text = "Game";
             this.GameTab.UseVisualStyleBackColor = true;
+            // 
+            // teamControl1
+            // 
+            this.teamControl1.Location = new System.Drawing.Point(8, 6);
+            this.teamControl1.Name = "teamControl1";
+            this.teamControl1.Size = new System.Drawing.Size(200, 686);
+            this.teamControl1.TabIndex = 0;
+            this.teamControl1.TeamSize = 5;
             // 
             // SearchTab
             // 
             this.SearchTab.Location = new System.Drawing.Point(4, 22);
             this.SearchTab.Name = "SearchTab";
-            this.SearchTab.Size = new System.Drawing.Size(592, 515);
+            this.SearchTab.Size = new System.Drawing.Size(605, 716);
             this.SearchTab.TabIndex = 1;
             this.SearchTab.Text = "Search";
             this.SearchTab.UseVisualStyleBackColor = true;
             // 
             // SettingsTab
             // 
+            this.SettingsTab.Controls.Add(this.InstallButton);
             this.SettingsTab.Location = new System.Drawing.Point(4, 22);
             this.SettingsTab.Name = "SettingsTab";
-            this.SettingsTab.Size = new System.Drawing.Size(592, 515);
+            this.SettingsTab.Size = new System.Drawing.Size(605, 716);
             this.SettingsTab.TabIndex = 2;
             this.SettingsTab.Text = "Settings";
             this.SettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // InstallButton
+            // 
+            this.InstallButton.Location = new System.Drawing.Point(10, 10);
+            this.InstallButton.Name = "InstallButton";
+            this.InstallButton.Size = new System.Drawing.Size(75, 23);
+            this.InstallButton.TabIndex = 0;
+            this.InstallButton.Text = "Install";
+            this.InstallButton.UseVisualStyleBackColor = true;
+            this.InstallButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 541);
+            this.ClientSize = new System.Drawing.Size(613, 742);
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "LoL";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.tabControl1.ResumeLayout(false);
+            this.GameTab.ResumeLayout(false);
+            this.SettingsTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -95,6 +122,8 @@
         private System.Windows.Forms.TabPage GameTab;
         private System.Windows.Forms.TabPage SearchTab;
         private System.Windows.Forms.TabPage SettingsTab;
+        private Controls.TeamControl teamControl1;
+        private System.Windows.Forms.Button InstallButton;
 
     }
 }

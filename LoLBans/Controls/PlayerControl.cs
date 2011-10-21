@@ -39,6 +39,7 @@ namespace LoLBans
                 NameLabel.Text = value;
             }
         }
+
         [EditorBrowsable(EditorBrowsableState.Always)]
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]

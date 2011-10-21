@@ -139,5 +139,31 @@ namespace LoLBans
 
             //Install();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!Wow.IsAdministrator)
+            {
+                MessageBox.Show("You must run LoLBans as admin to install/uninstall it");
+                return;
+            }
+            if (IsInstalled)
+            {
+                Uninstall();
+            }
+            else
+            {
+                Install();
+            }
+            InstallButton.Text = IsInstalled ? "Uninstall" : "Install";
+        }
+
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            if (e.Action == TabControlAction.Selected && e.TabPage == SettingsTab)
+            {
+                InstallButton.Text = IsInstalled ? "Uninstall" : "Install";
+            }
+        }
     }
 }

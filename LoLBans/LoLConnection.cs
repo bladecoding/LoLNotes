@@ -77,6 +77,7 @@ namespace LoLBans
                                 }
                                 catch (Exception ex)
                                 {
+                                    //TODO: Implement logging
                                     Debug.WriteLine(ex);
                                 }
                             }
@@ -85,6 +86,7 @@ namespace LoLBans
                 }
                 catch (Exception ex)
                 {
+                    //TODO: Implement logging
                     Debug.WriteLine(ex);
                 }
             }
