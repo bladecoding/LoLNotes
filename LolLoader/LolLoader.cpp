@@ -1,11 +1,11 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+#include <Windows.h>
 #include <string>
 #include <algorithm>
 #include "Detours\Detours.h"
 #include <vector>
 #include <iostream>
-#include <WinSock2.h>
 #include <boost/interprocess/sync/sharable_lock.hpp>
 #include <boost/thread/condition.hpp>
 #include <boost/thread/mutex.hpp>
@@ -206,7 +206,7 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 					DWORD written;
 					if (!WriteFile(server, buf.Data.get(), buf.Size, &written, NULL))
 					{
-						WriteString(SelfLogHandle, "[LoLBans] Failed to send to client (%ld)\n", WSAGetLastError());
+						WriteString(SelfLogHandle, "[LoLBans] Failed to send to client (%ld)\n", GetLastError());
 						break;
 					}
 					WriteString(SelfLogHandle, "[LoLBans] Sent %d bytes\n", buf.Size);
@@ -242,11 +242,13 @@ HANDLE WINAPI MyCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwS
 		{
 			if (!SelfLogHandle)
 			{
-				SelfLogHandle = CreateFileA("lolbans.log", GENERIC_ALL, FILE_SHARE_READ, NULL, NULL, NULL, NULL);
+				std::string dir = GetDirectory(GetModuleName(NULL));
+				std::string file = dir + "\\lolbans.log";
+				SelfLogHandle = CreateFileA(file.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, NULL, NULL);
 			}
 			if (!CreateThread(NULL, NULL, ClientLoop, NULL, NULL, NULL))
 			{
-				WriteString(SelfLogHandle, "[LoLBans] Failed to create server thread (%ld)\n", WSAGetLastError());
+				WriteString(SelfLogHandle, "[LoLBans] Failed to create server thread (%ld)\n", GetLastError());
 			}
 			else
 			{
