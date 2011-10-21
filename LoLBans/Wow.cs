@@ -40,6 +40,7 @@ namespace LoLBans
             if (reg == null)
                 throw new NullReferenceException("AppInit key null");
             reg.SetValue("AppInit_DLLs", string.Join("; ", dlls.ToArray()));
+            reg.SetValue("LoadAppInit_DLLs", 1);
         }
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]

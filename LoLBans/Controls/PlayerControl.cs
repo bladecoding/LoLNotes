@@ -28,7 +28,7 @@ namespace LoLBans
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [Bindable(true)]
-        public string Summoner
+        public string SummonerName
         {
             get
             {

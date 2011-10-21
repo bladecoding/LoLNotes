@@ -47,7 +47,7 @@ namespace LoLBans.Controls
             }
         }
 
-        public List<PlayerControl> Players = new List<PlayerControl>();
+        public List<PlayerControl> Players { get; set; }
 
         public TeamControl()
         {

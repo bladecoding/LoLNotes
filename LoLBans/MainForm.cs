@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using LoLBans.Controls;
 using LoLBans.Properties;
 using System.Linq;
 
@@ -44,28 +45,43 @@ namespace LoLBans
                 return;
             }
 
-            var boxs = new List<ListBox>();
+            var boxs = new List<TeamControl> { teamControl1, teamControl2 };
 
             for (int i = 0; i < boxs.Count && i < teams.Count; i++)
             {
-                boxs[i].Items.Clear();
+
                 if (teams[i] == null)
-                    continue;
-                foreach (var ply in teams[i].Players)
                 {
-                    boxs[i].Items.Add(ply.Name ?? "Unknown");
+                    foreach (var ply in boxs[i].Players)
+                        ply.SummonerName = "Unknown";
+                    continue;
+                }
+
+                for (int o = 0; o < boxs[i].Players.Count; o++)
+                {
+                    if (o < teams[i].Players.Count)
+                    {
+                        boxs[i].Players[o].SummonerName = 
+                            string.IsNullOrEmpty(teams[i].Players[o].Name) ?
+                            teams[i].Players[o].Name :
+                            "Unknown";
+                        boxs[i].Players[o].Visible = true;
+                    }
+                    else
+                    {
+                        boxs[i].Players[o].Visible = false;
+                    }
                 }
             }
         }
 
         public static List<Team> GetTeams(FlashObject body)
         {
-            var ret = new List<Team>
+            return new List<Team>
             {
                 GetTeam(body["teamOne"]),
                 GetTeam(body["teamTwo"]),
             };
-            return ret.Where(t => t != null).ToList();
         }
 
         public static Team GetTeam(FlashObject team)
@@ -164,6 +180,11 @@ namespace LoLBans
             {
                 InstallButton.Text = IsInstalled ? "Uninstall" : "Install";
             }
+        }
+
+        private void GameTab_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
