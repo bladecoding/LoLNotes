@@ -6,11 +6,11 @@ using System.Text;
 namespace LoLBans
 {
     [DebuggerDisplay("{SummonerName}")]
-    public class PlayerParticipantStatsSummary
+    public class PlayerStatsSummary
     {
         protected readonly FlashObject Base;
 
-        public PlayerParticipantStatsSummary(FlashObject body)
+        public PlayerStatsSummary(FlashObject body)
         {
             if (body == null)
                 throw new ArgumentNullException("body");

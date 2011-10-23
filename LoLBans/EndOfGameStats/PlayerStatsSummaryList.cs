@@ -5,10 +5,10 @@ using System.Text;
 
 namespace LoLBans
 {
-    public class PlayerParticipantStatsSummaryList : List<PlayerParticipantStatsSummary>
+    public class PlayerStatsSummaryList : List<PlayerStatsSummary>
     {   
         protected readonly FlashObject Base;
-        public PlayerParticipantStatsSummaryList(FlashObject thebase)
+        public PlayerStatsSummaryList(FlashObject thebase)
         {
             Base = thebase;
 
@@ -18,7 +18,7 @@ namespace LoLBans
             var array = Base["list"]["source"];
             foreach (var field in array.Fields)
             {
-                Add(new PlayerParticipantStatsSummary(field));
+                Add(new PlayerStatsSummary(field));
             }
         }
     }

@@ -167,7 +167,7 @@ namespace LoLBans
         }
 
         [InternalName("otherTeamPlayerParticipantStats")]
-        public PlayerParticipantStatsSummaryList OtherTeamPlayerParticipantStats
+        public PlayerStatsSummaryList OtherTeamPlayerStats
         {
             get;
             protected set;
@@ -230,7 +230,7 @@ namespace LoLBans
         }
 
         [InternalName("teamPlayerParticipantStats")]
-        public PlayerParticipantStatsSummaryList TeamPlayerParticipantStats
+        public PlayerStatsSummaryList TeamPlayerStats
         {
             get;
             protected set;

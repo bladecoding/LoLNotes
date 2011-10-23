@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace LoLBans
 {
-    public class ParticipantStats : List<PlayerParticipantStatsSummary>
+    public class ParticipantStats : List<PlayerStatsSummary>
     {
     }
 }

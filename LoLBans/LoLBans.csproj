@@ -78,8 +78,8 @@
     <Compile Include="EndOfGameStats\EndOfGameStats.cs" />
     <Compile Include="EndOfGameStats\GameItems.cs" />
     <Compile Include="EndOfGameStats\ParticipantStats.cs" />
-    <Compile Include="EndOfGameStats\PlayerParticipantStatsSummary.cs" />
-    <Compile Include="EndOfGameStats\PlayerParticipantStatsSummaryList.cs" />
+    <Compile Include="EndOfGameStats\PlayerStatsSummary.cs" />
+    <Compile Include="EndOfGameStats\PlayerStatsSummaryList.cs" />
     <Compile Include="EndOfGameStats\PlayerStat.cs" />
     <Compile Include="EndOfGameStats\PlayerStatCategory.cs" />
     <Compile Include="EndOfGameStats\PlayerStatList.cs" />
