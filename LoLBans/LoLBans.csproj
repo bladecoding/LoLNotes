@@ -54,6 +54,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Community.CsharpSqlite.SQLiteClient">
+      <HintPath>Dependencies\Community.CsharpSqlite.SQLiteClient.dll</HintPath>
+    </Reference>
     <Reference Include="NotMissing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\NotMissing.dll</HintPath>
@@ -90,6 +93,7 @@
     <Compile Include="GameDTO\GameReader.cs" />
     <Compile Include="GameDTO\ObfuscatedParticipant.cs" />
     <Compile Include="GameDTO\Participant.cs" />
+    <Compile Include="IFlashProcessor.cs" />
     <Compile Include="InternalNameAttribute.cs" />
     <Compile Include="ItemData.cs" />
     <Compile Include="LoLConnection.cs" />

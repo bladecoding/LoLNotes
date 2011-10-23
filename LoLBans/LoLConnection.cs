@@ -12,19 +12,15 @@ using System.Threading;
 
 namespace LoLBans
 {
-
-    public class LoLConnection : IDisposable
+    public class LoLConnection : IFlashProcessor, IDisposable
     {
         Thread RecvThread;
         readonly string PipeName;
         const string LogMatch = @"^\d+/\d+/\d+ \d+:\d+:\d+\.\d+ \[\w+\]";
         const string ObjectMatch = @"\(([^\)]+)\)#\d+$";
 
-        public delegate void ProcessObjectD(FlashObject obj);
         public event ProcessObjectD ProcessObject;
-        public delegate void ProcessLineD(string line);
-        public event ProcessLineD ProcessLine;
-
+        public event ProcessLineD ProcessLine; 
 
         public LoLConnection(string pipename)
         {

@@ -7,12 +7,12 @@ namespace LoLBans
 {
     public class GameDTOReader
     {
-        protected LoLConnection connection;
+        protected IFlashProcessor connection;
 
         public delegate void OnGameDTOD(GameDTO game);
         public event OnGameDTOD OnGameDTO;
 
-        public GameDTOReader(LoLConnection conn)
+        public GameDTOReader(IFlashProcessor conn)
         {
             connection = conn;
             connection.ProcessObject += connection_ProcessObject;
