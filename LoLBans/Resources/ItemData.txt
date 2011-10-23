@@ -1,0 +1,4299 @@
+
+[
+{
+"k":1058,
+"v":
+{
+	"Name":"Needlessly Large Rod",
+	"Description":"+80 Ability Power"
+}
+},
+{
+"k":1057,
+"v":
+{
+"Name":"Negatron Cloak",
+"Description":"+48 Magic Resist"
+}
+},
+{
+"k":1056,
+"v":
+{
+"Name":"Doran\\'s Ring",
+"Description":"+100 Health +15 Ability Power +5 Mana Regen per 5 seconds"
+}
+},
+{
+"k":1055,
+"v":
+{
+"Name":"Doran\\'s Blade",
+"Description":"+100 Health +10 Attack Damage +3% Life Steal"
+}
+},
+{
+"k":1054,
+"v":
+{
+"Name":"Doran\\'s Shield",
+"Description":"+120 Health +10 Armor +8 Health Regen per 5 seconds"
+}
+},
+{
+"k":1053,
+"v":
+{
+"Name":"Vampiric Scepter",
+"Description":"+12% Life Steal"
+}
+},
+{
+"k":1052,
+"v":
+{
+"Name":"Amplifying Tome",
+"Description":"+20 Ability Power"
+}
+},
+{
+"k":1051,
+"v":
+{
+"Name":"Brawler\\'s Gloves",
+"Description":"+8% Critical Strike Chance"
+}
+},
+{
+"k":1043,
+"v":
+{
+"Name":"Recurve Bow",
+"Description":"+40% Attack Speed"
+}
+},
+{
+"k":1042,
+"v":
+{
+"Name":"Dagger",
+"Description":"+15% Attack Speed"
+}
+},
+{
+"k":5299,
+"v":
+{
+"Name":"Greater Glyph of Intellect",
+"Description":"+11.25 mana"
+}
+},
+{
+"k":5298,
+"v":
+{
+"Name":"Greater Glyph of Force",
+"Description":"+0.17 ability power per level (+3.06 at champion level 18)"
+}
+},
+{
+"k":5297,
+"v":
+{
+"Name":"Greater Glyph of Potency",
+"Description":"+0.99 ability power"
+}
+},
+{
+"k":5296,
+"v":
+{
+"Name":"Greater Glyph of Celerity",
+"Description":"-0.05% cooldowns per level (-0.9% at champion level 18)"
+}
+},
+{
+"k":5295,
+"v":
+{
+"Name":"Greater Glyph of Focus",
+"Description":"-0.65% cooldowns"
+}
+},
+{
+"k":5294,
+"v":
+{
+"Name":"Greater Glyph of Elusion",
+"Description":"+0.02% dodge per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":5293,
+"v":
+{
+"Name":"Greater Glyph of Evasion",
+"Description":"+0.38% dodge"
+}
+},
+{
+"k":5292,
+"v":
+{
+"Name":"Greater Glyph of Regeneration",
+"Description":"+0.09 health regen / 5 sec. per level (+1.62 at champion level 18)"
+}
+},
+{
+"k":5291,
+"v":
+{
+"Name":"Greater Glyph of Vigor",
+"Description":"+0.27 health regen / 5 sec."
+}
+},
+{
+"k":1038,
+"v":
+{
+"Name":"B. F. Sword",
+"Description":"+45 Attack Damage"
+}
+},
+{
+"k":5290,
+"v":
+{
+"Name":"Greater Glyph of Shielding",
+"Description":"+0.15 magic resist per level (+2.7 at champion level 18)"
+}
+},
+{
+"k":1037,
+"v":
+{
+"Name":"Pickaxe",
+"Description":"+25 Attack Damage"
+}
+},
+{
+"k":1036,
+"v":
+{
+"Name":"Long Sword",
+"Description":"+10 Attack Damage"
+}
+},
+{
+"k":1063,
+"v":
+{
+"Name":"Prospector\\'s Ring",
+"Description":"+30 Ability Power +7 Mana Regen per 5 seconds  UNIQUE Passive: +200 Health (does not stack with other Prospector items)"
+}
+},
+{
+"k":1062,
+"v":
+{
+"Name":"Prospector\\'s Blade",
+"Description":"+20 Attack Damage +5% Life Steal  UNIQUE Passive: +200 Health (does not stack with other Prospector items)"
+}
+},
+{
+"k":1033,
+"v":
+{
+"Name":"Null-Magic Mantle",
+"Description":"+24 Magic Resist"
+}
+},
+{
+"k":1031,
+"v":
+{
+"Name":"Chain Vest",
+"Description":"+45 Armor"
+}
+},
+{
+"k":5289,
+"v":
+{
+"Name":"Greater Glyph of Warding",
+"Description":"+1.49 magic resist"
+}
+},
+{
+"k":5288,
+"v":
+{
+"Name":"Greater Glyph of Defense",
+"Description":"+0.1 armor per level (+1.8 at champion level 18)"
+}
+},
+{
+"k":5287,
+"v":
+{
+"Name":"Greater Glyph of Resilience",
+"Description":"+0.7 armor"
+}
+},
+{
+"k":5286,
+"v":
+{
+"Name":"Greater Glyph of Vitality",
+"Description":"+0.54 health per level (+9.72 at champion level 18)"
+}
+},
+{
+"k":5285,
+"v":
+{
+"Name":"Greater Glyph of Fortitude",
+"Description":"+2.67 health"
+}
+},
+{
+"k":5284,
+"v":
+{
+"Name":"Greater Glyph of Precision",
+"Description":"+0.01 armor penetration per level (+0.18 at champion level 18)"
+}
+},
+{
+"k":5283,
+"v":
+{
+"Name":"Greater Glyph of Desolation",
+"Description":"+0.39 armor penetration"
+}
+},
+{
+"k":5282,
+"v":
+{
+"Name":"Greater Glyph of Brutality",
+"Description":"+0.01% critical chance per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":1029,
+"v":
+{
+"Name":"Cloth Armor",
+"Description":"+18 Armor"
+}
+},
+{
+"k":5281,
+"v":
+{
+"Name":"Greater Glyph of Malice",
+"Description":"+0.28% critical chance"
+}
+},
+{
+"k":1028,
+"v":
+{
+"Name":"Ruby Crystal",
+"Description":"+180 Health"
+}
+},
+{
+"k":5280,
+"v":
+{
+"Name":"Greater Glyph of Carnage",
+"Description":"+0.01% critical damage per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":1027,
+"v":
+{
+"Name":"Sapphire Crystal",
+"Description":"+200 Mana"
+}
+},
+{
+"k":1026,
+"v":
+{
+"Name":"Blasting Wand",
+"Description":"+40 Ability Power"
+}
+},
+{
+"k":5279,
+"v":
+{
+"Name":"Greater Glyph of Furor",
+"Description":"+0.56% critical damage"
+}
+},
+{
+"k":5278,
+"v":
+{
+"Name":"Greater Glyph of Haste",
+"Description":"+0.01% attack speed per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5277,
+"v":
+{
+"Name":"Greater Glyph of Alacrity",
+"Description":"+0.64% attack speed"
+}
+},
+{
+"k":5276,
+"v":
+{
+"Name":"Greater Glyph of Might",
+"Description":"+0.04 attack damage per level (+0.73 at champion level 18)"
+}
+},
+{
+"k":5275,
+"v":
+{
+"Name":"Greater Glyph of Strength",
+"Description":"+0.28 attack damage"
+}
+},
+{
+"k":5274,
+"v":
+{
+"Name":"Greater Mark of Brilliance",
+"Description":"+0.05 magic penetration per level (+0.9 at champion level 18)"
+}
+},
+{
+"k":5273,
+"v":
+{
+"Name":"Greater Mark of Insight",
+"Description":"+0.95 magic penetration"
+}
+},
+{
+"k":5272,
+"v":
+{
+"Name":"Greater Mark of Clarity",
+"Description":"+0.08 mana regen / 5 sec. per level (+1.44 at champion level 18)"
+}
+},
+{
+"k":5271,
+"v":
+{
+"Name":"Greater Mark of Replenishment",
+"Description":"+0.26 mana regen / 5 sec."
+}
+},
+{
+"k":1018,
+"v":
+{
+"Name":"Cloak of Agility",
+"Description":"+18% Critical Strike Chance"
+}
+},
+{
+"k":5270,
+"v":
+{
+"Name":"Greater Mark of Knowledge",
+"Description":"+1.17 mana per level (+21.06 at champion level 18)"
+}
+},
+{
+"k":1011,
+"v":
+{
+"Name":"Giant\\'s Belt",
+"Description":"+430 Health"
+}
+},
+{
+"k":5269,
+"v":
+{
+"Name":"Greater Mark of Intellect",
+"Description":"+5.91 mana"
+}
+},
+{
+"k":5268,
+"v":
+{
+"Name":"Greater Mark of Force",
+"Description":"+0.1 ability power per level (+1.8 at champion level 18)"
+}
+},
+{
+"k":5267,
+"v":
+{
+"Name":"Greater Mark of Potency",
+"Description":"+0.59 ability power"
+}
+},
+{
+"k":5266,
+"v":
+{
+"Name":"Greater Mark of Celerity",
+"Description":"-0.02% cooldowns per level (-0.36% at champion level 18)"
+}
+},
+{
+"k":5265,
+"v":
+{
+"Name":"Greater Mark of Focus",
+"Description":"-0.16% cooldowns"
+}
+},
+{
+"k":5264,
+"v":
+{
+"Name":"Greater Mark of Elusion",
+"Description":"+0.02% dodge per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":5263,
+"v":
+{
+"Name":"Greater Mark of Evasion",
+"Description":"+0.38% dodge"
+}
+},
+{
+"k":5262,
+"v":
+{
+"Name":"Greater Mark of Regeneration",
+"Description":"+0.08 health regen / 5 sec. per level (+1.44 at champion level 18)"
+}
+},
+{
+"k":5261,
+"v":
+{
+"Name":"Greater Mark of Vigor",
+"Description":"+0.27 health regen / 5 sec."
+}
+},
+{
+"k":5260,
+"v":
+{
+"Name":"Greater Mark of Shielding",
+"Description":"+0.07 magic resist per level (+1.26 at champion level 18)"
+}
+},
+{
+"k":1007,
+"v":
+{
+"Name":"Regrowth Pendant",
+"Description":"+15 Health Regen per 5 seconds"
+}
+},
+{
+"k":1006,
+"v":
+{
+"Name":"Rejuvenation Bead",
+"Description":"+8 Health Regen per 5 seconds"
+}
+},
+{
+"k":1005,
+"v":
+{
+"Name":"Meki Pendant",
+"Description":"+7 Mana Regen per 5 seconds"
+}
+},
+{
+"k":3099,
+"v":
+{
+"Name":"Soul Shroud",
+"Description":"+520 Health  UNIQUE Aura: Nearby allied champions gain 10% Cooldown Reduction and 12 Mana Regen per 5 seconds."
+}
+},
+{
+"k":1004,
+"v":
+{
+"Name":"Faerie Charm",
+"Description":"+3 Mana Regen per 5 seconds"
+}
+},
+{
+"k":3098,
+"v":
+{
+"Name":"Kage\\'s Lucky Pick",
+"Description":"+25 Ability Power UNIQUE Passive: Gain an additional 5 Gold every 10 seconds."
+}
+},
+{
+"k":3097,
+"v":
+{
+"Name":"Emblem of Valor",
+"Description":"+17% Life Steal  UNIQUE Aura: Nearby allied Champions gain 10 Health Regen per 5 seconds."
+}
+},
+{
+"k":3096,
+"v":
+{
+"Name":"Philosopher\\'s Stone",
+"Description":"+18 Health Regen per 5 seconds +8 Mana Regen per 5 seconds  UNIQUE Passive: Gain an additional 5 Gold every 10 seconds."
+}
+},
+{
+"k":1001,
+"v":
+{
+"Name":"Boots of Speed",
+"Description":"UNIQUE Passive: Enhanced Movement 1 (does not stack with other Boots)"
+}
+},
+{
+"k":3093,
+"v":
+{
+"Name":"Avarice Blade",
+"Description":"+12% Critical Strike Chance  UNIQUE Passive: Gain an additional 5 Gold every 10 seconds."
+}
+},
+{
+"k":3091,
+"v":
+{
+"Name":"Wit\\'s End",
+"Description":"+40% Attack Speed +30 Magic Resist  UNIQUE Passive: Your basic attacks deal 42 bonus magic damage.  UNIQUE Passive: Your basic attacks increase your Magic Resist by 5 for 5 seconds (effect stacks up to 4 times)."
+}
+},
+{
+"k":5259,
+"v":
+{
+"Name":"Greater Mark of Warding",
+"Description":"+0.97 magic resist"
+}
+},
+{
+"k":5258,
+"v":
+{
+"Name":"Greater Mark of Defense",
+"Description":"+0.09 armor per level (+1.62 at champion level 18)"
+}
+},
+{
+"k":5257,
+"v":
+{
+"Name":"Greater Mark of Resilience",
+"Description":"+0.91 armor"
+}
+},
+{
+"k":5256,
+"v":
+{
+"Name":"Greater Mark of Vitality",
+"Description":"+0.54 health per level (+9.72 at champion level 18)"
+}
+},
+{
+"k":5255,
+"v":
+{
+"Name":"Greater Mark of Fortitude",
+"Description":"+3.47 health"
+}
+},
+{
+"k":5254,
+"v":
+{
+"Name":"Greater Mark of Precision",
+"Description":"+0.05 armor penetration per level (+0.9 at champion level 18)"
+}
+},
+{
+"k":5253,
+"v":
+{
+"Name":"Greater Mark of Desolation",
+"Description":"+1.66 armor penetration"
+}
+},
+{
+"k":5252,
+"v":
+{
+"Name":"Greater Mark of Brutality",
+"Description":"+0.05% critical chance per level (+0.9% at champion level 18)"
+}
+},
+{
+"k":5251,
+"v":
+{
+"Name":"Greater Mark of Malice",
+"Description":"+0.93% critical chance"
+}
+},
+{
+"k":5250,
+"v":
+{
+"Name":"Greater Mark of Carnage",
+"Description":"+0.05% critical damage per level (+0.9% at champion level 18)"
+}
+},
+{
+"k":3089,
+"v":
+{
+"Name":"Rabadon\\'s Deathcap",
+"Description":"+140 Ability Power  UNIQUE Passive: Increases Ability Power by 30%"
+}
+},
+{
+"k":3086,
+"v":
+{
+"Name":"Zeal",
+"Description":"+20% Attack Speed +10% Critical Strike Chance +8% Movement Speed"
+}
+},
+{
+"k":3083,
+"v":
+{
+"Name":"Warmog\\'s Armor",
+"Description":"+920 Health +30 Health Regen per 5 seconds  Passive: Minion kills permanently grant 4.5 Health and .15 Health Regen per 5 seconds. Champion kills and assists permanently grant 45 Health and 1.5 Health Regen per 5 seconds. Bonuses cap at +450 Health and +15 Health Regen per 5 seconds."
+}
+},
+{
+"k":3082,
+"v":
+{
+"Name":"Warden\\'s Mail",
+"Description":"+50 Armor +20 Health Regen per 5 seconds  UNIQUE Passive: 20% chance on being hit by basic attacks to slow the attacker\\'s Movement and Attack Speeds by 35% for 3 seconds."
+}
+},
+{
+"k":10002,
+"v":
+{
+"Name":"Razer Quintessence of Speed",
+"Description":"+1.5% movement speed"
+}
+},
+{
+"k":10001,
+"v":
+{
+"Name":"Razer Mark of Precision",
+"Description":"+2.23% critical damage"
+}
+},
+{
+"k":5249,
+"v":
+{
+"Name":"Greater Mark of Furor",
+"Description":"+2.23% critical damage"
+}
+},
+{
+"k":5248,
+"v":
+{
+"Name":"Greater Mark of Haste",
+"Description":"+0.05% attack speed per level (+0.9% at champion level 18)"
+}
+},
+{
+"k":5247,
+"v":
+{
+"Name":"Greater Mark of Alacrity",
+"Description":"+1.7% attack speed"
+}
+},
+{
+"k":5246,
+"v":
+{
+"Name":"Greater Mark of Might",
+"Description":"+0.13 attack damage per level (+2.43 at champion level 18)"
+}
+},
+{
+"k":5245,
+"v":
+{
+"Name":"Greater Mark of Strength",
+"Description":"+0.95 attack damage"
+}
+},
+{
+"k":5244,
+"v":
+{
+"Name":"Quintessence of Avarice",
+"Description":"+0.78 gold / 10 sec."
+}
+},
+{
+"k":5243,
+"v":
+{
+"Name":"Quintessence of Swiftness",
+"Description":"+1.17% movement speed"
+}
+},
+{
+"k":5242,
+"v":
+{
+"Name":"Quintessence of Brilliance",
+"Description":"+0.09 magic penetration per level (+1.62 at champion level 18)"
+}
+},
+{
+"k":5241,
+"v":
+{
+"Name":"Quintessence of Insight",
+"Description":"+1.47 magic penetration"
+}
+},
+{
+"k":5240,
+"v":
+{
+"Name":"Quintessence of Clarity",
+"Description":"+0.19 mana regen / 5 sec. per level (+3.42 at champion level 18)"
+}
+},
+{
+"k":3078,
+"v":
+{
+"Name":"Trinity Force",
+"Description":"+30 Attack Damage +30 Ability Power +30% Attack Speed +15% Critical Strike Chance +12% Movement Speed +250 Health +250 Mana  UNIQUE Passive: Your basic attacks have a 25% chance to slow your target\\'s Movement Speed by 35% for 2.5 seconds.  UNIQUE Passive: After using an ability, your next basic attack deals bonus physical damage equal to 150% of your base Attack Damage (2 second cooldown). Does not stack with Sheen or Lich Bane."
+}
+},
+{
+"k":3077,
+"v":
+{
+"Name":"Tiamat",
+"Description":"+50 Attack Damage +15 Health Regen per 5 seconds +5 Mana Regen per 5 seconds  Passive: Your basic attacks splash, dealing 50% area damage around the target (35% for ranged attacks)."
+}
+},
+{
+"k":3075,
+"v":
+{
+"Name":"Thornmail",
+"Description":"+100 Armor  UNIQUE Passive: On being hit by basic attacks, returns 30% of damage taken as magic damage."
+}
+},
+{
+"k":3072,
+"v":
+{
+"Name":"The Bloodthirster",
+"Description":"+60 Attack Damage +15% Life Steal  Passive: Gain bonus +1 Attack Damage and +0.25% Life Steal per kill. Bonuses cap at +40 Attack Damage and +10% Life Steal. Bonuses are lost upon death."
+}
+},
+{
+"k":3071,
+"v":
+{
+"Name":"The Black Cleaver",
+"Description":"+55 Attack Damage +30% Attack Speed  UNIQUE Passive: Your basic attacks reduce your target\\'s Armor by 15 for 5 seconds (effect stacks up to 3 times)."
+}
+},
+{
+"k":3070,
+"v":
+{
+"Name":"Tear of the Goddess",
+"Description":"+350 Mana +7 Mana Regen per 5 seconds  UNIQUE Passive: Each time you use an ability, your maximum Mana increases by 4 (3 second cooldown). Bonus caps at +1000 Mana. Does not stack with Archangel\\'s Staff or Manamune."
+}
+},
+{
+"k":5239,
+"v":
+{
+"Name":"Quintessence of Replenishment",
+"Description":"+0.97 mana regen / 5 sec."
+}
+},
+{
+"k":5238,
+"v":
+{
+"Name":"Quintessence of Knowledge",
+"Description":"+3.24 mana per level (+58.32 at champion level 18)"
+}
+},
+{
+"k":5237,
+"v":
+{
+"Name":"Quintessence of Intellect",
+"Description":"+29.17 mana"
+}
+},
+{
+"k":5236,
+"v":
+{
+"Name":"Quintessence of Force",
+"Description":"+0.34 ability power per level (+6.12 at champion level 18)"
+}
+},
+{
+"k":5235,
+"v":
+{
+"Name":"Quintessence of Potency",
+"Description":"+3.85 ability power"
+}
+},
+{
+"k":5234,
+"v":
+{
+"Name":"Quintessence of Celerity",
+"Description":"-0.1% cooldowns per level (-1.8% at champion level 18)"
+}
+},
+{
+"k":5233,
+"v":
+{
+"Name":"Quintessence of Focus",
+"Description":"-1.27% cooldowns"
+}
+},
+{
+"k":5232,
+"v":
+{
+"Name":"Quintessence of Elusion",
+"Description":"+0.09% dodge per level (+1.62% at champion level 18)"
+}
+},
+{
+"k":5231,
+"v":
+{
+"Name":"Quintessence of Evasion",
+"Description":"+1.17% dodge"
+}
+},
+{
+"k":5230,
+"v":
+{
+"Name":"Quintessence of Regeneration",
+"Description":"+0.22 health regen / 5 sec. per level (+3.96 at champion level 18)"
+}
+},
+{
+"k":3069,
+"v":
+{
+"Name":"Shurelya\\'s Reverie",
+"Description":"+330 Health +30 Health Regen per 5 seconds +15 Mana Regen per 5 seconds  UNIQUE Passive: +15% Cooldown Reduction  UNIQUE Active: Nearby allied champions gain 40% Movement Speed for 3 seconds (60 second cooldown)."
+}
+},
+{
+"k":3068,
+"v":
+{
+"Name":"Sunfire Cape",
+"Description":"+450 Health +45 Armor  UNIQUE Passive: Deals 35 magic damage per second to nearby enemies."
+}
+},
+{
+"k":3067,
+"v":
+{
+"Name":"Kindlegem",
+"Description":"+200 Health  UNIQUE Passive: +10% Cooldown Reduction"
+}
+},
+{
+"k":3065,
+"v":
+{
+"Name":"Spirit Visage",
+"Description":"+30 Magic Resist +250 Health  UNIQUE Passive: +10% Cooldown Reduction  UNIQUE Passive: Increases your healing and regeneration effects on yourself by 15%."
+}
+},
+{
+"k":5229,
+"v":
+{
+"Name":"Quintessence of Vigor",
+"Description":"+2.1 health regen / 5 sec."
+}
+},
+{
+"k":5228,
+"v":
+{
+"Name":"Quintessence of Shielding",
+"Description":"+0.29 magic resist per level (+5.22 at champion level 18)"
+}
+},
+{
+"k":5227,
+"v":
+{
+"Name":"Quintessence of Warding",
+"Description":"+3.5 magic resist"
+}
+},
+{
+"k":5226,
+"v":
+{
+"Name":"Quintessence of Defense",
+"Description":"+0.29 armor per level (+5.22 at champion level 18)"
+}
+},
+{
+"k":5225,
+"v":
+{
+"Name":"Quintessence of Resilience",
+"Description":"+3.32 armor"
+}
+},
+{
+"k":5224,
+"v":
+{
+"Name":"Quintessence of Vitality",
+"Description":"+2.1 health per level (+37.8 at champion level 18)"
+}
+},
+{
+"k":5223,
+"v":
+{
+"Name":"Quintessence of Fortitude",
+"Description":"+20 health"
+}
+},
+{
+"k":5222,
+"v":
+{
+"Name":"Quintessence of Precision",
+"Description":"+0.09 armor penetration per level (+1.62 at champion level 18)"
+}
+},
+{
+"k":5221,
+"v":
+{
+"Name":"Quintessence of Desolation",
+"Description":"+2.59 armor penetration"
+}
+},
+{
+"k":5220,
+"v":
+{
+"Name":"Quintessence of Brutality",
+"Description":"+0.09% critical chance per level (+1.62% at champion level 18)"
+}
+},
+{
+"k":3057,
+"v":
+{
+"Name":"Sheen",
+"Description":"+250 Mana +25 Ability Power  UNIQUE Passive: After using an ability, your next basic attack deals bonus physical damage equal to your base Attack Damage (2 second cooldown). Does not stack with Trinity Force or Lich Bane."
+}
+},
+{
+"k":8034,
+"v":
+{
+"Name":"Intel I7 Quintessence of Malice",
+"Description":"+1.86% critical chance"
+}
+},
+{
+"k":8033,
+"v":
+{
+"Name":"Intel I5 Quintessence of Vigor",
+"Description":"+2.7 health regen / 5 sec."
+}
+},
+{
+"k":8032,
+"v":
+{
+"Name":"Intel I3 Mark of Alacrity",
+"Description":"+1.7% attack speed"
+}
+},
+{
+"k":3050,
+"v":
+{
+"Name":"Stark\\'s Fervor",
+"Description":"+20% Attack Speed  UNIQUE Aura: Grants nearby allied champions 20% Life Steal, 20% Attack Speed, and 30 Health Regen per 5 seconds. Reduces the Armor of nearby enemy champions by 20."
+}
+},
+{
+"k":8031,
+"v":
+{
+"Name":"Intel I7 Seal of Resilience",
+"Description":"+1.41 armor"
+}
+},
+{
+"k":8030,
+"v":
+{
+"Name":"Intel I5 Seal of Clarity",
+"Description":"+0.065 mana regen / 5 sec. per level (+1.17 at champion level 18)"
+}
+},
+{
+"k":5219,
+"v":
+{
+"Name":"Quintessence of Malice",
+"Description":"+1.44% critical chance"
+}
+},
+{
+"k":5218,
+"v":
+{
+"Name":"Quintessence of Carnage",
+"Description":"+0.09% critical damage per level (+1.62% at champion level 18)"
+}
+},
+{
+"k":5217,
+"v":
+{
+"Name":"Quintessence of Furor",
+"Description":"+3.47% critical damage"
+}
+},
+{
+"k":5216,
+"v":
+{
+"Name":"Quintessence of Haste",
+"Description":"+0.09% attack speed per level (+1.62% at champion level 18)"
+}
+},
+{
+"k":5215,
+"v":
+{
+"Name":"Quintessence of Alacrity",
+"Description":"+2.64% attack speed"
+}
+},
+{
+"k":5214,
+"v":
+{
+"Name":"Quintessence of Might",
+"Description":"+0.19 attack damage per level (+3.42 at champion level 18)"
+}
+},
+{
+"k":5213,
+"v":
+{
+"Name":"Quintessence of Strength",
+"Description":"+1.75 attack damage"
+}
+},
+{
+"k":5212,
+"v":
+{
+"Name":"Seal of Brilliance",
+"Description":"+0.02 magic penetration per level (+0.36 at champion level 18)"
+}
+},
+{
+"k":5211,
+"v":
+{
+"Name":"Seal of Insight",
+"Description":"+0.44 magic penetration"
+}
+},
+{
+"k":5210,
+"v":
+{
+"Name":"Seal of Clarity",
+"Description":"+0.05 mana regen / 5 sec. per level (+0.9 at champion level 18)"
+}
+},
+{
+"k":8029,
+"v":
+{
+"Name":"Intel I3 Seal of Evasion",
+"Description":"+0.75% dodge"
+}
+},
+{
+"k":3047,
+"v":
+{
+"Name":"Ninja Tabi",
+"Description":"+25 Armor +12% Dodge  UNIQUE Passive: Enhanced Movement 2 (does not stack with other Boots)"
+}
+},
+{
+"k":8028,
+"v":
+{
+"Name":"Intel I3 Glyph of Warding",
+"Description":"+1.49 magic resist"
+}
+},
+{
+"k":3046,
+"v":
+{
+"Name":"Phantom Dancer",
+"Description":"+55% Attack Speed +30% Critical Strike Chance +15% Movement Speed"
+}
+},
+{
+"k":8027,
+"v":
+{
+"Name":"Intel I7 Glyph of Focus",
+"Description":"-0.65% cooldowns"
+}
+},
+{
+"k":8026,
+"v":
+{
+"Name":"Intel I5 Glyph of Force",
+"Description":"+0.17 ability power per level (+3.06 at champion level 18)"
+}
+},
+{
+"k":3044,
+"v":
+{
+"Name":"Phage",
+"Description":"+225 Health +18 Attack Damage  UNIQUE Passive: Your basic attacks have a 25% chance to slow your target\\'s Movement Speed by 30% for 2.5 seconds."
+}
+},
+{
+"k":8025,
+"v":
+{
+"Name":"Intel I5 Mark of Insight",
+"Description":"+0.95 magic penetration"
+}
+},
+{
+"k":8024,
+"v":
+{
+"Name":"Intel I7 Mark of Desolation",
+"Description":"+1.66 armor penetration"
+}
+},
+{
+"k":8023,
+"v":
+{
+"Name":"Intel I3 Quintessence of Fortitude",
+"Description":"+26 health"
+}
+},
+{
+"k":3041,
+"v":
+{
+"Name":"Mejai\\'s Soulstealer",
+"Description":"+20 Ability Power  UNIQUE Passive: Your champion gains 8 Ability Power per stack, receiving 2 stacks for a kill or 1 stack for an assist (stacks up to 20). You lose a third of your stacks on death. At 20 stacks, your champion gains 15% Cooldown Reduction."
+}
+},
+{
+"k":8022,
+"v":
+{
+"Name":"Greater Quintessence of Sugar Rush",
+"Description":"+1.5% movement speed"
+}
+},
+{
+"k":8021,
+"v":
+{
+"Name":"Greater Quintessence of Frosty Fortitude",
+"Description":"+26 health"
+}
+},
+{
+"k":8020,
+"v":
+{
+"Name":"Greater Quintessence of the Deadly Wreath",
+"Description":"+3.33 armor penetration"
+}
+},
+{
+"k":5209,
+"v":
+{
+"Name":"Seal of Replenishment",
+"Description":"+0.32 mana regen / 5 sec."
+}
+},
+{
+"k":5208,
+"v":
+{
+"Name":"Seal of Knowledge",
+"Description":"+0.91 mana per level (+16.38 at champion level 18)"
+}
+},
+{
+"k":5207,
+"v":
+{
+"Name":"Seal of Intellect",
+"Description":"+5.36 mana"
+}
+},
+{
+"k":5206,
+"v":
+{
+"Name":"Seal of Force",
+"Description":"+0.08 ability power per level (+1.44 at champion level 18)"
+}
+},
+{
+"k":5205,
+"v":
+{
+"Name":"Seal of Potency",
+"Description":"+0.46 ability power"
+}
+},
+{
+"k":5204,
+"v":
+{
+"Name":"Seal of Celerity",
+"Description":"-0.02% cooldowns per level (-0.36% at champion level 18)"
+}
+},
+{
+"k":5203,
+"v":
+{
+"Name":"Seal of Focus",
+"Description":"-0.23% cooldowns"
+}
+},
+{
+"k":5202,
+"v":
+{
+"Name":"Seal of Elusion",
+"Description":"+0.04% dodge per level (+0.72% at champion level 18)"
+}
+},
+{
+"k":5201,
+"v":
+{
+"Name":"Seal of Evasion",
+"Description":"+0.58% dodge"
+}
+},
+{
+"k":5200,
+"v":
+{
+"Name":"Seal of Regeneration",
+"Description":"+0.09 health regen / 5 sec. per level (+1.62 at champion level 18)"
+}
+},
+{
+"k":8019,
+"v":
+{
+"Name":"Greater Quintessence of the Piercing Present",
+"Description":"+1.89 magic penetration"
+}
+},
+{
+"k":3037,
+"v":
+{
+"Name":"Mana Manipulator",
+"Description":"UNIQUE Aura: Nearby allied champions gain 7.2 Mana Regen per 5 seconds."
+}
+},
+{
+"k":8018,
+"v":
+{
+"Name":"Quintessence of the Elusive Werewolf",
+"Description":"+1.39% dodge"
+}
+},
+{
+"k":8017,
+"v":
+{
+"Name":"Quintessence of the Witches Brew",
+"Description":"+4.56 ability power"
+}
+},
+{
+"k":3035,
+"v":
+{
+"Name":"Last Whisper",
+"Description":"+40 Attack Damage  UNIQUE Passive: +40% Armor Penetration"
+}
+},
+{
+"k":8016,
+"v":
+{
+"Name":"Quintessence of the Speedy Specter",
+"Description":"+1.39% movement speed"
+}
+},
+{
+"k":8015,
+"v":
+{
+"Name":"Quintessence of Bountiful Treats",
+"Description":"+24 health"
+}
+},
+{
+"k":8014,
+"v":
+{
+"Name":"Quintessence of the Piercing Screech",
+"Description":"+1.75 magic penetration"
+}
+},
+{
+"k":8013,
+"v":
+{
+"Name":"Quintessence of the Headless Horseman",
+"Description":"+3.08 armor penetration"
+}
+},
+{
+"k":3031,
+"v":
+{
+"Name":"Infinity Edge",
+"Description":"+80 Attack Damage +25% Critical Strike Chance  UNIQUE Passive: Your critical strikes now deal 250% damage instead of 200%."
+}
+},
+{
+"k":8012,
+"v":
+{
+"Name":"Glyph of the Soaring Slalom",
+"Description":"-0.58% cooldowns"
+}
+},
+{
+"k":8011,
+"v":
+{
+"Name":"Lesser Glyph of the Challenger",
+"Description":"+0.66 ability power"
+}
+},
+{
+"k":8010,
+"v":
+{
+"Name":"Seal of the Extreme",
+"Description":"+0.67% dodge"
+}
+},
+{
+"k":3028,
+"v":
+{
+"Name":"Chalice of Harmony",
+"Description":"+30 Magic Resist +7.5 Mana Regen per 5 seconds  UNIQUE Passive: Increases your Mana Regen by 1% per 1% Mana you are missing."
+}
+},
+{
+"k":8009,
+"v":
+{
+"Name":"Lesser Seal of the Medalist",
+"Description":"+3.56 health"
+}
+},
+{
+"k":3027,
+"v":
+{
+"Name":"Rod of Ages",
+"Description":"+450 Health +525 Mana +60 Ability Power  Passive: Your champion gains 18 Health, 20 Mana, and 2 Ability Power every minute (up to 10 times).  UNIQUE Passive: On leveling up, restores 250 Health and 200 Mana over 8 seconds."
+}
+},
+{
+"k":8008,
+"v":
+{
+"Name":"Mark of the Combatant",
+"Description":"+2% critical damage"
+}
+},
+{
+"k":3026,
+"v":
+{
+"Name":"Guardian Angel",
+"Description":"+68 Armor +38 Magic Resist  UNIQUE Passive: Revives your champion upon death, restoring 750 Health and 375 Mana (5 minute cooldown)."
+}
+},
+{
+"k":8007,
+"v":
+{
+"Name":"Lesser Mark of Alpine Alacrity",
+"Description":"+1.13% attack speed"
+}
+},
+{
+"k":8006,
+"v":
+{
+"Name":"Lesser Seal of the Stout Snowman",
+"Description":"+0.72 health per level (+12.96 at champion level 18)"
+}
+},
+{
+"k":3024,
+"v":
+{
+"Name":"Glacial Shroud",
+"Description":"+425 Mana +45 Armor  UNIQUE Passive: +15% Cooldown Reduction"
+}
+},
+{
+"k":8005,
+"v":
+{
+"Name":"Lesser Glyph of the Gracious Gift",
+"Description":"+0.12 ability power per level (+2.16 at champion level 18)"
+}
+},
+{
+"k":8004,
+"v":
+{
+"Name":"Seal of the Elusive Snowflake",
+"Description":"+0.67% dodge"
+}
+},
+{
+"k":3022,
+"v":
+{
+"Name":"Frozen Mallet",
+"Description":"+700 Health +20 Attack Damage  UNIQUE Passive: Your basic attacks slow your target\\'s Movement Speed by 40% for 2.5 seconds (30% for ranged attacks)."
+}
+},
+{
+"k":8003,
+"v":
+{
+"Name":"Glyph of the Special Stocking",
+"Description":"-0.58% cooldowns"
+}
+},
+{
+"k":8002,
+"v":
+{
+"Name":"Lesser Mark of the Yuletide Tannenbaum",
+"Description":"+0.62% critical chance"
+}
+},
+{
+"k":3020,
+"v":
+{
+"Name":"Sorcerer\\'s Shoes",
+"Description":"+20 Magic Penetration  UNIQUE Passive: Enhanced Movement 2 (does not stack with other Boots)"
+}
+},
+{
+"k":8001,
+"v":
+{
+"Name":"Mark of the Crippling Candy Cane",
+"Description":"+2% critical damage"
+}
+},
+{
+"k":3010,
+"v":
+{
+"Name":"Catalyst the Protector",
+"Description":"+290 Health +325 Mana  UNIQUE Passive: On leveling up, restores 250 Health and 200 Mana over 8 seconds."
+}
+},
+{
+"k":3009,
+"v":
+{
+"Name":"Boots of Swiftness",
+"Description":"UNIQUE Passive: Enhanced Movement 3 (does not stack with other Boots)"
+}
+},
+{
+"k":3006,
+"v":
+{
+"Name":"Berserker\\'s Greaves",
+"Description":"+25% Attack Speed  UNIQUE Passive: Enhanced Movement 2 (does not stack with other Boots)"
+}
+},
+{
+"k":3005,
+"v":
+{
+"Name":"Atma\\'s Impaler",
+"Description":"+45 Armor +18% Critical Strike Chance  UNIQUE Passive: Gain Attack Damage equal to 2% of your maximum Health."
+}
+},
+{
+"k":5099,
+"v":
+{
+"Name":"Lesser Quintessence of Desolation",
+"Description":"+1.85 armor penetration"
+}
+},
+{
+"k":3004,
+"v":
+{
+"Name":"Manamune",
+"Description":"+350 Mana +7 Mana Regen per 5 seconds +20 Attack Damage  UNIQUE Passive: Grants Attack Damage equal to 2% of your maximum Mana.  UNIQUE Passive: Each time you basic attack, your maximum Mana increases by 1 (3 second cooldown). Each time you use an ability, your maximum Mana increases by 4 (3 second cooldown). Bonus caps at +1000 Mana. Does not stack with Tear of the Goddess or Archangel\\'s Staff."
+}
+},
+{
+"k":5098,
+"v":
+{
+"Name":"Lesser Quintessence of Brutality",
+"Description":"+0.06% critical chance per level (+1.08% at champion level 18)"
+}
+},
+{
+"k":3003,
+"v":
+{
+"Name":"Archangel\\'s Staff",
+"Description":"+400 Mana +25 Mana Regen per 5 seconds +45 Ability Power  Passive: Grants Ability Power equal to 3% of your maximum Mana.  UNIQUE Passive: Each time you use an ability, your maximum Mana increases by 4 (3 second cooldown). Bonus caps at +1000 Mana. Does not stack with Tear of the Goddess or Manamune."
+}
+},
+{
+"k":5097,
+"v":
+{
+"Name":"Lesser Quintessence of Malice",
+"Description":"+1.03% critical chance"
+}
+},
+{
+"k":5096,
+"v":
+{
+"Name":"Lesser Quintessence of Carnage",
+"Description":"+0.06% critical damage per level (+1.08% at champion level 18)"
+}
+},
+{
+"k":3001,
+"v":
+{
+"Name":"Abyssal Scepter",
+"Description":"+70 Ability Power +57 Magic Resist  UNIQUE Aura: Reduces the Magic Resist of nearby enemy champions by 20."
+}
+},
+{
+"k":5095,
+"v":
+{
+"Name":"Lesser Quintessence of Furor",
+"Description":"+2.48% critical damage"
+}
+},
+{
+"k":5094,
+"v":
+{
+"Name":"Lesser Quintessence of Haste",
+"Description":"+0.06% attack speed per level (+1.08% at champion level 18)"
+}
+},
+{
+"k":5093,
+"v":
+{
+"Name":"Lesser Quintessence of Alacrity",
+"Description":"+1.89% attack speed"
+}
+},
+{
+"k":5092,
+"v":
+{
+"Name":"Lesser Quintessence of Might",
+"Description":"+0.14 attack damage per level (+2.52 at champion level 18)"
+}
+},
+{
+"k":5091,
+"v":
+{
+"Name":"Lesser Quintessence of Strength",
+"Description":"+1.25 attack damage"
+}
+},
+{
+"k":5090,
+"v":
+{
+"Name":"Lesser Seal of Brilliance",
+"Description":"+0.02 magic penetration per level (+0.36 at champion level 18)"
+}
+},
+{
+"k":5089,
+"v":
+{
+"Name":"Lesser Seal of Insight",
+"Description":"+0.32 magic penetration"
+}
+},
+{
+"k":5088,
+"v":
+{
+"Name":"Lesser Seal of Clarity",
+"Description":"+0.036 mana regen / 5 sec. per level (+0.65 at champion level 18)"
+}
+},
+{
+"k":5087,
+"v":
+{
+"Name":"Lesser Seal of Replenishment",
+"Description":"+0.23 mana regen / 5 sec."
+}
+},
+{
+"k":5086,
+"v":
+{
+"Name":"Lesser Seal of Knowledge",
+"Description":"+0.65 mana per level (+11.7 at champion level 18)"
+}
+},
+{
+"k":5085,
+"v":
+{
+"Name":"Lesser Seal of Intellect",
+"Description":"+3.83 mana"
+}
+},
+{
+"k":5084,
+"v":
+{
+"Name":"Lesser Seal of Force",
+"Description":"+0.06 ability power per level (+1.08 at champion level 18)"
+}
+},
+{
+"k":5083,
+"v":
+{
+"Name":"Lesser Seal of Potency",
+"Description":"+0.33 ability power"
+}
+},
+{
+"k":5082,
+"v":
+{
+"Name":"Lesser Seal of Celerity",
+"Description":"-0.01% cooldowns per level (-0.18% at champion level 18)"
+}
+},
+{
+"k":5081,
+"v":
+{
+"Name":"Lesser Seal of Focus",
+"Description":"-0.16% cooldowns"
+}
+},
+{
+"k":5080,
+"v":
+{
+"Name":"Lesser Seal of Elusion",
+"Description":"+0.03% dodge per level (+0.54% at champion level 18)"
+}
+},
+{
+"k":5079,
+"v":
+{
+"Name":"Lesser Seal of Evasion",
+"Description":"+0.42% dodge"
+}
+},
+{
+"k":5078,
+"v":
+{
+"Name":"Lesser Seal of Regeneration",
+"Description":"+0.06 health regen / 5 sec. per level (+1.08 at champion level 18)"
+}
+},
+{
+"k":5077,
+"v":
+{
+"Name":"Lesser Seal of Vigor",
+"Description":"+0.24 health regen / 5 sec."
+}
+},
+{
+"k":5076,
+"v":
+{
+"Name":"Lesser Seal of Shielding",
+"Description":"+0.05 magic resist per level (+0.9 at champion level 18)"
+}
+},
+{
+"k":5075,
+"v":
+{
+"Name":"Lesser Seal of Warding",
+"Description":"+0.41 magic resist"
+}
+},
+{
+"k":5074,
+"v":
+{
+"Name":"Lesser Seal of Defense",
+"Description":"+0.08 armor per level (+1.44 at champion level 18)"
+}
+},
+{
+"k":5073,
+"v":
+{
+"Name":"Lesser Seal of Resilience",
+"Description":"+0.78 armor"
+}
+},
+{
+"k":5072,
+"v":
+{
+"Name":"Lesser Seal of Vitality",
+"Description":"+0.6 health per level (+10.8 at champion level 18)"
+}
+},
+{
+"k":5071,
+"v":
+{
+"Name":"Lesser Seal of Fortitude",
+"Description":"+2.97 health"
+}
+},
+{
+"k":5070,
+"v":
+{
+"Name":"Lesser Seal of Precision",
+"Description":"+0.01 armor penetration per level (+0.18 at champion level 18)"
+}
+},
+{
+"k":5069,
+"v":
+{
+"Name":"Lesser Seal of Desolation",
+"Description":"+0.43 armor penetration"
+}
+},
+{
+"k":5068,
+"v":
+{
+"Name":"Lesser Seal of Brutality",
+"Description":"+0.01% critical chance per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5067,
+"v":
+{
+"Name":"Lesser Seal of Malice",
+"Description":"+0.23% critical chance"
+}
+},
+{
+"k":5066,
+"v":
+{
+"Name":"Lesser Seal of Carnage",
+"Description":"+0.01% critical damage per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5065,
+"v":
+{
+"Name":"Lesser Seal of Furor",
+"Description":"+0.43% critical damage"
+}
+},
+{
+"k":5064,
+"v":
+{
+"Name":"Lesser Seal of Haste",
+"Description":"+0.01% attack speed per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5063,
+"v":
+{
+"Name":"Lesser Seal of Alacrity",
+"Description":"+0.42% attack speed"
+}
+},
+{
+"k":5062,
+"v":
+{
+"Name":"Lesser Seal of Might",
+"Description":"+0.03 attack damage per level (+0.61 at champion level 18)"
+}
+},
+{
+"k":5061,
+"v":
+{
+"Name":"Lesser Seal of Strength",
+"Description":"+0.24 attack damage"
+}
+},
+{
+"k":5060,
+"v":
+{
+"Name":"Lesser Glyph of Brilliance",
+"Description":"+0.02 magic penetration per level (+0.36 at champion level 18)"
+}
+},
+{
+"k":5059,
+"v":
+{
+"Name":"Lesser Glyph of Insight",
+"Description":"+0.32 magic penetration"
+}
+},
+{
+"k":5058,
+"v":
+{
+"Name":"Lesser Glyph of Clarity",
+"Description":"+0.03 mana regen / 5 sec. per level (+0.54 at champion level 18)"
+}
+},
+{
+"k":5057,
+"v":
+{
+"Name":"Lesser Glyph of Replenishment",
+"Description":"+0.17 mana regen / 5 sec."
+}
+},
+{
+"k":5056,
+"v":
+{
+"Name":"Lesser Glyph of Knowledge",
+"Description":"+0.79 mana per level (+14.22 at champion level 18)"
+}
+},
+{
+"k":5055,
+"v":
+{
+"Name":"Lesser Glyph of Intellect",
+"Description":"+6.25 mana"
+}
+},
+{
+"k":5054,
+"v":
+{
+"Name":"Lesser Glyph of Force",
+"Description":"+0.1 ability power per level (+1.8 at champion level 18)"
+}
+},
+{
+"k":5053,
+"v":
+{
+"Name":"Lesser Glyph of Potency",
+"Description":"+0.55 ability power"
+}
+},
+{
+"k":5052,
+"v":
+{
+"Name":"Lesser Glyph of Celerity",
+"Description":"-0.03% cooldowns per level (-0.54% at champion level 18)"
+}
+},
+{
+"k":5051,
+"v":
+{
+"Name":"Lesser Glyph of Focus",
+"Description":"-0.36% cooldowns"
+}
+},
+{
+"k":5050,
+"v":
+{
+"Name":"Lesser Glyph of Elusion",
+"Description":"+0.01% dodge per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5049,
+"v":
+{
+"Name":"Lesser Glyph of Evasion",
+"Description":"+0.21% dodge"
+}
+},
+{
+"k":5048,
+"v":
+{
+"Name":"Lesser Glyph of Regeneration",
+"Description":"+0.05 health regen / 5 sec. per level (+0.9 at champion level 18)"
+}
+},
+{
+"k":5047,
+"v":
+{
+"Name":"Lesser Glyph of Vigor",
+"Description":"+0.15 health regen / 5 sec."
+}
+},
+{
+"k":5046,
+"v":
+{
+"Name":"Lesser Glyph of Shielding",
+"Description":"+0.08 magic resist per level (+1.44 at champion level 18)"
+}
+},
+{
+"k":5045,
+"v":
+{
+"Name":"Lesser Glyph of Warding",
+"Description":"+0.83 magic resist"
+}
+},
+{
+"k":5044,
+"v":
+{
+"Name":"Lesser Glyph of Defense",
+"Description":"+0.05 armor per level (+0.9 at champion level 18)"
+}
+},
+{
+"k":5043,
+"v":
+{
+"Name":"Lesser Glyph of Resilience",
+"Description":"+0.39 armor"
+}
+},
+{
+"k":5042,
+"v":
+{
+"Name":"Lesser Glyph of Vitality",
+"Description":"+0.3 health per level (+5.4 at champion level 18)"
+}
+},
+{
+"k":5041,
+"v":
+{
+"Name":"Lesser Glyph of Fortitude",
+"Description":"+1.49 health"
+}
+},
+{
+"k":5040,
+"v":
+{
+"Name":"Lesser Glyph of Precision",
+"Description":"+0.01 armor penetration per level (+0.18 at champion level 18)"
+}
+},
+{
+"k":5039,
+"v":
+{
+"Name":"Lesser Glyph of Desolation",
+"Description":"+0.22 armor penetration"
+}
+},
+{
+"k":5038,
+"v":
+{
+"Name":"Lesser Glyph of Brutality",
+"Description":"+0.01% critical chance per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5037,
+"v":
+{
+"Name":"Lesser Glyph of Malice",
+"Description":"+0.15% critical chance"
+}
+},
+{
+"k":5036,
+"v":
+{
+"Name":"Lesser Glyph of Carnage",
+"Description":"+0.01% critical damage per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5035,
+"v":
+{
+"Name":"Lesser Glyph of Furor",
+"Description":"+0.31% critical damage"
+}
+},
+{
+"k":5034,
+"v":
+{
+"Name":"Lesser Glyph of Haste",
+"Description":"+0.01% attack speed per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5033,
+"v":
+{
+"Name":"Lesser Glyph of Alacrity",
+"Description":"+0.35% attack speed"
+}
+},
+{
+"k":5032,
+"v":
+{
+"Name":"Lesser Glyph of Might",
+"Description":"+0.02 attack damage per level (+0.36 at champion level 18)"
+}
+},
+{
+"k":5031,
+"v":
+{
+"Name":"Lesser Glyph of Strength",
+"Description":"+0.16 attack damage"
+}
+},
+{
+"k":5030,
+"v":
+{
+"Name":"Lesser Mark of Brilliance",
+"Description":"+0.03 magic penetration per level (+0.54 at champion level 18)"
+}
+},
+{
+"k":5029,
+"v":
+{
+"Name":"Lesser Mark of Insight",
+"Description":"+0.53 magic penetration"
+}
+},
+{
+"k":5028,
+"v":
+{
+"Name":"Lesser Mark of Clarity",
+"Description":"+0.04 mana regen / 5 sec. per level (+0.72 at champion level 18)"
+}
+},
+{
+"k":5027,
+"v":
+{
+"Name":"Lesser Mark of Replenishment",
+"Description":"+0.15 mana regen / 5 sec."
+}
+},
+{
+"k":5026,
+"v":
+{
+"Name":"Lesser Mark of Knowledge",
+"Description":"+0.65 mana per level (+11.7 at champion level 18)"
+}
+},
+{
+"k":5025,
+"v":
+{
+"Name":"Lesser Mark of Intellect",
+"Description":"+3.28 mana"
+}
+},
+{
+"k":5024,
+"v":
+{
+"Name":"Lesser Mark of Force",
+"Description":"+0.06 ability power per level (+1.08 at champion level 18)"
+}
+},
+{
+"k":5023,
+"v":
+{
+"Name":"Lesser Mark of Potency",
+"Description":"+0.33 ability power"
+}
+},
+{
+"k":5022,
+"v":
+{
+"Name":"Lesser Mark of Celerity",
+"Description":"-0.01% cooldowns per level (-0.18% at champion level 18)"
+}
+},
+{
+"k":5021,
+"v":
+{
+"Name":"Lesser Mark of Focus",
+"Description":"-0.09% cooldowns"
+}
+},
+{
+"k":5020,
+"v":
+{
+"Name":"Lesser Mark of Elusion",
+"Description":"+0.01% dodge per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5019,
+"v":
+{
+"Name":"Lesser Mark of Evasion",
+"Description":"+0.21% dodge"
+}
+},
+{
+"k":5018,
+"v":
+{
+"Name":"Lesser Mark of Regeneration",
+"Description":"+0.05 health regen / 5 sec. per level (+0.9 at champion level 18)"
+}
+},
+{
+"k":5017,
+"v":
+{
+"Name":"Lesser Mark of Vigor",
+"Description":"+0.15 health regen / 5 sec."
+}
+},
+{
+"k":5016,
+"v":
+{
+"Name":"Lesser Mark of Shielding",
+"Description":"+0.04 magic resist per level (+0.72 at champion level 18)"
+}
+},
+{
+"k":5015,
+"v":
+{
+"Name":"Lesser Mark of Warding",
+"Description":"+0.54 magic resist"
+}
+},
+{
+"k":5014,
+"v":
+{
+"Name":"Lesser Mark of Defense",
+"Description":"+0.05 armor per level (+0.9 at champion level 18)"
+}
+},
+{
+"k":5374,
+"v":
+{
+"Name":"Greater Quintessence of Acumen",
+"Description":"+5.4 Energy"
+}
+},
+{
+"k":5013,
+"v":
+{
+"Name":"Lesser Mark of Resilience",
+"Description":"+0.51 armor"
+}
+},
+{
+"k":5373,
+"v":
+{
+"Name":"Greater Quintessence of Meditation",
+"Description":"+1.575 Energy regen/5 sec"
+}
+},
+{
+"k":5012,
+"v":
+{
+"Name":"Lesser Mark of Vitality",
+"Description":"+0.3 health per level (+5.4 at champion level 18)"
+}
+},
+{
+"k":5372,
+"v":
+{
+"Name":"Greater Glyph of Sapience",
+"Description":"+0.161 Energy/level (+2.89 at level 18)"
+}
+},
+{
+"k":5011,
+"v":
+{
+"Name":"Lesser Mark of Fortitude",
+"Description":"+1.93 health"
+}
+},
+{
+"k":5371,
+"v":
+{
+"Name":"Greater Glyph of Acumen",
+"Description":"+2.2 Energy"
+}
+},
+{
+"k":5010,
+"v":
+{
+"Name":"Lesser Mark of Precision",
+"Description":"+0.03 armor penetration per level (+0.54 at champion level 18)"
+}
+},
+{
+"k":5370,
+"v":
+{
+"Name":"Greater Seal of Lucidity",
+"Description":"+0.064 Energy regen/5 sec per level (+1.15 at champion level 18)"
+}
+},
+{
+"k":5009,
+"v":
+{
+"Name":"Lesser Mark of Desolation",
+"Description":"+0.93 armor penetration"
+}
+},
+{
+"k":5369,
+"v":
+{
+"Name":"Greater Seal of Meditation",
+"Description":"+0.63 Energy regen/5 sec"
+}
+},
+{
+"k":5008,
+"v":
+{
+"Name":"Lesser Mark of Brutality",
+"Description":"+0.03% critical chance per level (+0.54% at champion level 18)"
+}
+},
+{
+"k":5368,
+"v":
+{
+"Name":"Greater Quintessence of Wisdom",
+"Description":"+2% experience gained"
+}
+},
+{
+"k":5007,
+"v":
+{
+"Name":"Lesser Mark of Malice",
+"Description":"+0.52% critical chance"
+}
+},
+{
+"k":5367,
+"v":
+{
+"Name":"Greater Quintessence of Avarice",
+"Description":"+1 gold / 10 sec."
+}
+},
+{
+"k":5006,
+"v":
+{
+"Name":"Lesser Mark of Carnage",
+"Description":"+0.03% critical damage per level (+0.54% at champion level 18)"
+}
+},
+{
+"k":5366,
+"v":
+{
+"Name":"Greater Quintessence of Revival",
+"Description":"-5% time dead"
+}
+},
+{
+"k":5005,
+"v":
+{
+"Name":"Lesser Mark of Furor",
+"Description":"+1.24% critical damage"
+}
+},
+{
+"k":5365,
+"v":
+{
+"Name":"Greater Quintessence of Swiftness",
+"Description":"+1.5% movement speed"
+}
+},
+{
+"k":5004,
+"v":
+{
+"Name":"Lesser Mark of Haste",
+"Description":"+0.03% attack speed per level (+0.54% at champion level 18)"
+}
+},
+{
+"k":5364,
+"v":
+{
+"Name":"Greater Quintessence of Brilliance",
+"Description":"+0.11 magic penetration per level (+1.98 at champion level 18)"
+}
+},
+{
+"k":5003,
+"v":
+{
+"Name":"Lesser Mark of Alacrity",
+"Description":"+0.94% attack speed"
+}
+},
+{
+"k":5363,
+"v":
+{
+"Name":"Greater Quintessence of Insight",
+"Description":"+1.89 magic penetration"
+}
+},
+{
+"k":5002,
+"v":
+{
+"Name":"Lesser Mark of Might",
+"Description":"+0.08 attack damage per level (+1.35 at champion level 18)"
+}
+},
+{
+"k":5362,
+"v":
+{
+"Name":"Greater Quintessence of Clarity",
+"Description":"+0.24 mana regen / 5 sec. per level (+4.32 at champion level 18)"
+}
+},
+{
+"k":5001,
+"v":
+{
+"Name":"Lesser Mark of Strength",
+"Description":"+0.53 attack damage"
+}
+},
+{
+"k":5361,
+"v":
+{
+"Name":"Greater Quintessence of Replenishment",
+"Description":"+1.25 mana regen / 5 sec."
+}
+},
+{
+"k":5000,
+"v":
+{
+"Name":"TBD",
+"Description":"TBD"
+}
+},
+{
+"k":5360,
+"v":
+{
+"Name":"Greater Quintessence of Knowledge",
+"Description":"+4.17 mana per level (+75.06 at champion level 18)"
+}
+},
+{
+"k":5359,
+"v":
+{
+"Name":"Greater Quintessence of Intellect",
+"Description":"+37.5 mana"
+}
+},
+{
+"k":5358,
+"v":
+{
+"Name":"Greater Quintessence of Force",
+"Description":"+0.43 ability power per level (+7.74 at champion level 18)"
+}
+},
+{
+"k":5357,
+"v":
+{
+"Name":"Greater Quintessence of Potency",
+"Description":"+4.95 ability power"
+}
+},
+{
+"k":5356,
+"v":
+{
+"Name":"Greater Quintessence of Celerity",
+"Description":"-0.13% cooldowns per level (-2.34% at champion level 18)"
+}
+},
+{
+"k":5355,
+"v":
+{
+"Name":"Greater Quintessence of Focus",
+"Description":"-1.64% cooldowns"
+}
+},
+{
+"k":5354,
+"v":
+{
+"Name":"Greater Quintessence of Elusion",
+"Description":"+0.11% dodge per level (+1.98% at champion level 18)"
+}
+},
+{
+"k":5353,
+"v":
+{
+"Name":"Greater Quintessence of Evasion",
+"Description":"+1.5% dodge"
+}
+},
+{
+"k":5352,
+"v":
+{
+"Name":"Greater Quintessence of Regeneration",
+"Description":"+0.28 health regen / 5 sec. per level (+5.04 at champion level 18)"
+}
+},
+{
+"k":5351,
+"v":
+{
+"Name":"Greater Quintessence of Vigor",
+"Description":"+2.7 health regen / 5 sec."
+}
+},
+{
+"k":5350,
+"v":
+{
+"Name":"Greater Quintessence of Shielding",
+"Description":"+0.37 magic resist per level (+6.66 at champion level 18)"
+}
+},
+{
+"k":3187,
+"v":
+{
+"Name":"Hextech Sweeper",
+"Description":"+40 Ability Power +300 Health  UNIQUE Passive: +10% Cooldown Reduction  UNIQUE Passive: Dealing spell damage grants vision of your target for 4 seconds.  UNIQUE Active: Covers an area with stealth detecting mist, granting vision of units and the area for 6 seconds (1 minute cooldown)."
+}
+},
+{
+"k":3186,
+"v":
+{
+"Name":"Kitae\\'s Bloodrazor",
+"Description":"+30 Attack Damage +40% Attack Speed  UNIQUE Passive: Your basic attacks deal magic damage equal to 2.5% of the target\\'s maximum Health."
+}
+},
+{
+"k":3185,
+"v":
+{
+"Name":"The Lightbringer",
+"Description":"+50% Attack Speed +20 Attack Damage  UNIQUE Passive: Your basic attacks grant vision of your target for 5 seconds."
+}
+},
+{
+"k":3184,
+"v":
+{
+"Name":"Entropy",
+"Description":"+275 Health +70 Attack Damage UNIQUE Passive: Your basic attacks have a 25% chance to reduce your target\\'s Movement Speed by 30% for 2.5 seconds.  UNIQUE Active: For the next 5 seconds, your basic attacks reduce your target\\'s Movement Speed by 30% and deal 80 true damage over 2.5 seconds (60 second cooldown)."
+}
+},
+{
+"k":3183,
+"v":
+{
+"Name":"Priscilla\\'s Blessing",
+"Description":"+25 Health Regen per 5 seconds  UNIQUE Passive: +15% Capture Rate (does not stack with other Capture Rate modifiers).  UNIQUE Active: +30% Movement Speed for 2 seconds (60 second cooldown)."
+}
+},
+{
+"k":3181,
+"v":
+{
+"Name":"Sanguine Blade",
+"Description":"+60 Attack Damage +15% Life Steal  UNIQUE Passive: Your basic attacks grant 5 Attack Damage and 1% Life Steal for 4 seconds (effect stacks up to 7 times)."
+}
+},
+{
+"k":3180,
+"v":
+{
+"Name":"Odyn\\'s Veil",
+"Description":"+350 Health +350 Mana +50 Magic Resist  UNIQUE Passive: Reduces and stores 10% of the magic damage dealt to your champion.  UNIQUE Active: Deals 200 + (stored magic) [max: 400] magic damage to nearby enemy units (90 second cooldown)."
+}
+},
+{
+"k":5349,
+"v":
+{
+"Name":"Greater Quintessence of Warding",
+"Description":"+4.5 magic resist"
+}
+},
+{
+"k":5348,
+"v":
+{
+"Name":"Greater Quintessence of Defense",
+"Description":"+0.38 armor per level (+6.84 at champion level 18)"
+}
+},
+{
+"k":5347,
+"v":
+{
+"Name":"Greater Quintessence of Resilience",
+"Description":"+4.26 armor"
+}
+},
+{
+"k":5346,
+"v":
+{
+"Name":"Greater Quintessence of Vitality",
+"Description":"+2.7 health per level (+48.6 at champion level 18)"
+}
+},
+{
+"k":5345,
+"v":
+{
+"Name":"Greater Quintessence of Fortitude",
+"Description":"+26 health"
+}
+},
+{
+"k":5344,
+"v":
+{
+"Name":"Greater Quintessence of Precision",
+"Description":"+0.11 armor penetration per level (+1.98 at champion level 18)"
+}
+},
+{
+"k":5343,
+"v":
+{
+"Name":"Greater Quintessence of Desolation",
+"Description":"+3.33 armor penetration"
+}
+},
+{
+"k":5342,
+"v":
+{
+"Name":"Greater Quintessence of Brutality",
+"Description":"+0.11% critical chance per level (+1.98% at champion level 18)"
+}
+},
+{
+"k":5341,
+"v":
+{
+"Name":"Greater Quintessence of Malice",
+"Description":"+1.86% critical chance"
+}
+},
+{
+"k":5340,
+"v":
+{
+"Name":"Greater Quintessence of Carnage",
+"Description":"+0.11% critical damage per level (+1.98% at champion level 18)"
+}
+},
+{
+"k":3178,
+"v":
+{
+"Name":"Ionic Spark",
+"Description":"+45% Attack Speed +250 Health  UNIQUE Passive: Every fourth basic attack unleashes a chain lightning, dealing 100 magic damage to up to 4 targets."
+}
+},
+{
+"k":3173,
+"v":
+{
+"Name":"Eleisa\\'s Miracle",
+"Description":"+25 Health Regen per 5 seconds +20 Mana Regen per 5 seconds  UNIQUE Passive: +35 Tenacity (Tenacity reduces the duration of stuns, slows, taunts, fears, silences, blinds and immobilizes. Does not stack with other Tenacity items.)"
+}
+},
+{
+"k":3172,
+"v":
+{
+"Name":"Cloak and Dagger",
+"Description":"+20% Attack Speed +20% Critical Strike Chance  UNIQUE Passive: +35 Tenacity (Tenacity reduces the duration of stuns, slows, taunts, fears, silences, blinds and immobilizes. Does not stack with other Tenacity items.)"
+}
+},
+{
+"k":3170,
+"v":
+{
+"Name":"Moonflair Spellblade",
+"Description":"+50 Ability Power  UNIQUE Passive: +35 Tenacity (Tenacity reduces the duration of stuns, slows, taunts, fears, silences, blinds and immobilizes. Does not stack with other Tenacity items.)"
+}
+},
+{
+"k":5339,
+"v":
+{
+"Name":"Greater Quintessence of Furor",
+"Description":"+4.46% critical damage"
+}
+},
+{
+"k":5338,
+"v":
+{
+"Name":"Greater Quintessence of Haste",
+"Description":"+0.11% attack speed per level (+1.98% at champion level 18)"
+}
+},
+{
+"k":5337,
+"v":
+{
+"Name":"Greater Quintessence of Alacrity",
+"Description":"+3.4% attack speed"
+}
+},
+{
+"k":5336,
+"v":
+{
+"Name":"Greater Quintessence of Might",
+"Description":"+0.25 attack damage per level (+4.5 at champion level 18)"
+}
+},
+{
+"k":5335,
+"v":
+{
+"Name":"Greater Quintessence of Strength",
+"Description":"+2.25 attack damage"
+}
+},
+{
+"k":5334,
+"v":
+{
+"Name":"Greater Seal of Brilliance",
+"Description":"+0.03 magic penetration per level (+0.54 at champion level 18)"
+}
+},
+{
+"k":5333,
+"v":
+{
+"Name":"Greater Seal of Insight",
+"Description":"+0.57 magic penetration"
+}
+},
+{
+"k":5332,
+"v":
+{
+"Name":"Greater Seal of Clarity",
+"Description":"+0.065 mana regen / 5 sec. per level (+1.17 at champion level 18)"
+}
+},
+{
+"k":5331,
+"v":
+{
+"Name":"Greater Seal of Replenishment",
+"Description":"+0.41 mana regen / 5 sec."
+}
+},
+{
+"k":5330,
+"v":
+{
+"Name":"Greater Seal of Knowledge",
+"Description":"+1.17 mana per level (+21.06 at champion level 18)"
+}
+},
+{
+"k":3165,
+"v":
+{
+"Name":"Morello\\'s Evil Tome",
+"Description":"+75 Ability Power +12 Mana Regen per 5 seconds  UNIQUE Passive: +20% Cooldown Reduction"
+}
+},
+{
+"k":5329,
+"v":
+{
+"Name":"Greater Seal of Intellect",
+"Description":"+6.89 mana"
+}
+},
+{
+"k":5328,
+"v":
+{
+"Name":"Greater Seal of Force",
+"Description":"+0.1 ability power per level (+1.8 at champion level 18)"
+}
+},
+{
+"k":5327,
+"v":
+{
+"Name":"Greater Seal of Potency",
+"Description":"+0.59 ability power"
+}
+},
+{
+"k":5326,
+"v":
+{
+"Name":"Greater Seal of Celerity",
+"Description":"-0.03% cooldowns per level (-0.54% at champion level 18)"
+}
+},
+{
+"k":5325,
+"v":
+{
+"Name":"Greater Seal of Focus",
+"Description":"-0.29% cooldowns"
+}
+},
+{
+"k":5324,
+"v":
+{
+"Name":"Greater Seal of Elusion",
+"Description":"+0.05% dodge per level (+0.9% at champion level 18)"
+}
+},
+{
+"k":5323,
+"v":
+{
+"Name":"Greater Seal of Evasion",
+"Description":"+0.75% dodge"
+}
+},
+{
+"k":5322,
+"v":
+{
+"Name":"Greater Seal of Regeneration",
+"Description":"+0.11 health regen / 5 sec. per level (+1.98 at champion level 18)"
+}
+},
+{
+"k":5321,
+"v":
+{
+"Name":"Greater Seal of Vigor",
+"Description":"+0.43 health regen / 5 sec."
+}
+},
+{
+"k":5320,
+"v":
+{
+"Name":"Greater Seal of Shielding",
+"Description":"+0.1 magic resist per level (+1.8 at champion level 18)"
+}
+},
+{
+"k":3158,
+"v":
+{
+"Name":"Ionian Boots of Lucidity",
+"Description":"UNIQUE Passive: +15% Cooldown Reduction  UNIQUE Passive: Enhanced Movement 2 (does not stack with other Boots)"
+}
+},
+{
+"k":3157,
+"v":
+{
+"Name":"Zhonya\\'s Hourglass",
+"Description":"+100 Ability Power +50 Armor  UNIQUE Active: Places your champion into Stasis for 2 seconds, rendering you invulnerable and untargetable but unable to take any action (90 second cooldown)."
+}
+},
+{
+"k":3155,
+"v":
+{
+"Name":"Hexdrinker",
+"Description":"+35 Attack Damage +30 Magic Resist  UNIQUE Passive: If you would take magic damage that would leave you at less than 30% Health, you first gain a shield that absorbs 300 magic damage for 4 seconds (60 second cooldown)."
+}
+},
+{
+"k":3154,
+"v":
+{
+"Name":"Wriggle\\'s Lantern",
+"Description":"+23 Attack Damage +30 Armor +18% Life Steal  UNIQUE Passive: Your basic attacks against minions and monsters have a 20% chance to deal 500 bonus magic damage.  UNIQUE Active: Places an invisible Sight Ward that reveals the surrounding area for 3 minutes (3 minute cooldown)."
+}
+},
+{
+"k":3152,
+"v":
+{
+"Name":"Will of the Ancients",
+"Description":"+50 Ability Power  UNIQUE Aura: Grants nearby allied champions 30 Ability Power and 25% Spell Vamp"
+}
+},
+{
+"k":5319,
+"v":
+{
+"Name":"Greater Seal of Warding",
+"Description":"+0.74 magic resist"
+}
+},
+{
+"k":5318,
+"v":
+{
+"Name":"Greater Seal of Defense",
+"Description":"+0.15 armor per level (+2.7 at champion level 18)"
+}
+},
+{
+"k":5317,
+"v":
+{
+"Name":"Greater Seal of Resilience",
+"Description":"+1.41 armor"
+}
+},
+{
+"k":5316,
+"v":
+{
+"Name":"Greater Seal of Vitality",
+"Description":"+1.08 health per level (+19.44 at champion level 18)"
+}
+},
+{
+"k":5315,
+"v":
+{
+"Name":"Greater Seal of Fortitude",
+"Description":"+5.35 health"
+}
+},
+{
+"k":5314,
+"v":
+{
+"Name":"Greater Seal of Precision",
+"Description":"+0.02 armor penetration per level (+0.36 at champion level 18)"
+}
+},
+{
+"k":5313,
+"v":
+{
+"Name":"Greater Seal of Desolation",
+"Description":"+0.78 armor penetration"
+}
+},
+{
+"k":5312,
+"v":
+{
+"Name":"Greater Seal of Brutality",
+"Description":"+0.02% critical chance per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":5311,
+"v":
+{
+"Name":"Greater Seal of Malice",
+"Description":"+0.42% critical chance"
+}
+},
+{
+"k":5310,
+"v":
+{
+"Name":"Greater Seal of Carnage",
+"Description":"+0.02% critical damage per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":3146,
+"v":
+{
+"Name":"Hextech Gunblade",
+"Description":"+40 Attack Damage +70 Ability Power +15% Life Steal  UNIQUE Passive: +20% Spell Vamp  UNIQUE Active: Deals 300 magic damage and slows the target champion\\'s Movement Speed by 50% for 3 seconds (60 second cooldown)."
+}
+},
+{
+"k":3145,
+"v":
+{
+"Name":"Hextech Revolver",
+"Description":"+40 Ability Power  UNIQUE Passive: +15% Spell Vamp"
+}
+},
+{
+"k":3144,
+"v":
+{
+"Name":"Bilgewater Cutlass",
+"Description":"+35 Attack Damage +15% Life Steal  UNIQUE Active: Deals 150 magic damage and slows the target champion\\'s Movement Speed by 50% for 3 seconds (60 second cooldown)."
+}
+},
+{
+"k":3143,
+"v":
+{
+"Name":"Randuin\\'s Omen",
+"Description":"+350 Health +75 Armor +25 Health Regen per 5 seconds  UNIQUE Passive: +5% Cooldown Reduction  UNIQUE Passive: 20% chance on being hit by basic attacks to slow the attacker\\'s Movement and Attack Speeds by 35% for 3 seconds.  UNIQUE Active: Slows the Movement and Attack Speeds of surrounding enemy units by 35% for 2 seconds + 0.5 seconds for each 100 combined Armor and Magic Resist your champion has (60 second cooldown)."
+}
+},
+{
+"k":3142,
+"v":
+{
+"Name":"Youmuu\\'s Ghostblade",
+"Description":"+30 Attack Damage +15% Critical Strike Chance  UNIQUE Passive: +15% Cooldown Reduction  UNIQUE Passive: +20 Armor Penetration  UNIQUE Active: You gain 20% Movement Speed and 50% Attack Speed for 4 seconds. Melee basic attacks increase the duration by 2 seconds up to a maximum duration of 8 seconds (60 second cooldown)."
+}
+},
+{
+"k":3141,
+"v":
+{
+"Name":"Sword of the Occult",
+"Description":"+10 Attack Damage UNIQUE Passive: Your champion gains 5 Attack Damage per stack, receiving 2 stacks for a kill or 1 stack for an assist (stacks up to 20). You lose a third of your stacks on death. At 20 stacks, your champion\\'s Movement Speed is increased by 15%."
+}
+},
+{
+"k":3140,
+"v":
+{
+"Name":"Quicksilver Sash",
+"Description":"+56 Magic Resist  UNIQUE Active: Removes all debuffs from your champion (90 second cooldown)."
+}
+},
+{
+"k":5309,
+"v":
+{
+"Name":"Greater Seal of Furor",
+"Description":"+0.78% critical damage"
+}
+},
+{
+"k":5308,
+"v":
+{
+"Name":"Greater Seal of Haste",
+"Description":"+0.02% attack speed per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":5307,
+"v":
+{
+"Name":"Greater Seal of Alacrity",
+"Description":"+0.76% attack speed"
+}
+},
+{
+"k":5306,
+"v":
+{
+"Name":"Greater Seal of Might",
+"Description":"+0.06 attack damage per level (+1.09 at champion level 18)"
+}
+},
+{
+"k":5305,
+"v":
+{
+"Name":"Greater Seal of Strength",
+"Description":"+0.43 attack damage"
+}
+},
+{
+"k":5304,
+"v":
+{
+"Name":"Greater Glyph of Brilliance",
+"Description":"+0.03 magic penetration per level (+0.54 at champion level 18)"
+}
+},
+{
+"k":5303,
+"v":
+{
+"Name":"Greater Glyph of Insight",
+"Description":"+0.57 magic penetration"
+}
+},
+{
+"k":5302,
+"v":
+{
+"Name":"Greater Glyph of Clarity",
+"Description":"+0.055 mana regen / 5 sec. per level (+0.99 at champion level 18)"
+}
+},
+{
+"k":5301,
+"v":
+{
+"Name":"Greater Glyph of Replenishment",
+"Description":"+0.31 mana regen / 5 sec."
+}
+},
+{
+"k":5300,
+"v":
+{
+"Name":"Greater Glyph of Knowledge",
+"Description":"+1.42 mana per level (+25.56 at champion level 18)"
+}
+},
+{
+"k":3138,
+"v":
+{
+"Name":"Leviathan",
+"Description":"+180 Health  UNIQUE Passive: Your champion gains 32 Health per stack, receiving 2 stacks for a kill or 1 stack for an assist (stacks up to 20). You lose a third of your stacks on death. At 20 stacks, your champion takes 15% less damage."
+}
+},
+{
+"k":3136,
+"v":
+{
+"Name":"Haunting Guise",
+"Description":"+25 Ability Power +200 Health  UNIQUE Passive: +20 Magic Penetration"
+}
+},
+{
+"k":3135,
+"v":
+{
+"Name":"Void Staff",
+"Description":"+70 Ability Power  UNIQUE Passive: +40% Magic Penetration"
+}
+},
+{
+"k":3134,
+"v":
+{
+"Name":"The Brutalizer",
+"Description":"+25 Attack Damage  UNIQUE Passive: +10% Cooldown Reduction  UNIQUE Passive: +15 Armor Penetration"
+}
+},
+{
+"k":3132,
+"v":
+{
+"Name":"Heart of Gold",
+"Description":"+250 Health  UNIQUE Passive: Gain an additional 5 Gold every 10 seconds."
+}
+},
+{
+"k":3131,
+"v":
+{
+"Name":"Sword of the Divine",
+"Description":"+60% Attack Speed  UNIQUE Passive: Every fourth basic attack deals 100 bonus magic damage. UNIQUE Active: Your basic attacks cannot be dodged and you gain 30 Armor Penetration for 8 seconds (40 second cooldown)."
+}
+},
+{
+"k":2047,
+"v":
+{
+"Name":"Oracle\\'s Extract",
+"Description":"Click to Consume: Grants stealth detection for 5 minutes or until your champion dies."
+}
+},
+{
+"k":2044,
+"v":
+{
+"Name":"Sight Ward",
+"Description":"Click to Consume: Places an invisible ward that reveals the surrounding area for 3 minutes."
+}
+},
+{
+"k":2043,
+"v":
+{
+"Name":"Vision Ward",
+"Description":"Click to Consume: Places an invisible ward that reveals the surrounding area and stealthed units in the area for 3 minutes."
+}
+},
+{
+"k":2042,
+"v":
+{
+"Name":"Oracle\\'s Elixir",
+"Description":"Click to Consume: Grants stealth detection until your champion dies."
+}
+},
+{
+"k":3128,
+"v":
+{
+"Name":"Deathfire Grasp",
+"Description":"+60 Ability Power +10 Mana Regen per 5 seconds  UNIQUE Passive: +15% Cooldown Reduction  UNIQUE Active: Deals magic damage to target champion equal to 30% of their current Health (+3.5% per 100 Ability Power) with a minimum of 200 damage (60 second cooldown)."
+}
+},
+{
+"k":3126,
+"v":
+{
+"Name":"Madred\\'s Bloodrazor",
+"Description":"+30 Attack Damage +40% Attack Speed +25 Armor  UNIQUE Passive: Your basic attacks deal bonus magic damage equal to 4% of the target\\'s maximum Health."
+}
+},
+{
+"k":3124,
+"v":
+{
+"Name":"Guinsoo\\'s Rageblade",
+"Description":"+35 Attack Damage +45 Ability Power  UNIQUE Passive: On basic attack or ability use, increases your Attack Speed by 4% and Ability Power by 6 for 5 seconds (effect stacks up to 8 times)."
+}
+},
+{
+"k":3123,
+"v":
+{
+"Name":"Executioner\\'s Calling",
+"Description":"+18% Life Steal +15% Critical Strike Chance  UNIQUE Active: Inflicts target enemy champion with Grievous Wound, causing 50% reduced healing and regeneration for 8 seconds (20 second cooldown)."
+}
+},
+{
+"k":2039,
+"v":
+{
+"Name":"Piece of Blue Candy",
+"Description":"Click to Consume: Grants 20-40 Ability Power, based on champion level, and 10% Cooldown Reduction for 4 minutes."
+}
+},
+{
+"k":2038,
+"v":
+{
+"Name":"Piece of Green Candy",
+"Description":"Click to Consume: Grants 12-22% Attack Speed, based on champion level, and 8% Critical Strike Chance for 4 minutes."
+}
+},
+{
+"k":2037,
+"v":
+{
+"Name":"Piece of Red Candy",
+"Description":"Click to Consume: Grants 140-235 Health, based on champion level, and 10 Attack Damage for 4 minutes."
+}
+},
+{
+"k":3117,
+"v":
+{
+"Name":"Boots of Mobility",
+"Description":"UNIQUE Passive: Enhanced Movement 2, increases to Enhanced Movement 5 when out of combat for 5 seconds (does not stack with other Boots)."
+}
+},
+{
+"k":3116,
+"v":
+{
+"Name":"Rylai\\'s Crystal Scepter",
+"Description":"+500 Health +80 Ability Power  UNIQUE Passive: Dealing spell damage slows the target\\'s Movement Speed by 35% for 1.5 seconds (15% for multi-target and damage-over-time spells)."
+}
+},
+{
+"k":3115,
+"v":
+{
+"Name":"Nashor\\'s Tooth",
+"Description":"+50% Attack Speed +55 Ability Power +10 Mana Regen per 5 seconds  UNIQUE Passive: +25% Cooldown Reduction"
+}
+},
+{
+"k":3114,
+"v":
+{
+"Name":"Malady",
+"Description":"+25 Ability Power +50% Attack Speed  UNIQUE Passive: Your basic attacks deal 20 bonus magic damage and reduce the target\\'s Magic Resist by 6 for 8 seconds (effect stacks up to 4 times)."
+}
+},
+{
+"k":3111,
+"v":
+{
+"Name":"Mercury\\'s Treads",
+"Description":"+25 Magic Resist  UNIQUE Passive: Enhanced Movement 2 (does not stack with other Boots)  UNIQUE Passive: +35 Tenacity (Tenacity reduces the duration of stuns, slows, taunts, fears, silences, blinds and immobilizes. Does not stack with other Tenacity items.)"
+}
+},
+{
+"k":3110,
+"v":
+{
+"Name":"Frozen Heart",
+"Description":"+99 Armor +500 Mana  UNIQUE Passive: +20% Cooldown Reduction  UNIQUE Aura: Reduces the Attack Speed of nearby enemies by 20%."
+}
+},
+{
+"k":3109,
+"v":
+{
+"Name":"Force of Nature",
+"Description":"+76 Magic Resist +40 Health Regen per 5 seconds +8% Movement Speed  UNIQUE Passive: Restores 0.35% of your maximum Health every second."
+}
+},
+{
+"k":3108,
+"v":
+{
+"Name":"Fiendish Codex",
+"Description":"+30 Ability Power +7 Mana Regen per 5 seconds  UNIQUE Passive: +10% Cooldown Reduction"
+}
+},
+{
+"k":3106,
+"v":
+{
+"Name":"Madred\\'s Razors",
+"Description":"+15 Attack Damage +23 Armor  UNIQUE Passive: Your basic attacks against minions and monsters have a 15% chance to deal 500 bonus magic damage."
+}
+},
+{
+"k":5199,
+"v":
+{
+"Name":"Seal of Vigor",
+"Description":"+0.34 health regen / 5 sec."
+}
+},
+{
+"k":3105,
+"v":
+{
+"Name":"Aegis of the Legion",
+"Description":"+270 Health +18 Armor +24 Magic Resist  UNIQUE Aura: Nearby allied champions gain 12 Armor, 15 Magic Resist, and 8 Attack Damage."
+}
+},
+{
+"k":5198,
+"v":
+{
+"Name":"Seal of Shielding",
+"Description":"+0.08 magic resist per level (+1.44 at champion level 18)"
+}
+},
+{
+"k":5197,
+"v":
+{
+"Name":"Seal of Warding",
+"Description":"+0.58 magic resist"
+}
+},
+{
+"k":5196,
+"v":
+{
+"Name":"Seal of Defense",
+"Description":"+0.12 armor per level (+2.16 at champion level 18)"
+}
+},
+{
+"k":3102,
+"v":
+{
+"Name":"Banshee\\'s Veil",
+"Description":"+375 Health +375 Mana +50 Magic Resist  UNIQUE Passive: Gain a spell shield that blocks the next incoming enemy ability (45 second cooldown)."
+}
+},
+{
+"k":5195,
+"v":
+{
+"Name":"Seal of Resilience",
+"Description":"+1.09 armor"
+}
+},
+{
+"k":3101,
+"v":
+{
+"Name":"Stinger",
+"Description":"+40% Attack Speed  UNIQUE Passive: +10% Cooldown Reduction"
+}
+},
+{
+"k":5194,
+"v":
+{
+"Name":"Seal of Vitality",
+"Description":"+0.84 health per level (+15.12 at champion level 18)"
+}
+},
+{
+"k":3100,
+"v":
+{
+"Name":"Lich Bane",
+"Description":"+350 Mana +80 Ability Power +30 Magic Resist +7% Movement Speed  UNIQUE Passive: After using an ability, your next basic attack gains bonus physical damage equal to your Ability Power (2 second cooldown). Does not stack with Sheen or Trinity Force."
+}
+},
+{
+"k":5193,
+"v":
+{
+"Name":"Seal of Fortitude",
+"Description":"+4.16 health"
+}
+},
+{
+"k":5192,
+"v":
+{
+"Name":"Seal of Precision",
+"Description":"+0.01 armor penetration per level (+0.18 at champion level 18)"
+}
+},
+{
+"k":5191,
+"v":
+{
+"Name":"Seal of Desolation",
+"Description":"+0.61 armor penetration"
+}
+},
+{
+"k":5190,
+"v":
+{
+"Name":"Seal of Brutality",
+"Description":"+0.01% critical chance per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5189,
+"v":
+{
+"Name":"Seal of Malice",
+"Description":"+0.32% critical chance"
+}
+},
+{
+"k":5188,
+"v":
+{
+"Name":"Seal of Carnage",
+"Description":"+0.02% critical damage per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":5187,
+"v":
+{
+"Name":"Seal of Furor",
+"Description":"+0.61% critical damage"
+}
+},
+{
+"k":5186,
+"v":
+{
+"Name":"Seal of Haste",
+"Description":"+0.02% attack speed per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":5185,
+"v":
+{
+"Name":"Seal of Alacrity",
+"Description":"+0.59% attack speed"
+}
+},
+{
+"k":5184,
+"v":
+{
+"Name":"Seal of Might",
+"Description":"+0.05 attack damage per level (+0.85 at champion level 18)"
+}
+},
+{
+"k":5183,
+"v":
+{
+"Name":"Seal of Strength",
+"Description":"+0.33 attack damage"
+}
+},
+{
+"k":5182,
+"v":
+{
+"Name":"Glyph of Brilliance",
+"Description":"+0.02 magic penetration per level (+0.36 at champion level 18)"
+}
+},
+{
+"k":5181,
+"v":
+{
+"Name":"Glyph of Insight",
+"Description":"+0.44 magic penetration"
+}
+},
+{
+"k":5180,
+"v":
+{
+"Name":"Glyph of Clarity",
+"Description":"+0.04 mana regen / 5 sec. per level (+0.72 at champion level 18)"
+}
+},
+{
+"k":2004,
+"v":
+{
+"Name":"Mana-Encrusted Apple",
+"Description":"Click to Consume: Restores 100 Mana over 20 seconds."
+}
+},
+{
+"k":2003,
+"v":
+{
+"Name":"Candy Corn",
+"Description":"Click to Consume: Restores 200 Health over 20 seconds."
+}
+},
+{
+"k":5179,
+"v":
+{
+"Name":"Glyph of Replenishment",
+"Description":"+0.24 mana regen / 5 sec."
+}
+},
+{
+"k":5178,
+"v":
+{
+"Name":"Glyph of Knowledge",
+"Description":"+1.1 mana per level (+19.8 at champion level 18)"
+}
+},
+{
+"k":5177,
+"v":
+{
+"Name":"Glyph of Intellect",
+"Description":"+8.75 mana"
+}
+},
+{
+"k":5176,
+"v":
+{
+"Name":"Glyph of Force",
+"Description":"+0.13 ability power per level (+2.34 at champion level 18)"
+}
+},
+{
+"k":5175,
+"v":
+{
+"Name":"Glyph of Potency",
+"Description":"+0.77 ability power"
+}
+},
+{
+"k":5174,
+"v":
+{
+"Name":"Glyph of Celerity",
+"Description":"-0.04% cooldowns per level (-0.72% at champion level 18)"
+}
+},
+{
+"k":5173,
+"v":
+{
+"Name":"Glyph of Focus",
+"Description":"-0.51% cooldowns"
+}
+},
+{
+"k":5172,
+"v":
+{
+"Name":"Glyph of Elusion",
+"Description":"+0.02% dodge per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":5171,
+"v":
+{
+"Name":"Glyph of Evasion",
+"Description":"+0.29% dodge"
+}
+},
+{
+"k":5170,
+"v":
+{
+"Name":"Glyph of Regeneration",
+"Description":"+0.07 health regen / 5 sec. per level (+1.26 at champion level 18)"
+}
+},
+{
+"k":5169,
+"v":
+{
+"Name":"Glyph of Vigor",
+"Description":"+0.21 health regen / 5 sec."
+}
+},
+{
+"k":5168,
+"v":
+{
+"Name":"Glyph of Shielding",
+"Description":"+0.12 magic resist per level (+2.16 at champion level 18)"
+}
+},
+{
+"k":5167,
+"v":
+{
+"Name":"Glyph of Warding",
+"Description":"+1.16 magic resist"
+}
+},
+{
+"k":5166,
+"v":
+{
+"Name":"Glyph of Defense",
+"Description":"+0.08 armor per level (+1.44 at champion level 18)"
+}
+},
+{
+"k":5165,
+"v":
+{
+"Name":"Glyph of Resilience",
+"Description":"+0.55 armor"
+}
+},
+{
+"k":5164,
+"v":
+{
+"Name":"Glyph of Vitality",
+"Description":"+0.42 health per level (+7.56 at champion level 18)"
+}
+},
+{
+"k":5163,
+"v":
+{
+"Name":"Glyph of Fortitude",
+"Description":"+2.08 health"
+}
+},
+{
+"k":5162,
+"v":
+{
+"Name":"Glyph of Precision",
+"Description":"+0.01 armor penetration per level (+0.18 at champion level 18)"
+}
+},
+{
+"k":5161,
+"v":
+{
+"Name":"Glyph of Desolation",
+"Description":"+0.3 armor penetration"
+}
+},
+{
+"k":5160,
+"v":
+{
+"Name":"Glyph of Brutality",
+"Description":"+0.01% critical chance per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5159,
+"v":
+{
+"Name":"Glyph of Malice",
+"Description":"+0.22% critical chance"
+}
+},
+{
+"k":5158,
+"v":
+{
+"Name":"Glyph of Carnage",
+"Description":"+0.01% critical damage per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5157,
+"v":
+{
+"Name":"Glyph of Furor",
+"Description":"+0.43% critical damage"
+}
+},
+{
+"k":5156,
+"v":
+{
+"Name":"Glyph of Haste",
+"Description":"+0.01% attack speed per level (+0.18% at champion level 18)"
+}
+},
+{
+"k":5155,
+"v":
+{
+"Name":"Glyph of Alacrity",
+"Description":"+0.5% attack speed"
+}
+},
+{
+"k":5154,
+"v":
+{
+"Name":"Glyph of Might",
+"Description":"+0.03 attack damage per level (+0.57 at champion level 18)"
+}
+},
+{
+"k":5153,
+"v":
+{
+"Name":"Glyph of Strength",
+"Description":"+0.22 attack damage"
+}
+},
+{
+"k":5152,
+"v":
+{
+"Name":"Mark of Brilliance",
+"Description":"+0.04 magic penetration per level (+0.72 at champion level 18)"
+}
+},
+{
+"k":5151,
+"v":
+{
+"Name":"Mark of Insight",
+"Description":"+0.74 magic penetration"
+}
+},
+{
+"k":5150,
+"v":
+{
+"Name":"Mark of Clarity",
+"Description":"+0.06 mana regen / 5 sec. per level (+1.08 at champion level 18)"
+}
+},
+{
+"k":5149,
+"v":
+{
+"Name":"Mark of Replenishment",
+"Description":"+0.2 mana regen / 5 sec."
+}
+},
+{
+"k":5148,
+"v":
+{
+"Name":"Mark of Knowledge",
+"Description":"+0.91 mana per level (+16.38 at champion level 18)"
+}
+},
+{
+"k":5147,
+"v":
+{
+"Name":"Mark of Intellect",
+"Description":"+4.59 mana"
+}
+},
+{
+"k":5146,
+"v":
+{
+"Name":"Mark of Force",
+"Description":"+0.08 ability power per level (+1.44 at champion level 18)"
+}
+},
+{
+"k":5145,
+"v":
+{
+"Name":"Mark of Potency",
+"Description":"+0.46 ability power"
+}
+},
+{
+"k":5144,
+"v":
+{
+"Name":"Mark of Celerity",
+"Description":"-0.01% cooldowns per level (-0.18% at champion level 18)"
+}
+},
+{
+"k":5143,
+"v":
+{
+"Name":"Mark of Focus",
+"Description":"-0.13% cooldowns"
+}
+},
+{
+"k":5142,
+"v":
+{
+"Name":"Mark of Elusion",
+"Description":"+0.02% dodge per level (+0.36% at champion level 18)"
+}
+},
+{
+"k":5141,
+"v":
+{
+"Name":"Mark of Evasion",
+"Description":"+0.29% dodge"
+}
+},
+{
+"k":5140,
+"v":
+{
+"Name":"Mark of Regeneration",
+"Description":"+0.07 health regen / 5 sec. per level (+1.26 at champion level 18)"
+}
+},
+{
+"k":5139,
+"v":
+{
+"Name":"Mark of Vigor",
+"Description":"+0.21 health regen / 5 sec."
+}
+},
+{
+"k":5138,
+"v":
+{
+"Name":"Mark of Shielding",
+"Description":"+0.06 magic resist per level (+1.08 at champion level 18)"
+}
+},
+{
+"k":5137,
+"v":
+{
+"Name":"Mark of Warding",
+"Description":"+0.75 magic resist"
+}
+},
+{
+"k":5136,
+"v":
+{
+"Name":"Mark of Defense",
+"Description":"+0.07 armor per level (+1.26 at champion level 18)"
+}
+},
+{
+"k":5135,
+"v":
+{
+"Name":"Mark of Resilience",
+"Description":"+0.71 armor"
+}
+},
+{
+"k":5134,
+"v":
+{
+"Name":"Mark of Vitality",
+"Description":"+0.42 health per level (+7.56 at champion level 18)"
+}
+},
+{
+"k":5133,
+"v":
+{
+"Name":"Mark of Fortitude",
+"Description":"+2.7 health"
+}
+},
+{
+"k":5132,
+"v":
+{
+"Name":"Mark of Precision",
+"Description":"+0.04 armor penetration per level (+0.72 at champion level 18)"
+}
+},
+{
+"k":5131,
+"v":
+{
+"Name":"Mark of Desolation",
+"Description":"+1.29 armor penetration"
+}
+},
+{
+"k":5130,
+"v":
+{
+"Name":"Mark of Brutality",
+"Description":"+0.04% critical chance per level (+0.72% at champion level 18)"
+}
+},
+{
+"k":5129,
+"v":
+{
+"Name":"Mark of Malice",
+"Description":"+0.72% critical chance"
+}
+},
+{
+"k":5128,
+"v":
+{
+"Name":"Mark of Carnage",
+"Description":"+0.04% critical damage per level (+0.72% at champion level 18)"
+}
+},
+{
+"k":5127,
+"v":
+{
+"Name":"Mark of Furor",
+"Description":"+1.74% critical damage"
+}
+},
+{
+"k":5126,
+"v":
+{
+"Name":"Mark of Haste",
+"Description":"+0.04% attack speed per level (+0.72% at champion level 18)"
+}
+},
+{
+"k":5125,
+"v":
+{
+"Name":"Mark of Alacrity",
+"Description":"+1.32% attack speed"
+}
+},
+{
+"k":5124,
+"v":
+{
+"Name":"Mark of Might",
+"Description":"+0.1 attack damage per level (+1.89 at champion level 18)"
+}
+},
+{
+"k":5123,
+"v":
+{
+"Name":"Mark of Strength",
+"Description":"+0.74 attack damage"
+}
+},
+{
+"k":5122,
+"v":
+{
+"Name":"Lesser Quintessence of Avarice",
+"Description":"+0.56 gold / 10 sec."
+}
+},
+{
+"k":5121,
+"v":
+{
+"Name":"Lesser Quintessence of Swiftness",
+"Description":"+0.83% movement speed"
+}
+},
+{
+"k":5120,
+"v":
+{
+"Name":"Lesser Quintessence of Brilliance",
+"Description":"+0.06 magic penetration per level (+1.08 at champion level 18)"
+}
+},
+{
+"k":5119,
+"v":
+{
+"Name":"Lesser Quintessence of Insight",
+"Description":"+1.05 magic penetration"
+}
+},
+{
+"k":5118,
+"v":
+{
+"Name":"Lesser Quintessence of Clarity",
+"Description":"+0.14 mana regen / 5 sec. per level (+2.52 at champion level 18)"
+}
+},
+{
+"k":5117,
+"v":
+{
+"Name":"Lesser Quintessence of Replenishment",
+"Description":"+0.69 mana regen / 5 sec."
+}
+},
+{
+"k":5116,
+"v":
+{
+"Name":"Lesser Quintessence of Knowledge",
+"Description":"+2.31 mana per level (+41.58 at champion level 18)"
+}
+},
+{
+"k":5115,
+"v":
+{
+"Name":"Lesser Quintessence of Intellect",
+"Description":"+20.83 mana"
+}
+},
+{
+"k":5114,
+"v":
+{
+"Name":"Lesser Quintessence of Force",
+"Description":"+0.24 ability power per level (+4.32 at champion level 18)"
+}
+},
+{
+"k":5113,
+"v":
+{
+"Name":"Lesser Quintessence of Potency",
+"Description":"+2.75 ability power"
+}
+},
+{
+"k":5112,
+"v":
+{
+"Name":"Lesser Quintessence of Celerity",
+"Description":"-0.07% cooldowns per level (-1.26% at champion level 18)"
+}
+},
+{
+"k":5111,
+"v":
+{
+"Name":"Lesser Quintessence of Focus",
+"Description":"-0.91% cooldowns"
+}
+},
+{
+"k":5110,
+"v":
+{
+"Name":"Lesser Quintessence of Elusion",
+"Description":"+0.06% dodge per level (+1.08% at champion level 18)"
+}
+},
+{
+"k":5109,
+"v":
+{
+"Name":"Lesser Quintessence of Evasion",
+"Description":"+0.83% dodge"
+}
+},
+{
+"k":5108,
+"v":
+{
+"Name":"Lesser Quintessence of Regeneration",
+"Description":"+0.16 health regen / 5 sec. per level (+2.88 at champion level 18)"
+}
+},
+{
+"k":5107,
+"v":
+{
+"Name":"Lesser Quintessence of Vigor",
+"Description":"+1.5 health regen / 5 sec."
+}
+},
+{
+"k":5106,
+"v":
+{
+"Name":"Lesser Quintessence of Shielding",
+"Description":"+0.21 magic resist per level (+3.78 at champion level 18)"
+}
+},
+{
+"k":5105,
+"v":
+{
+"Name":"Lesser Quintessence of Warding",
+"Description":"+2.5 magic resist"
+}
+},
+{
+"k":5104,
+"v":
+{
+"Name":"Lesser Quintessence of Defense",
+"Description":"+0.21 armor per level (+3.78 at champion level 18)"
+}
+},
+{
+"k":5103,
+"v":
+{
+"Name":"Lesser Quintessence of Resilience",
+"Description":"+2.37 armor"
+}
+},
+{
+"k":5102,
+"v":
+{
+"Name":"Lesser Quintessence of Vitality",
+"Description":"+1.5 health per level (+27 at champion level 18)"
+}
+},
+{
+"k":5101,
+"v":
+{
+"Name":"Lesser Quintessence of Fortitude",
+"Description":"+14.5 health"
+}
+},
+{
+"k":5100,
+"v":
+{
+"Name":"Lesser Quintessence of Precision",
+"Description":"+0.06 armor penetration per level (+1.08 at champion level 18)"
+}
+}
+]

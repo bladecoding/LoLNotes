@@ -87,6 +87,7 @@
     <Compile Include="GameDTO\ObfuscatedParticipant.cs" />
     <Compile Include="GameDTO\Participant.cs" />
     <Compile Include="InternalNameAttribute.cs" />
+    <Compile Include="ItemData.cs" />
     <Compile Include="LoLConnection.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -162,7 +163,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\ItemData.txt" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LolLoader.dll" />
   </ItemGroup>

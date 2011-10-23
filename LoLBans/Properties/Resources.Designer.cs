@@ -60,6 +60,15 @@ namespace LoLBans.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ItemData {
+            get {
+                return ResourceManager.GetString("ItemData", resourceCulture);
+            }
+        }
+        
         internal static byte[] LolLoader {
             get {
                 object obj = ResourceManager.GetObject("LolLoader", resourceCulture);
