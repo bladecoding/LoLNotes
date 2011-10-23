@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LoLBans.EndOfGameStats
+namespace LoLBans
 {
     public class ParticipantStats : List<PlayerParticipantStatsSummary>
     {

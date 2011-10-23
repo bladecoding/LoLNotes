@@ -5,20 +5,21 @@ using System.Text;
 
 namespace LoLBans
 {
-    public class GameItems : List<int>
+    public class PlayerStatList : List<PlayerStat>
     {
         protected readonly FlashObject Base;
-
-        public GameItems(FlashObject body)
+        public PlayerStatList(FlashObject thebase)
         {
-            if (body == null)
-                throw new ArgumentNullException("body");
+            Base = thebase;
 
-            Base = body;
+            if (Base == null)
+                return;
 
             var array = Base["list"]["source"];
             foreach (var field in array.Fields)
-                Add(Parse.Int(field.Value));
+            {
+                Add(new PlayerStat(field));
+            }
         }
     }
 }

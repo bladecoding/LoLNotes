@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace LoLBans
 {
-    public class Serializer
+    public class FlashSerializer
     {
         public static FlashObject Deserialize(Stream stream)
         {

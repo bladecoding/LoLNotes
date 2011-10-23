@@ -110,7 +110,7 @@ namespace LoLBans
                     }
                     catch (Exception e)
                     {
-                        throw new NotSupportedException(string.Format("Type {0} not supported by flash serializer", type.FullName));
+                        throw new NotSupportedException(string.Format("Type {0} not supported by flash serializer ({1})", type.FullName, e.Message));
                     } 
                 }
 

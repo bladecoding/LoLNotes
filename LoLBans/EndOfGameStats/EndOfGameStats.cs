@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LoLBans.EndOfGameStats
+namespace LoLBans
 {
     public class EndOfGameStats
     {
@@ -166,7 +166,12 @@ namespace LoLBans.EndOfGameStats
             protected set;
         }
 
-        //TODO: otherTeamPlayerParticipantStats, lots to do
+        [InternalName("otherTeamPlayerParticipantStats")]
+        public PlayerParticipantStatsSummaryList OtherTeamPlayerParticipantStats
+        {
+            get;
+            protected set;
+        }
 
         //TODO pointsPenalties, not sure whats in the arraycollection
         [InternalName("practiceMinutesLeftToday")]
@@ -224,7 +229,12 @@ namespace LoLBans.EndOfGameStats
             protected set;
         }
 
-        //TODO: teamPlayerParticipantStats, lots to do
+        [InternalName("teamPlayerParticipantStats")]
+        public PlayerParticipantStatsSummaryList TeamPlayerParticipantStats
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// Always 0?

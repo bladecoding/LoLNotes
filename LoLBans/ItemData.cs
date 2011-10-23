@@ -11,7 +11,7 @@ namespace LoLBans
         public string Description { get; set; }
     }
 
-    public class ItemDatas : Dictionary<int, ItemData>
+    public class ItemDataDict : Dictionary<int, ItemData>
     {
     }
 }

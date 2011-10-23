@@ -66,7 +66,7 @@ namespace LoLBans
                                     match = Regex.Match(line, ObjectMatch);
                                     if (match.Success)
                                     {
-                                        var obj = Serializer.Deserialize(pipe);
+                                        var obj = FlashSerializer.Deserialize(pipe);
                                         obj.Name = match.Groups[1].Value;
                                         DoProcessObject(obj);
                                     }
