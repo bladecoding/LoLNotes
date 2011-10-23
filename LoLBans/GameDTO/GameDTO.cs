@@ -58,49 +58,16 @@ namespace LoLBans
         {
             get
             {
-                return GetTeam("teamOne");
+                return new Team(Base["teamOne"]);
             }
         }
+
         public Team TeamTwo
         {
             get
             {
-                return GetTeam("teamTwo");
+                return new Team(Base["teamTwo"]);
             }
         }
-
-        Team GetTeam(string name)
-        {
-            var ret = new Team();
-
-            var obj = Base[name];
-            if (obj == null)
-                return ret;
-
-            var array = obj["list"]["source"];
-
-            foreach (var field in array.Fields)
-            {
-                if (field.Value.Contains("PlayerParticipant"))
-                {
-                    ret.Add(new PlayerParticipant(field));
-                }
-                else if (field.Value.Contains("ObfuscatedParticipant"))
-                {
-                    ret.Add(new ObfuscatedParticipant(field));
-                }
-                else if (field.Value.Contains("BotParticipant"))
-                {
-                    ret.Add(new BotParticipant(field));
-                }
-                else
-                {
-                    throw new NotSupportedException("Unexcepted type in team array " + field.Value);
-                }
-            }
-
-            return ret;
-        }
-
     }
 }
