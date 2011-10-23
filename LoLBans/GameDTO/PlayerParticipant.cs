@@ -20,27 +20,4 @@ namespace LoLBans
             get { return Parse.Int(Base["summonerId"].Value); }
         }
     }
-
-
-    [DebuggerDisplay("{Name}")]
-    public class BotParticipant : GameParticipant
-    {
-        public BotParticipant(FlashObject thebase)
-            : base(thebase)
-        {
-        }
-
-        public int BotSkillLevel
-        {
-            get { return Parse.Int(Base["botSkillLevel"].Value); }
-        }
-        public string BotSkillLevelName
-        {
-            get { return Base["botSkillLevelName"].Value; }
-        }
-        public string TeamId
-        {
-            get { return Base["teamId"].Value; }
-        }
-    }
 }

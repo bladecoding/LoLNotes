@@ -5,23 +5,17 @@ using System.Diagnostics;
 namespace LoLBans
 {
     [DebuggerDisplay("Count: {Count}")]
-    public class Team : List<Participant>
+    public class TeamParticipants : List<Participant>
     {
         protected readonly FlashObject Base;
-        public Team(FlashObject thebase)
+        public TeamParticipants(FlashObject thebase)
         {
             Base = thebase;
 
-            SetupTeam();
-        }
-
-        protected void SetupTeam()
-        {
             if (Base == null)
                 return;
 
             var array = Base["list"]["source"];
-
             foreach (var field in array.Fields)
             {
                 if (field.Value.Contains("PlayerParticipant"))

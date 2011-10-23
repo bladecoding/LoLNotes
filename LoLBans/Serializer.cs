@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Streams;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -157,74 +156,6 @@ namespace LoLBans
                 Key = key;
                 Value = value;
             }
-        }
-    }
-
-    [DebuggerDisplay("{Name}")]
-    public class FlashObject
-    {
-        public FlashObject Parent { get; set; }
-        public List<FlashObject> Fields { get; set; }
-
-        public string Type { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
-
-        public FlashObject(string name)
-            : this(name, null)
-        {
-        }
-        public FlashObject(string name, string value)
-            : this(null, name, value)
-        {
-        }
-        public FlashObject(string type, string name, string value)
-        {
-            Type = type;
-            Name = name;
-            Value = value;
-            Fields = new List<FlashObject>();
-        }
-
-        public bool HasFields
-        {
-            get { return Fields.Count > 0; }
-        }
-
-        public virtual FlashObject this[string key]
-        {
-            get
-            {
-                return Fields.FirstOrDefault(fo => fo.Name == key);
-            }
-            set
-            {
-                var index = Fields.FindIndex(fo => fo.Name == key);
-                if (index == -1)
-                    Fields.Add(value);
-                else
-                    Fields[index] = value;
-
-            }
-        }
-
-        public override int GetHashCode()
-        {
-            return Name != null ? Name.GetHashCode() : base.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj != null && obj is FlashObject)
-            {
-                return ((FlashObject)obj).Name == Name;
-            }
-            return base.Equals(obj);
-        }
-
-        public override string ToString()
-        {
-            return Name;
         }
     }
 }

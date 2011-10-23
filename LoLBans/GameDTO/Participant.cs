@@ -6,11 +6,13 @@ namespace LoLBans
         public Participant(FlashObject thebase)
         {
             Base = thebase;
+            FlashObject.SetFields(this, thebase);
         }
-
+        [InternalName("pickMode")]
         public int PickMode
         {
-            get { return Parse.Int(Base["pickMode"].Value); }
+            get;
+            protected set;
         }
     }
 }

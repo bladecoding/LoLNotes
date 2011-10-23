@@ -8,27 +8,37 @@ namespace LoLBans
         public GameParticipant(FlashObject thebase)
             : base(thebase)
         {
+            FlashObject.SetFields(this, thebase);
         }
-
+        [InternalName("isMe")]
         public bool IsMe
         {
-            get { return Parse.Bool(Base["isMe"].Value); }
+            get;
+            protected set;
         }
+        [InternalName("isGameOwner")]
         public bool IsGameOwner
         {
-            get { return Parse.Bool(Base["isGameOwner"].Value); }
+            get;
+            protected set;
         }
+        [InternalName("pickTurn")]
         public int PickTurn
         {
-            get { return Parse.Int(Base["pickTurn"].Value); }
+            get;
+            protected set;
         }
+        [InternalName("summonerInternalName")]
         public string InternalName
         {
-            get { return Base["summonerInternalName"].Value; }
+            get;
+            protected set;
         }
+        [InternalName("summonerName")]
         public string Name
         {
-            get { return Base["summonerName"].Value; }
+            get;
+            protected set;
         }
     }
 }

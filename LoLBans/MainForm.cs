@@ -30,14 +30,14 @@ namespace LoLBans
 
         void GameReader_OnGameDTO(GameDTO game)
         {
-            UpdateLists(new List<Team> { game.TeamOne, game.TeamTwo });
+            UpdateLists(new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
         }
 
-        public void UpdateLists(List<Team> teams)
+        public void UpdateLists(List<TeamParticipants> teams)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<List<Team>>(UpdateLists), teams);
+                Invoke(new Action<List<TeamParticipants>>(UpdateLists), teams);
                 return;
             }
 

@@ -12,62 +12,65 @@ namespace LoLBans
                 throw new ArgumentNullException("body");
 
             Base = body;
+
+
+            FlashObject.SetFields(this, body);
         }
 
+        [InternalName("maxNumPlayers")]
         public int MaxPlayers
         {
-            get { return Parse.Int(Base["maxNumPlayers"].Value); }
+            get; protected set;
         }
 
+        [InternalName("name")]
         public string Name
         {
-            get { return Base["name"].Value; }
+            get; protected set;
         }
 
+        [InternalName("mapId")]
         public int MapId
         {
-            get { return Parse.Int(Base["mapId"].Value); }
+            get; protected set;
         }
 
+        [InternalName("id")]
         public int Id
         {
-            get { return Parse.Int(Base["id"].Value); }
+            get; protected set;
         }
-
+        [InternalName("gameMode")]
         public string GameMode
         {
-            get { return Base["gameMode"].Value; }
+            get; protected set;
         }
-
+        [InternalName("gameState")]
         public string GameState
         {
-            get { return Base["gameState"].Value; }
+            get; protected set;
         }
-
+        [InternalName("gameType")]
         public string GameType
         {
-            get { return Base["gameType"].Value; }
+            get; protected set;
         }
-
+        [InternalName("creationTime")]
         public string CreationTime
         {
-            get { return Base["creationTime"].Value; }
+            get; protected set;
         }
-
-        public Team TeamOne
+        [InternalName("teamOne")]
+        public TeamParticipants TeamOne
         {
-            get
-            {
-                return new Team(Base["teamOne"]);
-            }
+            get;
+            protected set;
         }
-
-        public Team TeamTwo
+        [InternalName("teamTwo")]
+        public TeamParticipants TeamTwo
         {
-            get
-            {
-                return new Team(Base["teamTwo"]);
-            }
+            get;
+            protected set;
         }
     }
 }

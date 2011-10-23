@@ -2,17 +2,20 @@ using System.Diagnostics;
 
 namespace LoLBans
 {
-    [DebuggerDisplay("{GameUniqueId}")]
+    [DebuggerDisplay("Id: {GameUniqueId}")]
     public class ObfuscatedParticipant : Participant
     {
         public ObfuscatedParticipant(FlashObject thebase)
             : base(thebase)
         {
+            FlashObject.SetFields(this, thebase);
         }
 
+        [InternalName("gameUniqueId")]
         public int GameUniqueId
         {
-            get { return Parse.Int(Base["gameUniqueId"].Value); }
+            get;
+            protected set;
         }
     }
 }
