@@ -14,27 +14,23 @@ namespace LoLBans
         static readonly string LoaderFile = Path.Combine(LolBansPath, "LoLLoader.dll");
 
         readonly LoLConnection Connection;
+        readonly GameDTOReader GameReader;
 
         public MainForm()
         {
             InitializeComponent();
 
             Connection = new LoLConnection("lolbans");
-            Connection.ProcessObject += ConnectionProcessObject;
+            GameReader = new GameDTOReader(Connection);
+
+            GameReader.OnGameDTO += GameReader_OnGameDTO;
+
             Connection.Start();
         }
 
-        void ConnectionProcessObject(FlashObject obj)
+        void GameReader_OnGameDTO(GameDTO game)
         {
-            var body = obj["body"];
-            if (body == null)
-                return;
-            if (!body.Value.Contains("com.riotgames.platform.gameclient.domain::GameDTO"))
-                return;
-
-            var teams = GetTeams(body);
-
-            UpdateLists(teams);
+            UpdateLists(new List<Team> { game.TeamOne, game.TeamTwo });
         }
 
         public void UpdateLists(List<Team> teams)
@@ -45,64 +41,45 @@ namespace LoLBans
                 return;
             }
 
-            var boxs = new List<TeamControl> { teamControl1, teamControl2 };
+            var lists = new List<TeamControl> { teamControl1, teamControl2 };
 
-            for (int i = 0; i < boxs.Count && i < teams.Count; i++)
+            for (int i = 0; i < lists.Count; i++)
             {
-
                 if (teams[i] == null)
                 {
-                    foreach (var ply in boxs[i].Players)
-                        ply.SummonerName = "Unknown";
+                    lists[i].Visible = false;
                     continue;
                 }
 
-                for (int o = 0; o < boxs[i].Players.Count; o++)
+                for (int o = 0; o < lists[i].Players.Count; o++)
                 {
-                    if (o < teams[i].Players.Count)
+                    if (o < teams[i].Count)
                     {
-                        boxs[i].Players[o].SummonerName = 
-                            string.IsNullOrEmpty(teams[i].Players[o].Name) ?
-                            teams[i].Players[o].Name :
-                            "Unknown";
-                        boxs[i].Players[o].Visible = true;
+                        if (teams[i][o] is ObfuscatedParticipant)
+                        {
+                            lists[i].Players[o].SummonerName = string.Format(
+                                "Summoner {0}",
+                                ((ObfuscatedParticipant)teams[i][o]).GameUniqueId
+                            );
+                        }
+                        else if (teams[i][o] is GameParticipant)
+                        {
+                            lists[i].Players[o].SummonerName = ((GameParticipant)teams[i][o]).Name;
+                        }
+                        else
+                        {
+                            lists[i].Players[o].SummonerName = "Unknown";
+                        }
+                        lists[i].Players[o].Visible = true;
                     }
                     else
                     {
-                        boxs[i].Players[o].Visible = false;
+                        lists[i].Players[o].Visible = false;
                     }
                 }
             }
         }
 
-        public static List<Team> GetTeams(FlashObject body)
-        {
-            return new List<Team>
-            {
-                GetTeam(body["teamOne"]),
-                GetTeam(body["teamTwo"]),
-            };
-        }
-
-        public static Team GetTeam(FlashObject team)
-        {
-            if (team == null)
-                return null;
-
-            var ret = new Team();
-            var array = team["list"]["source"];
-            foreach (var field in array.Fields)
-            {
-                var ply = new Player();
-                int id;
-                if (field["summonerId"] != null && int.TryParse(field["summonerId"].Value, out id))
-                    ply.Id = id;
-                ply.InternalName = field["summonerInternalName"] != null ? field["summonerInternalName"].Value : null;
-                ply.Name = field["summonerName"] != null ? field["summonerName"].Value : null;
-                ret.Players.Add(ply);
-            }
-            return ret;
-        }
 
         void Install()
         {

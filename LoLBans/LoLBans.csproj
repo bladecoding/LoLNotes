@@ -75,6 +75,11 @@
     <Compile Include="Controls\TeamControl.Designer.cs">
       <DependentUpon>TeamControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameDTO\GameDTO.cs" />
+    <Compile Include="GameDTO\GameParticipant.cs" />
+    <Compile Include="GameDTO\GameReader.cs" />
+    <Compile Include="GameDTO\ObfuscatedParticipant.cs" />
+    <Compile Include="GameDTO\Participant.cs" />
     <Compile Include="LoLConnection.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -82,7 +87,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoLClasses\Player.cs" />
+    <Compile Include="GameDTO\PlayerParticipant.cs" />
     <Compile Include="Controls\PlayerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,8 +96,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Parse.cs" />
     <Compile Include="Serializer.cs" />
-    <Compile Include="LoLClasses\Team.cs" />
+    <Compile Include="GameDTO\Team.cs" />
     <Compile Include="Wow.cs" />
     <EmbeddedResource Include="Controls\TeamControl.resx">
       <DependentUpon>TeamControl.cs</DependentUpon>
