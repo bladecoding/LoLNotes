@@ -80,7 +80,6 @@
     </Compile>
     <Compile Include="EndOfGameStats\EndOfGameStats.cs" />
     <Compile Include="EndOfGameStats\GameItems.cs" />
-    <Compile Include="EndOfGameStats\ParticipantStats.cs" />
     <Compile Include="EndOfGameStats\PlayerStatsSummary.cs" />
     <Compile Include="EndOfGameStats\PlayerStatsSummaryList.cs" />
     <Compile Include="EndOfGameStats\PlayerStat.cs" />
@@ -183,6 +182,9 @@
     <Content Include="ExampleEndOfGameStats.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\circle_green.png" />
+    <None Include="Resources\circle_yellow.png" />
+    <None Include="Resources\circle_red.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,9 +22,11 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Linq;
+using LoLBans.Properties;
 using LoLNotes.Controls;
 using LoLNotes.Properties;
 using LoLNotes.Readers;
@@ -39,16 +41,38 @@ namespace LoLNotes
         readonly LoLConnection Connection;
         readonly GameDTOReader GameReader;
 
+        Dictionary<string, Icon> IconCache;
+
         public MainForm()
         {
             InitializeComponent();
 
+            IconCache = new Dictionary<string, Icon>
+            {
+                {"Red",  Icon.FromHandle(Resources.circle_red.GetHicon())},
+                {"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
+                {"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
+            };
+
+            Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
+
             Connection = new LoLConnection("lolbans");
             GameReader = new GameDTOReader(Connection);
 
+            Connection.Connected += Connection_Connected;
             GameReader.ObjectRead += GameReader_OnGameDTO;
 
             Connection.Start();
+        }
+
+        void Connection_Connected(object obj)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<object>(Connection_Connected), obj);
+                return;
+            }
+            Icon = Connection.IsConnected ? IconCache["Green"] : IconCache["Yellow"];
         }
 
         void GameReader_OnGameDTO(GameDTO game)
@@ -172,6 +196,7 @@ namespace LoLNotes
                 Install();
             }
             InstallButton.Text = IsInstalled ? "Uninstall" : "Install";
+            Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
         }
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)

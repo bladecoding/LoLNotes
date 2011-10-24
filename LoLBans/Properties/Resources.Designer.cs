@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LoLNotes.Properties {
+namespace LoLBans.Properties {
     using System;
     
     
@@ -60,8 +60,68 @@ namespace LoLNotes.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap circle_green {
+            get {
+                object obj = ResourceManager.GetObject("circle_green", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap circle_red {
+            get {
+                object obj = ResourceManager.GetObject("circle_red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap circle_yellow {
+            get {
+                object obj = ResourceManager.GetObject("circle_yellow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to 
+        ///[
+        ///{
+        ///&quot;k&quot;:1058,
+        ///&quot;v&quot;:
+        ///{
+        ///	&quot;Name&quot;:&quot;Needlessly Large Rod&quot;,
+        ///	&quot;Description&quot;:&quot;+80 Ability Power&quot;
+        ///}
+        ///},
+        ///{
+        ///&quot;k&quot;:1057,
+        ///&quot;v&quot;:
+        ///{
+        ///&quot;Name&quot;:&quot;Negatron Cloak&quot;,
+        ///&quot;Description&quot;:&quot;+48 Magic Resist&quot;
+        ///}
+        ///},
+        ///{
+        ///&quot;k&quot;:1056,
+        ///&quot;v&quot;:
+        ///{
+        ///&quot;Name&quot;:&quot;Doran\\&apos;s Ring&quot;,
+        ///&quot;Description&quot;:&quot;+100 Health +15 Ability Power +5 Mana Regen per 5 seconds&quot;
+        ///}
+        ///},
+        ///{
+        ///&quot;k&quot;:1055,
+        ///&quot;v&quot;:
+        ///{
+        ///&quot;Name&quot;:&quot;Doran\\&apos;s Blade&quot;,
+        ///&quot;Description&quot;:&quot;+100 Health +10 Attack Damage +3% Life Steal&quot;
+        ///}
+        ///},
+        ///{
+        ///&quot;k&quot;:1054,
+        ///&quot;v&quot;:
+        ///{
+        ///&quot;Name&quot;:&quot;Doran\\&apos;s Shield&quot;,
+        ///&quot;Description&quot;:&quot;+1 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ItemData {
             get {

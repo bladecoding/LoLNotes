@@ -37,8 +37,20 @@ namespace LoLNotes
         const string ObjectMatch = @"\(([^\)]+)\)#\d+$";
 
         public event ProcessObjectD ProcessObject;
-        public event ProcessLineD ProcessLine; 
+        public event ProcessLineD ProcessLine;
+        /// <summary>
+        /// Called when the IsConnected status changes.
+        /// </summary>
+        public event Action<object> Connected;
 
+        bool isconnected;
+        public bool IsConnected
+        {
+            get { return isconnected; }
+            protected set { isconnected = value; if (Connected != null) Connected(this); }
+        }  
+ 
+        
         public LoLConnection(string pipename)
         {
             PipeName = pipename;
@@ -67,6 +79,8 @@ namespace LoLNotes
                     using (var pipe = new NamedPipeClientStream(PipeName))
                     {
                         pipe.Connect();
+
+                        IsConnected = true;
 
                         while (pipe.IsConnected)
                         {
@@ -101,6 +115,10 @@ namespace LoLNotes
                 {
                     //TODO: Implement logging
                     Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    IsConnected = false;
                 }
             }
         }
