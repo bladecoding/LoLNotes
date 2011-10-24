@@ -86,7 +86,7 @@
     <Compile Include="EndOfGameStats\PlayerStat.cs" />
     <Compile Include="EndOfGameStats\PlayerStatCategory.cs" />
     <Compile Include="EndOfGameStats\PlayerStatList.cs" />
-    <Compile Include="FlashObject.cs" />
+    <Compile Include="Flash\FlashObject.cs" />
     <Compile Include="GameDTO\BotParticipant.cs" />
     <Compile Include="GameDTO\GameDTO.cs" />
     <Compile Include="GameDTO\GameParticipant.cs" />
@@ -94,7 +94,7 @@
     <Compile Include="Readers\GameReader.cs" />
     <Compile Include="GameDTO\ObfuscatedParticipant.cs" />
     <Compile Include="GameDTO\Participant.cs" />
-    <Compile Include="IFlashProcessor.cs" />
+    <Compile Include="Flash\IFlashProcessor.cs" />
     <Compile Include="InternalNameAttribute.cs" />
     <Compile Include="ItemData.cs" />
     <Compile Include="LoLConnection.cs" />
@@ -114,7 +114,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parse.cs" />
-    <Compile Include="FlashSerializer.cs" />
+    <Compile Include="Flash\FlashSerializer.cs" />
     <Compile Include="GameDTO\TeamParticipants.cs" />
     <Compile Include="Readers\IObjectReader.cs" />
     <Compile Include="Wow.cs" />

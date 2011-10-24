@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LoLBans.Properties {
+namespace LoLNotes.Properties {
     using System;
     
     
