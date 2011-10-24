@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LoLBans
+namespace LoLBans.Readers
 {
-    public class GameDTOReader
+    public class GameDTOReader : IObjectReader<GameDTO>
     {
         protected IFlashProcessor connection;
 
-        public delegate void OnGameDTOD(GameDTO game);
-        public event OnGameDTOD OnGameDTO;
+
+        public event ObjectReadD<GameDTO> ObjectRead;
 
         public GameDTOReader(IFlashProcessor conn)
         {
@@ -20,7 +20,7 @@ namespace LoLBans
 
         void connection_ProcessObject(FlashObject obj)
         {
-            if (OnGameDTO == null)
+            if (ObjectRead == null)
                 return;
 
             var body = obj["body"];
@@ -30,7 +30,7 @@ namespace LoLBans
             if (!body.Value.Contains("GameDTO"))
                 return;
 
-            OnGameDTO(new GameDTO(body));
+            ObjectRead(new GameDTO(body));
         }
     }
 }

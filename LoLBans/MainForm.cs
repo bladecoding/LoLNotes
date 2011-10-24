@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using LoLBans.Controls;
 using LoLBans.Properties;
 using System.Linq;
+using LoLBans.Readers;
 
 namespace LoLBans
 {
@@ -23,7 +24,7 @@ namespace LoLBans
             Connection = new LoLConnection("lolbans");
             GameReader = new GameDTOReader(Connection);
 
-            GameReader.OnGameDTO += GameReader_OnGameDTO;
+            GameReader.ObjectRead += GameReader_OnGameDTO;
 
             Connection.Start();
         }

@@ -90,7 +90,8 @@
     <Compile Include="GameDTO\BotParticipant.cs" />
     <Compile Include="GameDTO\GameDTO.cs" />
     <Compile Include="GameDTO\GameParticipant.cs" />
-    <Compile Include="GameDTO\GameReader.cs" />
+    <Compile Include="Readers\EndReader.cs" />
+    <Compile Include="Readers\GameReader.cs" />
     <Compile Include="GameDTO\ObfuscatedParticipant.cs" />
     <Compile Include="GameDTO\Participant.cs" />
     <Compile Include="IFlashProcessor.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Parse.cs" />
     <Compile Include="FlashSerializer.cs" />
     <Compile Include="GameDTO\TeamParticipants.cs" />
+    <Compile Include="Readers\IObjectReader.cs" />
     <Compile Include="Wow.cs" />
     <EmbeddedResource Include="Controls\TeamControl.resx">
       <DependentUpon>TeamControl.cs</DependentUpon>
