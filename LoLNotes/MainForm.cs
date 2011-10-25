@@ -22,11 +22,14 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.SqlServerCe;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Linq;
 using LoLNotes.Controls;
+using LoLNotes.DB;
 using LoLNotes.Properties;
 using LoLNotes.Readers;
 
@@ -39,8 +42,9 @@ namespace LoLNotes
 
         readonly LoLConnection Connection;
         readonly GameDTOReader GameReader;
+        readonly DataContext Database;
 
-        Dictionary<string, Icon> IconCache;
+        readonly Dictionary<string, Icon> IconCache;
 
         public MainForm()
         {
@@ -54,6 +58,10 @@ namespace LoLNotes
             };
 
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
+
+            Database = new LoLNotesDataContext(new SqlCeConnection("Data Source=Notes.db"));
+            if (!Database.DatabaseExists())
+                Database.CreateDatabase();
 
             Connection = new LoLConnection("lolbans");
             GameReader = new GameDTOReader(Connection);

@@ -60,6 +60,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -74,6 +76,11 @@
     </Compile>
     <Compile Include="Controls\TeamControl.Designer.cs">
       <DependentUpon>TeamControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DB\LoLNotes.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoLNotes.dbml</DependentUpon>
     </Compile>
     <Compile Include="EndOfGameStats\EndOfGameStats.cs" />
     <Compile Include="EndOfGameStats\GameItems.cs" />
@@ -117,6 +124,9 @@
     <EmbeddedResource Include="Controls\TeamControl.resx">
       <DependentUpon>TeamControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="DB\LoLNotes.dbml.layout">
+      <DependentUpon>LoLNotes.dbml</DependentUpon>
+    </None>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -135,6 +145,11 @@
     </Compile>
     <None Include="app.config" />
     <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DB\LoLNotes.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>LoLNotes.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Settings.settings">
@@ -182,6 +197,9 @@
     <None Include="Resources\circle_green.png" />
     <None Include="Resources\circle_yellow.png" />
     <None Include="Resources\circle_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
