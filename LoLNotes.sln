@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoLNotes", "LoLBans\LoLNotes.csproj", "{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoLNotes", "LoLNotes\LoLNotes.csproj", "{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LolLoader", "LolLoader\LolLoader.vcxproj", "{3A7437B7-79FC-484A-9C29-0056FA061D9D}"
 EndProject

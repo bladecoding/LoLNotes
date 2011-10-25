@@ -26,7 +26,6 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Linq;
-using LoLBans.Properties;
 using LoLNotes.Controls;
 using LoLNotes.Properties;
 using LoLNotes.Readers;

@@ -8,8 +8,8 @@
     <ProjectGuid>{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LoLBans</RootNamespace>
-    <AssemblyName>LoLBans</AssemblyName>
+    <RootNamespace>LoLNotes</RootNamespace>
+    <AssemblyName>LoLNotes</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -54,9 +54,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Community.CsharpSqlite.SQLiteClient">
-      <HintPath>Dependencies\Community.CsharpSqlite.SQLiteClient.dll</HintPath>
-    </Reference>
     <Reference Include="NotMissing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\NotMissing.dll</HintPath>
