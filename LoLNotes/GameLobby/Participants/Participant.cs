@@ -27,6 +27,10 @@ namespace LoLNotes.GameLobby.Participants
     public class Participant
     {
         protected readonly FlashObject Base;
+        public Participant()
+        {
+        }
+
         public Participant(FlashObject thebase)
         {
             Base = thebase;
@@ -35,8 +39,7 @@ namespace LoLNotes.GameLobby.Participants
         [InternalName("pickMode")]
         public int PickMode
         {
-            get;
-            protected set;
+            get; set;
         }
     }
 }

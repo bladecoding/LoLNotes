@@ -29,6 +29,9 @@ namespace LoLNotes.GameStats.PlayerStats
     public class PlayerStatCategory
     {
         protected readonly FlashObject Base;
+        public PlayerStatCategory()
+        {
+        }
         public PlayerStatCategory(FlashObject thebase)
         {
             Base = thebase;
@@ -37,13 +40,13 @@ namespace LoLNotes.GameStats.PlayerStats
         }
 
         [InternalName("displayName")]
-        public string DisplayName { get; protected set; }
+        public string DisplayName { get; set; }
 
         [InternalName("name")]
-        public string Name { get; protected set; }
+        public string Name { get; set; }
 
         [InternalName("priority")]
-        public int Priority { get; protected set; }
+        public int Priority { get; set; }
 
     }
 }

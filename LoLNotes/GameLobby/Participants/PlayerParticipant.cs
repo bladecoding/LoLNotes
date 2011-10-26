@@ -29,18 +29,19 @@ namespace LoLNotes.GameLobby.Participants
     [DebuggerDisplay("{Name}")]
     public class PlayerParticipant : GameParticipant
     {
+        public PlayerParticipant()
+            : base(null)
+        {
+        }
         public PlayerParticipant(FlashObject thebase)
             : base(thebase)
         {
+            FlashObject.SetFields(this, thebase);
         }
 
-        public int ProfileIconId
-        {
-            get { return Parse.Int(Base["ProfileIconId"].Value); }
-        }
-        public int Id
-        {
-            get { return Parse.Int(Base["summonerId"].Value); }
-        }
+        [InternalName("profileIconId")]
+        public int ProfileIconId { get; set; }
+        [InternalName("summonerId")]
+        public int Id { get; set; }
     }
 }

@@ -28,6 +28,10 @@ namespace LoLNotes.GameStats
 {
     public class EndOfGameStats : MessageObject
     {
+        public EndOfGameStats()
+            : base(null)
+        {
+        }
         public EndOfGameStats(FlashObject obj)
             : base(obj)
         {
@@ -37,218 +41,184 @@ namespace LoLNotes.GameStats
         [InternalName("basePoints")]
         public int BasePoints
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("boostIpEarned")]
         public int BoostIpEarned
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("boostXpEarned")]
         public int BoostXpEarned
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("completionBonusPoints")]
         public int CompletionBonusPoints
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("difficulty")]
         public string Difficulty
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("elo")]
         public int Elo
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("eloChange")]
         public int EloChange
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("experienceEarned")]
         public int ExperienceEarned
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("experienceTotal")]
         public int ExperienceTotal
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("expPointsToNextLevel")]
         public int ExpPointsToNextLevel
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("firstWinBonus")]
         public int FirstWinBonus
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("gameId")]
         public int GameId
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("gameLength")]
         public int GameLength
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("gameMode")]
         public string GameMode
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("gameType")]
         public string GameType
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("imbalancedTeamsNoPoints")]
         public bool ImbalancedTeamsNoPoints
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("ipEarned")]
         public int IpEarned
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("ipTotal")]
         public int IpTotal
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("leveledUp")]
         public bool LeveledUp
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("locationBoostIpEarned")]
         public int LocationBoostIpEarned
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("locationBoostXpEarned")]
         public int LocationBoostXpEarned
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("loyaltyBoostIpEarned")]
         public int LoyaltyBoostIpEarned
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("loyaltyBoostXpEarned")]
         public int LoyaltyBoostXpEarned
         {
-            get;
-            protected set;
+            get; set;
         }
 
         //TODO newSpells, not hugely important but not sure what the arraycollection contains
+
         [InternalName("odinBonusIp")]
         public int OdinBonusIp
         {
-            get;
-            protected set;
+            get; set;
         }
 
         [InternalName("otherTeamPlayerParticipantStats")]
         public PlayerStatsSummaryList OtherTeamPlayerStats
         {
-            get;
-            protected set;
+            get; set;
         }
 
         //TODO pointsPenalties, not sure whats in the arraycollection
         [InternalName("practiceMinutesLeftToday")]
         public int PracticeMinutesLeftToday
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("practiceMinutesPlayedToday")]
         public int PracticeMinutesPlayedToday
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("practiceMsecsUntilReset")]
         public int PracticeMsecsUntilReset
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("queueBonusEarned")]
         public int QueueBonusEarned
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("queueType")]
         public string QueueType
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("ranked")]
         public bool Ranked
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("skinIndex")]
         public int SkinIndex
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("skinName")]
         public string SkinName
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("talentPointsGained")]
         public int TalentPointsGained
         {
-            get;
-            protected set;
+            get; set;
         }
 
         [InternalName("teamPlayerParticipantStats")]
         public PlayerStatsSummaryList TeamPlayerStats
         {
-            get;
-            protected set;
+            get; set;
         }
 
         /// <summary>
@@ -257,14 +227,12 @@ namespace LoLNotes.GameStats
         [InternalName("timeUntilNextFirstWinBonus")]
         public int TimeUntilNextFirstWinBonus
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("userId")]
         public int UserId
         {
-            get;
-            protected set;
+            get; set;
         }
     }
 }

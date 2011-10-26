@@ -31,6 +31,9 @@ namespace LoLNotes.GameStats.PlayerStats
     {
         protected readonly FlashObject Base;
 
+        public PlayerStatsSummary()
+        {
+        }
         public PlayerStatsSummary(FlashObject body)
         {
             if (body == null)
@@ -42,64 +45,64 @@ namespace LoLNotes.GameStats.PlayerStats
         }
 
         [InternalName("botPlayer")]
-        public bool BotPlayer { get; protected set; }
+        public bool BotPlayer { get; set; }
 
         [InternalName("elo")]
-        public int Elo { get; protected set; }
+        public int Elo { get; set; }
 
         [InternalName("eloChange")]
-        public int EloChange { get; protected set; }
+        public int EloChange { get; set; }
 
         [InternalName("gameId")]
-        public int GameId { get; protected set; }
+        public int GameId { get; set; }
 
         [InternalName("gameItems")]
-        public GameItems Items { get; protected set; }
+        public GameItems Items { get; set; }
 
         [InternalName("inChat")]
-        public bool InChat { get; protected set; }
+        public bool InChat { get; set; }
 
         [InternalName("isMe")]
-        public bool IsMe { get; protected set; }
+        public bool IsMe { get; set; }
 
         [InternalName("leaver")]
-        public bool Leaver { get; protected set; }
+        public bool Leaver { get; set; }
 
         [InternalName("leaves")]
-        public int Leaves { get; protected set; }
+        public int Leaves { get; set; }
 
         [InternalName("level")]
-        public int Level { get; protected set; }
+        public int Level { get; set; }
 
         [InternalName("losses")]
-        public int Losses { get; protected set; }
+        public int Losses { get; set; }
 
         [InternalName("profileIconId")]
-        public int ProfileIconId { get; protected set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("skinName")]
-        public string SkinName { get; protected set; }
+        public string SkinName { get; set; }
 
         [InternalName("spell1Id")]
-        public int Spell1Id { get; protected set; }
+        public int Spell1Id { get; set; }
 
         [InternalName("spell2Id")]
-        public int Spell2Id { get; protected set; }
+        public int Spell2Id { get; set; }
 
         [InternalName("statistics")]
-        public PlayerStatList Statistics { get; protected set; }
+        public PlayerStatList Statistics { get; set; }
 
         [InternalName("summonerName")]
-        public string SummonerName { get; protected set; }
+        public string SummonerName { get; set; }
 
         [InternalName("teamId")]
-        public int TeamId { get; protected set; }
+        public int TeamId { get; set; }
 
         [InternalName("userId")]
-        public int UserId { get; protected set; }
+        public int UserId { get; set; }
 
         [InternalName("wins")]
-        public int Wins { get; protected set; }
+        public int Wins { get; set; }
 
 
     }

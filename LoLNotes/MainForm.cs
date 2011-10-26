@@ -53,7 +53,7 @@ namespace LoLNotes
         readonly LoLConnection Connection;
         readonly GameLobbyReader LobbyReader;
         readonly GameStatsReader StatsReader;
-        readonly DocumentStore Database;
+        readonly DocumentStore Store;
         readonly GameRecorder Recorder;
 
 
@@ -78,30 +78,11 @@ namespace LoLNotes
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
 
 
-            Database = new EmbeddableDocumentStore 
+            Store = new EmbeddableDocumentStore 
             {
-                UseEmbeddedHttpServer = false,
                 DataDirectory = "data"
             };
-            Database.Initialize();
-
-            if (Database.DatabaseCommands.GetIndex("GameId") == null)
-            {
-                Database.DatabaseCommands.PutIndex("GameId", new IndexDefinitionBuilder<Person>
-                                                                 {
-                                                                     Map =
-                                                                         persons =>
-                                                                         from person in persons select new {person.Name},
-                                                                 });
-            }
-
-            using (var sess = Database.OpenSession())
-            {
-
-                sess.Store(new Person { Age = 20, Name = "a" });
-                sess.Store(new Person { Age = 20, Name = "b" });
-                sess.SaveChanges();
-            }
+            Store.Initialize();
 
             Connection = new LoLConnection("lolbans");
             LobbyReader = new GameLobbyReader(Connection);
@@ -110,7 +91,7 @@ namespace LoLNotes
             Connection.Connected += Connection_Connected;
             LobbyReader.ObjectRead += GameReader_OnGameDTO;
 
-            Recorder = new GameRecorder(Database, Connection);
+            Recorder = new GameRecorder(Store, Connection);
 
             //Pipe server for testing EndOfGameStats.
 

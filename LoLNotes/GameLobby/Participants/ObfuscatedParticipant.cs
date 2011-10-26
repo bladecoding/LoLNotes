@@ -28,6 +28,11 @@ namespace LoLNotes.GameLobby.Participants
     [DebuggerDisplay("Id: {GameUniqueId}")]
     public class ObfuscatedParticipant : Participant
     {
+        public ObfuscatedParticipant()
+            : base(null)
+        {
+        }
+
         public ObfuscatedParticipant(FlashObject thebase)
             : base(thebase)
         {
@@ -37,8 +42,7 @@ namespace LoLNotes.GameLobby.Participants
         [InternalName("gameUniqueId")]
         public int GameUniqueId
         {
-            get;
-            protected set;
+            get; set;
         }
     }
 }

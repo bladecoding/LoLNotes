@@ -28,6 +28,11 @@ namespace LoLNotes.GameLobby.Participants
     [DebuggerDisplay("{Name}")]
     public class GameParticipant : Participant
     {
+        public GameParticipant()
+            : base(null)
+        {
+        }
+
         public GameParticipant(FlashObject thebase)
             : base(thebase)
         {
@@ -36,32 +41,27 @@ namespace LoLNotes.GameLobby.Participants
         [InternalName("isMe")]
         public bool IsMe
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("isGameOwner")]
         public bool IsGameOwner
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("pickTurn")]
         public int PickTurn
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("summonerInternalName")]
         public string InternalName
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("summonerName")]
         public string Name
         {
-            get;
-            protected set;
+            get; set;
         }
     }
 }

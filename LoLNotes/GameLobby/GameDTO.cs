@@ -28,6 +28,11 @@ namespace LoLNotes.GameLobby
 {
     public class GameDTO : MessageObject
     {
+        public GameDTO()
+            : base(null)
+        {
+        }
+
         public GameDTO(FlashObject obj)
             : base(obj)
         {
@@ -37,57 +42,55 @@ namespace LoLNotes.GameLobby
         [InternalName("maxNumPlayers")]
         public int MaxPlayers
         {
-            get; protected set;
+            get; set;
         }
 
         [InternalName("name")]
         public string Name
         {
-            get; protected set;
+            get; set;
         }
 
         [InternalName("mapId")]
         public int MapId
         {
-            get; protected set;
+            get; set;
         }
 
         [InternalName("id")]
         public int Id
         {
-            get; protected set;
+            get; set;
         }
         [InternalName("gameMode")]
         public string GameMode
         {
-            get; protected set;
+            get; set;
         }
         [InternalName("gameState")]
         public string GameState
         {
-            get; protected set;
+            get; set;
         }
         [InternalName("gameType")]
         public string GameType
         {
-            get; protected set;
+            get; set;
         }
         [InternalName("creationTime")]
         public string CreationTime
         {
-            get; protected set;
+            get; set;
         }
         [InternalName("teamOne")]
         public TeamParticipants TeamOne
         {
-            get;
-            protected set;
+            get; set;
         }
         [InternalName("teamTwo")]
         public TeamParticipants TeamTwo
         {
-            get;
-            protected set;
+            get; set;
         }
     }
 }

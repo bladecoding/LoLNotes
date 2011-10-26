@@ -30,7 +30,9 @@ namespace LoLNotes.GameStats
     public class GameItems : List<int>
     {
         protected readonly FlashObject Base;
-
+        public GameItems()
+        {
+        }
         public GameItems(FlashObject body)
         {
             if (body == null)

@@ -131,6 +131,7 @@
     <Compile Include="Controls\TeamControl.Designer.cs">
       <DependentUpon>TeamControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DB\DbWrap.cs" />
     <Compile Include="GameStats\EndOfGameStats.cs" />
     <Compile Include="GameStats\GameItems.cs" />
     <Compile Include="GameStats\PlayerStats\PlayerStatsSummary.cs" />
@@ -247,9 +248,7 @@
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DB\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

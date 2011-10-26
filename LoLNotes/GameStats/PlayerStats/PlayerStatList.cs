@@ -29,6 +29,9 @@ namespace LoLNotes.GameStats.PlayerStats
     public class PlayerStatList : List<PlayerStat>
     {
         protected readonly FlashObject Base;
+        public PlayerStatList()
+        {
+        }
         public PlayerStatList(FlashObject thebase)
         {
             Base = thebase;

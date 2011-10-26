@@ -29,6 +29,11 @@ namespace LoLNotes.GameLobby.Participants
     [DebuggerDisplay("{Name}")]
     public class BotParticipant : GameParticipant
     {
+        public BotParticipant()
+            : base(null)
+        {
+        }
+
         public BotParticipant(FlashObject thebase)
             : base(thebase)
         {
@@ -38,20 +43,17 @@ namespace LoLNotes.GameLobby.Participants
         [InternalName("botSkillLevel")]
         public int BotSkillLevel
         {
-            get;
-            protected set;
+            get;set;
         }
         [InternalName("botSkillLevelName")]
         public string BotSkillLevelName
         {
-            get;
-            protected set;
+            get;set;
         }
         [InternalName("teamId")]
         public string TeamId
         {
-            get;
-            protected set;
+            get;set;
         }
     }
 }

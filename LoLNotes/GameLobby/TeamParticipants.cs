@@ -32,6 +32,9 @@ namespace LoLNotes.GameLobby
     public class TeamParticipants : List<Participant>
     {
         protected readonly FlashObject Base;
+        public TeamParticipants()
+        {
+        }
         public TeamParticipants(FlashObject thebase)
         {
             Base = thebase;

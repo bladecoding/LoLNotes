@@ -105,6 +105,9 @@ namespace LoLNotes.Flash
         /// <param name="flash">Flash object to get fields from</param>
         public static void SetFields<T>(T obj, FlashObject flash)
         {
+            if (flash == null)
+                return;
+
             foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
                 var intern = prop.GetCustomAttributes(typeof(InternalNameAttribute), false).FirstOrDefault() as InternalNameAttribute;
