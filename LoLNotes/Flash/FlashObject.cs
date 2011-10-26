@@ -99,12 +99,13 @@ namespace LoLNotes.Flash
         /// <summary>
         /// Helper method which sets all the properties in the class to their respected FlashObject field.
         /// Use InternalNameAttribute to specify a property which has a FlashObject counter-part.
+        /// SetFields does not travel the hierarchy. So Derived types must make their own separate call to SetFields.
         /// </summary>
         /// <param name="obj">Object to change properties</param>
         /// <param name="flash">Flash object to get fields from</param>
-        public static void SetFields(object obj, FlashObject flash)
+        public static void SetFields<T>(T obj, FlashObject flash)
         {
-            foreach (var prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
                 var intern = prop.GetCustomAttributes(typeof(InternalNameAttribute), false).FirstOrDefault() as InternalNameAttribute;
                 if (intern == null)
