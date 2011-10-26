@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 using System;
 
-namespace LoLNotes
+namespace LoLNotes.Flash
 {
     public class InternalNameAttribute : Attribute
     {

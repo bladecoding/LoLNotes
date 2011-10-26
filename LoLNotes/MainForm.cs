@@ -22,21 +22,25 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Linq;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
+using System.Text;
 using System.Windows.Forms;
 using System.Linq;
 using LoLNotes.Controls;
-using LoLNotes.DB;
 using LoLNotes.GameLobby;
 using LoLNotes.GameLobby.Participants;
 using LoLNotes.GameStats;
 using LoLNotes.Properties;
 using LoLNotes.Readers;
 using LoLNotes.Util;
+using Raven.Abstractions.Indexing;
+using Raven.Client.Document;
+using Raven.Client.Embedded;
+using Raven.Client.Indexes;
 
 namespace LoLNotes
 {
@@ -47,11 +51,18 @@ namespace LoLNotes
 
         readonly Dictionary<string, Icon> IconCache;
         readonly LoLConnection Connection;
-        readonly GameLobbyReader GameReader;
-        readonly GameStatsReader GameStatsReader;
-        readonly LoLNotesDataContext Database;
+        readonly GameLobbyReader LobbyReader;
+        readonly GameStatsReader StatsReader;
+        readonly DocumentStore Database;
         readonly GameRecorder Recorder;
-       
+
+
+
+        public class Person
+        {
+            public string Name;
+            public int Age;
+        }
 
         public MainForm()
         {
@@ -66,29 +77,51 @@ namespace LoLNotes
 
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
 
-            Database = new LoLNotesDataContext(new SqlCeConnection("Data Source=Notes.db"));
-            if (!File.Exists("Notes.db") && !Database.DatabaseExists())
-                Database.CreateDatabase();
+
+            Database = new EmbeddableDocumentStore 
+            {
+                UseEmbeddedHttpServer = false,
+                DataDirectory = "data"
+            };
+            Database.Initialize();
+
+            if (Database.DatabaseCommands.GetIndex("GameId") == null)
+            {
+                Database.DatabaseCommands.PutIndex("GameId", new IndexDefinitionBuilder<Person>
+                                                                 {
+                                                                     Map =
+                                                                         persons =>
+                                                                         from person in persons select new {person.Name},
+                                                                 });
+            }
+
+            using (var sess = Database.OpenSession())
+            {
+
+                sess.Store(new Person { Age = 20, Name = "a" });
+                sess.Store(new Person { Age = 20, Name = "b" });
+                sess.SaveChanges();
+            }
 
             Connection = new LoLConnection("lolbans");
-            GameReader = new GameLobbyReader(Connection);
-            GameStatsReader = new GameStatsReader(Connection);
+            LobbyReader = new GameLobbyReader(Connection);
+            StatsReader = new GameStatsReader(Connection);
 
             Connection.Connected += Connection_Connected;
-            GameReader.ObjectRead += GameReader_OnGameDTO;
+            LobbyReader.ObjectRead += GameReader_OnGameDTO;
 
             Recorder = new GameRecorder(Database, Connection);
 
             //Pipe server for testing EndOfGameStats.
-            
-            //var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-            //pipe.BeginWaitForConnection(delegate(IAsyncResult ar) 
-            //{
-            //    pipe.EndWaitForConnection(ar);
-            //    var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
-            //    pipe.Write(bytes, 0, bytes.Length);
-            //}, pipe);
-            
+
+            var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
+            {
+                pipe.EndWaitForConnection(ar);
+                var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
+                pipe.Write(bytes, 0, bytes.Length);
+            }, pipe);
+
 
             Connection.Start();
         }

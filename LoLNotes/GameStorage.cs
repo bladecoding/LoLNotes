@@ -1,22 +1,22 @@
-﻿using System.Data.Linq;
-using LoLNotes.DB;
+﻿using System;
+using System.Data;
+using System.Data.Linq;
 using LoLNotes.Flash;
 using LoLNotes.GameLobby;
-using LoLNotes.Readers;
-using LoLNotes.Util;
+using Raven.Client.Document;
 
 namespace LoLNotes.GameStats
 {
     public class GameRecorder
     {
-        readonly LoLNotesDataContext Context;
+        readonly DocumentStore Store;
         readonly IFlashProcessor Flash;
         readonly GameStatsReader StatsReader;
         readonly GameLobbyReader LobbyReader;
 
-        public GameRecorder(LoLNotesDataContext context, IFlashProcessor flash)
+        public GameRecorder(DocumentStore store, IFlashProcessor flash)
         {
-            Context = context;
+            Store = store;
             Flash = flash;
 
             StatsReader = new GameStatsReader(flash);
@@ -29,20 +29,15 @@ namespace LoLNotes.GameStats
 
         void LobbyReader_ObjectRead(GameDTO obj)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         void StatsReader_ObjectRead(EndOfGameStats obj)
         {
-            var raw = fastJSON.JSON.Instance.ToJSON(obj, false);
-            var game = new Games
+            using (var sess = Store.OpenSession())
             {
-                GameId = obj.GameId,
-                GameLength = obj.GameLength,
-                RawData = Compression.CompressString(raw)
-            };
-            Context.Games.InsertOnSubmit(game);
-            Context.SubmitChanges(ConflictMode.ContinueOnConflict);
+                sess.Store(obj);
+            }
         }
     }
 }
