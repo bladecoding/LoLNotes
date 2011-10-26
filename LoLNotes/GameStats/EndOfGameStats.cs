@@ -26,18 +26,12 @@ using LoLNotes.GameStats.PlayerStats;
 
 namespace LoLNotes.GameStats
 {
-    public class EndOfGameStats
+    public class EndOfGameStats : MessageObject
     {
-        protected readonly FlashObject Base;
-
-        public EndOfGameStats(FlashObject body)
+        public EndOfGameStats(FlashObject obj)
+            : base(obj)
         {
-            if (body == null)
-                throw new ArgumentNullException("body");
-
-            Base = body;
-
-            FlashObject.SetFields(this, Base);
+            FlashObject.SetFields(this, obj["body"]);
         }
 
         [InternalName("basePoints")]

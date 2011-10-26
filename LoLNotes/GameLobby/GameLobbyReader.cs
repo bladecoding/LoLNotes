@@ -21,35 +21,15 @@ THE SOFTWARE.
  */
 
 using LoLNotes.Flash;
-using LoLNotes.GameStats;
+using LoLNotes.Readers;
 
-namespace LoLNotes.Readers
+namespace LoLNotes.GameLobby
 {
-    public class EndReader : IObjectReader<EndOfGameStats>
+    public class GameLobbyReader : MessageReader<GameDTO>
     {
-        protected IFlashProcessor connection;
-
-        public event ObjectReadD<EndOfGameStats> ObjectRead;
-
-        public EndReader(IFlashProcessor conn)
+        public GameLobbyReader(IFlashProcessor conn)
+            : base("GameDTO", conn)
         {
-            connection = conn;
-            connection.ProcessObject += connection_ProcessObject;
-        }
-
-        void connection_ProcessObject(FlashObject obj)
-        {
-            if (ObjectRead == null)
-                return;
-
-            var body = obj["body"];
-            if (body == null)
-                return;
-
-            if (!body.Value.Contains("EndOfGameStats"))
-                return;
-
-            ObjectRead(new EndOfGameStats(body));
         }
     }
 }

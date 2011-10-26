@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.IO.Pipes;
 using System.IO.Streams;
 using System.Text.RegularExpressions;
@@ -79,34 +80,40 @@ namespace LoLNotes
                 {
                     using (var pipe = new NamedPipeClientStream(PipeName))
                     {
-                        pipe.Connect();
-
-                        IsConnected = true;
-
-                        while (pipe.IsConnected)
+                        using (var reader = new StreamReader(pipe))
                         {
-                            var line = pipe.ReadLine();
-                            var match = Regex.Match(line, LogMatch);
-                            if (match.Success)
+                            pipe.Connect();
+
+                            IsConnected = true;
+
+                            while (pipe.IsConnected)
                             {
-                                try
+                                var line = reader.ReadLine();
+                                if (line == null)
+                                    throw new EndOfStreamException();
+
+                                var match = Regex.Match(line, LogMatch);
+                                if (match.Success)
                                 {
-                                    match = Regex.Match(line, ObjectMatch);
-                                    if (match.Success)
+                                    try
                                     {
-                                        var obj = FlashSerializer.Deserialize(pipe);
-                                        obj.Name = match.Groups[1].Value;
-                                        DoProcessObject(obj);
+                                        match = Regex.Match(line, ObjectMatch);
+                                        if (match.Success)
+                                        {
+                                            var obj = FlashSerializer.Deserialize(reader);
+                                            obj.Name = match.Groups[1].Value;
+                                            DoProcessObject(obj);
+                                        }
+                                        else
+                                        {
+                                            DoProcessLine(line);
+                                        }
                                     }
-                                    else
+                                    catch (Exception ex)
                                     {
-                                        DoProcessLine(line);
+                                        //TODO: Implement logging
+                                        Debug.WriteLine(ex);
                                     }
-                                }
-                                catch (Exception ex)
-                                {
-                                    //TODO: Implement logging
-                                    Debug.WriteLine(ex);
                                 }
                             }
                         }

@@ -32,15 +32,19 @@ namespace LoLNotes.Flash
 {
     public class FlashSerializer
     {
-        public static FlashObject Deserialize(Stream stream)
+        public static FlashObject Deserialize(StreamReader reader)
         {
             var ret = new FlashObject("Base");
             var current = ret;
             var levels = new Stack<int>();
+            levels.Push(0);
 
-            do
+            while (levels.Count > 0)
             {
-                var line = stream.ReadLine();
+                if (reader.Peek() != ' ') //No Space? Well then it must be the end of the object
+                    return ret;
+
+                var line = reader.ReadLine();
                 var kv = MatchLine(line);
                 if (kv == null)
                     throw new NotSupportedException("Unable to parse (" + line + ")");
@@ -72,14 +76,13 @@ namespace LoLNotes.Flash
                         else
                         {
                             //Multiline quote
-                            kv.Value = kv.Value.Substring(1) + ParseString(stream);
-                            stream.ReadLine(); //Read the newline after the quote
+                            kv.Value = kv.Value.Substring(1) + ParseString(reader);
+                            reader.ReadLine(); //Read the newline after the quote
                         }
                     }
                     current[kv.Key] = new FlashObject(kv.Key, kv.Value);
                 }
             }
-            while (current != ret);
 
             return ret;
         }
@@ -120,22 +123,30 @@ namespace LoLNotes.Flash
             return c;
         }
 
-        static string ParseString(Stream stream)
+        static string ParseString(StreamReader reader)
         {
             var sb = new StringBuilder();
 
             const int maxiters = 100000;
             for(int i = 0; i < maxiters; i++)
             {
-                char c = (char)stream.ReadInt8();
+                char c = (char)ReadByte(reader);
                 if (c == '"')
                     return sb.ToString();
                 if (c == '\\')
-                    sb.Append(DecodeEscaped((char)stream.ReadInt8()));
+                    sb.Append(DecodeEscaped((char)ReadByte(reader)));
                 else
                     sb.Append(c);
             }
             throw new Exception("String exceeds max size allowed");
+        }
+
+        static int ReadByte(StreamReader reader)
+        {
+            var num = reader.Read();
+            if (num == -1)
+                throw new EndOfStreamException();
+            return num;
         }
 
         static int GetLevel(string str)

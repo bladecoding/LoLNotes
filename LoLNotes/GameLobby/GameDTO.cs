@@ -22,22 +22,16 @@ THE SOFTWARE.
 
 using System;
 using LoLNotes.Flash;
+using LoLNotes.Readers;
 
 namespace LoLNotes.GameLobby
 {
-    public class GameDTO
+    public class GameDTO : MessageObject
     {
-        protected readonly FlashObject Base;
-
-        public GameDTO(FlashObject body)
+        public GameDTO(FlashObject obj)
+            : base(obj)
         {
-            if (body == null)
-                throw new ArgumentNullException("body");
-
-            Base = body;
-
-
-            FlashObject.SetFields(this, body);
+            FlashObject.SetFields(this, obj["body"]);
         }
 
         [InternalName("maxNumPlayers")]

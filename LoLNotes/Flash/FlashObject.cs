@@ -122,6 +122,10 @@ namespace LoLNotes.Flash
                 {
                     value = Parse.Int(flash[intern.Name].Value);
                 }
+                else if (type == typeof(long))
+                {
+                    value = Parse.Long(flash[intern.Name].Value);
+                }
                 else if (type == typeof(bool))
                 {
                     value = Parse.Bool(flash[intern.Name].Value);

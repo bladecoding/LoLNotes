@@ -77,7 +77,7 @@ namespace LoLNotes.DB
 		
 		private int _GameLength;
 		
-		private string _RawData;
+		private byte[] _RawData;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -87,7 +87,7 @@ namespace LoLNotes.DB
     partial void OnGameIdChanged();
     partial void OnGameLengthChanging(int value);
     partial void OnGameLengthChanged();
-    partial void OnRawDataChanging(string value);
+    partial void OnRawDataChanging(byte[] value);
     partial void OnRawDataChanged();
     #endregion
 		
@@ -136,8 +136,8 @@ namespace LoLNotes.DB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="", Storage="_RawData", CanBeNull=false)]
-		public string RawData
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RawData", DbType="image", CanBeNull=false)]
+		public byte[] RawData
 		{
 			get
 			{

@@ -26,12 +26,14 @@ using System.Data.Linq;
 using System.Data.SqlServerCe;
 using System.Drawing;
 using System.IO;
+using System.IO.Pipes;
 using System.Windows.Forms;
 using System.Linq;
 using LoLNotes.Controls;
 using LoLNotes.DB;
 using LoLNotes.GameLobby;
 using LoLNotes.GameLobby.Participants;
+using LoLNotes.GameStats;
 using LoLNotes.Properties;
 using LoLNotes.Readers;
 using LoLNotes.Util;
@@ -43,11 +45,13 @@ namespace LoLNotes
         static readonly string LolBansPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans");
         static readonly string LoaderFile = Path.Combine(LolBansPath, "LoLLoader.dll");
 
-        readonly LoLConnection Connection;
-        readonly GameDTOReader GameReader;
-        readonly DataContext Database;
-
         readonly Dictionary<string, Icon> IconCache;
+        readonly LoLConnection Connection;
+        readonly GameLobbyReader GameReader;
+        readonly GameStatsReader GameStatsReader;
+        readonly LoLNotesDataContext Database;
+        readonly GameRecorder Recorder;
+       
 
         public MainForm()
         {
@@ -63,14 +67,28 @@ namespace LoLNotes
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
 
             Database = new LoLNotesDataContext(new SqlCeConnection("Data Source=Notes.db"));
-            if (!Database.DatabaseExists())
+            if (!File.Exists("Notes.db") && !Database.DatabaseExists())
                 Database.CreateDatabase();
 
             Connection = new LoLConnection("lolbans");
-            GameReader = new GameDTOReader(Connection);
+            GameReader = new GameLobbyReader(Connection);
+            GameStatsReader = new GameStatsReader(Connection);
 
             Connection.Connected += Connection_Connected;
             GameReader.ObjectRead += GameReader_OnGameDTO;
+
+            Recorder = new GameRecorder(Database, Connection);
+
+            //Pipe server for testing EndOfGameStats.
+            
+            //var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            //pipe.BeginWaitForConnection(delegate(IAsyncResult ar) 
+            //{
+            //    pipe.EndWaitForConnection(ar);
+            //    var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
+            //    pipe.Write(bytes, 0, bytes.Length);
+            //}, pipe);
+            
 
             Connection.Start();
         }

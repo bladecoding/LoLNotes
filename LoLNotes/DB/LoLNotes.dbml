@@ -2,8 +2,8 @@
   <Table Name="" Member="Games">
     <Type Name="Games">
       <Column Name="GameId" Type="System.Int64" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Member="GameLength" Type="System.Int32" CanBeNull="false" />
-      <Column Name="" Member="RawData" Type="System.String" CanBeNull="false" />
+      <Column Name="GameLength" Type="System.Int32" CanBeNull="false" />
+      <Column Name="RawData" Type="System.Byte[]" DbType="image" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

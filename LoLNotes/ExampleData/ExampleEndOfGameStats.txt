@@ -1,3 +1,4 @@
+10/22/2011 23:23:08.823 [DEBUG] com.riotgames.platform.gameclient.module.services.RemoteObjectGenerator Got async message: (mx.messaging.messages::AsyncMessageExt)#0
   body = (com.riotgames.platform.gameclient.domain::EndOfGameStats)#1
     basePoints = 21
     boostIpEarned = 0
@@ -3718,4 +3719,4 @@ Point Neutralize: 40 Score"
   messageId = "6dbfb0d2-c10f-4e64-a25a-aa9fbca228ad"
   timestamp = 1319340178807
   timeToLive = 0
-
+end

@@ -93,8 +93,6 @@
     <Compile Include="GameLobby\Participants\BotParticipant.cs" />
     <Compile Include="GameLobby\GameDTO.cs" />
     <Compile Include="GameLobby\Participants\GameParticipant.cs" />
-    <Compile Include="Readers\EndReader.cs" />
-    <Compile Include="Readers\GameReader.cs" />
     <Compile Include="GameLobby\Participants\ObfuscatedParticipant.cs" />
     <Compile Include="GameLobby\Participants\Participant.cs" />
     <Compile Include="Flash\IFlashProcessor.cs" />
@@ -116,6 +114,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GameStorage.cs" />
+    <Compile Include="Flash\BaseObject.cs" />
+    <Compile Include="Flash\MessageObject.cs" />
+    <Compile Include="GameStats\GameStatsReader.cs" />
+    <Compile Include="GameLobby\GameLobbyReader.cs" />
+    <Compile Include="Readers\MessageReader.cs" />
+    <Compile Include="Util\Compression.cs" />
     <Compile Include="Util\Parse.cs" />
     <Compile Include="Flash\FlashSerializer.cs" />
     <Compile Include="GameLobby\TeamParticipants.cs" />
