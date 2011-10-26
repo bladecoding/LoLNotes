@@ -21,8 +21,10 @@ THE SOFTWARE.
  */
 
 using System;
+using LoLNotes.Flash;
+using LoLNotes.GameStats.PlayerStats;
 
-namespace LoLNotes
+namespace LoLNotes.GameStats
 {
     public class EndOfGameStats
     {

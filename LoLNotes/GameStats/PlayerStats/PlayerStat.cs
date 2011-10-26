@@ -1,3 +1,6 @@
+﻿using System.Diagnostics;
+using LoLNotes.Flash;
+
 /*
 copyright (C) 2011 by high828@gmail.com
 
@@ -21,36 +24,33 @@ THE SOFTWARE.
  */
 
 
-using System.Diagnostics;
 
-namespace LoLNotes
+namespace LoLNotes.GameStats.PlayerStats
 {
-    [DebuggerDisplay("{Name}")]
-    public class BotParticipant : GameParticipant
+    [DebuggerDisplay("{DisplayName}")]
+    public class PlayerStat
     {
-        public BotParticipant(FlashObject thebase)
-            : base(thebase)
+        protected readonly FlashObject Base;
+        public PlayerStat(FlashObject thebase)
         {
-            FlashObject.SetFields(this, thebase);
+            Base = thebase;
+
+            FlashObject.SetFields(this, Base);
         }
 
-        [InternalName("botSkillLevel")]
-        public int BotSkillLevel
-        {
-            get;
-            protected set;
-        }
-        [InternalName("botSkillLevelName")]
-        public string BotSkillLevelName
-        {
-            get;
-            protected set;
-        }
-        [InternalName("teamId")]
-        public string TeamId
-        {
-            get;
-            protected set;
-        }
+        [InternalName("displayName")]
+        public string DisplayName { get; protected set; }
+
+        [InternalName("priority")]
+        public int Priority { get; protected set; }
+
+        [InternalName("statCategory")]
+        public PlayerStatCategory Category { get; protected set; }
+
+        [InternalName("statTypeName")]
+        public string StatTypeName { get; protected set; }
+
+        [InternalName("value")]
+        public int Value { get; protected set; }
     }
 }

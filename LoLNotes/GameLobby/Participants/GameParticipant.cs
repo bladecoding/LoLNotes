@@ -21,8 +21,9 @@ THE SOFTWARE.
  */
 
 using System.Diagnostics;
+using LoLNotes.Flash;
 
-namespace LoLNotes
+namespace LoLNotes.GameLobby.Participants
 {
     [DebuggerDisplay("{Name}")]
     public class GameParticipant : Participant

@@ -1,4 +1,4 @@
-﻿/*
+/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+
 using System.Diagnostics;
+using LoLNotes.Flash;
 
-namespace LoLNotes
+namespace LoLNotes.GameLobby.Participants
 {
-    [DebuggerDisplay("{DisplayName}")]
-    public class PlayerStatCategory
+    [DebuggerDisplay("{Name}")]
+    public class BotParticipant : GameParticipant
     {
-        protected readonly FlashObject Base;
-        public PlayerStatCategory(FlashObject thebase)
+        public BotParticipant(FlashObject thebase)
+            : base(thebase)
         {
-            Base = thebase;
-
-            FlashObject.SetFields(this, Base);
+            FlashObject.SetFields(this, thebase);
         }
 
-        [InternalName("displayName")]
-        public string DisplayName { get; protected set; }
-
-        [InternalName("name")]
-        public string Name { get; protected set; }
-
-        [InternalName("priority")]
-        public int Priority { get; protected set; }
-
+        [InternalName("botSkillLevel")]
+        public int BotSkillLevel
+        {
+            get;
+            protected set;
+        }
+        [InternalName("botSkillLevelName")]
+        public string BotSkillLevelName
+        {
+            get;
+            protected set;
+        }
+        [InternalName("teamId")]
+        public string TeamId
+        {
+            get;
+            protected set;
+        }
     }
 }

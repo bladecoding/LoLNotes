@@ -20,26 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-using System;
-using System.Diagnostics;
+using LoLNotes.Flash;
 
-namespace LoLNotes
+namespace LoLNotes.GameLobby.Participants
 {
-    [DebuggerDisplay("{Name}")]
-    public class PlayerParticipant : GameParticipant
+    public class Participant
     {
-        public PlayerParticipant(FlashObject thebase)
-            : base(thebase)
+        protected readonly FlashObject Base;
+        public Participant(FlashObject thebase)
         {
+            Base = thebase;
+            FlashObject.SetFields(this, thebase);
         }
-
-        public int ProfileIconId
+        [InternalName("pickMode")]
+        public int PickMode
         {
-            get { return Parse.Int(Base["ProfileIconId"].Value); }
-        }
-        public int Id
-        {
-            get { return Parse.Int(Base["summonerId"].Value); }
+            get;
+            protected set;
         }
     }
 }

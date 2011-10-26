@@ -21,8 +21,9 @@ THE SOFTWARE.
  */
 
 using System;
+using LoLNotes.Flash;
 
-namespace LoLNotes
+namespace LoLNotes.GameLobby
 {
     public class GameDTO
     {

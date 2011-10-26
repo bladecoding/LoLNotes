@@ -28,7 +28,7 @@ using System.IO.Streams;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace LoLNotes
+namespace LoLNotes.Flash
 {
     public class FlashSerializer
     {

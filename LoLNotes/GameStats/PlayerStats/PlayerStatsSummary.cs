@@ -22,8 +22,9 @@ THE SOFTWARE.
 
 using System;
 using System.Diagnostics;
+using LoLNotes.Flash;
 
-namespace LoLNotes
+namespace LoLNotes.GameStats.PlayerStats
 {
     [DebuggerDisplay("{SummonerName}")]
     public class PlayerStatsSummary

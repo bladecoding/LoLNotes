@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,21 +20,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-namespace LoLNotes
+
+using System.Collections.Generic;
+using LoLNotes.Flash;
+
+namespace LoLNotes.GameStats.PlayerStats
 {
-    public class Participant
+    public class PlayerStatList : List<PlayerStat>
     {
         protected readonly FlashObject Base;
-        public Participant(FlashObject thebase)
+        public PlayerStatList(FlashObject thebase)
         {
             Base = thebase;
-            FlashObject.SetFields(this, thebase);
-        }
-        [InternalName("pickMode")]
-        public int PickMode
-        {
-            get;
-            protected set;
+
+            if (Base == null)
+                return;
+
+            var array = Base["list"]["source"];
+            foreach (var field in array.Fields)
+            {
+                Add(new PlayerStat(field));
+            }
         }
     }
 }

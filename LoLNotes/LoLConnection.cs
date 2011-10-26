@@ -26,6 +26,7 @@ using System.IO.Pipes;
 using System.IO.Streams;
 using System.Text.RegularExpressions;
 using System.Threading;
+using LoLNotes.Flash;
 
 namespace LoLNotes
 {

@@ -20,25 +20,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-using System;
+
 using System.Collections.Generic;
+using LoLNotes.Flash;
 
-namespace LoLNotes
+namespace LoLNotes.GameStats.PlayerStats
 {
-    public class GameItems : List<int>
-    {
+    public class PlayerStatsSummaryList : List<PlayerStatsSummary>
+    {   
         protected readonly FlashObject Base;
-
-        public GameItems(FlashObject body)
+        public PlayerStatsSummaryList(FlashObject thebase)
         {
-            if (body == null)
-                throw new ArgumentNullException("body");
+            Base = thebase;
 
-            Base = body;
+            if (Base == null)
+                return;
 
             var array = Base["list"]["source"];
             foreach (var field in array.Fields)
-                Add(Parse.Int(field.Value));
+            {
+                Add(new PlayerStatsSummary(field));
+            }
         }
     }
 }

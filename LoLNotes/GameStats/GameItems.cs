@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,34 +20,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System;
+using System.Collections.Generic;
+using LoLNotes.Flash;
+using LoLNotes.Util;
 
-
-namespace LoLNotes
+namespace LoLNotes.GameStats
 {
-    [DebuggerDisplay("{DisplayName}")]
-    public class PlayerStat
+    public class GameItems : List<int>
     {
         protected readonly FlashObject Base;
-        public PlayerStat(FlashObject thebase)
+
+        public GameItems(FlashObject body)
         {
-            Base = thebase;
+            if (body == null)
+                throw new ArgumentNullException("body");
 
-            FlashObject.SetFields(this, Base);
+            Base = body;
+
+            var array = Base["list"]["source"];
+            foreach (var field in array.Fields)
+                Add(Parse.Int(field.Value));
         }
-
-        [InternalName("displayName")]
-        public string DisplayName { get; protected set; }
-
-        [InternalName("priority")]
-        public int Priority { get; protected set; }
-
-        [InternalName("statCategory")]
-        public PlayerStatCategory Category { get; protected set; }
-
-        [InternalName("statTypeName")]
-        public string StatTypeName { get; protected set; }
-
-        [InternalName("value")]
-        public int Value { get; protected set; }
     }
 }

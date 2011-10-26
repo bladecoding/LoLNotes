@@ -29,9 +29,9 @@ namespace LoLNotes.DB
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertClass1(Class1 instance);
-    partial void UpdateClass1(Class1 instance);
-    partial void DeleteClass1(Class1 instance);
+    partial void InsertGames(Games instance);
+    partial void UpdateGames(Games instance);
+    partial void DeleteGames(Games instance);
     #endregion
 		
 		public LoLNotesDataContext(string connection) : 
@@ -58,22 +58,26 @@ namespace LoLNotes.DB
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Class1> Class1s
+		public System.Data.Linq.Table<Games> Games
 		{
 			get
 			{
-				return this.GetTable<Class1>();
+				return this.GetTable<Games>();
 			}
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="")]
-	public partial class Class1 : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Games : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private long _GameId;
+		
+		private int _GameLength;
+		
+		private string _RawData;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -81,9 +85,13 @@ namespace LoLNotes.DB
     partial void OnCreated();
     partial void OnGameIdChanging(long value);
     partial void OnGameIdChanged();
+    partial void OnGameLengthChanging(int value);
+    partial void OnGameLengthChanged();
+    partial void OnRawDataChanging(string value);
+    partial void OnRawDataChanged();
     #endregion
 		
-		public Class1()
+		public Games()
 		{
 			OnCreated();
 		}
@@ -104,6 +112,46 @@ namespace LoLNotes.DB
 					this._GameId = value;
 					this.SendPropertyChanged("GameId");
 					this.OnGameIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GameLength")]
+		public int GameLength
+		{
+			get
+			{
+				return this._GameLength;
+			}
+			set
+			{
+				if ((this._GameLength != value))
+				{
+					this.OnGameLengthChanging(value);
+					this.SendPropertyChanging();
+					this._GameLength = value;
+					this.SendPropertyChanged("GameLength");
+					this.OnGameLengthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="", Storage="_RawData", CanBeNull=false)]
+		public string RawData
+		{
+			get
+			{
+				return this._RawData;
+			}
+			set
+			{
+				if ((this._RawData != value))
+				{
+					this.OnRawDataChanging(value);
+					this.SendPropertyChanging();
+					this._RawData = value;
+					this.SendPropertyChanged("RawData");
+					this.OnRawDataChanged();
 				}
 			}
 		}

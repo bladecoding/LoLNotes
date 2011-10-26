@@ -82,21 +82,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LoLNotes.dbml</DependentUpon>
     </Compile>
-    <Compile Include="EndOfGameStats\EndOfGameStats.cs" />
-    <Compile Include="EndOfGameStats\GameItems.cs" />
-    <Compile Include="EndOfGameStats\PlayerStatsSummary.cs" />
-    <Compile Include="EndOfGameStats\PlayerStatsSummaryList.cs" />
-    <Compile Include="EndOfGameStats\PlayerStat.cs" />
-    <Compile Include="EndOfGameStats\PlayerStatCategory.cs" />
-    <Compile Include="EndOfGameStats\PlayerStatList.cs" />
+    <Compile Include="GameStats\EndOfGameStats.cs" />
+    <Compile Include="GameStats\GameItems.cs" />
+    <Compile Include="GameStats\PlayerStats\PlayerStatsSummary.cs" />
+    <Compile Include="GameStats\PlayerStats\PlayerStatsSummaryList.cs" />
+    <Compile Include="GameStats\PlayerStats\PlayerStat.cs" />
+    <Compile Include="GameStats\PlayerStats\PlayerStatCategory.cs" />
+    <Compile Include="GameStats\PlayerStats\PlayerStatList.cs" />
     <Compile Include="Flash\FlashObject.cs" />
-    <Compile Include="GameDTO\BotParticipant.cs" />
-    <Compile Include="GameDTO\GameDTO.cs" />
-    <Compile Include="GameDTO\GameParticipant.cs" />
+    <Compile Include="GameLobby\Participants\BotParticipant.cs" />
+    <Compile Include="GameLobby\GameDTO.cs" />
+    <Compile Include="GameLobby\Participants\GameParticipant.cs" />
     <Compile Include="Readers\EndReader.cs" />
     <Compile Include="Readers\GameReader.cs" />
-    <Compile Include="GameDTO\ObfuscatedParticipant.cs" />
-    <Compile Include="GameDTO\Participant.cs" />
+    <Compile Include="GameLobby\Participants\ObfuscatedParticipant.cs" />
+    <Compile Include="GameLobby\Participants\Participant.cs" />
     <Compile Include="Flash\IFlashProcessor.cs" />
     <Compile Include="InternalNameAttribute.cs" />
     <Compile Include="ItemData.cs" />
@@ -107,7 +107,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameDTO\PlayerParticipant.cs" />
+    <Compile Include="GameLobby\Participants\PlayerParticipant.cs" />
     <Compile Include="Controls\PlayerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -116,11 +116,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Parse.cs" />
+    <Compile Include="Util\Parse.cs" />
     <Compile Include="Flash\FlashSerializer.cs" />
-    <Compile Include="GameDTO\TeamParticipants.cs" />
+    <Compile Include="GameLobby\TeamParticipants.cs" />
     <Compile Include="Readers\IObjectReader.cs" />
-    <Compile Include="Wow.cs" />
+    <Compile Include="Util\Wow.cs" />
     <EmbeddedResource Include="Controls\TeamControl.resx">
       <DependentUpon>TeamControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -191,7 +191,7 @@
     <None Include="Resources\LolLoader.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ExampleEndOfGameStats.txt">
+    <Content Include="ExampleData\ExampleEndOfGameStats.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\circle_green.png" />

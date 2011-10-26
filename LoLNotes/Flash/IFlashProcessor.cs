@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-namespace LoLNotes
+namespace LoLNotes.Flash
 {
     public delegate void ProcessObjectD(FlashObject obj);
     public delegate void ProcessLineD(string line);

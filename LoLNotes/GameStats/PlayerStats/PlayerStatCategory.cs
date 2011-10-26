@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,43 +20,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using LoLNotes.Flash;
 
-namespace LoLNotes
+namespace LoLNotes.GameStats.PlayerStats
 {
-    [DebuggerDisplay("Count: {Count}")]
-    public class TeamParticipants : List<Participant>
+    [DebuggerDisplay("{DisplayName}")]
+    public class PlayerStatCategory
     {
         protected readonly FlashObject Base;
-        public TeamParticipants(FlashObject thebase)
+        public PlayerStatCategory(FlashObject thebase)
         {
             Base = thebase;
 
-            if (Base == null)
-                return;
-
-            var array = Base["list"]["source"];
-            foreach (var field in array.Fields)
-            {
-                if (field.Value.Contains("PlayerParticipant"))
-                {
-                    Add(new PlayerParticipant(field));
-                }
-                else if (field.Value.Contains("ObfuscatedParticipant"))
-                {
-                    Add(new ObfuscatedParticipant(field));
-                }
-                else if (field.Value.Contains("BotParticipant"))
-                {
-                    Add(new BotParticipant(field));
-                }
-                else
-                {
-                    throw new NotSupportedException("Unexcepted type in team array " + field.Value);
-                }
-            }
+            FlashObject.SetFields(this, Base);
         }
+
+        [InternalName("displayName")]
+        public string DisplayName { get; protected set; }
+
+        [InternalName("name")]
+        public string Name { get; protected set; }
+
+        [InternalName("priority")]
+        public int Priority { get; protected set; }
+
     }
 }

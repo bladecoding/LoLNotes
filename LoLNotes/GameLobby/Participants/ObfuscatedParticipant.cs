@@ -1,5 +1,3 @@
-﻿using System;
-
 /*
 copyright (C) 2011 by high828@gmail.com
 
@@ -22,29 +20,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-namespace LoLNotes
+using System.Diagnostics;
+using LoLNotes.Flash;
+
+namespace LoLNotes.GameLobby.Participants
 {
-    //Using these methods for the exceptions
-    public static class Parse
+    [DebuggerDisplay("Id: {GameUniqueId}")]
+    public class ObfuscatedParticipant : Participant
     {
-        public static int Int(string str)
+        public ObfuscatedParticipant(FlashObject thebase)
+            : base(thebase)
         {
-            if (str == "NaN")
-                return 0;
-
-            int ret;
-            if (int.TryParse(str, out ret))
-                return ret;
-
-            throw new FormatException(string.Format("Expected {0} got {1}", ret.GetType(), str));
+            FlashObject.SetFields(this, thebase);
         }
-        public static bool Bool(string str)
-        {
-            bool ret;
-            if (bool.TryParse(str, out ret))
-                return ret;
 
-            throw new FormatException(string.Format("Expected {0} got {1}", ret.GetType(), str));
+        [InternalName("gameUniqueId")]
+        public int GameUniqueId
+        {
+            get;
+            protected set;
         }
     }
 }

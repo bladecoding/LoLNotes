@@ -28,7 +28,7 @@ using System.Security.Principal;
 using System.Text;
 using Microsoft.Win32;
 
-namespace LoLNotes
+namespace LoLNotes.Util
 {
     public static class Wow
     {

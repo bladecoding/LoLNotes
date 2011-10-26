@@ -30,8 +30,11 @@ using System.Windows.Forms;
 using System.Linq;
 using LoLNotes.Controls;
 using LoLNotes.DB;
+using LoLNotes.GameLobby;
+using LoLNotes.GameLobby.Participants;
 using LoLNotes.Properties;
 using LoLNotes.Readers;
+using LoLNotes.Util;
 
 namespace LoLNotes
 {

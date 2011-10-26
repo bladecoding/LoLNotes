@@ -1,4 +1,4 @@
-﻿/*
+/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,15 +20,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using LoLNotes.Flash;
+using LoLNotes.GameLobby.Participants;
 
-namespace LoLNotes
+namespace LoLNotes.GameLobby
 {
-    public class PlayerStatsSummaryList : List<PlayerStatsSummary>
-    {   
+    [DebuggerDisplay("Count: {Count}")]
+    public class TeamParticipants : List<Participant>
+    {
         protected readonly FlashObject Base;
-        public PlayerStatsSummaryList(FlashObject thebase)
+        public TeamParticipants(FlashObject thebase)
         {
             Base = thebase;
 
@@ -38,7 +42,22 @@ namespace LoLNotes
             var array = Base["list"]["source"];
             foreach (var field in array.Fields)
             {
-                Add(new PlayerStatsSummary(field));
+                if (field.Value.Contains("PlayerParticipant"))
+                {
+                    Add(new PlayerParticipant(field));
+                }
+                else if (field.Value.Contains("ObfuscatedParticipant"))
+                {
+                    Add(new ObfuscatedParticipant(field));
+                }
+                else if (field.Value.Contains("BotParticipant"))
+                {
+                    Add(new BotParticipant(field));
+                }
+                else
+                {
+                    throw new NotSupportedException("Unexcepted type in team array " + field.Value);
+                }
             }
         }
     }
