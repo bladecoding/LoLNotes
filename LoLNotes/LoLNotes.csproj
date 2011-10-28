@@ -113,12 +113,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -132,6 +129,7 @@
       <DependentUpon>TeamControl.cs</DependentUpon>
     </Compile>
     <Compile Include="DB\DbWrap.cs" />
+    <Compile Include="GameStats\PlayerEntry.cs" />
     <Compile Include="GameStats\EndOfGameStats.cs" />
     <Compile Include="GameStats\GameItems.cs" />
     <Compile Include="GameStats\PlayerStats\PlayerStatsSummary.cs" />

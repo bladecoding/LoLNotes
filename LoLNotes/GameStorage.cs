@@ -1,11 +1,10 @@
-﻿using System;
-using System.Data;
-using System.Data.Linq;
-using System.Linq;
+﻿using System.Linq;
 using LoLNotes.DB;
 using LoLNotes.Flash;
 using LoLNotes.GameLobby;
+using LoLNotes.GameStats.PlayerStats;
 using Raven.Client.Document;
+using Raven.Client.Indexes;
 
 namespace LoLNotes.GameStats
 {
@@ -26,6 +25,14 @@ namespace LoLNotes.GameStats
 
             StatsReader.ObjectRead += StatsReader_ObjectRead;
             LobbyReader.ObjectRead += LobbyReader_ObjectRead;
+
+            if (store.DatabaseCommands.GetIndex("PlayerStatsIndex") == null)
+            {
+                store.DatabaseCommands.PutIndex("PlayerStatsIndex", new IndexDefinitionBuilder<EndOfGameStats>
+                {
+                    Map = endstats => from stat in (from end in endstats select end).First().OtherTeamPlayerStats select stat
+                });
+            }
         }
 
         void LobbyReader_ObjectRead(GameDTO obj)
@@ -56,14 +63,14 @@ namespace LoLNotes.GameStats
                 if (match != null)
                 {
                     //If the object read is older than don't bother adding it.
-                    if (obj.TimeStamp <= match.Obj.TimeStamp)
-                        return;
-                    match.Obj = obj;
+                    if (obj.TimeStamp > match.Obj.TimeStamp)
+                        match.Obj = obj;
                 }
                 else
                 {
                     sess.Store(new DbWrap<EndOfGameStats>(obj));
                 }
+
                 sess.SaveChanges();
             }
         }

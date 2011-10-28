@@ -50,13 +50,15 @@ namespace LoLNotes
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.NameLabel = new System.Windows.Forms.Label();
+            this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DescLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // NameLabel
             // 
-            this.NameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.NameLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.NameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NameLabel.Location = new System.Drawing.Point(10, 10);
             this.NameLabel.Name = "NameLabel";
@@ -66,18 +68,18 @@ namespace LoLNotes
             // 
             // DescLabel
             // 
-            this.DescLabel.BackColor = System.Drawing.Color.Transparent;
+            this.DescLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.DescLabel.Location = new System.Drawing.Point(15, 30);
             this.DescLabel.Name = "DescLabel";
             this.DescLabel.Size = new System.Drawing.Size(175, 80);
             this.DescLabel.TabIndex = 1;
-            this.DescLabel.Text = "Description";
+            this.DescLabel.Text = "Wins: \r\nLosses:\r\nLeaves:\r\nLevel:";
             // 
             // PlayerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Transparent;
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Controls.Add(this.DescLabel);
             this.Controls.Add(this.NameLabel);
             this.Name = "PlayerControl";
@@ -89,6 +91,7 @@ namespace LoLNotes
         #endregion
 
         private System.Windows.Forms.Label NameLabel;
+        private System.Windows.Forms.ToolTip ToolTip;
         private System.Windows.Forms.Label DescLabel;
     }
 }

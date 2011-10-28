@@ -22,25 +22,22 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Linq;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
-using System.Text;
 using System.Windows.Forms;
 using System.Linq;
 using LoLNotes.Controls;
 using LoLNotes.GameLobby;
 using LoLNotes.GameLobby.Participants;
 using LoLNotes.GameStats;
+using LoLNotes.GameStats.PlayerStats;
 using LoLNotes.Properties;
-using LoLNotes.Readers;
 using LoLNotes.Util;
-using Raven.Abstractions.Indexing;
 using Raven.Client.Document;
 using Raven.Client.Embedded;
-using Raven.Client.Indexes;
+using Raven.Munin;
 
 namespace LoLNotes
 {
@@ -56,14 +53,6 @@ namespace LoLNotes
         readonly DocumentStore Store;
         readonly GameRecorder Recorder;
 
-
-
-        public class Person
-        {
-            public string Name;
-            public int Age;
-        }
-
         public MainForm()
         {
             InitializeComponent();
@@ -78,7 +67,7 @@ namespace LoLNotes
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
 
 
-            Store = new EmbeddableDocumentStore 
+            Store = new EmbeddableDocumentStore
             {
                 DataDirectory = "data"
             };
@@ -93,15 +82,20 @@ namespace LoLNotes
 
             Recorder = new GameRecorder(Store, Connection);
 
+            using (var sess = Store.OpenSession())
+            {
+                sess.Query<EndOfGameStats>().FirstOrDefault();
+            }
+
             //Pipe server for testing EndOfGameStats.
 
-            var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-            pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
-            {
-                pipe.EndWaitForConnection(ar);
-                var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
-                pipe.Write(bytes, 0, bytes.Length);
-            }, pipe);
+            //var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            //pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
+            //{
+            //    pipe.EndWaitForConnection(ar);
+            //    var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
+            //    pipe.Write(bytes, 0, bytes.Length);
+            //}, pipe);
 
 
             Connection.Start();
@@ -117,8 +111,21 @@ namespace LoLNotes
             Icon = Connection.IsConnected ? IconCache["Green"] : IconCache["Yellow"];
         }
 
+
+        int CurrentGame = 0;
+        readonly List<PlayerStatsSummary> PlayerCache = new List<PlayerStatsSummary>();
+
         void GameReader_OnGameDTO(GameDTO game)
         {
+            //Clear the player cache when the game changes
+            lock (PlayerCache)
+            {
+                if (game.Id != CurrentGame)
+                {
+                    CurrentGame = game.Id;
+                    PlayerCache.Clear();
+                }
+            }
             UpdateLists(new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
         }
 
@@ -134,36 +141,53 @@ namespace LoLNotes
 
             for (int i = 0; i < lists.Count; i++)
             {
-                if (teams[i] == null)
+                var list = lists[i];
+                var team = teams[i];
+
+                if (team == null)
                 {
-                    lists[i].Visible = false;
+                    list.Visible = false;
                     continue;
                 }
 
-                for (int o = 0; o < lists[i].Players.Count; o++)
+                for (int o = 0; o < list.Players.Count; o++)
                 {
-                    if (o < teams[i].Count)
+                    if (o < team.Count)
                     {
-                        if (teams[i][o] is ObfuscatedParticipant)
+                        var ply = team[o] as PlayerParticipant;
+
+                        if (ply != null)
                         {
-                            lists[i].Players[o].SummonerName = string.Format(
-                                "Summoner {0}",
-                                ((ObfuscatedParticipant)teams[i][o]).GameUniqueId
-                            );
+                            using (var sess = Store.OpenSession())
+                            {
+
+                                Stopwatch sw = Stopwatch.StartNew();
+                                var game = sess.Query<EndOfGameStats>().
+                                    Where(
+                                        e =>
+                                        e.TeamPlayerStats.Any(p => p.UserId == ply.Id) ||
+                                        e.OtherTeamPlayerStats.Any(p => p.UserId == ply.Id)).
+                                    OrderByDescending(e => e.TimeStamp).
+                                    FirstOrDefault();
+                                sw.Stop();
+                                Debug.WriteLine("Player query in {0}ms", sw.ElapsedMilliseconds);
+
+                                if (game != null)
+                                {
+                                    var stats = game.TeamPlayerStats.Union(game.OtherTeamPlayerStats).
+                                        FirstOrDefault(p => p.UserId == ply.Id);
+                                    list.Players[o].SetData(stats);
+                                    list.Players[o].Visible = true;
+                                    continue;
+                                }
+                            }
                         }
-                        else if (teams[i][o] is GameParticipant)
-                        {
-                            lists[i].Players[o].SummonerName = ((GameParticipant)teams[i][o]).Name;
-                        }
-                        else
-                        {
-                            lists[i].Players[o].SummonerName = "Unknown";
-                        }
-                        lists[i].Players[o].Visible = true;
+                        list.Players[o].SetData(team[o]);
+                        list.Players[o].Visible = true;
                     }
                     else
                     {
-                        lists[i].Players[o].Visible = false;
+                        list.Players[o].Visible = false;
                     }
                 }
             }

@@ -20,19 +20,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using LoLNotes.GameLobby.Participants;
+using LoLNotes.GameStats.PlayerStats;
 
 namespace LoLNotes
 {
     public partial class PlayerControl : UserControl
     {
+        
         public PlayerControl()
         {
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.UserPaint, true);
             InitializeComponent();
+
+            SetDescription("");
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -41,37 +47,58 @@ namespace LoLNotes
             e.Graphics.DrawRectangle(new Pen(Color.Green, 5), 0, 0, Width, Height);
         }
 
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        [Browsable(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        [Bindable(true)]
-        public string SummonerName
+        void SetSummonerName(string str)
         {
-            get
+            if (NameLabel.InvokeRequired)
             {
-                return NameLabel.Text;
+                NameLabel.Invoke(new Action<string>(SetSummonerName), str);
+                return;
             }
-            set
-            {
-                NameLabel.Text = value;
-            }
+            NameLabel.Text = str;
         }
 
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        [Browsable(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        [Bindable(true)]
-        public string Description
+
+        void SetDescription(string str)
         {
-            get
+            if (DescLabel.InvokeRequired)
             {
-                return DescLabel.Text;
+                DescLabel.Invoke(new Action<string>(SetDescription), str);
+                return;
             }
-            set
-            {
-                DescLabel.Text = value;
-            }
+            DescLabel.Text = str;
         }
 
+        const string DescriptionFormat = "Level: {0}\nWins: {1}\nLosses: {2}\nLeaves: {3}";
+        void SetDescription(int level, int wins, int losses, int leaves)
+        {
+            SetDescription(string.Format(DescriptionFormat, level, wins, losses, leaves));
+        }
+
+        public void SetData(PlayerStatsSummary stats)
+        {
+            SetSummonerName(stats.SummonerName);
+            SetDescription(stats.Level, stats.Wins, stats.Losses, stats.Leaves);
+        }
+        public void SetData(Participant part)
+        {
+            var opart = part as ObfuscatedParticipant;
+            var gpart = part as GameParticipant;
+            if (gpart != null)
+            {
+                SetSummonerName(gpart.Name);
+                if (gpart is PlayerParticipant)
+                    SetDescription("First game together.");
+            }
+            else if (opart != null)
+            {
+                SetSummonerName("Summoner " + opart.GameUniqueId);
+                SetDescription("");
+            }
+            else
+            {
+                SetSummonerName("Unknown");
+                SetDescription("");
+            }
+        }
     }
 }
