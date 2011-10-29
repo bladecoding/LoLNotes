@@ -454,17 +454,73 @@
                        <paramref name="count" /> is less than 0, or <paramref name="count" /> + <paramref name="offset" /> is greater than the length of the <paramref name="bytes" /> array.
                        </exception>
         </member>
-        <member name="T:System.EventHandler`1">
+        <member name="M:TShockAPI.DB.DbExt.Query(System.Data.IDbConnection,System.String,System.Object[])">
             <summary>
-            Generic event handler delegate
+            Executes a query on a database.
             </summary>
-            <typeparam name="T">EventArg Type</typeparam>
-            <param name="sender">Sender</param>
-            <param name="e">EventArgs</param>
+            <param name="olddb">Database to query</param>
+            <param name="query">Query string with parameters as @0, @1, etc.</param>
+            <param name="args">Parameters to be put in the query</param>
+            <returns>Rows affected by query</returns>
+        </member>
+        <member name="M:TShockAPI.DB.DbExt.QueryReader(System.Data.IDbConnection,System.String,System.Object[])">
+            <summary>
+            Executes a query on a database.
+            </summary>
+            <param name="olddb">Database to query</param>
+            <param name="query">Query string with parameters as @0, @1, etc.</param>
+            <param name="args">Parameters to be put in the query</param>
+            <returns>Query result as IDataReader</returns>
+        </member>
+        <member name="T:NotMissing.Logging.StaticLogger">
+            <summary>
+            Static methods for accessing Logger.Instance
+            </summary>
         </member>
         <member name="T:MIL.Html.HtmlEncoder">
             <summary>
             HTML 4 Entity coding routines
+            </summary>
+        </member>
+        <member name="M:TShockAPI.DB.IQueryBuilder.CreateTableQuery(TShockAPI.DB.SqlTable)">
+            <summary>
+            Construct sql query and return the string
+            </summary>
+            <param name="table">Table to constructor the query with</param>
+            <returns>Sql query</returns>
+        </member>
+        <member name="M:TShockAPI.DB.IQueryBuilder.CreateTable(TShockAPI.DB.SqlTable)">
+            <summary>
+            Create the table or if it exists make sure the columns match. If they do not match it will alter the table.
+            </summary>
+            <param name="table">Table to create/alter</param>
+        </member>
+        <member name="M:TShockAPI.DB.IQueryBuilder.GetColumns(TShockAPI.DB.SqlTable)">
+            <summary>
+            Gets the columns from the table specified.
+            </summary>
+            <param name="table">Table to get the columns from. Only Table.Name is required.</param>
+            <returns>List of columns</returns>
+        </member>
+        <member name="M:TShockAPI.DB.SqliteQueryCreator.AlterTableQuery(TShockAPI.DB.SqlTable,TShockAPI.DB.SqlTable)">
+            <summary>
+            Alter a table from source to destination
+            </summary>
+            <param name="from">Must have name and column names. Column types are not required</param>
+            <param name="to">Must have column names and column types.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TShockAPI.DB.SqliteQueryCreator.CompareColumns(TShockAPI.DB.SqlTable,System.Collections.Generic.List{TShockAPI.DB.SqlColumn})">
+            <summary>
+            
+            </summary>
+            <param name="table"></param>
+            <param name="columns"></param>
+            <returns>True if the columns match, otherwise false</returns>
+        </member>
+        <member name="P:TShockAPI.DB.SqlColumn.Length">
+            <summary>
+            Length of the data type, null = default
             </summary>
         </member>
         <member name="T:MIL.Html.HtmlParser">
@@ -884,65 +940,6 @@
             <summary>
             This will return the XHTML for this element and all subnodes.
             </summary>
-        </member>
-        <member name="M:TShockAPI.DB.DbExt.Query(System.Data.IDbConnection,System.String,System.Object[])">
-            <summary>
-            Executes a query on a database.
-            </summary>
-            <param name="olddb">Database to query</param>
-            <param name="query">Query string with parameters as @0, @1, etc.</param>
-            <param name="args">Parameters to be put in the query</param>
-            <returns>Rows affected by query</returns>
-        </member>
-        <member name="M:TShockAPI.DB.DbExt.QueryReader(System.Data.IDbConnection,System.String,System.Object[])">
-            <summary>
-            Executes a query on a database.
-            </summary>
-            <param name="olddb">Database to query</param>
-            <param name="query">Query string with parameters as @0, @1, etc.</param>
-            <param name="args">Parameters to be put in the query</param>
-            <returns>Query result as IDataReader</returns>
-        </member>
-        <member name="P:TShockAPI.DB.SqlColumn.Length">
-            <summary>
-            Length of the data type, null = default
-            </summary>
-        </member>
-        <member name="M:TShockAPI.DB.IQueryBuilder.CreateTableQuery(TShockAPI.DB.SqlTable)">
-            <summary>
-            Construct sql query and return the string
-            </summary>
-            <param name="table">Table to constructor the query with</param>
-            <returns>Sql query</returns>
-        </member>
-        <member name="M:TShockAPI.DB.IQueryBuilder.CreateTable(TShockAPI.DB.SqlTable)">
-            <summary>
-            Create the table or if it exists make sure the columns match. If they do not match it will alter the table.
-            </summary>
-            <param name="table">Table to create/alter</param>
-        </member>
-        <member name="M:TShockAPI.DB.IQueryBuilder.GetColumns(TShockAPI.DB.SqlTable)">
-            <summary>
-            Gets the columns from the table specified.
-            </summary>
-            <param name="table">Table to get the columns from. Only Table.Name is required.</param>
-            <returns>List of columns</returns>
-        </member>
-        <member name="M:TShockAPI.DB.SqliteQueryCreator.AlterTableQuery(TShockAPI.DB.SqlTable,TShockAPI.DB.SqlTable)">
-            <summary>
-            Alter a table from source to destination
-            </summary>
-            <param name="from">Must have name and column names. Column types are not required</param>
-            <param name="to">Must have column names and column types.</param>
-            <returns></returns>
-        </member>
-        <member name="M:TShockAPI.DB.SqliteQueryCreator.CompareColumns(TShockAPI.DB.SqlTable,System.Collections.Generic.List{TShockAPI.DB.SqlColumn})">
-            <summary>
-            
-            </summary>
-            <param name="table"></param>
-            <param name="columns"></param>
-            <returns>True if the columns match, otherwise false</returns>
         </member>
     </members>
 </doc>
