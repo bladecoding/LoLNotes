@@ -37,6 +37,10 @@ namespace LoLNotes
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            if (disposing && (Connection != null))
+            {
+                Connection.Dispose();
+            }
             if (disposing && (Database != null))
             {
                 Database.Dispose();

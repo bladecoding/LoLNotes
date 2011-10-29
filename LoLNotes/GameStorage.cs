@@ -79,10 +79,9 @@ namespace LoLNotes.GameStats
                 if (match != null)
                 {
                     //If the object read is older then don't bother adding it.
-                    if (game.TimeStamp <= match.Obj.TimeStamp)
-                        return;
-
-                    match.Obj = game;
+                    //However it may have new player information so don't return.
+                    if (game.TimeStamp > match.Obj.TimeStamp)
+                        match.Obj = game;
                 }
                 else
                 {
@@ -90,22 +89,24 @@ namespace LoLNotes.GameStats
                     Database.Store(match);
                 }
 
-                foreach (var stats in game.TeamPlayerStats.Union(game.OtherTeamPlayerStats))
+                var statslist = game.TeamPlayerStats.Union(game.OtherTeamPlayerStats).ToList();
+                for (int i = 0; i < statslist.Count; i++)
                 {
                     var entry = Database.Query<DbWrap<PlayerEntry>>().
-                        FirstOrDefault(p => p.Obj.GameType == game.GameType && p.Obj.Id == stats.UserId);
+                        FirstOrDefault(p => p.Obj.Id == statslist[i].UserId);
 
                     if (entry != null)
                     {
-                        if (game.TimeStamp <= entry.Obj.TimeStamp)
-                            continue;
-                        entry.Obj = new PlayerEntry(game, stats);
+                        //Checking that stats age is done inside UpdateStats
+                        //otherwise you would be searching for gamemode/gametype twice.
+                        entry.Obj.UpdateStats(game, statslist[i]);
                     }
                     else
                     {
-                        entry = new DbWrap<PlayerEntry>(new PlayerEntry(game, stats));
+                        entry = new DbWrap<PlayerEntry>(new PlayerEntry(game, statslist[i]));
                         Database.Store(entry);
                     }
+                    
                 }
 
                 Database.Commit();

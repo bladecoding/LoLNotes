@@ -160,6 +160,9 @@ namespace LoLNotes
             if (disposing)
             {
                 RecvThread = null;
+                ProcessObject = null;
+                ProcessLine = null;
+                Connected = null;
             }
         }
         ~LoLConnection()

@@ -29,6 +29,7 @@ using System.IO.Pipes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
+using Db4objects.Db4o.Config;
 using Db4objects.Db4o.Internal.Config;
 using LoLNotes.Controls;
 using LoLNotes.GameLobby;
@@ -55,7 +56,6 @@ namespace LoLNotes
         readonly GameRecorder Recorder;
 
 
-
         public MainForm()
         {
             InitializeComponent();
@@ -71,7 +71,16 @@ namespace LoLNotes
 
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
 
-            Database = Db4oEmbedded.OpenFile("db.yap");
+            //TODO: Find a better way than this.
+            var config = Db4oEmbedded.NewConfiguration();
+            config.Common.ObjectClass(typeof(PlayerEntry)).CascadeOnUpdate(true);
+            config.Common.ObjectClass(typeof(PlayerEntry)).CascadeOnActivate(true);
+            config.Common.ObjectClass(typeof(PlayerEntry)).CascadeOnDelete(true);
+            config.Common.ObjectClass(typeof(StatsEntry)).CascadeOnUpdate(true);
+            config.Common.ObjectClass(typeof(StatsEntry)).CascadeOnActivate(true);
+            config.Common.ObjectClass(typeof(StatsEntry)).CascadeOnDelete(true);
+
+            Database = Db4oEmbedded.OpenFile(config, "db.yap");
 
             Connection = new LoLConnection("lolbans");
             LobbyReader = new GameLobbyReader(Connection);
@@ -81,15 +90,17 @@ namespace LoLNotes
             Connection.Connected += Connection_Connected;
             LobbyReader.ObjectRead += GameReader_OnGameDTO;
 
-            //Pipe server for testing EndOfGameStats.
+            //Pipe server for testing EndOfGameStats/GameDTO.
 
-            //var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-            //pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
-            //{
-            //    pipe.EndWaitForConnection(ar);
-            //    var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
-            //    pipe.Write(bytes, 0, bytes.Length);
-            //}, pipe);
+            var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
+            {
+                pipe.EndWaitForConnection(ar);
+                var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
+                pipe.Write(bytes, 0, bytes.Length);
+                bytes = File.ReadAllBytes("ExampleData\\ExampleGameDTO.txt");
+                pipe.Write(bytes, 0, bytes.Length);
+            }, pipe);
 
             Connection.Start();
 
@@ -99,8 +110,9 @@ namespace LoLNotes
         void OnLog(Levels level, object obj)
         {
             object log = string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", level.ToString().ToUpper(), obj, DateTime.UtcNow);
+            Debug.WriteLine(log);
             Task.Factory.StartNew(LogToFile, log);
-            AddLogToList(log);
+            Task.Factory.StartNew(AddLogToList, log);
         }
 
         void AddLogToList(object obj)
@@ -174,7 +186,7 @@ namespace LoLNotes
                             Stopwatch sw = Stopwatch.StartNew();
 
                             var entry = Database.Query<PlayerEntry>().
-                                Where(e => e.Id == ply.Id && e.GameType == game.GameType).
+                                Where(e => e.Id == ply.Id).
                                 OrderByDescending(e => e.TimeStamp).
                                 FirstOrDefault();
 
@@ -183,12 +195,12 @@ namespace LoLNotes
 
                             if (entry != null)
                             {
-                                list.Players[o].SetData(entry.Stats);
+                                list.Players[o].SetData(game, entry);
                                 list.Players[o].Visible = true;
                                 continue;
                             }
                         }
-                        list.Players[o].SetData(team[o]);
+                        list.Players[o].SetData(game, team[o]);
                         list.Players[o].Visible = true;
                     }
                     else

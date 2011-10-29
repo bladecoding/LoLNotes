@@ -21,16 +21,25 @@ THE SOFTWARE.
  */
 
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using LoLNotes.GameLobby;
 using LoLNotes.GameLobby.Participants;
-using LoLNotes.GameStats.PlayerStats;
+using LoLNotes.GameStats;
+using System.Linq;
 
-namespace LoLNotes
+namespace LoLNotes.Controls
 {
     public partial class PlayerControl : UserControl
     {
+        GameDTO Game;
+        PlayerEntry Player;
+        /// <summary>
+        /// Overrides Player.Name, used for "Summoner x"
+        /// </summary>
+        string PlayerName;
+        int Current = 0;
+
 
         public PlayerControl()
         {
@@ -38,25 +47,32 @@ namespace LoLNotes
             SetStyle(ControlStyles.UserPaint, true);
             InitializeComponent();
 
-            SetDescription("");
+            foreach (Control c in Controls)
+                c.Click += c_Click;
         }
 
+        void c_Click(object sender, EventArgs e)
+        {
+            Current++;
+            UpdateView();
+        }
+
+        const int BorderSize = 5;
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            e.Graphics.DrawRectangle(new Pen(Color.Green, 5), 0, 0, Width, Height);
+            e.Graphics.DrawRectangle(new Pen(Color.Green, BorderSize), BorderSize, BorderSize, Width - BorderSize * 2, Height - BorderSize * 2);
         }
 
-        void SetSummonerName(string str)
+        void SetTitle(string str)
         {
             if (NameLabel.InvokeRequired)
             {
-                NameLabel.Invoke(new Action<string>(SetSummonerName), str);
+                NameLabel.Invoke(new Action<string>(SetTitle), str);
                 return;
             }
             NameLabel.Text = str;
         }
-
 
         void SetDescription(string str)
         {
@@ -68,36 +84,58 @@ namespace LoLNotes
             DescLabel.Text = str;
         }
 
-        const string DescriptionFormat = "Level: {0}\nWins: {1}\nLosses: {2}\nLeaves: {3}";
-        void SetDescription(int level, int wins, int losses, int leaves)
+        public void SetData(GameDTO game, PlayerEntry plr)
         {
-            SetDescription(string.Format(DescriptionFormat, level, wins, losses, leaves));
+            Game = game;
+            Player = plr;
+            PlayerName = null;
+            UpdateView();
         }
-
-        public void SetData(PlayerStatsSummary stats)
-        {
-            SetSummonerName(stats.SummonerName);
-            SetDescription(stats.Level, stats.Wins, stats.Losses, stats.Leaves);
-        }
-        public void SetData(Participant part)
+        public void SetData(GameDTO game, Participant part)
         {
             var opart = part as ObfuscatedParticipant;
             var gpart = part as GameParticipant;
             if (gpart != null)
             {
-                SetSummonerName(gpart.Name);
-                SetDescription(gpart is PlayerParticipant ? "No stats found." : "");
+                PlayerName = gpart.Name;
             }
             else if (opart != null)
             {
-                SetSummonerName("Summoner " + opart.GameUniqueId);
-                SetDescription("");
+                PlayerName = "Summoner " + opart.GameUniqueId;
             }
             else
             {
-                SetSummonerName("Unknown");
-                SetDescription("");
+                PlayerName = "Unknown";
             }
+            Game = game;
+            Player = null;
+            UpdateView();
+        }
+
+        public void UpdateView()
+        {
+            if (PlayerName != null)
+                SetTitle(PlayerName);
+
+            if (Player == null || Player.StatsList.Count < 1)
+            {
+                SetDescription("No Stats");
+                return;
+            }
+
+            SetTitle(Player.Name);
+
+            var stat = Player.StatsList[Current % Player.StatsList.Count];
+
+            SetDescription(string.Format(
+                "Type: {0}-{1}\nLevel: {2}\nWins: {3}\nLosses: {4}\nLeaves: {5}",
+                stat.GameMode,
+                stat.GameType,
+                stat.Summary.Level,
+                stat.Summary.Wins,
+                stat.Summary.Losses,
+                stat.Summary.Leaves
+            ));
         }
     }
 }

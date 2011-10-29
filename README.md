@@ -5,7 +5,7 @@ Allowing you to search your previous games and keep notes on people you have pla
 ##Todo:  
 -Piping log file to C# application. **Done**  
 -Parsing objects from log file. **Done**  
--Record matches and user information to sql database. **In progress**  
+-Record matches and user information to database. **In progress**  
 -Create gui  
 
 ##Future Features:
