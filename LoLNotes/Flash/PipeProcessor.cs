@@ -88,9 +88,9 @@ namespace LoLNotes.Flash
                                 if (obj != null)
                                 {
                                     if (obj is FlashObject)
-                                        ProcessObject((FlashObject) obj);
+                                        DoProcessObject((FlashObject)obj);
                                     else if (obj is string)
-                                        ProcessLine((string) obj);
+                                        DoProcessLine((string)obj);
                                 }
                             }
                         }
