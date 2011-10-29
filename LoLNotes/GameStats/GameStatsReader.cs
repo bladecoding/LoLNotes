@@ -27,6 +27,11 @@ namespace LoLNotes.GameStats
 {
     public class GameStatsReader : MessageReader<EndOfGameStats>
     {
+        public GameStatsReader()
+           : this(null)
+        {
+
+        }
         public GameStatsReader(IFlashProcessor conn)
             : base("EndOfGameStats", conn)
         {

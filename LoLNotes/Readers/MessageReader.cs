@@ -18,26 +18,48 @@ namespace LoLNotes.Readers
 
         public event ObjectReadD<T> ObjectRead;
 
+        public MessageReader(string messagename)
+            : this(messagename, null)
+        {
+        }
+
         public MessageReader(string messagename, IFlashProcessor conn)
         {
             Name = messagename;
             Connection = conn;
-            Connection.ProcessObject += connection_ProcessObject;
+
+            if (conn != null)
+                Connection.ProcessObject += ProcessObject;
         }
 
-        void connection_ProcessObject(FlashObject obj)
+        /// <summary>
+        /// Gets the T object from the flash object
+        /// </summary>
+        /// <param name="flashobj">Flash object to get data from</param>
+        /// <returns>T object from flash object if successful. Null if not successful.</returns>
+        public virtual T GetObject(FlashObject flashobj)
+        {
+            if (flashobj == null)
+                return default(T);
+
+            var body = flashobj["body"];
+            if (body == null)
+                return default(T);
+
+            if (!body.Value.Contains(Name))
+                return default(T);
+
+            return (T)Activator.CreateInstance(typeof(T), flashobj);
+        }
+
+        protected virtual void ProcessObject(FlashObject flashobj)
         {
             if (ObjectRead == null)
                 return;
 
-            var body = obj["body"];
-            if (body == null)
-                return;
-
-            if (!body.Value.Contains(Name))
-                return;
-
-            ObjectRead((T)Activator.CreateInstance(typeof(T), obj));
+            var obj = GetObject(flashobj);
+            if (obj != null)
+                ObjectRead(obj);
         }
     }
 }

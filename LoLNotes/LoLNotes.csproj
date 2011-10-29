@@ -101,7 +101,7 @@
     <Compile Include="Flash\InternalNameAttribute.cs" />
     <Compile Include="GameStats\StatsEntry.cs" />
     <Compile Include="ItemData.cs" />
-    <Compile Include="LoLConnection.cs" />
+    <Compile Include="Flash\PipeProcessor.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

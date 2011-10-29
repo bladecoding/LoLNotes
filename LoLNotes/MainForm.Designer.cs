@@ -62,13 +62,15 @@ namespace LoLNotes
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.GameTab = new System.Windows.Forms.TabPage();
-            this.teamControl2 = new LoLNotes.Controls.TeamControl();
-            this.teamControl1 = new LoLNotes.Controls.TeamControl();
             this.SearchTab = new System.Windows.Forms.TabPage();
             this.SettingsTab = new System.Windows.Forms.TabPage();
+            this.RebuildButton = new System.Windows.Forms.Button();
             this.InstallButton = new System.Windows.Forms.Button();
             this.LogTab = new System.Windows.Forms.TabPage();
             this.LogList = new System.Windows.Forms.ListBox();
+            this.teamControl2 = new LoLNotes.Controls.TeamControl();
+            this.teamControl1 = new LoLNotes.Controls.TeamControl();
+            this.RebuildWorker = new System.ComponentModel.BackgroundWorker();
             this.tabControl1.SuspendLayout();
             this.GameTab.SuspendLayout();
             this.SettingsTab.SuspendLayout();
@@ -100,25 +102,6 @@ namespace LoLNotes
             this.GameTab.TabIndex = 0;
             this.GameTab.Text = "Game";
             this.GameTab.UseVisualStyleBackColor = true;
-            this.GameTab.Click += new System.EventHandler(this.GameTab_Click);
-            // 
-            // teamControl2
-            // 
-            this.teamControl2.Location = new System.Drawing.Point(268, 6);
-            this.teamControl2.Name = "teamControl2";
-            this.teamControl2.Size = new System.Drawing.Size(200, 686);
-            this.teamControl2.TabIndex = 1;
-            this.teamControl2.TeamSize = 5;
-            this.teamControl2.Text = "Team 2";
-            // 
-            // teamControl1
-            // 
-            this.teamControl1.Location = new System.Drawing.Point(8, 6);
-            this.teamControl1.Name = "teamControl1";
-            this.teamControl1.Size = new System.Drawing.Size(200, 686);
-            this.teamControl1.TabIndex = 0;
-            this.teamControl1.TeamSize = 5;
-            this.teamControl1.Text = "Team 1";
             // 
             // SearchTab
             // 
@@ -131,6 +114,7 @@ namespace LoLNotes
             // 
             // SettingsTab
             // 
+            this.SettingsTab.Controls.Add(this.RebuildButton);
             this.SettingsTab.Controls.Add(this.InstallButton);
             this.SettingsTab.Location = new System.Drawing.Point(4, 22);
             this.SettingsTab.Name = "SettingsTab";
@@ -138,6 +122,16 @@ namespace LoLNotes
             this.SettingsTab.TabIndex = 2;
             this.SettingsTab.Text = "Settings";
             this.SettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // RebuildButton
+            // 
+            this.RebuildButton.Location = new System.Drawing.Point(10, 39);
+            this.RebuildButton.Name = "RebuildButton";
+            this.RebuildButton.Size = new System.Drawing.Size(75, 23);
+            this.RebuildButton.TabIndex = 1;
+            this.RebuildButton.Text = "Rebuild";
+            this.RebuildButton.UseVisualStyleBackColor = true;
+            this.RebuildButton.Click += new System.EventHandler(this.RebuildButton_Click);
             // 
             // InstallButton
             // 
@@ -168,6 +162,29 @@ namespace LoLNotes
             this.LogList.Size = new System.Drawing.Size(476, 696);
             this.LogList.TabIndex = 0;
             // 
+            // teamControl2
+            // 
+            this.teamControl2.Location = new System.Drawing.Point(268, 6);
+            this.teamControl2.Name = "teamControl2";
+            this.teamControl2.Size = new System.Drawing.Size(200, 686);
+            this.teamControl2.TabIndex = 1;
+            this.teamControl2.TeamSize = 5;
+            this.teamControl2.Text = "Team 2";
+            // 
+            // teamControl1
+            // 
+            this.teamControl1.Location = new System.Drawing.Point(8, 6);
+            this.teamControl1.Name = "teamControl1";
+            this.teamControl1.Size = new System.Drawing.Size(200, 686);
+            this.teamControl1.TabIndex = 0;
+            this.teamControl1.TeamSize = 5;
+            this.teamControl1.Text = "Team 1";
+            // 
+            // RebuildWorker
+            // 
+            this.RebuildWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.RebuildWorker_DoWork);
+            this.RebuildWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.RebuildWorker_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,6 +213,8 @@ namespace LoLNotes
         private Controls.TeamControl teamControl2;
         private System.Windows.Forms.TabPage LogTab;
         private System.Windows.Forms.ListBox LogList;
+        private System.Windows.Forms.Button RebuildButton;
+        private System.ComponentModel.BackgroundWorker RebuildWorker;
 
     }
 }

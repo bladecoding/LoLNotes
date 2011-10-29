@@ -34,19 +34,17 @@ namespace LoLNotes.GameStats
             LobbyReader.ObjectRead += LobbyReader_ObjectRead;
         }
 
-        void LobbyReader_ObjectRead(GameDTO obj)
+        void LobbyReader_ObjectRead(GameDTO lobby)
         {
-            Task.Factory.StartNew(LobbyReaderTask, obj);
+            Task.Factory.StartNew(() => RecordLobby(lobby));
         }
         void StatsReader_ObjectRead(EndOfGameStats game)
         {
-            Task.Factory.StartNew(StatsReaderTask, game);
+            Task.Factory.StartNew(() => RecordGame(game));
         }
 
-        void LobbyReaderTask(object obj)
+        public void RecordLobby(GameDTO lobby)
         {
-            var lobby = (GameDTO)obj;
-
             var sw = Stopwatch.StartNew();
             lock (DatabaseLock)
             {
@@ -65,13 +63,11 @@ namespace LoLNotes.GameStats
                 Database.Commit();
             }
             sw.Stop();
-            StaticLogger.Info(string.Format("GameDTO committed in {0}ms", sw.ElapsedMilliseconds));
+            StaticLogger.Trace(string.Format("GameDTO committed in {0}ms", sw.ElapsedMilliseconds));
         }
 
-        void StatsReaderTask(object obj)
+        public void RecordGame(EndOfGameStats game)
         {
-            var game = (EndOfGameStats)obj;
-
             var sw = Stopwatch.StartNew();
             lock (DatabaseLock)
             {
@@ -112,7 +108,7 @@ namespace LoLNotes.GameStats
                 Database.Commit();
             }
             sw.Stop();
-            StaticLogger.Info(string.Format("EndOfGameStats committed in {0}ms", sw.ElapsedMilliseconds));
+            StaticLogger.Trace(string.Format("EndOfGameStats committed in {0}ms", sw.ElapsedMilliseconds));
         }
     }
 }

@@ -13,10 +13,6 @@ namespace LoLNotes.Flash
 
         private StreamReader Reader { get; set; }
 
-        public LogReader(Stream stream)
-            : this(new StreamReader(stream))
-        {
-        }
         public LogReader(StreamReader reader)
         {
             Reader = reader;

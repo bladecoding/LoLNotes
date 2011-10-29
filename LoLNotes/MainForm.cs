@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -29,13 +30,11 @@ using System.IO.Pipes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
-using Db4objects.Db4o.Config;
-using Db4objects.Db4o.Internal.Config;
 using LoLNotes.Controls;
+using LoLNotes.Flash;
 using LoLNotes.GameLobby;
 using LoLNotes.GameLobby.Participants;
 using LoLNotes.GameStats;
-using LoLNotes.GameStats.PlayerStats;
 using LoLNotes.Properties;
 using LoLNotes.Util;
 using Db4objects.Db4o;
@@ -49,12 +48,11 @@ namespace LoLNotes
         static readonly string LoaderFile = Path.Combine(LolBansPath, "LoLLoader.dll");
 
         readonly Dictionary<string, Icon> IconCache;
-        readonly LoLConnection Connection;
+        readonly PipeProcessor Connection;
         readonly GameLobbyReader LobbyReader;
         readonly GameStatsReader StatsReader;
         readonly IObjectContainer Database;
         readonly GameRecorder Recorder;
-
 
         public MainForm()
         {
@@ -82,7 +80,7 @@ namespace LoLNotes
 
             Database = Db4oEmbedded.OpenFile(config, "db.yap");
 
-            Connection = new LoLConnection("lolbans");
+            Connection = new PipeProcessor("lolbans");
             LobbyReader = new GameLobbyReader(Connection);
             StatsReader = new GameStatsReader(Connection);
             Recorder = new GameRecorder(Database, Connection);
@@ -135,7 +133,7 @@ namespace LoLNotes
         {
             lock (LogLock)
             {
-                File.AppendAllText(LogFile, obj + Environment.NewLine); 
+                File.AppendAllText(LogFile, obj + Environment.NewLine);
             }
         }
 
@@ -191,7 +189,7 @@ namespace LoLNotes
                                 FirstOrDefault();
 
                             sw.Stop();
-                            StaticLogger.Info(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+                            StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
 
                             if (entry != null)
                             {
@@ -291,9 +289,153 @@ namespace LoLNotes
             }
         }
 
-        private void GameTab_Click(object sender, EventArgs e)
+        static string GetRadsPath()
         {
+            var proc = Process.GetProcessesByName("LoLLauncher").FirstOrDefault();
+            if (proc == null)
+                return null;
 
+            string search = "rads";
+            string path = proc.MainModule.FileName;
+            int idx = path.ToLower().IndexOf(search);
+            if (idx == -1)
+                return null;
+
+            return path.Substring(0, idx + search.Length);
+        }
+
+        private void RebuildButton_Click(object sender, EventArgs e)
+        {
+            if (RebuildWorker.IsBusy)
+            {
+                StaticLogger.Warning("Rebuild working already running");
+                return;
+            }
+
+            string path = GetRadsPath();
+            if (path == null)
+            {
+                var msg = "LoLLauncher must be running to rebuild. Or Rads is missing";
+                StaticLogger.Warning(msg);
+                MessageBox.Show(msg);
+                return;
+            }
+
+            RebuildButton.Text = "Rebuilding";
+            RebuildWorker.RunWorkerAsync(path);
+        }
+
+        private void RebuildWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var watch = Stopwatch.StartNew();
+            e.Result = watch;
+
+            var radspath = (string)e.Argument;
+            var releasepath = Path.Combine(radspath, "projects\\lol_air_client\\releases");
+            if (!Directory.Exists(releasepath))
+            {
+                StaticLogger.Warning("Unable to locate " + releasepath);
+                return;
+            }
+
+            var logs = new List<FileInfo>();
+            foreach (var dir in new DirectoryInfo(releasepath).GetDirectories())
+            {
+                var logpath = Path.Combine(dir.FullName, "deploy\\logs");
+                if (!dir.Exists)
+                    continue;
+
+                foreach (var file in new DirectoryInfo(logpath).GetFiles())
+                {
+                    if (file.Exists)
+                        logs.Add(file);
+                }
+            }
+
+            long current = 0;
+            long filesizes = logs.Sum(file => file.Length);
+            long currentfile = 0;
+
+            foreach (var file in logs)
+            {
+
+                try
+                {
+                    using (var reader = new LogReader(file.OpenRead()))
+                    {
+                        
+                        var templobbies = new List<GameDTO>();
+                        
+                        try
+                        {
+                            while (true)
+                            {
+                                var flashobj = reader.Read() as FlashObject;
+                                if (flashobj == null)
+                                    continue;
+
+                                var stats = new GameStatsReader().GetObject(flashobj);
+                                var lobby = new GameLobbyReader().GetObject(flashobj);
+
+                                if (stats != null)
+                                    Recorder.RecordGame(stats);
+                                else if (lobby != null)
+                                    templobbies.Add(lobby);
+                            }
+                        }
+                        catch (EndOfStreamException)
+                        {
+                        }
+
+                        if (templobbies.Count > 0)
+                        {
+                            //Recording lobbies can be pre-filtered to improve store times
+                            //By reducing the checks before sending to the database.
+                            var lobbies = new List<GameDTO>();
+                            foreach (var lobby in templobbies)
+                            {
+                                var idx = lobbies.FindIndex(l => l.Id == lobby.Id);
+                                if (idx != -1)
+                                {
+                                    if (lobby.TimeStamp > lobbies[idx].TimeStamp)
+                                        lobbies[idx] = lobby;
+                                }
+                                else
+                                {
+                                    lobbies.Add(lobby);
+                                }
+                            }
+
+                            foreach (var lobby in lobbies)
+                                Recorder.RecordLobby(lobby);
+                        }
+                    }
+                }
+                catch (IOException ioex)
+                {
+                    StaticLogger.Warning(ioex);
+                }
+                catch (Exception ex)
+                {
+                    StaticLogger.Error(ex);
+                }
+                current += file.Length;
+                currentfile++;
+                StaticLogger.Info(string.Format("Rebuild {0}/{1} ({2}%)",
+                    currentfile,
+                    logs.Count,
+                    (int)((Double)current / filesizes * 100d)
+                ));
+            }
+
+            watch.Stop();
+
+            StaticLogger.Info(string.Format("Finished rebuilding {0} files in {1} seconds", logs.Count, (int)watch.Elapsed.TotalSeconds));
+        }
+
+        private void RebuildWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            RebuildButton.Text = "Rebuild";
         }
     }
 }

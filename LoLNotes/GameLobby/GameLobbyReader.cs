@@ -27,6 +27,11 @@ namespace LoLNotes.GameLobby
 {
     public class GameLobbyReader : MessageReader<GameDTO>
     {
+        public GameLobbyReader()
+           : this(null)
+        {
+
+        }
         public GameLobbyReader(IFlashProcessor conn)
             : base("GameDTO", conn)
         {

@@ -21,18 +21,14 @@ THE SOFTWARE.
  */
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.IO.Streams;
-using System.Text.RegularExpressions;
 using System.Threading;
-using LoLNotes.Flash;
 using NotMissing.Logging;
 
-namespace LoLNotes
+namespace LoLNotes.Flash
 {
-    public class LoLConnection : IFlashProcessor, IDisposable
+    public class PipeProcessor : IFlashProcessor, IDisposable
     {
         Thread RecvThread;
         readonly string PipeName;
@@ -53,7 +49,7 @@ namespace LoLNotes
         }  
  
         
-        public LoLConnection(string pipename)
+        public PipeProcessor(string pipename)
         {
             PipeName = pipename;
         }
@@ -80,7 +76,7 @@ namespace LoLNotes
                 {
                     using (var pipe = new NamedPipeClientStream(PipeName))
                     {
-                        using (var reader = new LogReader(new StreamReader(pipe)))
+                        using (var reader = new LogReader(pipe))
                         {
                             pipe.Connect();
 
@@ -100,7 +96,7 @@ namespace LoLNotes
                         }
                     }
                 }
-                catch (EndOfStreamException e)
+                catch (EndOfStreamException)
                 {
                     //Pipe was broken, lets start listening again 
                 }
@@ -142,7 +138,7 @@ namespace LoLNotes
                 Connected = null;
             }
         }
-        ~LoLConnection()
+        ~PipeProcessor()
         {
             Dispose(false);
         }
