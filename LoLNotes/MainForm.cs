@@ -90,15 +90,15 @@ namespace LoLNotes
 
             //Pipe server for testing EndOfGameStats/GameDTO.
 
-            var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-            pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
-            {
-                pipe.EndWaitForConnection(ar);
-                var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
-                pipe.Write(bytes, 0, bytes.Length);
-                bytes = File.ReadAllBytes("ExampleData\\ExampleGameDTO.txt");
-                pipe.Write(bytes, 0, bytes.Length);
-            }, pipe);
+            //var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            //pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
+            //{
+            //    pipe.EndWaitForConnection(ar);
+            //    var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
+            //    pipe.Write(bytes, 0, bytes.Length);
+            //    bytes = File.ReadAllBytes("ExampleData\\ExampleGameDTO.txt");
+            //    pipe.Write(bytes, 0, bytes.Length);
+            //}, pipe);
 
             Connection.Start();
 
@@ -152,12 +152,30 @@ namespace LoLNotes
             UpdateLists(game, new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
         }
 
+        public GameDTO CurrentGame = null;
+        public List<PlayerEntry> PlayerCache = new List<PlayerEntry>();
+
         public void UpdateLists(GameDTO game, List<TeamParticipants> teams)
         {
             if (InvokeRequired)
             {
                 Invoke(new Action<GameDTO, List<TeamParticipants>>(UpdateLists), game, teams);
                 return;
+            }
+
+            if (CurrentGame == null || CurrentGame.Id != game.Id)
+            {
+                PlayerCache.Clear();
+                CurrentGame = game;
+            }
+            else
+            {
+                //Check if the teams are the same.
+                //If they are the same that means nothing has changed and we can return.
+                var curteam = CurrentGame.TeamOne.Union(CurrentGame.TeamTwo).ToList();
+                var newteam = game.TeamOne.Union(game.TeamTwo).ToList();
+                if (curteam.Count == newteam.Count && newteam.All(curteam.Contains))
+                    return;
             }
 
             var lists = new List<TeamControl> { teamControl1, teamControl2 };
@@ -181,15 +199,22 @@ namespace LoLNotes
 
                         if (ply != null)
                         {
-                            Stopwatch sw = Stopwatch.StartNew();
+                            var entry = PlayerCache.Find(p => p.Id == ply.Id);
+                            if (entry == null)
+                            {
+                                Stopwatch sw = Stopwatch.StartNew();
 
-                            var entry = Database.Query<PlayerEntry>().
-                                Where(e => e.Id == ply.Id).
-                                OrderByDescending(e => e.TimeStamp).
-                                FirstOrDefault();
+                                entry = Database.Query<PlayerEntry>().
+                                    Where(e => e.Id == ply.Id).
+                                    OrderByDescending(e => e.TimeStamp).
+                                    FirstOrDefault();
 
-                            sw.Stop();
-                            StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+                                if (entry != null)
+                                    PlayerCache.Add(entry);
+
+                                sw.Stop();
+                                StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+                            }
 
                             if (entry != null)
                             {
@@ -367,9 +392,9 @@ namespace LoLNotes
                 {
                     using (var reader = new LogReader(file.OpenRead()))
                     {
-                        
+
                         var templobbies = new List<GameDTO>();
-                        
+
                         try
                         {
                             while (true)

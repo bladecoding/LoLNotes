@@ -63,5 +63,16 @@ namespace LoLNotes.GameLobby.Participants
         {
             get; set;
         }
+
+        public override int GetHashCode()
+        {
+            return InternalName.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var part = obj as GameParticipant;
+            return part != null && InternalName.Equals(part.InternalName);
+        }
     }
 }

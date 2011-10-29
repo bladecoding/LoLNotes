@@ -44,5 +44,16 @@ namespace LoLNotes.GameLobby.Participants
         {
             get; set;
         }
+
+        public override int GetHashCode()
+        {
+            return GameUniqueId;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var part = obj as ObfuscatedParticipant;
+            return part != null && GameUniqueId == part.GameUniqueId;
+        }
     }
 }

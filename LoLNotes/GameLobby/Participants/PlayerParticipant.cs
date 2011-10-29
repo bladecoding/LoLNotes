@@ -43,5 +43,6 @@ namespace LoLNotes.GameLobby.Participants
         public int ProfileIconId { get; set; }
         [InternalName("summonerId")]
         public int Id { get; set; }
+
     }
 }
