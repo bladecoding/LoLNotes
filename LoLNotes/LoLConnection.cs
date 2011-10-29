@@ -36,8 +36,7 @@ namespace LoLNotes
     {
         Thread RecvThread;
         readonly string PipeName;
-        const string LogMatch = @"^\d+/\d+/\d+ \d+:\d+:\d+\.\d+ \[\w+\]";
-        const string ObjectMatch = @"\(([^\)]+)\)#\d+$";
+
 
         public event ProcessObjectD ProcessObject;
         public event ProcessLineD ProcessLine;
@@ -81,7 +80,7 @@ namespace LoLNotes
                 {
                     using (var pipe = new NamedPipeClientStream(PipeName))
                     {
-                        using (var reader = new StreamReader(pipe))
+                        using (var reader = new LogReader(new StreamReader(pipe)))
                         {
                             pipe.Connect();
 
@@ -89,35 +88,13 @@ namespace LoLNotes
 
                             while (pipe.IsConnected)
                             {
-                                var line = reader.ReadLine();
-                                if (line == null)
-                                    throw new EndOfStreamException();
-
-                                var match = Regex.Match(line, LogMatch);
-                                if (match.Success)
+                                var obj = reader.Read();
+                                if (obj != null)
                                 {
-                                    try
-                                    {
-                                        match = Regex.Match(line, ObjectMatch);
-                                        if (match.Success)
-                                        {
-                                            var obj = FlashSerializer.Deserialize(reader);
-                                            obj.Name = match.Groups[1].Value;
-                                            DoProcessObject(obj);
-                                        }
-                                        else
-                                        {
-                                            DoProcessLine(line);
-                                        }
-                                    }
-                                    catch (EndOfStreamException)
-                                    {
-                                        throw; //Pipe was broken, lets rethrow and start listening again 
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        StaticLogger.Error(ex);
-                                    }
+                                    if (obj is FlashObject)
+                                        ProcessObject((FlashObject) obj);
+                                    else if (obj is string)
+                                        ProcessLine((string) obj);
                                 }
                             }
                         }

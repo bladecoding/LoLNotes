@@ -82,6 +82,7 @@
       <DependentUpon>TeamControl.cs</DependentUpon>
     </Compile>
     <Compile Include="DB\DbWrap.cs" />
+    <Compile Include="Flash\LogReader.cs" />
     <Compile Include="GameStats\EndOfGameStats.cs" />
     <Compile Include="GameStats\GameItems.cs" />
     <Compile Include="GameStats\PlayerEntry.cs" />
