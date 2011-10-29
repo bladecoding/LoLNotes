@@ -174,7 +174,7 @@ namespace LoLNotes.Flash
                 return null;
             //[0] a
             //0 = a
-            var match = Regex.Match(str, (str[0] == '[') ? "^\\[?(.+?)]?\\s(.+)$" : "^(.+)\\s=?\\s(.+)$");
+            var match = Regex.Match(str, (str[0] == '[') ? "^\\[?(.+?)]?\\s(.+)$" : "^(.+)?\\s=\\s(.+)?$");
             return match.Success ? new KeyValue(match.Groups[1].Value, match.Groups[2].Value) : null;
         }
 
