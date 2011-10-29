@@ -51,13 +51,10 @@ namespace LoLNotes.Controls
                 Width = BasePlayer.Width;
                 Height = PlayersStartY + value * (BasePlayer.Height + PlayersYSpacing);
 
-                if (Players != null)
-                {
-                    foreach (PlayerControl p in Players)
-                        p.Dispose();
-                }
+                foreach (PlayerControl p in Players)
+                    p.Dispose();
+                Players.Clear();
 
-                Players = new List<PlayerControl>();
                 for (int i = 0; i < value; i++)
                 {
                     var control = new PlayerControl();
@@ -69,10 +66,14 @@ namespace LoLNotes.Controls
             }
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<PlayerControl> Players { get; set; }
 
         public TeamControl()
         {
+            Players = new List<PlayerControl>();
             BasePlayer = new PlayerControl();
             TeamSize = 5;
             InitializeComponent();

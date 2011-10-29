@@ -84,6 +84,7 @@
     <Compile Include="DB\DbWrap.cs" />
     <Compile Include="GameStats\EndOfGameStats.cs" />
     <Compile Include="GameStats\GameItems.cs" />
+    <Compile Include="GameStats\PlayerStats\PlayerEntry.cs" />
     <Compile Include="GameStats\PlayerStats\PlayerStatsSummary.cs" />
     <Compile Include="GameStats\PlayerStats\PlayerStatsSummaryList.cs" />
     <Compile Include="GameStats\PlayerStats\PlayerStat.cs" />

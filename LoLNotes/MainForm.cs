@@ -26,8 +26,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
+using Db4objects.Db4o.Internal.Config;
 using LoLNotes.Controls;
 using LoLNotes.GameLobby;
 using LoLNotes.GameLobby.Participants;
@@ -36,6 +38,7 @@ using LoLNotes.GameStats.PlayerStats;
 using LoLNotes.Properties;
 using LoLNotes.Util;
 using Db4objects.Db4o;
+using NotMissing.Logging;
 
 namespace LoLNotes
 {
@@ -57,6 +60,8 @@ namespace LoLNotes
         {
             InitializeComponent();
 
+            Logger.Instance.Register(new DefaultListener(Levels.All, OnLog));
+
             IconCache = new Dictionary<string, Icon>
             {
                 {"Red",  Icon.FromHandle(Resources.circle_red.GetHicon())},
@@ -71,11 +76,10 @@ namespace LoLNotes
             Connection = new LoLConnection("lolbans");
             LobbyReader = new GameLobbyReader(Connection);
             StatsReader = new GameStatsReader(Connection);
+            Recorder = new GameRecorder(Database, Connection);
 
             Connection.Connected += Connection_Connected;
             LobbyReader.ObjectRead += GameReader_OnGameDTO;
-
-            Recorder = new GameRecorder(Database, Connection);
 
             //Pipe server for testing EndOfGameStats.
 
@@ -87,8 +91,40 @@ namespace LoLNotes
             //    pipe.Write(bytes, 0, bytes.Length);
             //}, pipe);
 
-
             Connection.Start();
+
+            StaticLogger.Info("Startup Completed");
+        }
+
+        void OnLog(Levels level, object obj)
+        {
+            object log = string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", level.ToString().ToUpper(), obj, DateTime.UtcNow);
+            Task.Factory.StartNew(LogToFile, log);
+            AddLogToList(log);
+        }
+
+        void AddLogToList(object obj)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<object>(AddLogToList), obj);
+                return;
+            }
+            if (LogList.Items.Count > 1000)
+                LogList.Items.RemoveAt(0);
+            LogList.Items.Add(obj.ToString());
+            LogList.SelectedIndex = LogList.Items.Count - 1;
+            LogList.SelectedIndex = -1;
+        }
+
+        readonly object LogLock = new object();
+        const string LogFile = "Log.txt";
+        void LogToFile(object obj)
+        {
+            lock (LogLock)
+            {
+                File.AppendAllText(LogFile, obj + Environment.NewLine); 
+            }
         }
 
         void Connection_Connected(object obj)
@@ -101,21 +137,8 @@ namespace LoLNotes
             Icon = Connection.IsConnected ? IconCache["Green"] : IconCache["Yellow"];
         }
 
-
-        int CurrentGame = 0;
-        readonly List<PlayerStatsSummary> PlayerCache = new List<PlayerStatsSummary>();
-
         void GameReader_OnGameDTO(GameDTO game)
         {
-            //Clear the player cache when the game changes
-            lock (PlayerCache)
-            {
-                if (game.Id != CurrentGame)
-                {
-                    CurrentGame = game.Id;
-                    PlayerCache.Clear();
-                }
-            }
             UpdateLists(game, new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
         }
 
@@ -149,21 +172,18 @@ namespace LoLNotes
                         if (ply != null)
                         {
                             Stopwatch sw = Stopwatch.StartNew();
-                            var gamestats = Database.Query<EndOfGameStats>().
-                                Where(
-                                    e => 
-                                    e.TeamPlayerStats.Any(p => p.UserId == ply.Id) ||
-                                    e.OtherTeamPlayerStats.Any(p => p.UserId == ply.Id)).
+
+                            var entry = Database.Query<PlayerEntry>().
+                                Where(e => e.Id == ply.Id && e.GameType == game.GameType).
                                 OrderByDescending(e => e.TimeStamp).
                                 FirstOrDefault();
-                            sw.Stop();
-                            Debug.WriteLine("Player query in {0}ms", sw.ElapsedMilliseconds);
 
-                            if (gamestats != null)
+                            sw.Stop();
+                            StaticLogger.Info(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+
+                            if (entry != null)
                             {
-                                var stats = gamestats.TeamPlayerStats.Union(gamestats.OtherTeamPlayerStats).
-                                    FirstOrDefault(p => p.UserId == ply.Id);
-                                list.Players[o].SetData(stats);
+                                list.Players[o].SetData(entry.Stats);
                                 list.Players[o].Visible = true;
                                 continue;
                             }

@@ -28,6 +28,7 @@ using System.IO.Streams;
 using System.Text.RegularExpressions;
 using System.Threading;
 using LoLNotes.Flash;
+using NotMissing.Logging;
 
 namespace LoLNotes
 {
@@ -109,20 +110,26 @@ namespace LoLNotes
                                             DoProcessLine(line);
                                         }
                                     }
+                                    catch (EndOfStreamException)
+                                    {
+                                        throw; //Pipe was broken, lets rethrow and start listening again 
+                                    }
                                     catch (Exception ex)
                                     {
-                                        //TODO: Implement logging
-                                        Debug.WriteLine(ex);
+                                        StaticLogger.Error(ex);
                                     }
                                 }
                             }
                         }
                     }
                 }
+                catch (EndOfStreamException e)
+                {
+                    //Pipe was broken, lets start listening again 
+                }
                 catch (Exception ex)
                 {
-                    //TODO: Implement logging
-                    Debug.WriteLine(ex);
+                    StaticLogger.Error(ex);
                 }
                 finally
                 {
@@ -134,12 +141,12 @@ namespace LoLNotes
         protected virtual void DoProcessObject(FlashObject obj)
         {
             if (ProcessObject != null)
-                ThreadPool.QueueUserWorkItem(state => ProcessObject(obj));
+                ProcessObject(obj);
         }
         protected virtual void DoProcessLine(string str)
         {
             if (ProcessLine != null)
-                ThreadPool.QueueUserWorkItem(state => ProcessLine(str));
+                ProcessLine(str);
         }
 
         #region Dispose
