@@ -35,9 +35,7 @@ using LoLNotes.GameStats;
 using LoLNotes.GameStats.PlayerStats;
 using LoLNotes.Properties;
 using LoLNotes.Util;
-using Raven.Client.Document;
-using Raven.Client.Embedded;
-using Raven.Munin;
+using Db4objects.Db4o;
 
 namespace LoLNotes
 {
@@ -50,8 +48,10 @@ namespace LoLNotes
         readonly LoLConnection Connection;
         readonly GameLobbyReader LobbyReader;
         readonly GameStatsReader StatsReader;
-        readonly DocumentStore Store;
+        readonly IObjectContainer Database;
         readonly GameRecorder Recorder;
+
+
 
         public MainForm()
         {
@@ -66,12 +66,7 @@ namespace LoLNotes
 
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
 
-
-            Store = new EmbeddableDocumentStore
-            {
-                DataDirectory = "data"
-            };
-            Store.Initialize();
+            Database = Db4oEmbedded.OpenFile("db.yap");
 
             Connection = new LoLConnection("lolbans");
             LobbyReader = new GameLobbyReader(Connection);
@@ -80,12 +75,7 @@ namespace LoLNotes
             Connection.Connected += Connection_Connected;
             LobbyReader.ObjectRead += GameReader_OnGameDTO;
 
-            Recorder = new GameRecorder(Store, Connection);
-
-            using (var sess = Store.OpenSession())
-            {
-                sess.Query<EndOfGameStats>().FirstOrDefault();
-            }
+            Recorder = new GameRecorder(Database, Connection);
 
             //Pipe server for testing EndOfGameStats.
 
@@ -126,14 +116,14 @@ namespace LoLNotes
                     PlayerCache.Clear();
                 }
             }
-            UpdateLists(new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
+            UpdateLists(game, new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
         }
 
-        public void UpdateLists(List<TeamParticipants> teams)
+        public void UpdateLists(GameDTO game, List<TeamParticipants> teams)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<List<TeamParticipants>>(UpdateLists), teams);
+                Invoke(new Action<GameDTO, List<TeamParticipants>>(UpdateLists), game, teams);
                 return;
             }
 
@@ -158,28 +148,24 @@ namespace LoLNotes
 
                         if (ply != null)
                         {
-                            using (var sess = Store.OpenSession())
+                            Stopwatch sw = Stopwatch.StartNew();
+                            var gamestats = Database.Query<EndOfGameStats>().
+                                Where(
+                                    e => 
+                                    e.TeamPlayerStats.Any(p => p.UserId == ply.Id) ||
+                                    e.OtherTeamPlayerStats.Any(p => p.UserId == ply.Id)).
+                                OrderByDescending(e => e.TimeStamp).
+                                FirstOrDefault();
+                            sw.Stop();
+                            Debug.WriteLine("Player query in {0}ms", sw.ElapsedMilliseconds);
+
+                            if (gamestats != null)
                             {
-
-                                Stopwatch sw = Stopwatch.StartNew();
-                                var game = sess.Query<EndOfGameStats>().
-                                    Where(
-                                        e =>
-                                        e.TeamPlayerStats.Any(p => p.UserId == ply.Id) ||
-                                        e.OtherTeamPlayerStats.Any(p => p.UserId == ply.Id)).
-                                    OrderByDescending(e => e.TimeStamp).
-                                    FirstOrDefault();
-                                sw.Stop();
-                                Debug.WriteLine("Player query in {0}ms", sw.ElapsedMilliseconds);
-
-                                if (game != null)
-                                {
-                                    var stats = game.TeamPlayerStats.Union(game.OtherTeamPlayerStats).
-                                        FirstOrDefault(p => p.UserId == ply.Id);
-                                    list.Players[o].SetData(stats);
-                                    list.Players[o].Visible = true;
-                                    continue;
-                                }
+                                var stats = gamestats.TeamPlayerStats.Union(gamestats.OtherTeamPlayerStats).
+                                    FirstOrDefault(p => p.UserId == ply.Id);
+                                list.Players[o].SetData(stats);
+                                list.Players[o].Visible = true;
+                                continue;
                             }
                         }
                         list.Players[o].SetData(team[o]);

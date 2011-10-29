@@ -1,23 +1,26 @@
 ﻿using System.Linq;
+using Db4objects.Db4o;
 using LoLNotes.DB;
 using LoLNotes.Flash;
 using LoLNotes.GameLobby;
 using LoLNotes.GameStats.PlayerStats;
-using Raven.Client.Document;
-using Raven.Client.Indexes;
 
 namespace LoLNotes.GameStats
 {
     public class GameRecorder
     {
-        readonly DocumentStore Store;
+        /// <summary>
+        /// This lock is to prevent 2 objects from being added at the same time.
+        /// </summary>
+        readonly object DatabaseLock = new object();
+        readonly IObjectContainer Database;
         readonly IFlashProcessor Flash;
         readonly GameStatsReader StatsReader;
         readonly GameLobbyReader LobbyReader;
 
-        public GameRecorder(DocumentStore store, IFlashProcessor flash)
+        public GameRecorder(IObjectContainer db, IFlashProcessor flash)
         {
-            Store = store;
+            Database = db;
             Flash = flash;
 
             StatsReader = new GameStatsReader(flash);
@@ -25,21 +28,13 @@ namespace LoLNotes.GameStats
 
             StatsReader.ObjectRead += StatsReader_ObjectRead;
             LobbyReader.ObjectRead += LobbyReader_ObjectRead;
-
-            if (store.DatabaseCommands.GetIndex("PlayerStatsIndex") == null)
-            {
-                store.DatabaseCommands.PutIndex("PlayerStatsIndex", new IndexDefinitionBuilder<EndOfGameStats>
-                {
-                    Map = endstats => from stat in (from end in endstats select end).First().OtherTeamPlayerStats select stat
-                });
-            }
         }
 
         void LobbyReader_ObjectRead(GameDTO obj)
         {
-            using (var sess = Store.OpenSession())
+            lock (DatabaseLock)
             {
-                var match = sess.Query<DbWrap<GameDTO>>().FirstOrDefault(m => m.Obj.Id == obj.Id);
+                var match = Database.Query<DbWrap<GameDTO>>().FirstOrDefault(m => m.Obj.Id == obj.Id);
                 if (match != null)
                 {
                     //If the object read is older than don't bother adding it.
@@ -49,17 +44,17 @@ namespace LoLNotes.GameStats
                 }
                 else
                 {
-                    sess.Store(new DbWrap<GameDTO>(obj));
+                    Database.Store(new DbWrap<GameDTO>(obj));
                 }
-                sess.SaveChanges();
+                Database.Commit();
             }
         }
 
         void StatsReader_ObjectRead(EndOfGameStats obj)
         {
-            using (var sess = Store.OpenSession())
+            lock (DatabaseLock)
             {
-                var match = sess.Query<DbWrap<EndOfGameStats>>().FirstOrDefault(m => m.Obj.GameId == obj.GameId);
+                var match = Database.Query<DbWrap<EndOfGameStats>>().FirstOrDefault(m => m.Obj.GameId == obj.GameId && m.Obj.GameType == obj.GameType);
                 if (match != null)
                 {
                     //If the object read is older than don't bother adding it.
@@ -68,10 +63,9 @@ namespace LoLNotes.GameStats
                 }
                 else
                 {
-                    sess.Store(new DbWrap<EndOfGameStats>(obj));
+                    Database.Store(new DbWrap<EndOfGameStats>(obj));
                 }
-
-                sess.SaveChanges();
+                Database.Commit();
             }
         }
     }

@@ -31,7 +31,7 @@ namespace LoLNotes
 {
     public partial class PlayerControl : UserControl
     {
-        
+
         public PlayerControl()
         {
             SetStyle(ControlStyles.ResizeRedraw, true);
@@ -86,8 +86,7 @@ namespace LoLNotes
             if (gpart != null)
             {
                 SetSummonerName(gpart.Name);
-                if (gpart is PlayerParticipant)
-                    SetDescription("First game together.");
+                SetDescription(gpart is PlayerParticipant ? "No stats found." : "");
             }
             else if (opart != null)
             {
