@@ -358,7 +358,11 @@ namespace LoLNotes
 
             foreach (var file in logs)
             {
-
+                StaticLogger.Info(string.Format("Rebuild {0}/{1} ({2}%)",
+                    currentfile,
+                    logs.Count,
+                    (int)((Double)current / filesizes * 100d)
+                ));
                 try
                 {
                     using (var reader = new LogReader(file.OpenRead()))
@@ -421,11 +425,6 @@ namespace LoLNotes
                 }
                 current += file.Length;
                 currentfile++;
-                StaticLogger.Info(string.Format("Rebuild {0}/{1} ({2}%)",
-                    currentfile,
-                    logs.Count,
-                    (int)((Double)current / filesizes * 100d)
-                ));
             }
 
             watch.Stop();
