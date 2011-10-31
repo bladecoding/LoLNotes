@@ -10,7 +10,7 @@ namespace LoLNotes.Messages.Translators
     /// </summary>
     public class MessageTranslator : IObjectTranslator
     {
-        public Dictionary<string, Type> Types { get; protected set; }
+        protected Dictionary<string, Type> Types { get; set; }
 
         /// <summary>
         /// MessageTranslator for this assembly
@@ -23,6 +23,7 @@ namespace LoLNotes.Messages.Translators
         /// <param name="types">Types to search through</param>
         public MessageTranslator(params Type[] types)
         {
+            Types = new Dictionary<string, Type>();
             foreach (var type in types)
             {
                 var attr = type.GetCustomAttributes(typeof(MessageAttribute), false).FirstOrDefault() as MessageAttribute;

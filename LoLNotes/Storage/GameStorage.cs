@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Db4objects.Db4o;
-using LoLNotes.DB;
 using LoLNotes.Flash;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameStats;

@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-namespace LoLNotes.DB
+namespace LoLNotes.Storage
 {
     //Added this as I don't know another way of updating a ravendb entry without copying everything.
     //This way you can just update property to update the entry.
