@@ -1,4 +1,4 @@
-﻿/*
+/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,12 +20,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using LoLNotes.Flash;
 
-namespace LoLNotes.Readers
+namespace LoLNotes.Messages.GameLobby.Participants
 {
-    public delegate void ObjectReadD<T>(T obj);
-    public interface IObjectReader<T>
+    public class Participant
     {
-        event ObjectReadD<T> ObjectRead; 
+        protected readonly FlashObject Base;
+        public Participant()
+        {
+        }
+
+        public Participant(FlashObject thebase)
+        {
+            Base = thebase;
+            FlashObject.SetFields(this, thebase);
+        }
+        [InternalName("pickMode")]
+        public int PickMode
+        {
+            get; set;
+        }
     }
 }

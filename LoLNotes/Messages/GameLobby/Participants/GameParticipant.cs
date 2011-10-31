@@ -22,27 +22,57 @@ THE SOFTWARE.
 
 using System.Diagnostics;
 using LoLNotes.Flash;
-using LoLNotes.Util;
 
-namespace LoLNotes.GameLobby.Participants
+namespace LoLNotes.Messages.GameLobby.Participants
 {
     [DebuggerDisplay("{Name}")]
-    public class PlayerParticipant : GameParticipant
+    public class GameParticipant : Participant
     {
-        public PlayerParticipant()
+        public GameParticipant()
             : base(null)
         {
         }
-        public PlayerParticipant(FlashObject thebase)
+
+        public GameParticipant(FlashObject thebase)
             : base(thebase)
         {
             FlashObject.SetFields(this, thebase);
         }
+        [InternalName("isMe")]
+        public bool IsMe
+        {
+            get; set;
+        }
+        [InternalName("isGameOwner")]
+        public bool IsGameOwner
+        {
+            get; set;
+        }
+        [InternalName("pickTurn")]
+        public int PickTurn
+        {
+            get; set;
+        }
+        [InternalName("summonerInternalName")]
+        public string InternalName
+        {
+            get; set;
+        }
+        [InternalName("summonerName")]
+        public string Name
+        {
+            get; set;
+        }
 
-        [InternalName("profileIconId")]
-        public int ProfileIconId { get; set; }
-        [InternalName("summonerId")]
-        public int Id { get; set; }
+        public override int GetHashCode()
+        {
+            return InternalName.GetHashCode();
+        }
 
+        public override bool Equals(object obj)
+        {
+            var part = obj as GameParticipant;
+            return part != null && InternalName.Equals(part.InternalName);
+        }
     }
 }

@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-using System;
 using LoLNotes.Flash;
-using LoLNotes.GameStats.PlayerStats;
+using LoLNotes.Messages.GameStats.PlayerStats;
 
-namespace LoLNotes.GameStats
+namespace LoLNotes.Messages.GameStats
 {
+    [Message("EndOfGameStats")]
     public class EndOfGameStats : MessageObject
     {
         public EndOfGameStats()

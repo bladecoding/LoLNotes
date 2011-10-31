@@ -25,7 +25,7 @@ namespace LoLNotes.Flash
         /// <summary>
         /// Read the next line/object from the stream
         /// </summary>
-        /// <returns>Object (FlashObject), Line(string) or Null</returns>
+        /// <returns>Object (FlashObject), Line(string) or Null if the line match failed</returns>
         public object Read()
         {
             var line = Reader.ReadLine();

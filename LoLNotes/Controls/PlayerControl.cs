@@ -23,10 +23,11 @@ THE SOFTWARE.
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using LoLNotes.GameLobby;
-using LoLNotes.GameLobby.Participants;
 using LoLNotes.GameStats;
 using System.Linq;
+using LoLNotes.Messages.GameLobby;
+using LoLNotes.Messages.GameLobby.Participants;
+using LoLNotes.Messages.GameStats;
 
 namespace LoLNotes.Controls
 {

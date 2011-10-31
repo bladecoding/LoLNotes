@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,37 +23,30 @@ THE SOFTWARE.
 using System.Diagnostics;
 using LoLNotes.Flash;
 
-namespace LoLNotes.GameLobby.Participants
+namespace LoLNotes.Messages.GameStats.PlayerStats
 {
-    [DebuggerDisplay("Id: {GameUniqueId}")]
-    public class ObfuscatedParticipant : Participant
+    [DebuggerDisplay("{DisplayName}")]
+    public class PlayerStatCategory
     {
-        public ObfuscatedParticipant()
-            : base(null)
+        protected readonly FlashObject Base;
+        public PlayerStatCategory()
         {
+        }
+        public PlayerStatCategory(FlashObject thebase)
+        {
+            Base = thebase;
+
+            FlashObject.SetFields(this, Base);
         }
 
-        public ObfuscatedParticipant(FlashObject thebase)
-            : base(thebase)
-        {
-            FlashObject.SetFields(this, thebase);
-        }
+        [InternalName("displayName")]
+        public string DisplayName { get; set; }
 
-        [InternalName("gameUniqueId")]
-        public int GameUniqueId
-        {
-            get; set;
-        }
+        [InternalName("name")]
+        public string Name { get; set; }
 
-        public override int GetHashCode()
-        {
-            return GameUniqueId;
-        }
+        [InternalName("priority")]
+        public int Priority { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            var part = obj as ObfuscatedParticipant;
-            return part != null && GameUniqueId == part.GameUniqueId;
-        }
     }
 }

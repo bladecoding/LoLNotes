@@ -32,9 +32,12 @@ using System.Windows.Forms;
 using System.Linq;
 using LoLNotes.Controls;
 using LoLNotes.Flash;
-using LoLNotes.GameLobby;
-using LoLNotes.GameLobby.Participants;
 using LoLNotes.GameStats;
+using LoLNotes.Messages.GameLobby;
+using LoLNotes.Messages.GameLobby.Participants;
+using LoLNotes.Messages.GameStats;
+using LoLNotes.Messages.Readers;
+using LoLNotes.Messages.Translators;
 using LoLNotes.Properties;
 using LoLNotes.Util;
 using Db4objects.Db4o;
@@ -49,8 +52,7 @@ namespace LoLNotes
 
         readonly Dictionary<string, Icon> IconCache;
         readonly PipeProcessor Connection;
-        readonly GameLobbyReader LobbyReader;
-        readonly GameStatsReader StatsReader;
+        readonly MessageReader Reader;
         readonly IObjectContainer Database;
         readonly GameRecorder Recorder;
 
@@ -81,12 +83,11 @@ namespace LoLNotes
             Database = Db4oEmbedded.OpenFile(config, "db.yap");
 
             Connection = new PipeProcessor("lolbans");
-            LobbyReader = new GameLobbyReader(Connection);
-            StatsReader = new GameStatsReader(Connection);
+            Reader = new MessageReader(Connection);
             Recorder = new GameRecorder(Database, Connection);
 
             Connection.Connected += Connection_Connected;
-            LobbyReader.ObjectRead += GameReader_OnGameDTO;
+            Reader.ObjectRead += Reader_ObjectRead;
 
             //Pipe server for testing EndOfGameStats/GameDTO.
 
@@ -147,8 +148,12 @@ namespace LoLNotes
             Icon = Connection.IsConnected ? IconCache["Green"] : IconCache["Yellow"];
         }
 
-        void GameReader_OnGameDTO(GameDTO game)
+        void Reader_ObjectRead(object obj)
         {
+            var game = obj as GameDTO;
+            if (game == null)
+                return;
+
             UpdateLists(game, new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
         }
 
@@ -403,8 +408,9 @@ namespace LoLNotes
                                 if (flashobj == null)
                                     continue;
 
-                                var stats = new GameStatsReader().GetObject(flashobj);
-                                var lobby = new GameLobbyReader().GetObject(flashobj);
+                                var obj = MessageTranslator.Instance.GetObject(flashobj);
+                                var stats = obj as EndOfGameStats;
+                                var lobby = obj as GameDTO;
 
                                 if (stats != null)
                                     Recorder.RecordGame(stats);

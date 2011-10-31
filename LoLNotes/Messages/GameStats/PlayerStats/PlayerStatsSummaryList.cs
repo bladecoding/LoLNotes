@@ -20,21 +20,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+
+using System.Collections.Generic;
 using LoLNotes.Flash;
-using LoLNotes.Readers;
 
-namespace LoLNotes.GameLobby
+namespace LoLNotes.Messages.GameStats.PlayerStats
 {
-    public class GameLobbyReader : MessageReader<GameDTO>
-    {
-        public GameLobbyReader()
-           : this(null)
+    public class PlayerStatsSummaryList : List<PlayerStatsSummary>
+    {   
+        protected readonly FlashObject Base;
+        public PlayerStatsSummaryList()
         {
-
         }
-        public GameLobbyReader(IFlashProcessor conn)
-            : base("GameDTO", conn)
+
+        public PlayerStatsSummaryList(FlashObject thebase)
         {
+            Base = thebase;
+
+            if (Base == null)
+                return;
+
+            var array = Base["list"]["source"];
+            foreach (var field in array.Fields)
+            {
+                Add(new PlayerStatsSummary(field));
+            }
         }
     }
 }

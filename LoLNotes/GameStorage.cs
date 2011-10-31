@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Db4objects.Db4o;
 using LoLNotes.DB;
 using LoLNotes.Flash;
-using LoLNotes.GameLobby;
-using LoLNotes.GameStats.PlayerStats;
+using LoLNotes.Messages.GameLobby;
+using LoLNotes.Messages.GameStats;
+using LoLNotes.Messages.Readers;
 using NotMissing.Logging;
 
 namespace LoLNotes.GameStats
@@ -19,26 +20,30 @@ namespace LoLNotes.GameStats
         readonly object DatabaseLock = new object();
         readonly IObjectContainer Database;
         readonly IFlashProcessor Flash;
-        readonly GameStatsReader StatsReader;
-        readonly GameLobbyReader LobbyReader;
+        readonly MessageReader Reader;
 
         public GameRecorder(IObjectContainer db, IFlashProcessor flash)
         {
             Database = db;
             Flash = flash;
 
-            StatsReader = new GameStatsReader(Flash);
-            LobbyReader = new GameLobbyReader(Flash);
-
-            StatsReader.ObjectRead += StatsReader_ObjectRead;
-            LobbyReader.ObjectRead += LobbyReader_ObjectRead;
+            Reader = new MessageReader(Flash);
+            Reader.ObjectRead += Reader_ObjectRead;
         }
 
-        void LobbyReader_ObjectRead(GameDTO lobby)
+        void Reader_ObjectRead(object obj)
+        {
+            if (obj is GameDTO)
+                LobbyRead((GameDTO)obj);
+            else if (obj is EndOfGameStats)
+                StatsRead((EndOfGameStats)obj);
+        }
+
+        void LobbyRead(GameDTO lobby)
         {
             Task.Factory.StartNew(() => RecordLobby(lobby));
         }
-        void StatsReader_ObjectRead(EndOfGameStats game)
+        void StatsRead(EndOfGameStats game)
         {
             Task.Factory.StartNew(() => RecordGame(game));
         }

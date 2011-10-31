@@ -21,30 +21,11 @@ THE SOFTWARE.
  */
 
 
-using System.Collections.Generic;
-using LoLNotes.Flash;
-
-namespace LoLNotes.GameStats.PlayerStats
+namespace LoLNotes.Messages.Readers
 {
-    public class PlayerStatsSummaryList : List<PlayerStatsSummary>
-    {   
-        protected readonly FlashObject Base;
-        public PlayerStatsSummaryList()
-        {
-        }
-
-        public PlayerStatsSummaryList(FlashObject thebase)
-        {
-            Base = thebase;
-
-            if (Base == null)
-                return;
-
-            var array = Base["list"]["source"];
-            foreach (var field in array.Fields)
-            {
-                Add(new PlayerStatsSummary(field));
-            }
-        }
+    public delegate void ObjectReadD(object obj);
+    public interface IObjectReader
+    {
+        event ObjectReadD ObjectRead; 
     }
 }

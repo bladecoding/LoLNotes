@@ -1,4 +1,6 @@
-﻿namespace LoLNotes.Flash
+﻿using LoLNotes.Flash;
+
+namespace LoLNotes.Messages
 {
     public class MessageObject : BaseObject
     {

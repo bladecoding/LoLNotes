@@ -24,7 +24,7 @@ THE SOFTWARE.
 using System.Collections.Generic;
 using LoLNotes.Flash;
 
-namespace LoLNotes.GameStats.PlayerStats
+namespace LoLNotes.Messages.GameStats.PlayerStats
 {
     public class PlayerStatList : List<PlayerStat>
     {

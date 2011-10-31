@@ -1,6 +1,3 @@
-﻿using System.Diagnostics;
-using LoLNotes.Flash;
-
 /*
 copyright (C) 2011 by high828@gmail.com
 
@@ -23,38 +20,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System.Diagnostics;
+using LoLNotes.Flash;
 
-
-namespace LoLNotes.GameStats.PlayerStats
+namespace LoLNotes.Messages.GameLobby.Participants
 {
-    [DebuggerDisplay("{DisplayName}")]
-    public class PlayerStat
+    [DebuggerDisplay("{Name}")]
+    public class PlayerParticipant : GameParticipant
     {
-        protected readonly FlashObject Base;
-        public PlayerStat()
+        public PlayerParticipant()
+            : base(null)
         {
         }
-
-        public PlayerStat(FlashObject thebase)
+        public PlayerParticipant(FlashObject thebase)
+            : base(thebase)
         {
-            Base = thebase;
-
-            FlashObject.SetFields(this, Base);
+            FlashObject.SetFields(this, thebase);
         }
 
-        [InternalName("displayName")]
-        public string DisplayName { get; set; }
+        [InternalName("profileIconId")]
+        public int ProfileIconId { get; set; }
+        [InternalName("summonerId")]
+        public int Id { get; set; }
 
-        [InternalName("priority")]
-        public int Priority { get; set; }
-
-        [InternalName("statCategory")]
-        public PlayerStatCategory Category { get; set; }
-
-        [InternalName("statTypeName")]
-        public string StatTypeName { get; set; }
-
-        [InternalName("value")]
-        public int Value { get; set; }
     }
 }
