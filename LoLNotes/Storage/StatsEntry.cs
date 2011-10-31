@@ -1,6 +1,7 @@
+using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.GameStats.PlayerStats;
 
-namespace LoLNotes.Messages.GameStats
+namespace LoLNotes.Storage
 {
     public class StatsEntry
     {

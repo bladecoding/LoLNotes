@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 using System.Collections.Generic;
 
-namespace LoLNotes
+namespace LoLNotes.Assets
 {
     public class ItemData
     {

@@ -23,7 +23,6 @@ THE SOFTWARE.
 using System;
 using System.Diagnostics;
 using LoLNotes.Flash;
-using LoLNotes.GameStats;
 
 namespace LoLNotes.Messages.GameStats.PlayerStats
 {

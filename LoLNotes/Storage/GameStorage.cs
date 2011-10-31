@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Db4objects.Db4o;
 using LoLNotes.DB;
@@ -10,7 +9,7 @@ using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.Readers;
 using NotMissing.Logging;
 
-namespace LoLNotes.GameStats
+namespace LoLNotes.Storage
 {
     public class GameRecorder
     {

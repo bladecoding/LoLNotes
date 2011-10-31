@@ -26,7 +26,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace LoLNotes.Controls
+namespace LoLNotes.Gui.Controls
 {
     public partial class TeamControl : UserControl
     {

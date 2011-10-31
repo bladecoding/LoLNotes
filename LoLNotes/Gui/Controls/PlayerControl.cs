@@ -23,13 +23,11 @@ THE SOFTWARE.
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using LoLNotes.GameStats;
-using System.Linq;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
-using LoLNotes.Messages.GameStats;
+using LoLNotes.Storage;
 
-namespace LoLNotes.Controls
+namespace LoLNotes.Gui.Controls
 {
     public partial class PlayerControl : UserControl
     {

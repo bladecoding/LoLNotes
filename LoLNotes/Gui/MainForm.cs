@@ -26,24 +26,23 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Pipes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
-using LoLNotes.Controls;
 using LoLNotes.Flash;
-using LoLNotes.GameStats;
+using LoLNotes.Gui.Controls;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.Readers;
 using LoLNotes.Messages.Translators;
 using LoLNotes.Properties;
+using LoLNotes.Storage;
 using LoLNotes.Util;
 using Db4objects.Db4o;
 using NotMissing.Logging;
 
-namespace LoLNotes
+namespace LoLNotes.Gui
 {
     public partial class MainForm : Form
     {

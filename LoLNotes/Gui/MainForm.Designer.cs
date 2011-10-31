@@ -20,9 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-using LoLNotes.Controls;
+using LoLNotes.Gui.Controls;
 
-namespace LoLNotes
+namespace LoLNotes.Gui
 {
     partial class MainForm
     {
@@ -68,8 +68,8 @@ namespace LoLNotes
             this.InstallButton = new System.Windows.Forms.Button();
             this.LogTab = new System.Windows.Forms.TabPage();
             this.LogList = new System.Windows.Forms.ListBox();
-            this.teamControl2 = new LoLNotes.Controls.TeamControl();
-            this.teamControl1 = new LoLNotes.Controls.TeamControl();
+            this.teamControl2 = new TeamControl();
+            this.teamControl1 = new TeamControl();
             this.RebuildWorker = new System.ComponentModel.BackgroundWorker();
             this.tabControl1.SuspendLayout();
             this.GameTab.SuspendLayout();

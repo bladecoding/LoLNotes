@@ -23,6 +23,7 @@ THE SOFTWARE.
 using System;
 using System.IO;
 using System.Windows.Forms;
+using LoLNotes.Gui;
 
 namespace LoLNotes
 {
