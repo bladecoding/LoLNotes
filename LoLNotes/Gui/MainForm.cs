@@ -26,9 +26,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Linq;
+using Db4objects.Db4o;
 using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
 using LoLNotes.Messages.GameLobby;
@@ -39,7 +40,6 @@ using LoLNotes.Messages.Translators;
 using LoLNotes.Properties;
 using LoLNotes.Storage;
 using LoLNotes.Util;
-using Db4objects.Db4o;
 using NotMissing.Logging;
 
 namespace LoLNotes.Gui
@@ -156,7 +156,7 @@ namespace LoLNotes.Gui
             UpdateLists(game, new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
         }
 
-        public GameDTO CurrentGame = null;
+        public GameDTO CurrentGame;
         public List<PlayerEntry> PlayerCache = new List<PlayerEntry>();
 
         public void UpdateLists(GameDTO game, List<TeamParticipants> teams)

@@ -37,7 +37,7 @@ namespace LoLNotes.Gui.Controls
         /// Overrides Player.Name, used for "Summoner x"
         /// </summary>
         string PlayerName;
-        int Current = 0;
+        int Current;
 
 
         public PlayerControl()
