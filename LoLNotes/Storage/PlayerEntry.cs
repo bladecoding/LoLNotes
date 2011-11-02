@@ -21,6 +21,7 @@ THE SOFTWARE.
  */
 
 using System.Collections.Generic;
+using System.Drawing;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.GameStats.PlayerStats;
 
@@ -66,6 +67,8 @@ namespace LoLNotes.Storage
             return true;
         }
 
+        public string Note { get; set; }
+        public Color NoteColor { get; set; }
         public string Name { get; set; }
         public int InternalName { get; set; }
         public int Id { get; set; }
