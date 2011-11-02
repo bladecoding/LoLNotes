@@ -54,7 +54,7 @@ namespace LoLNotes.Gui
         readonly PipeProcessor Connection;
         readonly MessageReader Reader;
         readonly IObjectContainer Database;
-        readonly GameRecorder Recorder;
+        readonly GameStorage Recorder;
 
         public MainForm()
         {
@@ -71,25 +71,16 @@ namespace LoLNotes.Gui
 
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
 
-            //TODO: Find a better way than this.
-            var config = Db4oEmbedded.NewConfiguration();
-            config.Common.ObjectClass(typeof(PlayerEntry)).CascadeOnUpdate(true);
-            config.Common.ObjectClass(typeof(PlayerEntry)).CascadeOnActivate(true);
-            config.Common.ObjectClass(typeof(PlayerEntry)).CascadeOnDelete(true);
-            config.Common.ObjectClass(typeof(StatsEntry)).CascadeOnUpdate(true);
-            config.Common.ObjectClass(typeof(StatsEntry)).CascadeOnActivate(true);
-            config.Common.ObjectClass(typeof(StatsEntry)).CascadeOnDelete(true);
-
-            Database = Db4oEmbedded.OpenFile(config, "db.yap");
+            Database = Db4oEmbedded.OpenFile("db.yap");
 
             Connection = new PipeProcessor("lolbans");
             Reader = new MessageReader(Connection);
-            Recorder = new GameRecorder(Database, Connection);
+            Recorder = new GameStorage(Database, Connection);
 
             Connection.Connected += Connection_Connected;
             Reader.ObjectRead += Reader_ObjectRead;
 
-            //Pipe server for testing EndOfGameStats/GameDTO.
+            Connection.Start();
 
 #if TESTING
             var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
@@ -103,8 +94,6 @@ namespace LoLNotes.Gui
             }, pipe);
 #endif
 
-            Connection.Start();
-
             StaticLogger.Info("Startup Completed");
         }
 
@@ -113,7 +102,8 @@ namespace LoLNotes.Gui
             object log = string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", level.ToString().ToUpper(), obj, DateTime.UtcNow);
             Debug.WriteLine(log);
             Task.Factory.StartNew(LogToFile, log);
-            Task.Factory.StartNew(AddLogToList, log);
+            if ((level & Levels.Trace) == 0)
+                Task.Factory.StartNew(AddLogToList, log);
         }
 
         void AddLogToList(object obj)
@@ -156,17 +146,17 @@ namespace LoLNotes.Gui
             if (game == null)
                 return;
 
-            UpdateLists(game, new List<TeamParticipants> { game.TeamOne, game.TeamTwo });
+            UpdateLists(game);
         }
 
         public GameDTO CurrentGame;
         public List<PlayerEntry> PlayerCache = new List<PlayerEntry>();
 
-        public void UpdateLists(GameDTO game, List<TeamParticipants> teams)
+        public void UpdateLists(GameDTO game)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<GameDTO, List<TeamParticipants>>(UpdateLists), game, teams);
+                Invoke(new Action<GameDTO>(UpdateLists), game);
                 return;
             }
 
@@ -185,6 +175,7 @@ namespace LoLNotes.Gui
                     return;
             }
 
+            var teams = new List<TeamParticipants> { game.TeamOne, game.TeamTwo };
             var lists = new List<TeamControl> { teamControl1, teamControl2 };
 
             for (int i = 0; i < lists.Count; i++)
@@ -225,12 +216,12 @@ namespace LoLNotes.Gui
 
                             if (entry != null)
                             {
-                                list.Players[o].SetData(game, entry);
+                                list.Players[o].SetData(entry);
                                 list.Players[o].Visible = true;
                                 continue;
                             }
                         }
-                        list.Players[o].SetData(game, team[o]);
+                        list.Players[o].SetData(team[o]);
                         list.Players[o].Visible = true;
                     }
                     else
@@ -288,10 +279,6 @@ namespace LoLNotes.Gui
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            if (!IsInstalled && !Wow.IsAdministrator)
-                MessageBox.Show("You must run LoLBans as admin to install it");
-
-            //Install();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -327,7 +314,7 @@ namespace LoLNotes.Gui
             if (proc == null)
                 return null;
 
-            string search = "rads";
+            const string search = "rads";
             string path = proc.MainModule.FileName;
             int idx = path.ToLower().IndexOf(search);
             if (idx == -1)
@@ -468,6 +455,59 @@ namespace LoLNotes.Gui
         private void RebuildWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             RebuildButton.Text = "Rebuild";
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var menuItem = sender as ToolStripItem;
+            if (menuItem == null)
+                return;
+
+            var owner = menuItem.Owner as ContextMenuStrip;
+            if (owner == null)
+                return;
+
+            var plrcontrol = owner.SourceControl as PlayerControl;
+            if (plrcontrol == null)
+                return;
+
+            if (plrcontrol.Player == null)
+                return;
+
+            var form = new EditPlayerForm(plrcontrol.Player);
+            if (form.ShowDialog() != DialogResult.OK)
+                return;
+
+            plrcontrol.Player.Note = form.NoteText.Text;
+            if (form.ColorBox.SelectedIndex != -1)
+                plrcontrol.Player.NoteColor = Color.FromName(form.ColorBox.Items[form.ColorBox.SelectedIndex].ToString());
+            plrcontrol.UpdateView();
+
+            Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player, true));
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var menuItem = sender as ToolStripItem;
+            if (menuItem == null)
+                return;
+
+            var owner = menuItem.Owner as ContextMenuStrip;
+            if (owner == null)
+                return;
+
+            var plrcontrol = owner.SourceControl as PlayerControl;
+            if (plrcontrol == null)
+                return;
+
+            if (plrcontrol.Player == null)
+                return;
+
+            plrcontrol.Player.Note = "";
+            plrcontrol.Player.NoteColor = default(Color);
+            plrcontrol.UpdateView();
+
+            Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player, true));
         }
     }
 }

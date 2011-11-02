@@ -60,6 +60,7 @@ namespace LoLNotes.Gui
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.GameTab = new System.Windows.Forms.TabPage();
             this.SearchTab = new System.Windows.Forms.TabPage();
@@ -68,13 +69,17 @@ namespace LoLNotes.Gui
             this.InstallButton = new System.Windows.Forms.Button();
             this.LogTab = new System.Windows.Forms.TabPage();
             this.LogList = new System.Windows.Forms.ListBox();
-            this.teamControl2 = new TeamControl();
-            this.teamControl1 = new TeamControl();
             this.RebuildWorker = new System.ComponentModel.BackgroundWorker();
+            this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
+            this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.GameTab.SuspendLayout();
             this.SettingsTab.SuspendLayout();
             this.LogTab.SuspendLayout();
+            this.PlayerEditStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -162,10 +167,31 @@ namespace LoLNotes.Gui
             this.LogList.Size = new System.Drawing.Size(476, 696);
             this.LogList.TabIndex = 0;
             // 
+            // RebuildWorker
+            // 
+            this.RebuildWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.RebuildWorker_DoWork);
+            this.RebuildWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.RebuildWorker_RunWorkerCompleted);
+            // 
+            // PlayerEditStrip
+            // 
+            this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem,
+            this.clearToolStripMenuItem});
+            this.PlayerEditStrip.Name = "PlayerEditStrip";
+            this.PlayerEditStrip.Size = new System.Drawing.Size(153, 70);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
             // teamControl2
             // 
             this.teamControl2.Location = new System.Drawing.Point(268, 6);
             this.teamControl2.Name = "teamControl2";
+            this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
             this.teamControl2.Size = new System.Drawing.Size(200, 686);
             this.teamControl2.TabIndex = 1;
             this.teamControl2.TeamSize = 5;
@@ -175,15 +201,18 @@ namespace LoLNotes.Gui
             // 
             this.teamControl1.Location = new System.Drawing.Point(8, 6);
             this.teamControl1.Name = "teamControl1";
+            this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
             this.teamControl1.Size = new System.Drawing.Size(200, 686);
             this.teamControl1.TabIndex = 0;
             this.teamControl1.TeamSize = 5;
             this.teamControl1.Text = "Team 1";
             // 
-            // RebuildWorker
+            // clearToolStripMenuItem
             // 
-            this.RebuildWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.RebuildWorker_DoWork);
-            this.RebuildWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.RebuildWorker_RunWorkerCompleted);
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -198,6 +227,7 @@ namespace LoLNotes.Gui
             this.GameTab.ResumeLayout(false);
             this.SettingsTab.ResumeLayout(false);
             this.LogTab.ResumeLayout(false);
+            this.PlayerEditStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -215,6 +245,9 @@ namespace LoLNotes.Gui
         private System.Windows.Forms.ListBox LogList;
         private System.Windows.Forms.Button RebuildButton;
         private System.ComponentModel.BackgroundWorker RebuildWorker;
+        private System.Windows.Forms.ContextMenuStrip PlayerEditStrip;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
 
     }
 }

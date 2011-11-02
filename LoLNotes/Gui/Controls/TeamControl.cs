@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using LoLNotes.Storage;
 
 namespace LoLNotes.Gui.Controls
 {
@@ -59,6 +60,7 @@ namespace LoLNotes.Gui.Controls
                 {
                     var control = new PlayerControl();
                     control.Location = new Point(0, PlayersStartY + (BasePlayer.Height + PlayersYSpacing) * i);
+                    control.ContextMenuStrip = PlayerContextMenuStrip;
                     Players.Add(control);
                     Controls.Add(control);
                 }
@@ -69,17 +71,12 @@ namespace LoLNotes.Gui.Controls
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public GameStorage Storage { get; set; }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<PlayerControl> Players { get; set; }
-
-        public TeamControl()
-        {
-            Players = new List<PlayerControl>();
-            BasePlayer = new PlayerControl();
-            TeamSize = 5;
-            InitializeComponent();
-
-        }
-
 
         [EditorBrowsable(EditorBrowsableState.Always)]
         [Browsable(true)]
@@ -95,6 +92,45 @@ namespace LoLNotes.Gui.Controls
             {
                 NameLabel.Text = value;
             }
+        }
+
+
+        protected ContextMenuStrip playercontextmenustrip;
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Bindable(true)]
+        public ContextMenuStrip PlayerContextMenuStrip
+        {
+            get
+            {
+                return playercontextmenustrip;
+            }
+            set
+            {
+                playercontextmenustrip = value;
+                foreach (var plr in Players)
+                    plr.ContextMenuStrip = value;
+            }
+        }
+
+
+        public TeamControl()
+        {
+            Players = new List<PlayerControl>();
+            BasePlayer = new PlayerControl();
+            TeamSize = 5;
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Sets the data for the player at idx.
+        /// </summary>
+        /// <param name="idx">Index of the player</param>
+        /// <param name="entry">Data of the player</param>
+        public void SetData(int idx, PlayerEntry entry)
+        {
+
         }
     }
 }
