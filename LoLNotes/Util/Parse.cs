@@ -1,8 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,6 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
+
+using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
+
 
 namespace LoLNotes.Util
 {
