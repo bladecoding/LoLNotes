@@ -31,8 +31,7 @@ namespace LoLNotes.Gui.Controls
 {
     public partial class PlayerControl : UserControl
     {
-        GameDTO Game;
-        PlayerEntry Player;
+        public PlayerEntry Player { get; protected set; }
         /// <summary>
         /// Overrides Player.Name, used for "Summoner x"
         /// </summary>
@@ -60,7 +59,8 @@ namespace LoLNotes.Gui.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            e.Graphics.DrawRectangle(new Pen(Color.Green, BorderSize), BorderSize, BorderSize, Width - BorderSize * 2, Height - BorderSize * 2);
+            var pen = new Pen(Player != null && Player.NoteColor.A != 0 ? Player.NoteColor : Color.Green, BorderSize);
+            e.Graphics.DrawRectangle(pen, BorderSize, BorderSize, Width - BorderSize * 2, Height - BorderSize * 2);
         }
 
         void SetTitle(string str)
@@ -83,14 +83,13 @@ namespace LoLNotes.Gui.Controls
             DescLabel.Text = str;
         }
 
-        public void SetData(GameDTO game, PlayerEntry plr)
+        public void SetData(PlayerEntry plr)
         {
-            Game = game;
             Player = plr;
             PlayerName = null;
             UpdateView();
         }
-        public void SetData(GameDTO game, Participant part)
+        public void SetData(Participant part)
         {
             var opart = part as ObfuscatedParticipant;
             var gpart = part as GameParticipant;
@@ -106,7 +105,6 @@ namespace LoLNotes.Gui.Controls
             {
                 PlayerName = "Unknown";
             }
-            Game = game;
             Player = null;
             UpdateView();
         }
@@ -127,14 +125,17 @@ namespace LoLNotes.Gui.Controls
             var stat = Player.StatsList[Current % Player.StatsList.Count];
 
             SetDescription(string.Format(
-                "Type: {0}-{1}\nLevel: {2}\nWins: {3}\nLosses: {4}\nLeaves: {5}",
+                "Type: {0}-{1}\nLevel: {2}\nWins: {3}\nLosses: {4}\nLeaves: {5}\n{6}",
                 stat.GameMode,
                 stat.GameType,
                 stat.Summary.Level,
                 stat.Summary.Wins,
                 stat.Summary.Losses,
-                stat.Summary.Leaves
+                stat.Summary.Leaves,
+                !string.IsNullOrEmpty(Player.Note) ? string.Format("Note: {0}\n", Player.Note) : ""
             ));
+
+            Invalidate();
         }
     }
 }
