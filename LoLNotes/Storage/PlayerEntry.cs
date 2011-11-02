@@ -22,6 +22,9 @@ THE SOFTWARE.
 
 using System.Collections.Generic;
 using System.Drawing;
+using Db4objects.Db4o;
+using Db4objects.Db4o.Activation;
+using Db4objects.Db4o.TA;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.GameStats.PlayerStats;
 
@@ -70,7 +73,7 @@ namespace LoLNotes.Storage
         public string Note { get; set; }
         public Color NoteColor { get; set; }
         public string Name { get; set; }
-        public int InternalName { get; set; }
+        public string InternalName { get; set; }
         public int Id { get; set; }
         public long TimeStamp { get; set; }
         public List<StatsEntry> StatsList { get; set; }

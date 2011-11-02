@@ -31,6 +31,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Db4objects.Db4o;
+using Db4objects.Db4o.Query;
+using Db4objects.Db4o.TA;
 using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
 using LoLNotes.Messages.GameLobby;
@@ -71,7 +73,19 @@ namespace LoLNotes.Gui
 
             Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
 
-            Database = Db4oEmbedded.OpenFile("db.yap");
+            var config = Db4oEmbedded.NewConfiguration();
+
+            config.Common.ObjectClass(typeof(PlayerEntry)).ObjectField("Id").Indexed(true);
+            config.Common.ObjectClass(typeof(PlayerEntry)).ObjectField("TimeStamp").Indexed(true);
+            config.Common.ObjectClass(typeof(GameDTO)).ObjectField("Id").Indexed(true);
+            config.Common.ObjectClass(typeof(GameDTO)).ObjectField("TimeStamp").Indexed(true);
+            config.Common.ObjectClass(typeof(EndOfGameStats)).ObjectField("GameId").Indexed(true);
+            config.Common.ObjectClass(typeof(EndOfGameStats)).ObjectField("TimeStamp").Indexed(true);
+
+            config.Common.Add(new TransparentPersistenceSupport());
+            config.Common.Add(new TransparentActivationSupport());
+
+            Database = Db4oEmbedded.OpenFile(config, "db.yap");
 
             Connection = new PipeProcessor("lolbans");
             Reader = new MessageReader(Connection);
@@ -102,8 +116,8 @@ namespace LoLNotes.Gui
             object log = string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", level.ToString().ToUpper(), obj, DateTime.UtcNow);
             Debug.WriteLine(log);
             Task.Factory.StartNew(LogToFile, log);
-            if ((level & Levels.Trace) == 0)
-                Task.Factory.StartNew(AddLogToList, log);
+            //if ((level & Levels.Trace) == 0)
+            Task.Factory.StartNew(AddLogToList, log);
         }
 
         void AddLogToList(object obj)
@@ -204,7 +218,6 @@ namespace LoLNotes.Gui
 
                                 entry = Database.Query<PlayerEntry>().
                                     Where(e => e.Id == ply.Id).
-                                    OrderByDescending(e => e.TimeStamp).
                                     FirstOrDefault();
 
                                 if (entry != null)
@@ -377,7 +390,8 @@ namespace LoLNotes.Gui
 
             foreach (var file in logs)
             {
-                StaticLogger.Info(string.Format("Rebuild {0}/{1} ({2}%)",
+                StaticLogger.Info(string.Format("Rebuilding {0}, {1}/{2} ({3}%)",
+                    file.Name,
                     currentfile,
                     logs.Count,
                     (int)((Double)current / filesizes * 100d)
@@ -402,7 +416,7 @@ namespace LoLNotes.Gui
                                 var lobby = obj as GameDTO;
 
                                 if (stats != null)
-                                    Recorder.RecordGame(stats);
+                                    Recorder.CommitGame(stats);
                                 else if (lobby != null)
                                     templobbies.Add(lobby);
                             }
@@ -431,7 +445,7 @@ namespace LoLNotes.Gui
                             }
 
                             foreach (var lobby in lobbies)
-                                Recorder.RecordLobby(lobby);
+                                Recorder.CommitLobby(lobby);
                         }
                     }
                 }

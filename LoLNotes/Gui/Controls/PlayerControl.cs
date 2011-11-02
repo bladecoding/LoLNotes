@@ -109,20 +109,19 @@ namespace LoLNotes.Gui.Controls
             UpdateView();
         }
 
-        public void UpdateView()
+        bool SetStats()
         {
             if (PlayerName != null)
                 SetTitle(PlayerName);
 
             if (Player == null || Player.StatsList.Count < 1)
-            {
-                SetDescription("No Stats");
-                return;
-            }
+                return false;
 
             SetTitle(Player.Name);
 
             var stat = Player.StatsList[Current % Player.StatsList.Count];
+            if (stat == null || stat.Summary == null)
+                return false;
 
             SetDescription(string.Format(
                 "Type: {0}-{1}\nLevel: {2}\nWins: {3}\nLosses: {4}\nLeaves: {5}\n{6}",
@@ -134,6 +133,14 @@ namespace LoLNotes.Gui.Controls
                 stat.Summary.Leaves,
                 !string.IsNullOrEmpty(Player.Note) ? string.Format("Note: {0}\n", Player.Note) : ""
             ));
+
+            return true;
+        }
+
+        public void UpdateView()
+        {
+            if (!SetStats())
+                SetDescription("No Stats");
 
             Invalidate();
         }

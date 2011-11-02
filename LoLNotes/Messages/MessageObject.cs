@@ -11,8 +11,8 @@ namespace LoLNotes.Messages
         }
 
         [InternalName("timestamp")]
-        public long TimeStamp { get; protected set; }
+        public long TimeStamp { get; set; }
         [InternalName("destination")]
-        public string Destination { get; protected set; }
+        public string Destination { get; set; }
     }
 }
