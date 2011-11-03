@@ -100,17 +100,17 @@ namespace LoLNotes.Gui
 
             Connection.Start();
 
-//#if TESTING
-//            var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-//            pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
-//            {
-//                pipe.EndWaitForConnection(ar);
-//                var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
-//                pipe.Write(bytes, 0, bytes.Length);
-//                bytes = File.ReadAllBytes("ExampleData\\ExampleGameDTO.txt");
-//                pipe.Write(bytes, 0, bytes.Length);
-//            }, pipe);
-//#endif
+#if TESTING
+            var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
+            {
+                pipe.EndWaitForConnection(ar);
+                var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
+                pipe.Write(bytes, 0, bytes.Length);
+                bytes = File.ReadAllBytes("ExampleData\\ExampleGameDTO.txt");
+                pipe.Write(bytes, 0, bytes.Length);
+            }, pipe);
+#endif
 
             StaticLogger.Info("Startup Completed");
         }

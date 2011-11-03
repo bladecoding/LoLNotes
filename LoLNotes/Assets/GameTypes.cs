@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,25 +19,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
 
-using LoLNotes.Messages.GameStats;
-using LoLNotes.Messages.GameStats.PlayerStats;
-
-namespace LoLNotes.Storage
+namespace LoLNotes.Assets
 {
-    public class StatsEntry
+    [TypeConverter(typeof(DescriptionEnumTypeConverter<GameTypes>))]
+    public enum GameTypes
     {
-        public StatsEntry()
-        {
-        }
-        public StatsEntry(EndOfGameStats game, PlayerStatsSummary stats)
-        {
-            GameMode = game.GameMode;
-            GameType = game.GameType;
-            Summary = stats;
-        }
-        public string GameMode { get; set; }
-        public string GameType { get; set; }
-        public PlayerStatsSummary Summary { get; set; }
+        UNKNOWN,
+
+        [Description("Ranked")]
+        RANKED_GAME,
+
+        [Description("Match")]
+        MATCHED_GAME,
+
     }
 }

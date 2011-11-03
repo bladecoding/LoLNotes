@@ -93,6 +93,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\DescriptionEnumTypeConverter.cs" />
+    <Compile Include="Assets\GameModes.cs" />
+    <Compile Include="Assets\GameTypes.cs" />
     <Compile Include="Gui\Controls\TeamControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

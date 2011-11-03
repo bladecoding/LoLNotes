@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,24 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-using LoLNotes.Messages.GameStats;
-using LoLNotes.Messages.GameStats.PlayerStats;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
 
-namespace LoLNotes.Storage
+namespace LoLNotes.Assets
 {
-    public class StatsEntry
+    [TypeConverter(typeof(DescriptionEnumTypeConverter<GameTypes>))]
+    public enum GameModes
     {
-        public StatsEntry()
-        {
-        }
-        public StatsEntry(EndOfGameStats game, PlayerStatsSummary stats)
-        {
-            GameMode = game.GameMode;
-            GameType = game.GameType;
-            Summary = stats;
-        }
-        public string GameMode { get; set; }
-        public string GameType { get; set; }
-        public PlayerStatsSummary Summary { get; set; }
+        UNKNOWN,
+
+        [Description("Dominion")]
+        ODIN,
+        [Description("Classic")]
+        CLASSIC,
+
     }
 }

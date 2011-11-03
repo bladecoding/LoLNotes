@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using LoLNotes.Util;
+using NotMissing.Logging;
 
 namespace LoLNotes.Flash
 {
@@ -117,35 +118,43 @@ namespace LoLNotes.Flash
                 object value;
                 var type = prop.PropertyType;
 
-                if (type == typeof(string))
+                try
                 {
-                    value = flash[intern.Name].Value;
-                } 
-                else if (type == typeof(int))
-                {
-                    value = Parse.Int(flash[intern.Name].Value);
-                }
-                else if (type == typeof(long))
-                {
-                    value = Parse.Long(flash[intern.Name].Value);
-                }
-                else if (type == typeof(bool))
-                {
-                    value = Parse.Bool(flash[intern.Name].Value);
-                }
-                else
-                {
-                    try
+                    if (type == typeof(string))
                     {
-                        value = Activator.CreateInstance(type, flash[intern.Name]);
+                        value = flash[intern.Name].Value;
                     }
-                    catch (Exception e)
+                    else if (type == typeof(int))
                     {
-                        throw new NotSupportedException(string.Format("Type {0} not supported by flash serializer ({1})", type.FullName, e.Message));
-                    } 
-                }
+                        value = Parse.Int(flash[intern.Name].Value);
+                    }
+                    else if (type == typeof(long))
+                    {
+                        value = Parse.Long(flash[intern.Name].Value);
+                    }
+                    else if (type == typeof(bool))
+                    {
+                        value = Parse.Bool(flash[intern.Name].Value);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            value = Activator.CreateInstance(type, flash[intern.Name]);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new NotSupportedException(string.Format("Type {0} not supported by flash serializer", type.FullName), e);
 
-                prop.SetValue(obj, value, null); 
+                        }
+                    }
+                    prop.SetValue(obj, value, null);
+                }
+                catch (Exception e)
+                {
+                    StaticLogger.Error(string.Format("Error parsing {0}#{1}", typeof(T).FullName, prop.Name));
+                    StaticLogger.Error(e);
+                }
             }
         }
     }

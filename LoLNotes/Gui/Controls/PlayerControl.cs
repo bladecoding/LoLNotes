@@ -23,9 +23,12 @@ THE SOFTWARE.
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using LoLNotes.Assets;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Storage;
+using System.Linq;
+using NotMissing.Logging;
 
 namespace LoLNotes.Gui.Controls
 {
@@ -128,10 +131,23 @@ namespace LoLNotes.Gui.Controls
             if (stat == null || stat.Summary == null)
                 return false;
 
+            GameModes mode;
+            if (!Enum.TryParse(stat.GameMode, out mode))
+                mode = GameModes.UNKNOWN;
+
+            GameTypes type;
+            if (!Enum.TryParse(stat.GameType, out type))
+                type = GameTypes.UNKNOWN;
+
+            if (mode == GameModes.UNKNOWN)
+                StaticLogger.Error("Unknown GameMode " + stat.GameMode);
+            if (type == GameTypes.UNKNOWN)
+                StaticLogger.Error("Unknown GameType " + stat.GameType);
+
             SetDescription(string.Format(
-                "Type: {0}-{1}\nLevel: {2}\nWins: {3}\nLosses: {4}\nLeaves: {5}\n{6}",
-                stat.GameMode,
-                stat.GameType,
+                "{0} {1}\nLevel: {2}\nWins: {3}\nLosses: {4}\nLeaves: {5}\n{6}",
+                new DescriptionEnumTypeConverter<GameModes>().ConvertToString(mode),
+                new DescriptionEnumTypeConverter<GameTypes>().ConvertToString(type),
                 stat.Summary.Level,
                 stat.Summary.Wins,
                 stat.Summary.Losses,
