@@ -28,9 +28,11 @@ using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Db4objects.Db4o;
+using Db4objects.Db4o.Config;
 using Db4objects.Db4o.Query;
 using Db4objects.Db4o.TA;
 using LoLNotes.Flash;
@@ -64,6 +66,8 @@ namespace LoLNotes.Gui
 
             Logger.Instance.Register(new DefaultListener(Levels.All, OnLog));
 
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
             IconCache = new Dictionary<string, Icon>
             {
                 {"Red",  Icon.FromHandle(Resources.circle_red.GetHicon())},
@@ -71,7 +75,7 @@ namespace LoLNotes.Gui
                 {"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
             };
 
-            Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
+            UpdateIcon();
 
             var config = Db4oEmbedded.NewConfiguration();
 
@@ -111,6 +115,11 @@ namespace LoLNotes.Gui
             StaticLogger.Info("Startup Completed");
         }
 
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            LogToFile(string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", Levels.Fatal.ToString().ToUpper(), e.ExceptionObject, DateTime.UtcNow));
+        }
+
         void OnLog(Levels level, object obj)
         {
             object log = string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", level.ToString().ToUpper(), obj, DateTime.UtcNow);
@@ -144,14 +153,20 @@ namespace LoLNotes.Gui
             }
         }
 
+        void UpdateIcon()
+        {
+            if (!IsInstalled)
+                Icon = IconCache["Red"];
+            else if (Connection != null && Connection.IsConnected)
+                Icon = IconCache["Green"];
+            else
+                Icon = IconCache["Yellow"];
+        }
+
         void Connection_Connected(object obj)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new Action<object>(Connection_Connected), obj);
-                return;
-            }
-            Icon = Connection.IsConnected ? IconCache["Green"] : IconCache["Yellow"];
+            if (Created)
+                Invoke(new Action(UpdateIcon));
         }
 
         void Reader_ObjectRead(object obj)
@@ -214,27 +229,20 @@ namespace LoLNotes.Gui
                             var entry = PlayerCache.Find(p => p.Id == ply.Id);
                             if (entry == null)
                             {
-                                Stopwatch sw = Stopwatch.StartNew();
-
-                                entry = Database.Query<PlayerEntry>().
-                                    Where(e => e.Id == ply.Id).
-                                    FirstOrDefault();
-
-                                if (entry != null)
-                                    PlayerCache.Add(entry);
-
-                                sw.Stop();
-                                StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+                                var plycontrol = list.Players[o];
+                                Task.Factory.StartNew(() => LoadPlayer(ply.Id, plycontrol));
+                                plycontrol.Loading = true;
+                                plycontrol.SetData(team[o]);
                             }
-
-                            if (entry != null)
+                            else
                             {
                                 list.Players[o].SetData(entry);
-                                list.Players[o].Visible = true;
-                                continue;
                             }
                         }
-                        list.Players[o].SetData(team[o]);
+                        else
+                        {
+                            list.Players[o].SetData(team[o]);
+                        }
                         list.Players[o].Visible = true;
                     }
                     else
@@ -243,6 +251,41 @@ namespace LoLNotes.Gui
                     }
                 }
             }
+        }
+
+        void UpdatePlayerControl(PlayerControl control, PlayerEntry entry)
+        {
+            if (entry != null)
+            {
+                control.SetData(entry);
+            }
+            else
+            {
+                control.Loading = false;
+                control.SetNoStats();
+            }
+        }
+
+        /// <summary>
+        /// Query and cache player data
+        /// </summary>
+        /// <param name="id">Id of the player to load</param>
+        /// <param name="control">Control to update</param>
+        void LoadPlayer(int id, PlayerControl control)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var entry = Database.Query<PlayerEntry>().
+                Where(e => e.Id == id).
+                FirstOrDefault();
+
+            if (entry != null)
+                PlayerCache.Add(entry);
+
+            sw.Stop();
+            StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+
+            control.Invoke(new Action<PlayerControl, PlayerEntry>(UpdatePlayerControl), control, entry);
         }
 
 
@@ -310,7 +353,7 @@ namespace LoLNotes.Gui
                 Install();
             }
             InstallButton.Text = IsInstalled ? "Uninstall" : "Install";
-            Icon = IsInstalled ? IconCache["Yellow"] : IconCache["Red"];
+            UpdateIcon();
         }
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)

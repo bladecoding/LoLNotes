@@ -38,6 +38,8 @@ namespace LoLNotes.Gui.Controls
         string PlayerName;
         int Current;
 
+        public bool Loading { get; set; }
+
 
         public PlayerControl()
         {
@@ -87,6 +89,7 @@ namespace LoLNotes.Gui.Controls
         {
             Player = plr;
             PlayerName = null;
+            Loading = false;
             UpdateView();
         }
         public void SetData(Participant part)
@@ -100,10 +103,12 @@ namespace LoLNotes.Gui.Controls
             else if (opart != null)
             {
                 PlayerName = "Summoner " + opart.GameUniqueId;
+                Loading = false;
             }
             else
             {
                 PlayerName = "Unknown";
+                Loading = false;
             }
             Player = null;
             UpdateView();
@@ -137,10 +142,15 @@ namespace LoLNotes.Gui.Controls
             return true;
         }
 
+        public void SetNoStats()
+        {
+            SetDescription(Loading ? "Loading..." : "No Stats");
+        }
+
         public void UpdateView()
         {
             if (!SetStats())
-                SetDescription("No Stats");
+                SetNoStats();
 
             Invalidate();
         }
