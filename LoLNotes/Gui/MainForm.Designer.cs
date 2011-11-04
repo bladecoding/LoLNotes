@@ -222,7 +222,7 @@ namespace LoLNotes.Gui
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "LoL";
-            this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.Load += new System.EventHandler(MainForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.GameTab.ResumeLayout(false);
             this.SettingsTab.ResumeLayout(false);
@@ -231,6 +231,8 @@ namespace LoLNotes.Gui
             this.ResumeLayout(false);
 
         }
+
+
 
         #endregion
 

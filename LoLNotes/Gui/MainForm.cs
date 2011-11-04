@@ -26,14 +26,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
-using System.Threading;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Db4objects.Db4o;
-using Db4objects.Db4o.Config;
-using Db4objects.Db4o.Query;
 using Db4objects.Db4o.TA;
 using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
@@ -66,7 +63,7 @@ namespace LoLNotes.Gui
 
             Logger.Instance.Register(new DefaultListener(Levels.All, OnLog));
 
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             IconCache = new Dictionary<string, Icon>
             {
@@ -78,14 +75,12 @@ namespace LoLNotes.Gui
             UpdateIcon();
 
             var config = Db4oEmbedded.NewConfiguration();
-
             config.Common.ObjectClass(typeof(PlayerEntry)).ObjectField("Id").Indexed(true);
             config.Common.ObjectClass(typeof(PlayerEntry)).ObjectField("TimeStamp").Indexed(true);
             config.Common.ObjectClass(typeof(GameDTO)).ObjectField("Id").Indexed(true);
             config.Common.ObjectClass(typeof(GameDTO)).ObjectField("TimeStamp").Indexed(true);
             config.Common.ObjectClass(typeof(EndOfGameStats)).ObjectField("GameId").Indexed(true);
             config.Common.ObjectClass(typeof(EndOfGameStats)).ObjectField("TimeStamp").Indexed(true);
-
             config.Common.Add(new TransparentPersistenceSupport());
             config.Common.Add(new TransparentActivationSupport());
 
@@ -113,6 +108,25 @@ namespace LoLNotes.Gui
 #endif
 
             StaticLogger.Info("Startup Completed");
+        }
+
+        void SetTitle(string title)
+        {
+            Text = string.Format(
+                "LoLNotes v{0}{1}{2}",
+                AssemblyAttributes.FileVersion, 
+                AssemblyAttributes.Configuration, 
+                !string.IsNullOrEmpty(title) ? " - " + title : "");
+        }
+        void CheckVersion()
+        {
+            var str = fastJSON.JSON.Instance.ToJSON(new Dictionary<string, string> { { "test", "test2" }, { "test2", "test3" }, });
+        }
+
+        void MainForm_Load(object sender, EventArgs e)
+        {
+            SetTitle("(Checking)");
+            Task.Factory.StartNew(CheckVersion);
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -301,13 +315,13 @@ namespace LoLNotes.Gui
             if (!File.Exists(LoaderFile))
                 File.WriteAllBytes(LoaderFile, Resources.LolLoader);
 
-            var shortfilename = Wow.GetShortPath(LoaderFile);
+            var shortfilename = AppInit.GetShortPath(LoaderFile);
 
-            var dlls = Wow.AppInitDlls32;
+            var dlls = AppInit.AppInitDlls32;
             if (!dlls.Contains(shortfilename))
             {
-                dlls.Add(Wow.GetShortPath(shortfilename));
-                Wow.AppInitDlls32 = dlls;
+                dlls.Add(AppInit.GetShortPath(shortfilename));
+                AppInit.AppInitDlls32 = dlls;
             }
         }
 
@@ -318,8 +332,8 @@ namespace LoLNotes.Gui
                 if (!File.Exists(LoaderFile))
                     return false;
 
-                var shortfilename = Wow.GetShortPath(LoaderFile);
-                var dlls = Wow.AppInitDlls32;
+                var shortfilename = AppInit.GetShortPath(LoaderFile);
+                var dlls = AppInit.AppInitDlls32;
 
                 return dlls.Contains(shortfilename);
             }
@@ -327,18 +341,14 @@ namespace LoLNotes.Gui
 
         void Uninstall()
         {
-            var shortfilename = Wow.GetShortPath(LoaderFile);
+            var shortfilename = AppInit.GetShortPath(LoaderFile);
 
-            var dlls = Wow.AppInitDlls32;
+            var dlls = AppInit.AppInitDlls32;
             if (dlls.Contains(shortfilename))
             {
-                dlls.Remove(Wow.GetShortPath(shortfilename));
-                Wow.AppInitDlls32 = dlls;
+                dlls.Remove(AppInit.GetShortPath(shortfilename));
+                AppInit.AppInitDlls32 = dlls;
             }
-        }
-
-        private void MainForm_Shown(object sender, EventArgs e)
-        {
         }
 
         private void button1_Click(object sender, EventArgs e)

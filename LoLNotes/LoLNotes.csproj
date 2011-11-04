@@ -150,11 +150,13 @@
     <Compile Include="Messages\Translators\MessageTranslator.cs" />
     <Compile Include="Messages\MessageAttribute.cs" />
     <Compile Include="Messages\Readers\MessageReader.cs" />
+    <Compile Include="Util\AssemblyAttributes.cs" />
     <Compile Include="Util\Compression.cs" />
     <Compile Include="Util\Parse.cs" />
     <Compile Include="Flash\FlashSerializer.cs" />
     <Compile Include="Messages\GameLobby\TeamParticipants.cs" />
     <Compile Include="Messages\Readers\IObjectReader.cs" />
+    <Compile Include="Util\AppInit.cs" />
     <Compile Include="Util\Wow.cs" />
     <EmbeddedResource Include="Gui\Controls\TeamControl.resx">
       <DependentUpon>TeamControl.cs</DependentUpon>
