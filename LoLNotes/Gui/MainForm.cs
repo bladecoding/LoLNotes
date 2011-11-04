@@ -118,6 +118,12 @@ namespace LoLNotes.Gui
                 AssemblyAttributes.Configuration, 
                 !string.IsNullOrEmpty(title) ? " - " + title : "");
         }
+
+        void SetDownloadLink(string link)
+        {
+            DownloadLink.Text = link;
+        }
+
         void CheckVersion()
         {
             try
@@ -126,7 +132,8 @@ namespace LoLNotes.Gui
                 {
                     string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/Release.txt");
                     var dict = fastJSON.JSON.Instance.Parse(raw) as Dictionary<string, object>;
-                    Invoke(new Action<string>(SetTitle), string.Format("{0}{1}", dict["Version"], dict["ReleaseName"]));
+                    Invoke(new Action<string>(SetTitle), string.Format("v{0}{1}", dict["Version"], dict["ReleaseName"]));
+                    Invoke(new Action<string>(SetDownloadLink), dict["Link"]);
                 }
             }
             catch (WebException we)
@@ -595,6 +602,11 @@ namespace LoLNotes.Gui
             plrcontrol.UpdateView();
 
             Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player, true));
+        }
+
+        private void DownloadLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(DownloadLink.Text);
         }
     }
 }

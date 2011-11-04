@@ -63,23 +63,24 @@ namespace LoLNotes.Gui
             this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.GameTab = new System.Windows.Forms.TabPage();
+            this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SearchTab = new System.Windows.Forms.TabPage();
             this.SettingsTab = new System.Windows.Forms.TabPage();
+            this.DownloadLink = new System.Windows.Forms.LinkLabel();
             this.RebuildButton = new System.Windows.Forms.Button();
             this.InstallButton = new System.Windows.Forms.Button();
             this.LogTab = new System.Windows.Forms.TabPage();
             this.LogList = new System.Windows.Forms.ListBox();
             this.RebuildWorker = new System.ComponentModel.BackgroundWorker();
-            this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
             this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.GameTab.SuspendLayout();
+            this.PlayerEditStrip.SuspendLayout();
             this.SettingsTab.SuspendLayout();
             this.LogTab.SuspendLayout();
-            this.PlayerEditStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -108,6 +109,28 @@ namespace LoLNotes.Gui
             this.GameTab.Text = "Game";
             this.GameTab.UseVisualStyleBackColor = true;
             // 
+            // PlayerEditStrip
+            // 
+            this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem,
+            this.clearToolStripMenuItem});
+            this.PlayerEditStrip.Name = "PlayerEditStrip";
+            this.PlayerEditStrip.Size = new System.Drawing.Size(102, 48);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            // 
             // SearchTab
             // 
             this.SearchTab.Location = new System.Drawing.Point(4, 22);
@@ -119,6 +142,7 @@ namespace LoLNotes.Gui
             // 
             // SettingsTab
             // 
+            this.SettingsTab.Controls.Add(this.DownloadLink);
             this.SettingsTab.Controls.Add(this.RebuildButton);
             this.SettingsTab.Controls.Add(this.InstallButton);
             this.SettingsTab.Location = new System.Drawing.Point(4, 22);
@@ -127,6 +151,17 @@ namespace LoLNotes.Gui
             this.SettingsTab.TabIndex = 2;
             this.SettingsTab.Text = "Settings";
             this.SettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // DownloadLink
+            // 
+            this.DownloadLink.AutoSize = true;
+            this.DownloadLink.Location = new System.Drawing.Point(8, 65);
+            this.DownloadLink.Name = "DownloadLink";
+            this.DownloadLink.Size = new System.Drawing.Size(177, 13);
+            this.DownloadLink.TabIndex = 2;
+            this.DownloadLink.TabStop = true;
+            this.DownloadLink.Text = "https://github.com/high6/LoLNotes";
+            this.DownloadLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DownloadLink_LinkClicked);
             // 
             // RebuildButton
             // 
@@ -172,21 +207,6 @@ namespace LoLNotes.Gui
             this.RebuildWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.RebuildWorker_DoWork);
             this.RebuildWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.RebuildWorker_RunWorkerCompleted);
             // 
-            // PlayerEditStrip
-            // 
-            this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editToolStripMenuItem,
-            this.clearToolStripMenuItem});
-            this.PlayerEditStrip.Name = "PlayerEditStrip";
-            this.PlayerEditStrip.Size = new System.Drawing.Size(153, 70);
-            // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
-            // 
             // teamControl2
             // 
             this.teamControl2.Location = new System.Drawing.Point(268, 6);
@@ -207,13 +227,6 @@ namespace LoLNotes.Gui
             this.teamControl1.TeamSize = 5;
             this.teamControl1.Text = "Team 1";
             // 
-            // clearToolStripMenuItem
-            // 
-            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.clearToolStripMenuItem.Text = "Clear";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -222,12 +235,13 @@ namespace LoLNotes.Gui
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "LoL";
-            this.Load += new System.EventHandler(MainForm_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.GameTab.ResumeLayout(false);
-            this.SettingsTab.ResumeLayout(false);
-            this.LogTab.ResumeLayout(false);
             this.PlayerEditStrip.ResumeLayout(false);
+            this.SettingsTab.ResumeLayout(false);
+            this.SettingsTab.PerformLayout();
+            this.LogTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -250,6 +264,7 @@ namespace LoLNotes.Gui
         private System.Windows.Forms.ContextMenuStrip PlayerEditStrip;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.LinkLabel DownloadLink;
 
     }
 }
