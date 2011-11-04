@@ -120,7 +120,23 @@ namespace LoLNotes.Gui
         }
         void CheckVersion()
         {
-            var str = fastJSON.JSON.Instance.ToJSON(new Dictionary<string, string> { { "test", "test2" }, { "test2", "test3" }, });
+            try
+            {
+                using (var wc = new WebClient())
+                {
+                    string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/Release.txt");
+                    var dict = fastJSON.JSON.Instance.Parse(raw) as Dictionary<string, object>;
+                    Invoke(new Action<string>(SetTitle), string.Format("{0}{1}", dict["Version"], dict["ReleaseName"]));
+                }
+            }
+            catch (WebException we)
+            {
+                StaticLogger.Warning(we);
+            }
+            catch (Exception e)
+            {
+                StaticLogger.Error(e);
+            }
         }
 
         void MainForm_Load(object sender, EventArgs e)

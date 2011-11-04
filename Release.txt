@@ -1,9 +1,5 @@
 {
-"Info":
-
-	{
-	"ReleaseName": "Beta",
-	"Version": "1.0",
-	"Link": "http://google.com"
-	}
+"ReleaseName": "Beta",
+"Version": "1.0",
+"Link": "http://google.com"
 }
