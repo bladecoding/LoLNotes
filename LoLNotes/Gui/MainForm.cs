@@ -93,8 +93,6 @@ namespace LoLNotes.Gui
             Connection.Connected += Connection_Connected;
             Reader.ObjectRead += Reader_ObjectRead;
 
-            Connection.Start();
-
 #if TESTING
             var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
             pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
@@ -114,8 +112,8 @@ namespace LoLNotes.Gui
         {
             Text = string.Format(
                 "LoLNotes v{0}{1}{2}",
-                AssemblyAttributes.FileVersion, 
-                AssemblyAttributes.Configuration, 
+                AssemblyAttributes.FileVersion,
+                AssemblyAttributes.Configuration,
                 !string.IsNullOrEmpty(title) ? " - " + title : "");
         }
 
@@ -132,8 +130,8 @@ namespace LoLNotes.Gui
                 {
                     string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/Release.txt");
                     var dict = fastJSON.JSON.Instance.Parse(raw) as Dictionary<string, object>;
-                    Invoke(new Action<string>(SetTitle), string.Format("v{0}{1}", dict["Version"], dict["ReleaseName"]));
-                    Invoke(new Action<string>(SetDownloadLink), dict["Link"]);
+                    BeginInvoke(new Action<string>(SetTitle), string.Format("v{0}{1}", dict["Version"], dict["ReleaseName"]));
+                    BeginInvoke(new Action<string>(SetDownloadLink), dict["Link"]);
                 }
             }
             catch (WebException we)
@@ -170,7 +168,7 @@ namespace LoLNotes.Gui
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<object>(AddLogToList), obj);
+                BeginInvoke(new Action<object>(AddLogToList), obj);
                 return;
             }
             if (LogList.Items.Count > 1000)
@@ -203,7 +201,7 @@ namespace LoLNotes.Gui
         void Connection_Connected(object obj)
         {
             if (Created)
-                Invoke(new Action(UpdateIcon));
+                BeginInvoke(new Action(UpdateIcon));
         }
 
         void Reader_ObjectRead(object obj)
@@ -222,7 +220,7 @@ namespace LoLNotes.Gui
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<GameDTO>(UpdateLists), game);
+                BeginInvoke(new Action<GameDTO>(UpdateLists), game);
                 return;
             }
 
@@ -326,7 +324,7 @@ namespace LoLNotes.Gui
             sw.Stop();
             StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
 
-            control.Invoke(new Action<PlayerControl, PlayerEntry>(UpdatePlayerControl), control, entry);
+            UpdatePlayerControl(control, entry);
         }
 
 
@@ -551,6 +549,17 @@ namespace LoLNotes.Gui
             RebuildButton.Text = "Rebuild";
         }
 
+        bool ReloadPlayerControl(PlayerControl pc)
+        {
+            var part = pc.Participant as PlayerParticipant;
+            if (part == null)
+                return false;
+
+           Task.Factory.StartNew(() => LoadPlayer(((PlayerParticipant)pc.Participant).Id, pc)).Wait();
+
+            return (pc.Player != null);
+        }
+
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var menuItem = sender as ToolStripItem;
@@ -565,7 +574,8 @@ namespace LoLNotes.Gui
             if (plrcontrol == null)
                 return;
 
-            if (plrcontrol.Player == null)
+            //Player was null, lets try reloading it and see if we got a player.
+            if (plrcontrol.Player == null && !ReloadPlayerControl(plrcontrol))
                 return;
 
             var form = new EditPlayerForm(plrcontrol.Player);
@@ -607,6 +617,12 @@ namespace LoLNotes.Gui
         private void DownloadLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(DownloadLink.Text);
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            //Start after the form is shown otherwise Invokes will fail
+            Connection.Start();
         }
     }
 }

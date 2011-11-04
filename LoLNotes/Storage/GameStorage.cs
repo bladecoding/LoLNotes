@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Db4objects.Db4o;
 using LoLNotes.Flash;
 using LoLNotes.Messages.GameLobby;
+using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.Readers;
 using NotMissing.Logging;
@@ -101,24 +102,35 @@ namespace LoLNotes.Storage
             if (match != null)
             {
                 //If the object read is older then don't bother adding it.
-                if (lobby.TimeStamp <= match.TimeStamp)
-                    return match;
+                if (lobby.TimeStamp > match.TimeStamp)
+                {
+                    match.CreationTime = lobby.CreationTime;
+                    match.Destination = lobby.Destination;
+                    match.GameMode = lobby.GameMode;
+                    match.GameState = lobby.GameState;
+                    match.GameType = lobby.GameType;
+                    match.MapId = lobby.MapId;
+                    match.MaxPlayers = lobby.MaxPlayers;
+                    match.Name = lobby.Name;
+                    match.TimeStamp = lobby.TimeStamp;
+                    match.TeamOne = lobby.TeamOne;
+                    match.TeamTwo = lobby.TeamTwo;
 
-                match.CreationTime = lobby.CreationTime;
-                match.Destination = lobby.Destination;
-                match.GameMode = lobby.GameMode;
-                match.GameState = lobby.GameState;
-                match.GameType = lobby.GameType;
-                match.MapId = lobby.MapId;
-                match.MaxPlayers = lobby.MaxPlayers;
-                match.Name = lobby.Name;
-                match.TimeStamp = lobby.TimeStamp;
+                    Database.Store(match);
+                }
             }
             else
             {
                 match = lobby;
+                Database.Store(match);
             }
-            Database.Store(match);
+
+
+            foreach (PlayerParticipant plr in match.TeamOne.Union(match.TeamTwo).Where(p => p is PlayerParticipant).ToList())
+            {
+                RecordPlayer(new PlayerEntry(lobby, plr), false);
+            }
+
             return match;
         }
 
@@ -148,8 +160,9 @@ namespace LoLNotes.Storage
         /// </summary>
         /// <param name="entry">Player to record</param>
         /// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
+        /// <param name="dontupdateexisting">If true RecordPlayer will not update an existing record. Instead it will return if a record is found.</param>
         /// <returns>The PlayerEntry from the database</returns>
-        public PlayerEntry RecordPlayer(PlayerEntry entry, bool ignoretimestamp)
+        public PlayerEntry RecordPlayer(PlayerEntry entry, bool ignoretimestamp, bool dontupdateexisting = false)
         {
             if (entry == null)
                 throw new ArgumentNullException("entry");
@@ -158,7 +171,7 @@ namespace LoLNotes.Storage
             if (match != null)
             {
                 //If the object read is older then don't bother adding it.
-                if (!ignoretimestamp && entry.TimeStamp <= match.TimeStamp)
+                if (dontupdateexisting || (!ignoretimestamp && entry.TimeStamp <= match.TimeStamp))
                     return match;
 
                 match.InternalName = entry.InternalName;
@@ -239,7 +252,7 @@ namespace LoLNotes.Storage
                     match.TeamPlayerStats = game.TeamPlayerStats;
                     match.TimeStamp = game.TimeStamp;
                     match.TimeUntilNextFirstWinBonus = game.TimeUntilNextFirstWinBonus;
-                    match.UserId = game.UserId; 
+                    match.UserId = game.UserId;
 
                     Database.Store(match);
                 }

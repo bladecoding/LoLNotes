@@ -25,6 +25,8 @@ using System.Drawing;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Activation;
 using Db4objects.Db4o.TA;
+using LoLNotes.Messages.GameLobby;
+using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.GameStats.PlayerStats;
 
@@ -35,6 +37,13 @@ namespace LoLNotes.Storage
         public PlayerEntry()
         {
             StatsList = new List<StatsEntry>();
+        }
+        public PlayerEntry(GameDTO game, PlayerParticipant plr)
+            : this()
+        {
+            TimeStamp = game.TimeStamp;
+            Name = plr.Name;
+            Id = plr.Id;
         }
         public PlayerEntry(EndOfGameStats game, PlayerStatsSummary stats)
             : this()

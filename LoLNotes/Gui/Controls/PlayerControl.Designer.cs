@@ -64,7 +64,6 @@ namespace LoLNotes.Gui.Controls
             this.NameLabel.Name = "NameLabel";
             this.NameLabel.Size = new System.Drawing.Size(180, 20);
             this.NameLabel.TabIndex = 0;
-            this.NameLabel.Text = "Name";
             // 
             // DescLabel
             // 
@@ -73,7 +72,6 @@ namespace LoLNotes.Gui.Controls
             this.DescLabel.Name = "DescLabel";
             this.DescLabel.Size = new System.Drawing.Size(175, 80);
             this.DescLabel.TabIndex = 1;
-            this.DescLabel.Text = "Wins: \r\nLosses:\r\nLeaves:\r\nLevel:";
             // 
             // PlayerControl
             // 

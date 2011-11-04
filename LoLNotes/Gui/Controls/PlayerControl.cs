@@ -34,11 +34,23 @@ namespace LoLNotes.Gui.Controls
 {
     public partial class PlayerControl : UserControl
     {
-        public PlayerEntry Player { get; protected set; }
+        PlayerEntry player;
+        public PlayerEntry Player
+        {
+            get { return player; }
+            protected set { player = value; participant = null; }
+        }
+
+        Participant participant;
         /// <summary>
         /// Overrides Player.Name, used for "Summoner x"
         /// </summary>
-        string PlayerName;
+        public Participant Participant
+        {
+            get { return participant; }
+            protected set { participant = value; player = null; }
+        }
+
         int Current;
 
         public bool Loading { get; set; }
@@ -72,7 +84,7 @@ namespace LoLNotes.Gui.Controls
         {
             if (NameLabel.InvokeRequired)
             {
-                NameLabel.Invoke(new Action<string>(SetTitle), str);
+                NameLabel.BeginInvoke(new Action<string>(SetTitle), str);
                 return;
             }
             NameLabel.Text = str;
@@ -82,45 +94,49 @@ namespace LoLNotes.Gui.Controls
         {
             if (DescLabel.InvokeRequired)
             {
-                DescLabel.Invoke(new Action<string>(SetDescription), str);
+                DescLabel.BeginInvoke(new Action<string>(SetDescription), str);
                 return;
             }
             DescLabel.Text = str;
         }
 
-        public void SetData(PlayerEntry plr)
-        {
-            Player = plr;
-            PlayerName = null;
-            Loading = false;
-            UpdateView();
-        }
-        public void SetData(Participant part)
+        void SetTitle(Participant part)
         {
             var opart = part as ObfuscatedParticipant;
             var gpart = part as GameParticipant;
             if (gpart != null)
             {
-                PlayerName = gpart.Name;
+                SetTitle(gpart.Name);
             }
             else if (opart != null)
             {
-                PlayerName = "Summoner " + opart.GameUniqueId;
+                SetTitle("Summoner " + opart.GameUniqueId);
                 Loading = false;
             }
             else
             {
-                PlayerName = "Unknown";
+                SetTitle("Unknown");
                 Loading = false;
             }
-            Player = null;
+        }
+
+
+        public void SetData(PlayerEntry plr)
+        {
+            Player = plr;
+            Loading = false;
+            UpdateView();
+        }
+        public void SetData(Participant part)
+        {
+            Participant = part;
             UpdateView();
         }
 
         bool SetStats()
         {
-            if (PlayerName != null)
-                SetTitle(PlayerName);
+            if (Participant != null)
+                SetTitle(Participant);
 
             if (Player == null || Player.StatsList.Count < 1)
                 return false;
@@ -160,7 +176,15 @@ namespace LoLNotes.Gui.Controls
 
         public void SetNoStats()
         {
-            SetDescription(Loading ? "Loading..." : "No Stats");
+            if (Loading)
+            {
+                SetDescription("Loading...");
+                return;
+            }
+
+            SetDescription(string.Format(
+                "No Stats\n{0}",
+                (Player != null && !string.IsNullOrEmpty(Player.Note)) ? string.Format("Note: {0}\n", Player.Note) : ""));
         }
 
         public void UpdateView()
