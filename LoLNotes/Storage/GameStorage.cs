@@ -44,6 +44,12 @@ namespace LoLNotes.Storage
         readonly IFlashProcessor Flash;
         readonly MessageReader Reader;
 
+        public delegate void PlayerUpdateHandler(PlayerEntry player);
+        /// <summary>
+        /// Called when the recorder gets a new/updated player.
+        /// </summary>
+        public event PlayerUpdateHandler PlayerUpdate;
+
         public GameStorage(IObjectContainer db, IFlashProcessor flash)
         {
             Database = db;
@@ -126,9 +132,9 @@ namespace LoLNotes.Storage
             }
 
 
-            foreach (PlayerParticipant plr in match.TeamOne.Union(match.TeamTwo).Where(p => p is PlayerParticipant).ToList())
+            foreach (PlayerParticipant plr in lobby.TeamOne.Union(match.TeamTwo).Where(p => p is PlayerParticipant).ToList())
             {
-                RecordPlayer(new PlayerEntry(lobby, plr), false);
+                RecordPlayer(new PlayerEntry(lobby, plr), false, true);
             }
 
             return match;
@@ -185,9 +191,19 @@ namespace LoLNotes.Storage
             {
                 match = entry;
             }
-
             Database.Store(match);
+            OnPlayerUpdate(match);
             return match;
+        }
+
+        public PlayerEntry GetPlayer(int id)
+        {
+            lock (DatabaseLock)
+            {
+                return Database.Query<PlayerEntry>().
+                    Where(e => e.Id == id).
+                    FirstOrDefault();
+            }
         }
 
         public void CommitGame(EndOfGameStats game)
@@ -203,6 +219,7 @@ namespace LoLNotes.Storage
             sw.Stop();
             StaticLogger.Trace(string.Format("EndOfGameStats committed in {0}ms", sw.ElapsedMilliseconds));
         }
+
         public EndOfGameStats RecordGame(EndOfGameStats game)
         {
             if (game == null)
@@ -266,7 +283,7 @@ namespace LoLNotes.Storage
             for (int i = 0; i < statslist.Count; i++)
             {
                 var search = new PlayerEntry(game, statslist[i]);
-                var entry = RecordPlayer(search, false);
+                var entry = RecordPlayer(search, false, true);
 
                 //RecordPlayer returned a PlayerEntry that we did not pass.
                 //That means it returned a PlayerEntry that it found in the DB.
@@ -275,12 +292,20 @@ namespace LoLNotes.Storage
                 {
                     //Checking that stats age is done inside UpdateStats
                     //otherwise you would be searching for gamemode/gametype twice.
-                    entry.UpdateStats(game, statslist[i]);
+                    if (!entry.UpdateStats(game, statslist[i]))
+                        return match;
                     Database.Store(entry);
+                    OnPlayerUpdate(entry); 
                 }
             }
 
             return match;
+        }
+
+        protected virtual void OnPlayerUpdate(PlayerEntry player)
+        {
+            if (PlayerUpdate != null)
+                PlayerUpdate(player);
         }
     }
 }

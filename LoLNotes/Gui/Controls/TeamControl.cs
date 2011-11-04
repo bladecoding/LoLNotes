@@ -61,6 +61,7 @@ namespace LoLNotes.Gui.Controls
                     var control = new PlayerControl();
                     control.Location = new Point(0, PlayersStartY + (BasePlayer.Height + PlayersYSpacing) * i);
                     control.ContextMenuStrip = PlayerContextMenuStrip;
+                    control.Visible = false;
                     Players.Add(control);
                     Controls.Add(control);
                 }

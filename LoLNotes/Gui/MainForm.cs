@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -88,10 +89,14 @@ namespace LoLNotes.Gui
 
             Connection = new PipeProcessor("lolbans");
             Reader = new MessageReader(Connection);
-            Recorder = new GameStorage(Database, Connection);
 
             Connection.Connected += Connection_Connected;
             Reader.ObjectRead += Reader_ObjectRead;
+
+            //Recorder must be initiated after Reader.ObjectRead as
+            //the last event handler is called first
+            Recorder = new GameStorage(Database, Connection);
+            Recorder.PlayerUpdate += Recorder_PlayerUpdate;
 
 #if TESTING
             var pipe = new NamedPipeServerStream("lolbans", PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
@@ -106,6 +111,42 @@ namespace LoLNotes.Gui
 #endif
 
             StaticLogger.Info("Startup Completed");
+        }
+
+        object cachelock = new object();
+        void UpdatePlayer(PlayerEntry player)
+        {
+            lock (cachelock)
+            {
+                for (int i = 0; i < PlayerCache.Count; i++)
+                {
+                    var plr = PlayerCache[i];
+                    if (plr.Id == player.Id && player.TimeStamp > plr.TimeStamp)
+                    {
+                        PlayerCache[i] = player;
+                        StaticLogger.Info("Updating stale player cache " + player.Name);
+                        return;
+                    }
+                }
+                var lists = new List<TeamControl> {teamControl1, teamControl2};
+                foreach (var list in lists)
+                {
+                    foreach (var plr in list.Players)
+                    {
+                        if (plr.Player != null && plr.Player.Id == player.Id && player.TimeStamp > plr.Player.TimeStamp)
+                        {
+                            plr.SetData(player);
+                            StaticLogger.Info("Updating stale player " + player.Name);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        void Recorder_PlayerUpdate(PlayerEntry player)
+        {
+            Task.Factory.StartNew(() => UpdatePlayer(player));
         }
 
         void SetTitle(string title)
@@ -312,19 +353,20 @@ namespace LoLNotes.Gui
         /// <param name="control">Control to update</param>
         void LoadPlayer(int id, PlayerControl control)
         {
-            Stopwatch sw = Stopwatch.StartNew();
+            lock (cachelock)
+            {
+                Stopwatch sw = Stopwatch.StartNew();
 
-            var entry = Database.Query<PlayerEntry>().
-                Where(e => e.Id == id).
-                FirstOrDefault();
+                var entry = Recorder.GetPlayer(id);
 
-            if (entry != null)
-                PlayerCache.Add(entry);
+                if (entry != null)
+                    PlayerCache.Add(entry);
 
-            sw.Stop();
-            StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+                sw.Stop();
+                StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
 
-            UpdatePlayerControl(control, entry);
+                UpdatePlayerControl(control, entry);
+            }
         }
 
 
@@ -549,17 +591,6 @@ namespace LoLNotes.Gui
             RebuildButton.Text = "Rebuild";
         }
 
-        bool ReloadPlayerControl(PlayerControl pc)
-        {
-            var part = pc.Participant as PlayerParticipant;
-            if (part == null)
-                return false;
-
-           Task.Factory.StartNew(() => LoadPlayer(((PlayerParticipant)pc.Participant).Id, pc)).Wait();
-
-            return (pc.Player != null);
-        }
-
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var menuItem = sender as ToolStripItem;
@@ -574,8 +605,7 @@ namespace LoLNotes.Gui
             if (plrcontrol == null)
                 return;
 
-            //Player was null, lets try reloading it and see if we got a player.
-            if (plrcontrol.Player == null && !ReloadPlayerControl(plrcontrol))
+            if (plrcontrol.Player == null)
                 return;
 
             var form = new EditPlayerForm(plrcontrol.Player);

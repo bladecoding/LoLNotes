@@ -76,7 +76,8 @@ namespace LoLNotes.Gui.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            var pen = new Pen(Player != null && Player.NoteColor.A != 0 ? Player.NoteColor : Color.Green, BorderSize);
+            //var pen = new Pen(Player != null && Player.NoteColor.A != 0 ? Player.NoteColor : Color.Green, BorderSize);
+            var pen = new Pen(Player != null ? Color.Green : Color.Red, BorderSize);
             e.Graphics.DrawRectangle(pen, BorderSize, BorderSize, Width - BorderSize * 2, Height - BorderSize * 2);
         }
 
@@ -181,7 +182,7 @@ namespace LoLNotes.Gui.Controls
                 SetDescription("Loading...");
                 return;
             }
-
+                                                        
             SetDescription(string.Format(
                 "No Stats\n{0}",
                 (Player != null && !string.IsNullOrEmpty(Player.Note)) ? string.Format("Note: {0}\n", Player.Note) : ""));

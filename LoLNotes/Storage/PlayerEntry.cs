@@ -21,9 +21,11 @@ THE SOFTWARE.
  */
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Activation;
+using Db4objects.Db4o.Collections;
 using Db4objects.Db4o.TA;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
@@ -32,11 +34,12 @@ using LoLNotes.Messages.GameStats.PlayerStats;
 
 namespace LoLNotes.Storage
 {
+    [DebuggerDisplay("{Name}")]
     public class PlayerEntry
     {
         public PlayerEntry()
         {
-            StatsList = new List<StatsEntry>();
+            StatsList = new ArrayList4<StatsEntry>();
         }
         public PlayerEntry(GameDTO game, PlayerParticipant plr)
             : this()
@@ -62,20 +65,26 @@ namespace LoLNotes.Storage
         /// <returns>True if stats were updated otherwise false</returns>
         public bool UpdateStats(EndOfGameStats game, PlayerStatsSummary stats)
         {
+            if (StatsList == null)
+                StatsList = new ArrayList4<StatsEntry>();
             for (int i = 0; i < StatsList.Count; i++)
             {
                 if (StatsList[i].GameType == game.GameType &&
                     StatsList[i].GameMode == game.GameMode)
                 {
                     //We found the stats, if they aren't new though return.
-                    if (TimeStamp > game.TimeStamp)
+                    if (StatsList[i].TimeStamp > game.TimeStamp)
                         return false;
                     StatsList[i].Summary = stats;
+                    StatsList[i].TimeStamp = game.TimeStamp;
                     TimeStamp = game.TimeStamp;
+                    StatsList.Activate(ActivationPurpose.Write);
                     return true;
                 }
             }
+            TimeStamp = game.TimeStamp;
             StatsList.Add(new StatsEntry(game, stats));
+            StatsList.Activate(ActivationPurpose.Write);
             return true;
         }
 
@@ -85,6 +94,6 @@ namespace LoLNotes.Storage
         public string InternalName { get; set; }
         public int Id { get; set; }
         public long TimeStamp { get; set; }
-        public List<StatsEntry> StatsList { get; set; }
+        public ArrayList4<StatsEntry> StatsList { get; set; }
     }
 }

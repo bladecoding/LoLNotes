@@ -29,13 +29,13 @@ namespace LoLNotes.Assets
     public class DescriptionEnumTypeConverter<T> : EnumConverter
         where T : struct
     {
-        private static readonly Dictionary<T, string> s_toString =
+        private readonly Dictionary<T, string> s_toString =
             new Dictionary<T, string>();
 
-        private static readonly Dictionary<string, T> s_toValue =
+        private readonly Dictionary<string, T> s_toValue =
             new Dictionary<string, T>();
 
-        private static bool s_isInitialized;
+        private bool s_isInitialized;
 
         static DescriptionEnumTypeConverter()
         {

@@ -35,9 +35,11 @@ namespace LoLNotes.Storage
             GameMode = game.GameMode;
             GameType = game.GameType;
             Summary = stats;
+            TimeStamp = game.TimeStamp;
         }
         public string GameMode { get; set; }
         public string GameType { get; set; }
+        public long TimeStamp { get; set; }
         public PlayerStatsSummary Summary { get; set; }
     }
 }
