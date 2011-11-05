@@ -46,9 +46,9 @@ namespace LoLNotes.Flash
         {
             get { return isconnected; }
             protected set { isconnected = value; if (Connected != null) Connected(this); }
-        }  
- 
-        
+        }
+
+
         public PipeProcessor(string pipename)
         {
             PipeName = pipename;
@@ -78,9 +78,9 @@ namespace LoLNotes.Flash
                     {
                         using (var reader = new LogReader(pipe))
                         {
-                            pipe.Connect();
+                            pipe.Connect(0);
 
-                            IsConnected = true;
+                            IsConnected = pipe.IsConnected;
 
                             while (pipe.IsConnected)
                             {
@@ -96,6 +96,9 @@ namespace LoLNotes.Flash
                         }
                     }
                 }
+                catch (TimeoutException)
+                {
+                }
                 catch (EndOfStreamException)
                 {
                     //Pipe was broken, lets start listening again 
@@ -108,6 +111,8 @@ namespace LoLNotes.Flash
                 {
                     IsConnected = false;
                 }
+
+                Thread.Sleep(500);
             }
         }
 
