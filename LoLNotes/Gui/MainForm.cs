@@ -124,11 +124,11 @@ namespace LoLNotes.Gui
                     if (plr.Id == player.Id && player.TimeStamp > plr.TimeStamp)
                     {
                         PlayerCache[i] = player;
-                        StaticLogger.Info("Updating stale player cache " + player.Name);
-                        return;
+                        StaticLogger.Trace("Updating stale player cache " + player.Name);
+                        break;
                     }
                 }
-                var lists = new List<TeamControl> {teamControl1, teamControl2};
+                var lists = new List<TeamControl> { teamControl1, teamControl2 };
                 foreach (var list in lists)
                 {
                     foreach (var plr in list.Players)
@@ -136,8 +136,8 @@ namespace LoLNotes.Gui
                         if (plr.Player != null && plr.Player.Id == player.Id && player.TimeStamp > plr.Player.TimeStamp)
                         {
                             plr.SetData(player);
-                            StaticLogger.Info("Updating stale player " + player.Name);
-                            return;
+                            StaticLogger.Trace("Updating stale player " + player.Name);
+                            break;
                         }
                     }
                 }
@@ -267,8 +267,11 @@ namespace LoLNotes.Gui
 
             if (CurrentGame == null || CurrentGame.Id != game.Id)
             {
-                PlayerCache.Clear();
-                CurrentGame = game;
+                lock (cachelock)
+                {
+                    PlayerCache.Clear();
+                    CurrentGame = game;
+                }
             }
             else
             {
@@ -306,17 +309,20 @@ namespace LoLNotes.Gui
 
                         if (ply != null)
                         {
-                            var entry = PlayerCache.Find(p => p.Id == ply.Id);
-                            if (entry == null)
+                            lock (cachelock)
                             {
-                                var plycontrol = list.Players[o];
-                                Task.Factory.StartNew(() => LoadPlayer(ply.Id, plycontrol));
-                                plycontrol.Loading = true;
-                                plycontrol.SetData(team[o]);
-                            }
-                            else
-                            {
-                                list.Players[o].SetData(entry);
+                                var entry = PlayerCache.Find(p => p.Id == ply.Id);
+                                if (entry == null)
+                                {
+                                    var plycontrol = list.Players[o];
+                                    Task.Factory.StartNew(() => LoadPlayer(ply.Id, plycontrol));
+                                    plycontrol.Loading = true;
+                                    plycontrol.SetData(team[o]);
+                                }
+                                else
+                                {
+                                    list.Players[o].SetData(entry);
+                                }
                             }
                         }
                         else
@@ -353,20 +359,23 @@ namespace LoLNotes.Gui
         /// <param name="control">Control to update</param>
         void LoadPlayer(int id, PlayerControl control)
         {
-            lock (cachelock)
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var entry = Recorder.GetPlayer(id);
+
+            if (entry == null)
             {
-                Stopwatch sw = Stopwatch.StartNew();
-
-                var entry = Recorder.GetPlayer(id);
-
-                if (entry != null)
+                lock (cachelock)
+                {
+                    entry = new PlayerEntry { Id = id };
                     PlayerCache.Add(entry);
-
-                sw.Stop();
-                StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
-
-                UpdatePlayerControl(control, entry);
+                }
             }
+
+            sw.Stop();
+            StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+
+            UpdatePlayerControl(control, entry);
         }
 
 

@@ -292,10 +292,11 @@ namespace LoLNotes.Storage
                 {
                     //Checking that stats age is done inside UpdateStats
                     //otherwise you would be searching for gamemode/gametype twice.
-                    if (!entry.UpdateStats(game, statslist[i]))
-                        return match;
-                    Database.Store(entry);
-                    OnPlayerUpdate(entry); 
+                    if (entry.UpdateStats(game, statslist[i]))
+                    {
+                        Database.Store(entry);
+                        OnPlayerUpdate(entry);
+                    }
                 }
             }
 
