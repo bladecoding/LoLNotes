@@ -113,15 +113,15 @@ namespace LoLNotes.Gui
             StaticLogger.Info("Startup Completed");
         }
 
-        object cachelock = new object();
+        readonly object cachelock = new object();
         void UpdatePlayer(PlayerEntry player)
         {
             lock (cachelock)
             {
                 for (int i = 0; i < PlayerCache.Count; i++)
                 {
-                    var plr = PlayerCache[i];
-                    if (plr.Id == player.Id && player.TimeStamp > plr.TimeStamp)
+                    var plrentry = PlayerCache[i];
+                    if (plrentry.Id == player.Id && player.TimeStamp >= plrentry.TimeStamp)
                     {
                         PlayerCache[i] = player;
                         StaticLogger.Trace("Updating stale player cache " + player.Name);
@@ -133,7 +133,7 @@ namespace LoLNotes.Gui
                 {
                     foreach (var plr in list.Players)
                     {
-                        if (plr.Player != null && plr.Player.Id == player.Id && player.TimeStamp > plr.Player.TimeStamp)
+                        if (plr != null && plr.Player != null && plr.Player.Id == player.Id && player.TimeStamp >= plr.Player.TimeStamp)
                         {
                             plr.SetData(player);
                             StaticLogger.Trace("Updating stale player " + player.Name);
@@ -367,6 +367,7 @@ namespace LoLNotes.Gui
             {
                 lock (cachelock)
                 {
+                    //Create a fake entry so that the UpdatePlayerHandler can update it
                     entry = new PlayerEntry { Id = id };
                     PlayerCache.Add(entry);
                 }
