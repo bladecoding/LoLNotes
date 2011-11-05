@@ -76,8 +76,7 @@ namespace LoLNotes.Gui.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            //var pen = new Pen(Player != null && Player.NoteColor.A != 0 ? Player.NoteColor : Color.Green, BorderSize);
-            var pen = new Pen(Player != null ? Color.Green : Color.Red, BorderSize);
+            var pen = new Pen(Player != null && Player.NoteColor.A != 0 ? Player.NoteColor : Color.Green, BorderSize);
             e.Graphics.DrawRectangle(pen, BorderSize, BorderSize, Width - BorderSize * 2, Height - BorderSize * 2);
         }
 

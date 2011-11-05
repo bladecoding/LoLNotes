@@ -21,22 +21,34 @@ THE SOFTWARE.
  */
 
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using LoLNotes.Gui;
 
 namespace LoLNotes
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            bool created;
+            using (var mutex = new Mutex(true, "LoLNotesApp", out created))
+            {
+                if (created)
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new MainForm());
+                }
+                else
+                {
+                    MessageBox.Show("LoLNotes is already running");
+                }
+            }
         }
     }
 }
