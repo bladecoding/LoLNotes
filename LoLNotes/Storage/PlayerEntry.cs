@@ -20,22 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using Db4objects.Db4o;
 using Db4objects.Db4o.Activation;
 using Db4objects.Db4o.Collections;
-using Db4objects.Db4o.TA;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.GameStats.PlayerStats;
+using System.Linq;
+using NotMissing;
 
 namespace LoLNotes.Storage
 {
     [DebuggerDisplay("{Name}")]
-    public class PlayerEntry
+    public class PlayerEntry : ICloneable
     {
         public PlayerEntry()
         {
@@ -95,5 +96,19 @@ namespace LoLNotes.Storage
         public int Id { get; set; }
         public long TimeStamp { get; set; }
         public ArrayList4<StatsEntry> StatsList { get; set; }
+
+        public object Clone()
+        {
+            return new PlayerEntry
+            {
+                Note = Note,
+                NoteColor = NoteColor,
+                Name = Name,
+                InternalName = InternalName,
+                Id = Id,
+                TimeStamp = TimeStamp,
+                StatsList = new ArrayList4<StatsEntry>(StatsList.Clone().ToList()),
+            };
+        }
     }
 }

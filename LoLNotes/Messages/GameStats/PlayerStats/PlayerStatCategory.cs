@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System;
 using System.Diagnostics;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.GameStats.PlayerStats
 {
     [DebuggerDisplay("{DisplayName}")]
-    public class PlayerStatCategory
+    public class PlayerStatCategory : ICloneable
     {
         protected readonly FlashObject Base;
         public PlayerStatCategory()
@@ -48,5 +49,15 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
         [InternalName("priority")]
         public int Priority { get; set; }
 
+
+        public object Clone()
+        {
+            return new PlayerStatCategory
+            {
+                DisplayName = DisplayName,
+                Name = Name,
+                Priority = Priority,
+            };
+        }
     }
 }

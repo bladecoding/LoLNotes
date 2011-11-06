@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using LoLNotes.Flash;
+using NotMissing;
 
 /*
 copyright (C) 2011 by high828@gmail.com
@@ -28,7 +30,7 @@ THE SOFTWARE.
 namespace LoLNotes.Messages.GameStats.PlayerStats
 {
     [DebuggerDisplay("{DisplayName}")]
-    public class PlayerStat
+    public class PlayerStat : ICloneable
     {
         protected readonly FlashObject Base;
         public PlayerStat()
@@ -56,5 +58,17 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
 
         [InternalName("value")]
         public int Value { get; set; }
+
+        public object Clone()
+        {
+            return new PlayerStat
+            {
+                DisplayName = DisplayName,
+                Priority = Priority,
+                Category = Category.CloneT(),
+                StatTypeName = StatTypeName,
+                Value = Value,
+            };
+        }
     }
 }

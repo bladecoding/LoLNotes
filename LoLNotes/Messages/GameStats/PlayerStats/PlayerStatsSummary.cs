@@ -23,11 +23,12 @@ THE SOFTWARE.
 using System;
 using System.Diagnostics;
 using LoLNotes.Flash;
+using NotMissing;
 
 namespace LoLNotes.Messages.GameStats.PlayerStats
 {
     [DebuggerDisplay("{SummonerName}")]
-    public class PlayerStatsSummary
+    public class PlayerStatsSummary : ICloneable
     {
         protected readonly FlashObject Base;
 
@@ -105,5 +106,32 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
         public int Wins { get; set; }
 
 
+
+        public object Clone()
+        {
+            return new PlayerStatsSummary
+            {
+                BotPlayer = BotPlayer,
+                Elo = Elo,
+                EloChange = EloChange,
+                GameId = GameId,
+                Items = Items,
+                InChat = InChat,
+                IsMe = IsMe,
+                Leaver = Leaver,
+                Leaves = Leaves,
+                Level = Level,
+                Losses = Losses,
+                ProfileIconId = ProfileIconId,
+                SkinName = SkinName,
+                Spell1Id = Spell1Id,
+                Spell2Id = Spell2Id,
+                Statistics = new PlayerStatList(Statistics.Clone()),
+                SummonerName = SummonerName,
+                TeamId = TeamId,
+                UserId = UserId,
+                Wins = Wins,
+            };
+        }
     }
 }

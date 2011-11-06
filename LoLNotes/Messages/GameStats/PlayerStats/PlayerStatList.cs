@@ -32,6 +32,11 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
         public PlayerStatList()
         {
         }
+        public PlayerStatList(IEnumerable<PlayerStat> collection)
+            : base(collection)
+        {
+        }
+
         public PlayerStatList(FlashObject thebase)
         {
             Base = thebase;

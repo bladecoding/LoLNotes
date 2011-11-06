@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.GameStats.PlayerStats;
+using NotMissing;
 
 namespace LoLNotes.Storage
 {
-    public class StatsEntry
+    public class StatsEntry : ICloneable
     {
         public StatsEntry()
         {
@@ -41,5 +43,16 @@ namespace LoLNotes.Storage
         public string GameType { get; set; }
         public long TimeStamp { get; set; }
         public PlayerStatsSummary Summary { get; set; }
+
+        public object Clone()
+        {
+            return new StatsEntry
+            {
+               GameMode = GameMode,
+               GameType = GameType,
+               TimeStamp = TimeStamp,
+               Summary = Summary.CloneT(),
+            };
+        }
     }
 }
