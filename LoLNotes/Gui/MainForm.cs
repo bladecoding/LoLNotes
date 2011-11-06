@@ -30,6 +30,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Net;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -196,8 +197,8 @@ namespace LoLNotes.Gui
                 var dict = fastJSON.JSON.Instance.Parse(data) as Dictionary<string, object>;
 
                 ChangesText.Text = "";
-                
-                
+
+
                 foreach (var kv in dict)
                 {
                     ChangesText.SelectionFont = new Font(ChangesText.Font.FontFamily, ChangesText.Font.SizeInPoints, FontStyle.Bold);
@@ -207,7 +208,7 @@ namespace LoLNotes.Gui
                     if (kv.Value is ArrayList)
                     {
                         var list = kv.Value as ArrayList;
-                        foreach(var item in list)
+                        foreach (var item in list)
                         {
                             ChangesText.AppendText(item.ToString());
                             ChangesText.AppendText(Environment.NewLine);
@@ -254,13 +255,23 @@ namespace LoLNotes.Gui
             LogToFile(string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", Levels.Fatal.ToString().ToUpper(), e.ExceptionObject, DateTime.UtcNow));
         }
 
-        void OnLog(Levels level, object obj)
+        void Log(Levels level, object obj)
         {
-            object log = string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", level.ToString().ToUpper(), obj, DateTime.UtcNow);
+            object log = string.Format(
+                "[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
+                level.ToString().ToUpper(),
+                obj,
+                DateTime.UtcNow);
             Debug.WriteLine(log);
             Task.Factory.StartNew(LogToFile, log);
-            //if ((level & Levels.Trace) == 0)
             Task.Factory.StartNew(AddLogToList, log);
+        }
+
+        void OnLog(Levels level, object obj)
+        {
+            if (obj is Exception)
+                Log(level, ((Exception)obj).Message);
+            Log(level, obj);
         }
 
         void AddLogToList(object obj)
@@ -440,19 +451,26 @@ namespace LoLNotes.Gui
 
         void Install()
         {
-            if (!Directory.Exists(LolBansPath))
-                Directory.CreateDirectory(LolBansPath);
-
-            if (!File.Exists(LoaderFile))
-                File.WriteAllBytes(LoaderFile, Resources.LolLoader);
-
-            var shortfilename = AppInit.GetShortPath(LoaderFile);
-
-            var dlls = AppInit.AppInitDlls32;
-            if (!dlls.Contains(shortfilename))
+            try
             {
-                dlls.Add(AppInit.GetShortPath(shortfilename));
-                AppInit.AppInitDlls32 = dlls;
+                if (!Directory.Exists(LolBansPath))
+                    Directory.CreateDirectory(LolBansPath);
+
+                if (!File.Exists(LoaderFile))
+                    File.WriteAllBytes(LoaderFile, Resources.LolLoader);
+
+                var shortfilename = AppInit.GetShortPath(LoaderFile);
+
+                var dlls = AppInit.AppInitDlls32;
+                if (!dlls.Contains(shortfilename))
+                {
+                    dlls.Add(AppInit.GetShortPath(shortfilename));
+                    AppInit.AppInitDlls32 = dlls;
+                }
+            }
+            catch (SecurityException se)
+            {
+                StaticLogger.Warning(se);
             }
         }
 
@@ -460,25 +478,40 @@ namespace LoLNotes.Gui
         {
             get
             {
-                if (!File.Exists(LoaderFile))
+                try
+                {
+                    if (!File.Exists(LoaderFile))
+                        return false;
+
+                    var shortfilename = AppInit.GetShortPath(LoaderFile);
+                    var dlls = AppInit.AppInitDlls32;
+
+                    return dlls.Contains(shortfilename);
+                }
+                catch (SecurityException se)
+                {
+                    StaticLogger.Warning(se);
                     return false;
-
-                var shortfilename = AppInit.GetShortPath(LoaderFile);
-                var dlls = AppInit.AppInitDlls32;
-
-                return dlls.Contains(shortfilename);
+                }
             }
         }
 
         void Uninstall()
         {
-            var shortfilename = AppInit.GetShortPath(LoaderFile);
-
-            var dlls = AppInit.AppInitDlls32;
-            if (dlls.Contains(shortfilename))
+            try
             {
-                dlls.Remove(AppInit.GetShortPath(shortfilename));
-                AppInit.AppInitDlls32 = dlls;
+                var shortfilename = AppInit.GetShortPath(LoaderFile);
+
+                var dlls = AppInit.AppInitDlls32;
+                if (dlls.Contains(shortfilename))
+                {
+                    dlls.Remove(AppInit.GetShortPath(shortfilename));
+                    AppInit.AppInitDlls32 = dlls;
+                }
+            }
+            catch (SecurityException se)
+            {
+                StaticLogger.Warning(se);
             }
         }
 
