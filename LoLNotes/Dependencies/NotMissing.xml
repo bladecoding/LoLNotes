@@ -454,7 +454,7 @@
                        <paramref name="count" /> is less than 0, or <paramref name="count" /> + <paramref name="offset" /> is greater than the length of the <paramref name="bytes" /> array.
                        </exception>
         </member>
-        <member name="M:TShockAPI.DB.DbExt.Query(System.Data.IDbConnection,System.String,System.Object[])">
+        <member name="M:NotMissing.Db.DbExt.Query(System.Data.IDbConnection,System.String,System.Object[])">
             <summary>
             Executes a query on a database.
             </summary>
@@ -463,7 +463,7 @@
             <param name="args">Parameters to be put in the query</param>
             <returns>Rows affected by query</returns>
         </member>
-        <member name="M:TShockAPI.DB.DbExt.QueryReader(System.Data.IDbConnection,System.String,System.Object[])">
+        <member name="M:NotMissing.Db.DbExt.QueryReader(System.Data.IDbConnection,System.String,System.Object[])">
             <summary>
             Executes a query on a database.
             </summary>
@@ -482,27 +482,27 @@
             HTML 4 Entity coding routines
             </summary>
         </member>
-        <member name="M:TShockAPI.DB.IQueryBuilder.CreateTableQuery(TShockAPI.DB.SqlTable)">
+        <member name="M:NotMissing.Db.IQueryBuilder.CreateTableQuery(NotMissing.Db.SqlTable)">
             <summary>
             Construct sql query and return the string
             </summary>
             <param name="table">Table to constructor the query with</param>
             <returns>Sql query</returns>
         </member>
-        <member name="M:TShockAPI.DB.IQueryBuilder.CreateTable(TShockAPI.DB.SqlTable)">
+        <member name="M:NotMissing.Db.IQueryBuilder.CreateTable(NotMissing.Db.SqlTable)">
             <summary>
             Create the table or if it exists make sure the columns match. If they do not match it will alter the table.
             </summary>
             <param name="table">Table to create/alter</param>
         </member>
-        <member name="M:TShockAPI.DB.IQueryBuilder.GetColumns(TShockAPI.DB.SqlTable)">
+        <member name="M:NotMissing.Db.IQueryBuilder.GetColumns(NotMissing.Db.SqlTable)">
             <summary>
             Gets the columns from the table specified.
             </summary>
             <param name="table">Table to get the columns from. Only Table.Name is required.</param>
             <returns>List of columns</returns>
         </member>
-        <member name="M:TShockAPI.DB.SqliteQueryCreator.AlterTableQuery(TShockAPI.DB.SqlTable,TShockAPI.DB.SqlTable)">
+        <member name="M:NotMissing.Db.SqliteQueryCreator.AlterTableQuery(NotMissing.Db.SqlTable,NotMissing.Db.SqlTable)">
             <summary>
             Alter a table from source to destination
             </summary>
@@ -510,7 +510,7 @@
             <param name="to">Must have column names and column types.</param>
             <returns></returns>
         </member>
-        <member name="M:TShockAPI.DB.SqliteQueryCreator.CompareColumns(TShockAPI.DB.SqlTable,System.Collections.Generic.List{TShockAPI.DB.SqlColumn})">
+        <member name="M:NotMissing.Db.SqliteQueryCreator.CompareColumns(NotMissing.Db.SqlTable,System.Collections.Generic.List{NotMissing.Db.SqlColumn})">
             <summary>
             
             </summary>
@@ -518,7 +518,7 @@
             <param name="columns"></param>
             <returns>True if the columns match, otherwise false</returns>
         </member>
-        <member name="P:TShockAPI.DB.SqlColumn.Length">
+        <member name="P:NotMissing.Db.SqlColumn.Length">
             <summary>
             Length of the data type, null = default
             </summary>
@@ -940,6 +940,14 @@
             <summary>
             This will return the XHTML for this element and all subnodes.
             </summary>
+        </member>
+        <member name="M:NotMissing.CloneExt.CloneT``1(``0)">
+            <summary>
+            Generic method for Clone
+            </summary>
+            <typeparam name="T">ICloneable Type</typeparam>
+            <param name="obj">ICloneable Object</param>
+            <returns>Clone() as T</returns>
         </member>
     </members>
 </doc>
