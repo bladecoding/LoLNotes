@@ -63,11 +63,9 @@ namespace LoLNotes.Gui
             this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.GameTab = new System.Windows.Forms.TabPage();
-            this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
             this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
             this.SearchTab = new System.Windows.Forms.TabPage();
             this.SettingsTab = new System.Windows.Forms.TabPage();
             this.DownloadLink = new System.Windows.Forms.LinkLabel();
@@ -76,11 +74,16 @@ namespace LoLNotes.Gui
             this.LogTab = new System.Windows.Forms.TabPage();
             this.LogList = new System.Windows.Forms.ListBox();
             this.RebuildWorker = new System.ComponentModel.BackgroundWorker();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.ChangesText = new System.Windows.Forms.RichTextBox();
+            this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
+            this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
             this.tabControl1.SuspendLayout();
             this.GameTab.SuspendLayout();
             this.PlayerEditStrip.SuspendLayout();
             this.SettingsTab.SuspendLayout();
             this.LogTab.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -89,6 +92,7 @@ namespace LoLNotes.Gui
             this.tabControl1.Controls.Add(this.SearchTab);
             this.tabControl1.Controls.Add(this.SettingsTab);
             this.tabControl1.Controls.Add(this.LogTab);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -108,16 +112,6 @@ namespace LoLNotes.Gui
             this.GameTab.TabIndex = 0;
             this.GameTab.Text = "Game";
             this.GameTab.UseVisualStyleBackColor = true;
-            // 
-            // teamControl2
-            // 
-            this.teamControl2.Location = new System.Drawing.Point(268, 6);
-            this.teamControl2.Name = "teamControl2";
-            this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-            this.teamControl2.Size = new System.Drawing.Size(200, 686);
-            this.teamControl2.TabIndex = 1;
-            this.teamControl2.TeamSize = 5;
-            this.teamControl2.Text = "Team 2";
             // 
             // PlayerEditStrip
             // 
@@ -140,16 +134,6 @@ namespace LoLNotes.Gui
             this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
-            // 
-            // teamControl1
-            // 
-            this.teamControl1.Location = new System.Drawing.Point(8, 6);
-            this.teamControl1.Name = "teamControl1";
-            this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-            this.teamControl1.Size = new System.Drawing.Size(200, 686);
-            this.teamControl1.TabIndex = 0;
-            this.teamControl1.TeamSize = 5;
-            this.teamControl1.Text = "Team 1";
             // 
             // SearchTab
             // 
@@ -227,6 +211,48 @@ namespace LoLNotes.Gui
             this.RebuildWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.RebuildWorker_DoWork);
             this.RebuildWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.RebuildWorker_RunWorkerCompleted);
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.ChangesText);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(476, 696);
+            this.tabPage1.TabIndex = 4;
+            this.tabPage1.Text = "Changes";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // ChangesText
+            // 
+            this.ChangesText.BackColor = System.Drawing.SystemColors.Window;
+            this.ChangesText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ChangesText.Location = new System.Drawing.Point(3, 3);
+            this.ChangesText.Name = "ChangesText";
+            this.ChangesText.ReadOnly = true;
+            this.ChangesText.Size = new System.Drawing.Size(470, 690);
+            this.ChangesText.TabIndex = 0;
+            this.ChangesText.Text = "Loading...";
+            // 
+            // teamControl2
+            // 
+            this.teamControl2.Location = new System.Drawing.Point(268, 6);
+            this.teamControl2.Name = "teamControl2";
+            this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
+            this.teamControl2.Size = new System.Drawing.Size(200, 686);
+            this.teamControl2.TabIndex = 1;
+            this.teamControl2.TeamSize = 5;
+            this.teamControl2.Text = "Team 2";
+            // 
+            // teamControl1
+            // 
+            this.teamControl1.Location = new System.Drawing.Point(8, 6);
+            this.teamControl1.Name = "teamControl1";
+            this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
+            this.teamControl1.Size = new System.Drawing.Size(200, 686);
+            this.teamControl1.TabIndex = 0;
+            this.teamControl1.TeamSize = 5;
+            this.teamControl1.Text = "Team 1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -243,6 +269,7 @@ namespace LoLNotes.Gui
             this.SettingsTab.ResumeLayout(false);
             this.SettingsTab.PerformLayout();
             this.LogTab.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -266,6 +293,8 @@ namespace LoLNotes.Gui
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.LinkLabel DownloadLink;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.RichTextBox ChangesText;
 
     }
 }

@@ -53,7 +53,7 @@ namespace LoLNotes.Util
                 throw new NullReferenceException("AppInit key null");
             var str = (string)reg.GetValue("AppInit_DLLs");
             if (str == null)
-                throw new NullReferenceException("AppInit dlls null");
+                return new List<string>();
             return str.Split(';', ' ').Select(s => s.Trim()).Where(s => s != "").ToList();
         }
 

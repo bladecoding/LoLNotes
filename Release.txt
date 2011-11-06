@@ -1,5 +1,5 @@
 {
-"ReleaseName": "c",
+"ReleaseName": "d",
 "Version": "1.0",
 "Link": "http://dl.dropbox.com/u/29760911/LoLNotes.rar"
 }

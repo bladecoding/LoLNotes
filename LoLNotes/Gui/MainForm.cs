@@ -21,6 +21,7 @@ THE SOFTWARE.
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -29,6 +30,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Db4objects.Db4o;
@@ -185,10 +187,64 @@ namespace LoLNotes.Gui
             }
         }
 
+        void SetChanges(string data)
+        {
+            try
+            {
+                var dict = fastJSON.JSON.Instance.Parse(data) as Dictionary<string, object>;
+
+                ChangesText.Text = "";
+                
+                
+                foreach (var kv in dict)
+                {
+                    ChangesText.SelectionFont = new Font(ChangesText.Font.FontFamily, ChangesText.Font.SizeInPoints, FontStyle.Bold);
+                    ChangesText.AppendText(kv.Key);
+                    ChangesText.AppendText(Environment.NewLine);
+                    ChangesText.SelectionFont = new Font(ChangesText.Font.FontFamily, ChangesText.Font.SizeInPoints, ChangesText.Font.Style);
+                    if (kv.Value is ArrayList)
+                    {
+                        var list = kv.Value as ArrayList;
+                        foreach(var item in list)
+                        {
+                            ChangesText.AppendText(item.ToString());
+                            ChangesText.AppendText(Environment.NewLine);
+                        }
+                    }
+                    else
+                    {
+                        ChangesText.AppendText(kv.Value.ToString());
+                        ChangesText.AppendText(Environment.NewLine);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                StaticLogger.Error(e);
+            }
+        }
+
+        void GetChanges()
+        {
+            try
+            {
+                using (var wc = new WebClient())
+                {
+                    string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/Changes.txt");
+                    ChangesText.BeginInvoke(new Action<string>(SetChanges), raw);
+                }
+            }
+            catch (WebException we)
+            {
+                StaticLogger.Warning(we);
+            }
+        }
+
         void MainForm_Load(object sender, EventArgs e)
         {
             SetTitle("(Checking)");
             Task.Factory.StartNew(CheckVersion);
+            Task.Factory.StartNew(GetChanges);
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
