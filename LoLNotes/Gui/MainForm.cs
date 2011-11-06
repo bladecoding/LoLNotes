@@ -486,7 +486,7 @@ namespace LoLNotes.Gui
         {
             if (!Wow.IsAdministrator)
             {
-                MessageBox.Show("You must run LoLBans as admin to install/uninstall it");
+                MessageBox.Show("You must run LoLNotes as admin to install/uninstall it");
                 return;
             }
             if (IsInstalled)
