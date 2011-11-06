@@ -68,6 +68,8 @@ namespace LoLNotes.Gui
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            StaticLogger.Info(string.Format("Version {0}{1}", AssemblyAttributes.FileVersion, AssemblyAttributes.Configuration));
+
             IconCache = new Dictionary<string, Icon>
             {
                 {"Red",  Icon.FromHandle(Resources.circle_red.GetHicon())},
