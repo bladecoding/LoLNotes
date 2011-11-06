@@ -1,3 +1,10 @@
 {
-"1.0c": "Fixed LoLNotes eating up cpu when idling",
+	"1.0d": 
+	[
+		"Fixed crashing if the AppInit key does not exist"
+	]
+	"1.0c": 
+	[
+		"Fixed LoLNotes eating up cpu when idling"
+	]
 }
