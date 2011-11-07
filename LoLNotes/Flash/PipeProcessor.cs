@@ -96,12 +96,12 @@ namespace LoLNotes.Flash
                         }
                     }
                 }
+                catch (IOException)
+                {
+                    //Pipe was broken, lets start listening again
+                }
                 catch (TimeoutException)
                 {
-                }
-                catch (EndOfStreamException)
-                {
-                    //Pipe was broken, lets start listening again 
                 }
                 catch (Exception ex)
                 {
