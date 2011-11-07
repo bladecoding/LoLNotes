@@ -41,6 +41,7 @@ using LoLNotes.Gui.Controls;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
+using LoLNotes.Messages.GameStats.PlayerStats;
 using LoLNotes.Messages.Readers;
 using LoLNotes.Messages.Translators;
 using LoLNotes.Properties;
@@ -108,9 +109,9 @@ namespace LoLNotes.Gui
             pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
             {
                 pipe.EndWaitForConnection(ar);
-                var bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
+                var bytes = File.ReadAllBytes("ExampleData\\ExampleGameDTO.txt");
                 pipe.Write(bytes, 0, bytes.Length);
-                bytes = File.ReadAllBytes("ExampleData\\ExampleGameDTO.txt");
+                bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
                 pipe.Write(bytes, 0, bytes.Length);
             }, pipe);
 #endif
@@ -316,30 +317,86 @@ namespace LoLNotes.Gui
 
         void Reader_ObjectRead(object obj)
         {
-            var game = obj as GameDTO;
-            if (game == null)
-                return;
-
-            UpdateLists(game);
+            var lobby = obj as GameDTO;
+            var game = obj as EndOfGameStats;
+            if (lobby != null)
+                UpdateLists(lobby);
+            if (game != null)
+                UpdateLists(game);
         }
 
         public GameDTO CurrentGame;
         public List<PlayerEntry> PlayerCache = new List<PlayerEntry>();
 
-        public void UpdateLists(GameDTO game)
+        public void UpdateLists(EndOfGameStats game)
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<GameDTO>(UpdateLists), game);
+                BeginInvoke(new Action<EndOfGameStats>(UpdateLists), game);
                 return;
             }
 
-            if (CurrentGame == null || CurrentGame.Id != game.Id)
+            var teams = new List<PlayerStatsSummaryList> { game.TeamPlayerStats, game.OtherTeamPlayerStats };
+            var lists = new List<TeamControl> { teamControl1, teamControl2 };
+
+            for (int i = 0; i < lists.Count; i++)
+            {
+                var list = lists[i];
+                var team = teams[i];
+
+                if (team == null)
+                {
+                    list.Visible = false;
+                    continue;
+                }
+
+                for (int o = 0; o < list.Players.Count; o++)
+                {
+                    if (o < team.Count)
+                    {
+                        var ply = team[o];
+
+                        if (ply != null)
+                        {
+                            lock (cachelock)
+                            {
+                                var entry = PlayerCache.Find(p => p.Id == ply.UserId);
+                                if (entry == null)
+                                {
+                                    var plycontrol = list.Players[o];
+                                    plycontrol.Loading = true;
+                                    plycontrol.SetData(new GameParticipant { Name = ply.SummonerName });
+                                    Task.Factory.StartNew(() => LoadPlayer(ply.UserId, plycontrol));
+                                }
+                                else
+                                {
+                                    list.Players[o].SetData(entry);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        list.Players[o].SetData();
+                    }
+                }
+            }
+        }
+
+        public void UpdateLists(GameDTO lobby)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action<GameDTO>(UpdateLists), lobby);
+                return;
+            }
+
+            if (CurrentGame == null || CurrentGame.Id != lobby.Id)
             {
                 lock (cachelock)
                 {
                     PlayerCache.Clear();
-                    CurrentGame = game;
+                    CurrentGame = lobby;
                 }
             }
             else
@@ -347,7 +404,7 @@ namespace LoLNotes.Gui
                 //Check if the teams are the same.
                 //If they are the same that means nothing has changed and we can return.
                 var oldteams = new List<TeamParticipants> { CurrentGame.TeamOne, CurrentGame.TeamTwo };
-                var newteams = new List<TeamParticipants> { CurrentGame.TeamOne, CurrentGame.TeamTwo };
+                var newteams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
 
                 for (int i = 0; i < oldteams.Count && i < newteams.Count; i++)
                 {
@@ -356,7 +413,7 @@ namespace LoLNotes.Gui
                 }
             }
 
-            var teams = new List<TeamParticipants> { game.TeamOne, game.TeamTwo };
+            var teams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
             var lists = new List<TeamControl> { teamControl1, teamControl2 };
 
             for (int i = 0; i < lists.Count; i++)
@@ -384,9 +441,9 @@ namespace LoLNotes.Gui
                                 if (entry == null)
                                 {
                                     var plycontrol = list.Players[o];
-                                    Task.Factory.StartNew(() => LoadPlayer(ply.Id, plycontrol));
                                     plycontrol.Loading = true;
-                                    plycontrol.SetData(team[o]);
+                                    plycontrol.SetData(ply);
+                                    Task.Factory.StartNew(() => LoadPlayer(ply.Id, plycontrol));
                                 }
                                 else
                                 {
@@ -398,11 +455,10 @@ namespace LoLNotes.Gui
                         {
                             list.Players[o].SetData(team[o]);
                         }
-                        list.Players[o].Visible = true;
                     }
                     else
                     {
-                        list.Players[o].Visible = false;
+                        list.Players[o].SetData();
                     }
                 }
             }

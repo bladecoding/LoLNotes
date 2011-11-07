@@ -60,6 +60,8 @@ namespace LoLNotes.Gui.Controls
         {
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.DoubleBuffer, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
 
             foreach (Control c in Controls)
@@ -100,6 +102,16 @@ namespace LoLNotes.Gui.Controls
             DescLabel.Text = str;
         }
 
+        void SetVisible(bool visible)
+        {
+            if (DescLabel.InvokeRequired)
+            {
+                DescLabel.BeginInvoke(new Action<bool>(SetVisible), visible);
+                return;
+            }
+            Visible = visible;
+        }
+
         void SetTitle(Participant part)
         {
             var opart = part as ObfuscatedParticipant;
@@ -120,17 +132,25 @@ namespace LoLNotes.Gui.Controls
             }
         }
 
+        public void SetData()
+        {
+            Player = null;
+            Participant = null;
+            SetVisible(false);
+        }
 
         public void SetData(PlayerEntry plr)
         {
             Player = plr;
             Loading = false;
             UpdateView();
+            SetVisible(true);
         }
         public void SetData(Participant part)
         {
             Participant = part;
             UpdateView();
+            SetVisible(true);
         }
 
         bool SetStats()
@@ -181,7 +201,7 @@ namespace LoLNotes.Gui.Controls
                 SetDescription("Loading...");
                 return;
             }
-                                                        
+
             SetDescription(string.Format(
                 "No Stats\n{0}",
                 (Player != null && !string.IsNullOrEmpty(Player.Note)) ? string.Format("Note: {0}\n", Player.Note) : ""));
