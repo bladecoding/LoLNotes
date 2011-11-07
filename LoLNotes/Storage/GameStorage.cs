@@ -30,6 +30,7 @@ using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.Readers;
+using NotMissing;
 using NotMissing.Logging;
 
 namespace LoLNotes.Storage
@@ -110,19 +111,8 @@ namespace LoLNotes.Storage
                 //If the object read is older then don't bother adding it.
                 if (lobby.TimeStamp > match.TimeStamp)
                 {
-                    match.CreationTime = lobby.CreationTime;
-                    match.Destination = lobby.Destination;
-                    match.GameMode = lobby.GameMode;
-                    match.GameState = lobby.GameState;
-                    match.GameType = lobby.GameType;
-                    match.MapId = lobby.MapId;
-                    match.MaxPlayers = lobby.MaxPlayers;
-                    match.Name = lobby.Name;
-                    match.TimeStamp = lobby.TimeStamp;
-                    match.TeamOne = lobby.TeamOne;
-                    match.TeamTwo = lobby.TeamTwo;
-
-                    Database.Store(match);
+                    Database.Delete(match);
+                    Database.Store(match = lobby);
                 }
             }
             else
@@ -167,8 +157,8 @@ namespace LoLNotes.Storage
         /// <param name="entry">Player to record</param>
         /// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
         /// <param name="dontupdateexisting">If true RecordPlayer will not update an existing record. Instead it will return if a record is found.</param>
-        /// <returns>The PlayerEntry from the database</returns>
-        public PlayerEntry RecordPlayer(PlayerEntry entry, bool ignoretimestamp, bool dontupdateexisting = false)
+        /// <returns>Returns true if the player was recorded, otherwise false</returns>
+        public bool RecordPlayer(PlayerEntry entry, bool ignoretimestamp, bool dontupdateexisting = false)
         {
             if (entry == null)
                 throw new ArgumentNullException("entry");
@@ -176,33 +166,38 @@ namespace LoLNotes.Storage
             var match = Database.Query<PlayerEntry>().FirstOrDefault(m => m.Id == entry.Id);
             if (match != null)
             {
-                //If the object read is older then don't bother adding it.
-                if (dontupdateexisting || (!ignoretimestamp && entry.TimeStamp <= match.TimeStamp))
-                    return match;
+                if (dontupdateexisting)
+                   return false;
 
-                match.InternalName = entry.InternalName;
-                match.Name = entry.Name;
-                match.Note = entry.Note;
-                match.NoteColor = entry.NoteColor;
-                match.StatsList = entry.StatsList;
-                match.TimeStamp = entry.TimeStamp;
+                if (!ignoretimestamp)
+                {
+                    //If the object read is older then don't bother adding it.
+                    if (entry.GameTimeStamp != 0 && entry.GameTimeStamp <= match.GameTimeStamp)
+                        return false;
+                    if (entry.LobbyTimeStamp != 0 && entry.LobbyTimeStamp <= match.LobbyTimeStamp)
+                        return false;
+                }
+
+                Database.Delete(match);
+                Database.Store(match = entry);
             }
             else
             {
                 match = entry;
+                Database.Store(match);
             }
-            Database.Store(match);
             OnPlayerUpdate(match);
-            return match;
+            return true;
         }
 
         public PlayerEntry GetPlayer(int id)
         {
             lock (DatabaseLock)
             {
-                return Database.Query<PlayerEntry>().
+                var ret = Database.Query<PlayerEntry>().
                     Where(e => e.Id == id).
                     FirstOrDefault();
+                return ret != null ? ret.CloneT() : null;
             }
         }
 
@@ -232,46 +227,8 @@ namespace LoLNotes.Storage
                 //However it may have new player information so don't return.
                 if (game.TimeStamp > match.TimeStamp)
                 {
-                    match.BasePoints = game.BasePoints;
-                    match.BoostIpEarned = game.BoostIpEarned;
-                    match.BoostXpEarned = game.BoostXpEarned;
-                    match.CompletionBonusPoints = game.CompletionBonusPoints;
-                    match.Destination = game.Destination;
-                    match.Difficulty = game.Difficulty;
-                    match.Elo = game.Elo;
-                    match.EloChange = game.EloChange;
-                    match.ExpPointsToNextLevel = game.ExpPointsToNextLevel;
-                    match.ExperienceEarned = game.ExperienceEarned;
-                    match.ExperienceTotal = game.ExperienceTotal;
-                    match.FirstWinBonus = game.FirstWinBonus;
-                    match.GameLength = game.GameLength;
-                    match.GameMode = game.GameMode;
-                    match.GameType = game.GameType;
-                    match.ImbalancedTeamsNoPoints = game.ImbalancedTeamsNoPoints;
-                    match.IpEarned = game.IpEarned;
-                    match.IpTotal = game.IpTotal;
-                    match.LeveledUp = game.LeveledUp;
-                    match.LocationBoostIpEarned = game.LocationBoostIpEarned;
-                    match.LocationBoostXpEarned = game.LocationBoostXpEarned;
-                    match.LoyaltyBoostIpEarned = game.LoyaltyBoostIpEarned;
-                    match.LoyaltyBoostXpEarned = game.LoyaltyBoostXpEarned;
-                    match.OdinBonusIp = game.OdinBonusIp;
-                    match.OtherTeamPlayerStats = game.OtherTeamPlayerStats;
-                    match.PracticeMinutesLeftToday = game.PracticeMinutesLeftToday;
-                    match.PracticeMinutesPlayedToday = game.PracticeMinutesPlayedToday;
-                    match.PracticeMsecsUntilReset = game.PracticeMsecsUntilReset;
-                    match.QueueBonusEarned = game.QueueBonusEarned;
-                    match.QueueType = game.QueueType;
-                    match.Ranked = game.Ranked;
-                    match.SkinIndex = game.SkinIndex;
-                    match.SkinName = game.SkinName;
-                    match.TalentPointsGained = game.TalentPointsGained;
-                    match.TeamPlayerStats = game.TeamPlayerStats;
-                    match.TimeStamp = game.TimeStamp;
-                    match.TimeUntilNextFirstWinBonus = game.TimeUntilNextFirstWinBonus;
-                    match.UserId = game.UserId;
-
-                    Database.Store(match);
+                    Database.Delete(match);
+                    Database.Store(match = game);
                 }
             }
             else
@@ -282,21 +239,21 @@ namespace LoLNotes.Storage
             var statslist = game.TeamPlayerStats.Union(game.OtherTeamPlayerStats).ToList();
             for (int i = 0; i < statslist.Count; i++)
             {
-                var search = new PlayerEntry(game, statslist[i]);
-                var entry = RecordPlayer(search, false, true);
-
+                var entry = GetPlayer(statslist[i].UserId);
                 //RecordPlayer returned a PlayerEntry that we did not pass.
                 //That means it returned a PlayerEntry that it found in the DB.
                 //So lets update that PlayerEntry's stats.
-                if (entry != search)
+                if (entry != null)
                 {
                     //Checking that stats age is done inside UpdateStats
                     //otherwise you would be searching for gamemode/gametype twice.
                     if (entry.UpdateStats(game, statslist[i]))
-                    {
-                        Database.Store(entry);
-                        OnPlayerUpdate(entry);
-                    }
+                        RecordPlayer(entry, true);
+                }
+                else
+                {
+                    entry = new PlayerEntry(game, statslist[i]);
+                    RecordPlayer(entry, false);
                 }
             }
 

@@ -43,17 +43,36 @@ namespace LoLNotes.Messages.GameLobby.Participants
         [InternalName("botSkillLevel")]
         public int BotSkillLevel
         {
-            get;set;
+            get;
+            set;
         }
         [InternalName("botSkillLevelName")]
         public string BotSkillLevelName
         {
-            get;set;
+            get;
+            set;
         }
         [InternalName("teamId")]
         public string TeamId
         {
-            get;set;
+            get;
+            set;
+        }
+
+        public override object Clone()
+        {
+            return new BotParticipant
+            {
+                Name = Name,
+                InternalName = InternalName,
+                PickMode = PickMode,
+                IsGameOwner = IsGameOwner,
+                PickTurn = PickTurn,
+                IsMe = IsMe,
+                BotSkillLevelName = BotSkillLevelName,
+                BotSkillLevel = BotSkillLevel,
+                TeamId = TeamId,
+            };
         }
     }
 }

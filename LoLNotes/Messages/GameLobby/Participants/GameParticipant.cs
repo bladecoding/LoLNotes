@@ -41,27 +41,32 @@ namespace LoLNotes.Messages.GameLobby.Participants
         [InternalName("isMe")]
         public bool IsMe
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("isGameOwner")]
         public bool IsGameOwner
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("pickTurn")]
         public int PickTurn
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("summonerInternalName")]
         public string InternalName
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("summonerName")]
         public string Name
         {
-            get; set;
+            get;
+            set;
         }
 
         public override int GetHashCode()
@@ -73,6 +78,19 @@ namespace LoLNotes.Messages.GameLobby.Participants
         {
             var part = obj as GameParticipant;
             return part != null && InternalName.Equals(part.InternalName);
+        }
+
+        public override object Clone()
+        {
+            return new GameParticipant
+            {
+                InternalName = InternalName,
+                Name = Name,
+                PickMode = PickMode,
+                PickTurn = PickTurn,
+                IsGameOwner = IsGameOwner,
+                IsMe = IsMe,
+            };
         }
     }
 }

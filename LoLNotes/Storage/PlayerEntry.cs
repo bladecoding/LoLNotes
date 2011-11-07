@@ -45,14 +45,14 @@ namespace LoLNotes.Storage
         public PlayerEntry(GameDTO game, PlayerParticipant plr)
             : this()
         {
-            TimeStamp = game.TimeStamp;
+            LobbyTimeStamp = game.TimeStamp;
             Name = plr.Name;
             Id = plr.Id;
         }
         public PlayerEntry(EndOfGameStats game, PlayerStatsSummary stats)
             : this()
         {
-            TimeStamp = game.TimeStamp;
+            GameTimeStamp = game.TimeStamp;
             Name = stats.SummonerName;
             Id = stats.UserId;
             UpdateStats(game, stats);
@@ -76,16 +76,16 @@ namespace LoLNotes.Storage
                     //We found the stats, if they aren't new though return.
                     if (StatsList[i].TimeStamp > game.TimeStamp)
                         return false;
+                    StatsList.Activate(ActivationPurpose.Write);
                     StatsList[i].Summary = stats;
                     StatsList[i].TimeStamp = game.TimeStamp;
-                    TimeStamp = game.TimeStamp;
-                    StatsList.Activate(ActivationPurpose.Write);
+                    GameTimeStamp = game.TimeStamp;
                     return true;
                 }
             }
-            TimeStamp = game.TimeStamp;
-            StatsList.Add(new StatsEntry(game, stats));
+            GameTimeStamp = game.TimeStamp;
             StatsList.Activate(ActivationPurpose.Write);
+            StatsList.Add(new StatsEntry(game, stats));
             return true;
         }
 
@@ -94,7 +94,14 @@ namespace LoLNotes.Storage
         public string Name { get; set; }
         public string InternalName { get; set; }
         public int Id { get; set; }
-        public long TimeStamp { get; set; }
+        /// <summary>
+        /// TimeStamp of the last lobby update
+        /// </summary>
+        public long LobbyTimeStamp { get; set; }
+        /// <summary>
+        /// TimeStamp of the last end of game stats update
+        /// </summary>
+        public long GameTimeStamp { get; set; }
         public ArrayList4<StatsEntry> StatsList { get; set; }
 
         public object Clone()
@@ -106,7 +113,8 @@ namespace LoLNotes.Storage
                 Name = Name,
                 InternalName = InternalName,
                 Id = Id,
-                TimeStamp = TimeStamp,
+                GameTimeStamp = GameTimeStamp,
+                LobbyTimeStamp = LobbyTimeStamp,
                 StatsList = new ArrayList4<StatsEntry>(StatsList.Clone().ToList()),
             };
         }

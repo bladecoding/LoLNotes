@@ -43,5 +43,20 @@ namespace LoLNotes.Messages.GameLobby.Participants
         [InternalName("summonerId")]
         public int Id { get; set; }
 
+        public override object Clone()
+        {
+            return new PlayerParticipant
+            {
+                ProfileIconId = ProfileIconId,
+                Id = Id,
+                InternalName = InternalName,
+                IsMe = IsMe,
+                IsGameOwner = IsGameOwner,
+                Name = Name,
+                PickMode = PickMode,
+                PickTurn = PickTurn,
+            };
+        }
+
     }
 }

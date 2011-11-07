@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System;
 using LoLNotes.Flash;
 using LoLNotes.Messages.GameStats.PlayerStats;
+using NotMissing;
 
 namespace LoLNotes.Messages.GameStats
 {
     [Message("EndOfGameStats")]
-    public class EndOfGameStats : MessageObject
+    public class EndOfGameStats : MessageObject, ICloneable
     {
         public EndOfGameStats()
             : base(null)
@@ -233,6 +235,52 @@ namespace LoLNotes.Messages.GameStats
         public int UserId
         {
             get; set;
+        }
+
+        public object Clone()
+        {
+            return new EndOfGameStats
+            {
+                BasePoints = BasePoints,
+                BoostIpEarned = BoostIpEarned,
+                BoostXpEarned = BoostXpEarned,
+                CompletionBonusPoints = CompletionBonusPoints,
+                Difficulty = Difficulty,
+                Elo = Elo,
+                EloChange = EloChange,
+                ExperienceEarned = ExperienceEarned,
+                ExperienceTotal = ExperienceTotal,
+                ExpPointsToNextLevel = ExpPointsToNextLevel,
+                FirstWinBonus = FirstWinBonus,
+                GameId = GameId,
+                GameLength = GameLength,
+                GameMode = GameMode,
+                GameType = GameType,
+                ImbalancedTeamsNoPoints = ImbalancedTeamsNoPoints,
+                IpEarned = IpEarned,
+                IpTotal = IpTotal,
+                LeveledUp = LeveledUp,
+                LocationBoostIpEarned = LocationBoostIpEarned,
+                LocationBoostXpEarned = LocationBoostXpEarned,
+                LoyaltyBoostIpEarned = LoyaltyBoostIpEarned,
+                LoyaltyBoostXpEarned = LoyaltyBoostXpEarned,
+                OdinBonusIp = OdinBonusIp,
+                OtherTeamPlayerStats =  new PlayerStatsSummaryList(OtherTeamPlayerStats.Clone()),
+                PracticeMinutesLeftToday = PracticeMinutesLeftToday,
+                PracticeMinutesPlayedToday = PracticeMinutesPlayedToday,
+                PracticeMsecsUntilReset = PracticeMsecsUntilReset,
+                QueueBonusEarned = QueueBonusEarned,
+                QueueType = QueueType,
+                Ranked = Ranked,
+                SkinIndex = SkinIndex,
+                SkinName = SkinName,
+                TalentPointsGained = TalentPointsGained,
+                TeamPlayerStats = new PlayerStatsSummaryList(TeamPlayerStats.Clone()),
+                TimeUntilNextFirstWinBonus = TimeUntilNextFirstWinBonus,
+                UserId = UserId,
+                Destination = Destination,
+                TimeStamp = TimeStamp,
+            };
         }
     }
 }

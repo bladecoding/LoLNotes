@@ -42,7 +42,8 @@ namespace LoLNotes.Messages.GameLobby.Participants
         [InternalName("gameUniqueId")]
         public int GameUniqueId
         {
-            get; set;
+            get;
+            set;
         }
 
         public override int GetHashCode()
@@ -54,6 +55,15 @@ namespace LoLNotes.Messages.GameLobby.Participants
         {
             var part = obj as ObfuscatedParticipant;
             return part != null && GameUniqueId == part.GameUniqueId;
+        }
+
+        public override object Clone()
+        {
+            return new ObfuscatedParticipant
+            {
+                GameUniqueId = GameUniqueId,
+                PickMode = PickMode,
+            };
         }
     }
 }

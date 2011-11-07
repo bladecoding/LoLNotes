@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.GameLobby.Participants
 {
-    public class Participant
+    public class Participant : ICloneable
     {
         protected readonly FlashObject Base;
         public Participant()
@@ -39,7 +40,16 @@ namespace LoLNotes.Messages.GameLobby.Participants
         [InternalName("pickMode")]
         public int PickMode
         {
-            get; set;
+            get;
+            set;
+        }
+
+        public virtual object Clone()
+        {
+            return new Participant
+            {
+                PickMode = PickMode,
+            };
         }
     }
 }

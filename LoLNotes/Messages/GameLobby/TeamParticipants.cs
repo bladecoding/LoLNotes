@@ -35,6 +35,11 @@ namespace LoLNotes.Messages.GameLobby
         public TeamParticipants()
         {
         }
+        public TeamParticipants(IEnumerable<Participant> collection)
+            : base(collection)
+        {
+        }
+
         public TeamParticipants(FlashObject thebase)
         {
             Base = thebase;

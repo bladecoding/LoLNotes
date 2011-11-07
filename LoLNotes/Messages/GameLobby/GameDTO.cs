@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+using System;
 using LoLNotes.Flash;
+using NotMissing;
 
 namespace LoLNotes.Messages.GameLobby
 {
     [Message("GameDTO")]
-    public class GameDTO : MessageObject
+    public class GameDTO : MessageObject, ICloneable
     {
         public GameDTO()
             : base(null)
@@ -41,55 +43,84 @@ namespace LoLNotes.Messages.GameLobby
         [InternalName("maxNumPlayers")]
         public int MaxPlayers
         {
-            get; set;
+            get;
+            set;
         }
 
         [InternalName("name")]
         public string Name
         {
-            get; set;
+            get;
+            set;
         }
 
         [InternalName("mapId")]
         public int MapId
         {
-            get; set;
+            get;
+            set;
         }
 
         [InternalName("id")]
         public int Id
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("gameMode")]
         public string GameMode
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("gameState")]
         public string GameState
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("gameType")]
         public string GameType
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("creationTime")]
         public string CreationTime
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("teamOne")]
         public TeamParticipants TeamOne
         {
-            get; set;
+            get;
+            set;
         }
         [InternalName("teamTwo")]
         public TeamParticipants TeamTwo
         {
-            get; set;
+            get;
+            set;
+        }
+
+        public object Clone()
+        {
+            return new GameDTO
+            {
+                MaxPlayers = MaxPlayers,
+                Name = Name,
+                MapId = MapId,
+                Id = Id,
+                GameMode = GameMode,
+                GameState = GameState,
+                GameType = GameType,
+                CreationTime = CreationTime,
+                TeamOne = new TeamParticipants(TeamOne.Clone()),
+                TeamTwo = new TeamParticipants(TeamTwo.Clone()),
+                Destination = Destination,
+                TimeStamp = TimeStamp,
+            };
         }
     }
 }
