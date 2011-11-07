@@ -1,11 +1,19 @@
 {
+	"1.0e": 
+	[
+		"Added displaying end of game stats",
+		"Fixed not updating stale stats when in a lobby that is newer than the stats",
+		"Fixed player control flickering when rotating stats",
+		"Fixed crashing when lacking permissions to read appinit key",
+		"Fixed null reference in SetStats",
+	],
 	"1.0d": 
 	[
 		"Fixed crashing if the AppInit key does not exist",
-		"Added Changes tab which displays the changes"
-	]
+		"Added Changes tab which displays the changes",
+	],
 	"1.0c": 
 	[
-		"Fixed LoLNotes eating up cpu when idling"
+		"Fixed LoLNotes eating up cpu when idling",
 	]
 }
