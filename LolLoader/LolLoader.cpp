@@ -81,7 +81,7 @@ boost::condition cond;
 boost::mutex mutex;
 const int buffermax = 0x500000;
 const int datamax = 0xA00000;
-const LPTSTR pipename = TEXT("\\\\.\\pipe\\lolbans");
+const LPTSTR pipename = TEXT("\\\\.\\pipe\\lolnotes");
 DWORD timeout = 0;
 BufferQueue Buffers(buffermax);
 
@@ -182,7 +182,7 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 {
 	while (true)
 	{
-		WriteString(SelfLogHandle, "[LoLBans] Creating pipe\n");
+		WriteString(SelfLogHandle, "[LoLNotes] Creating pipe\n");
 		HANDLE server = CreateNamedPipe( 
 			pipename,				  // pipe name 
 			PIPE_ACCESS_DUPLEX,       // read access 
@@ -196,19 +196,19 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 			NULL);                    // default security attribute 
 		if (server == INVALID_HANDLE_VALUE)
 		{
-			WriteString(SelfLogHandle, "[LoLBans] Failed to create pipe (%ld)\n", GetLastError());
+			WriteString(SelfLogHandle, "[LoLNotes] Failed to create pipe (%ld)\n", GetLastError());
 			return -1;
 		}
 
-		WriteString(SelfLogHandle, "[LoLBans] Accepting on %ld\n", server);
+		WriteString(SelfLogHandle, "[LoLNotes] Accepting on %ld\n", server);
 
 		if (!(ConnectNamedPipe(server, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED)))
 		{
-			WriteString(SelfLogHandle, "[LoLBans] Failed to accept client (%ld)\n", GetLastError());
+			WriteString(SelfLogHandle, "[LoLNotes] Failed to accept client (%ld)\n", GetLastError());
 			return -1;
 		}
 
-		WriteString(SelfLogHandle, "[LoLBans] Accepted\n");
+		WriteString(SelfLogHandle, "[LoLNotes] Accepted\n");
 
 		while (true)
 		{
@@ -227,10 +227,10 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 					DWORD written;
 					if (!WriteFile(server, buf.Data.get(), buf.Size, &written, NULL))
 					{
-						WriteString(SelfLogHandle, "[LoLBans] Failed to send to client (%ld)\n", GetLastError());
+						WriteString(SelfLogHandle, "[LoLNotes] Failed to send to client (%ld)\n", GetLastError());
 						break;
 					}
-					WriteString(SelfLogHandle, "[LoLBans] Sent %d bytes\n", buf.Size);
+					WriteString(SelfLogHandle, "[LoLNotes] Sent %d bytes\n", buf.Size);
 					FlushFileBuffers(server);
 				}
 			}
@@ -243,9 +243,9 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 
 DWORD WINAPI ClientLoop(LPVOID ptr)
 {
-	WriteString(SelfLogHandle, "[LoLBans] Pipe loop created\n");
+	WriteString(SelfLogHandle, "[LoLNotes] Pipe loop created\n");
 	DWORD ret = InternalClientLoop(ptr);
-	WriteString(SelfLogHandle, "[LoLBans] Pipe loop ended\n");
+	WriteString(SelfLogHandle, "[LoLNotes] Pipe loop ended\n");
 	return ret;
 }
 
@@ -264,16 +264,16 @@ HANDLE WINAPI MyCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwS
 			if (!SelfLogHandle)
 			{
 				std::string dir = GetDirectory(GetModuleName(NULL));
-				std::string file = dir + "\\lolbans.log";
+				std::string file = dir + "\\lolnotes.log";
 				SelfLogHandle = CreateFileA(file.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, NULL, NULL);
 			}
 			if (!CreateThread(NULL, NULL, ClientLoop, NULL, NULL, NULL))
 			{
-				WriteString(SelfLogHandle, "[LoLBans] Failed to create server thread (%ld)\n", GetLastError());
+				WriteString(SelfLogHandle, "[LoLNotes] Failed to create server thread (%ld)\n", GetLastError());
 			}
 			else
 			{
-				WriteString(SelfLogHandle, "[LoLBans] Started\n");
+				WriteString(SelfLogHandle, "[LoLNotes] Started\n");
 				LogHandle = ret;
 			}
 		}
@@ -289,7 +289,7 @@ BOOL WINAPI MyWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWr
 			boost::mutex::scoped_lock lk(mutex);
 			if (nNumberOfBytesToWrite > buffermax)
 			{
-				WriteString(SelfLogHandle, "[LoLBans] Buffer exceeds %d", buffermax);
+				WriteString(SelfLogHandle, "[LoLNotes] Buffer exceeds %d", buffermax);
 			}
 			else
 			{
