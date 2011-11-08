@@ -112,19 +112,18 @@ namespace LoLNotes.Storage
                 if (lobby.TimeStamp > match.TimeStamp)
                 {
                     Database.Delete(match);
-                    Database.Store(match = lobby);
+                    Database.Store(lobby.CloneT());
                 }
             }
             else
             {
-                match = lobby;
-                Database.Store(match);
+                Database.Store(lobby.CloneT());
             }
 
 
-            foreach (PlayerParticipant plr in lobby.TeamOne.Union(match.TeamTwo).Where(p => p is PlayerParticipant).ToList())
+            foreach (PlayerParticipant plr in lobby.TeamOne.Union(lobby.TeamTwo).Where(p => p is PlayerParticipant).ToList())
             {
-                RecordPlayer(new PlayerEntry(lobby, plr), false, true);
+                RecordPlayer(new PlayerEntry(lobby, plr), false);
             }
 
             return match;
@@ -156,9 +155,8 @@ namespace LoLNotes.Storage
         /// </summary>
         /// <param name="entry">Player to record</param>
         /// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
-        /// <param name="dontupdateexisting">If true RecordPlayer will not update an existing record. Instead it will return if a record is found.</param>
         /// <returns>Returns true if the player was recorded, otherwise false</returns>
-        public bool RecordPlayer(PlayerEntry entry, bool ignoretimestamp, bool dontupdateexisting = false)
+        public bool RecordPlayer(PlayerEntry entry, bool ignoretimestamp)
         {
             if (entry == null)
                 throw new ArgumentNullException("entry");
@@ -166,9 +164,6 @@ namespace LoLNotes.Storage
             var match = Database.Query<PlayerEntry>().FirstOrDefault(m => m.Id == entry.Id);
             if (match != null)
             {
-                if (dontupdateexisting)
-                   return false;
-
                 if (!ignoretimestamp)
                 {
                     //If the object read is older then don't bother adding it.
@@ -179,14 +174,13 @@ namespace LoLNotes.Storage
                 }
 
                 Database.Delete(match);
-                Database.Store(match = entry);
+                Database.Store(entry.CloneT());
             }
             else
             {
-                match = entry;
-                Database.Store(match);
+                Database.Store(entry.CloneT());
             }
-            OnPlayerUpdate(match);
+            OnPlayerUpdate(entry);
             return true;
         }
 
@@ -197,7 +191,11 @@ namespace LoLNotes.Storage
                 var ret = Database.Query<PlayerEntry>().
                     Where(e => e.Id == id).
                     FirstOrDefault();
-                return ret != null ? ret.CloneT() : null;
+                if (ret == null)
+                    return null;
+                ret = ret.CloneT();
+                Database.Deactivate(ret, int.MaxValue);
+                return ret;
             }
         }
 
@@ -228,12 +226,12 @@ namespace LoLNotes.Storage
                 if (game.TimeStamp > match.TimeStamp)
                 {
                     Database.Delete(match);
-                    Database.Store(match = game);
+                    Database.Store(game.CloneT());
                 }
             }
             else
             {
-                Database.Store(match = game);
+                Database.Store(game.CloneT());
             }
 
             var statslist = game.TeamPlayerStats.Union(game.OtherTeamPlayerStats).ToList();
