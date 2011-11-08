@@ -1,6 +1,11 @@
 {
 	"1.0e": 
 	[
+		"Fixed LoLLoader depending on msvcrt (crashing origin)",
+		"Fixed crashing when editing a player twice in a row",
+	],
+	"1.0e": 
+	[
 		"Added displaying end of game stats",
 		"Fixed not updating stale stats when in a lobby that is newer than the stats",
 		"Fixed player control flickering when rotating stats",
