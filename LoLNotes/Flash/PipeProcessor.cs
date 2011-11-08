@@ -45,7 +45,13 @@ namespace LoLNotes.Flash
         public bool IsConnected
         {
             get { return isconnected; }
-            protected set { isconnected = value; if (Connected != null) Connected(this); }
+            protected set
+            {
+                bool old = isconnected;
+                isconnected = value;
+                if (old != value && Connected != null)
+                    Connected(this);
+            }
         }
 
 

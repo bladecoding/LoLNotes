@@ -55,6 +55,8 @@ namespace LoLNotes.Gui
     {
         static readonly string LolBansPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans");
         static readonly string LoaderFile = Path.Combine(LolBansPath, "LoLLoader.dll");
+        static readonly string LoaderVersion = "1.1";
+        static readonly string PipeName = "lolnotes";
 
         readonly Dictionary<string, Icon> IconCache;
         readonly PipeProcessor Connection;
@@ -93,7 +95,7 @@ namespace LoLNotes.Gui
 
             Database = Db4oEmbedded.OpenFile(config, "db.yap");
 
-            Connection = new PipeProcessor("lolbans");
+            Connection = new PipeProcessor(PipeName);
             Reader = new MessageReader(Connection);
 
             Connection.Connected += Connection_Connected;
@@ -514,9 +516,6 @@ namespace LoLNotes.Gui
                 if (!Directory.Exists(LolBansPath))
                     Directory.CreateDirectory(LolBansPath);
 
-                if (!File.Exists(LoaderFile))
-                    File.WriteAllBytes(LoaderFile, Resources.LolLoader);
-
                 var shortfilename = AppInit.GetShortPath(LoaderFile);
 
                 var dlls = AppInit.AppInitDlls32;
@@ -525,6 +524,8 @@ namespace LoLNotes.Gui
                     dlls.Add(AppInit.GetShortPath(shortfilename));
                     AppInit.AppInitDlls32 = dlls;
                 }
+
+                File.WriteAllBytes(LoaderFile, Resources.LolLoader);
             }
             catch (SecurityException se)
             {
@@ -540,6 +541,10 @@ namespace LoLNotes.Gui
                 {
                     if (!File.Exists(LoaderFile))
                         return false;
+
+                    var version = FileVersionInfo.GetVersionInfo(LoaderFile);
+                    if (version.FileVersion == null || version.FileVersion != LoaderVersion)
+                        return false;                                                   
 
                     var shortfilename = AppInit.GetShortPath(LoaderFile);
                     var dlls = AppInit.AppInitDlls32;
@@ -566,6 +571,9 @@ namespace LoLNotes.Gui
                     dlls.Remove(AppInit.GetShortPath(shortfilename));
                     AppInit.AppInitDlls32 = dlls;
                 }
+
+                if (File.Exists(LoaderFile))
+                    File.Delete(LoaderFile);
             }
             catch (SecurityException se)
             {
@@ -580,13 +588,22 @@ namespace LoLNotes.Gui
                 MessageBox.Show("You must run LoLNotes as admin to install/uninstall it");
                 return;
             }
-            if (IsInstalled)
+            try
             {
-                Uninstall();
+                
+                if (IsInstalled)
+                {
+                    Uninstall();
+                }
+                else
+                {
+                    Install();
+                }
             }
-            else
+            catch (UnauthorizedAccessException uaex)
             {
-                Install();
+                MessageBox.Show("Unable to fully install/uninstall. Make sure LoL is not running.");
+                StaticLogger.Warning(uaex);
             }
             InstallButton.Text = IsInstalled ? "Uninstall" : "Install";
             UpdateIcon();
