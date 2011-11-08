@@ -1,5 +1,5 @@
 {
-	"1.0e": 
+	"1.0f": 
 	[
 		"Fixed LoLLoader depending on msvcrt (crashing origin)",
 		"Fixed crashing when editing a player twice in a row",
