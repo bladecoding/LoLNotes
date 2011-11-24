@@ -33,6 +33,7 @@ THE SOFTWARE.
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/thread/thread.hpp>
 #include "BufferQueue.h"
+#include <WinSock2.h>
 
 bool hasEnding (std::string const &fullString, std::string const &ending)
 {
@@ -87,6 +88,7 @@ BufferQueue Buffers(buffermax);
 
 static HANDLE (WINAPI * TrueCreateFileW)(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) = CreateFileW;
 static BOOL (WINAPI * TrueWriteFile)(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped) = WriteFile;
+static BOOL (WINAPI * Trueconnect)(SOCKET s, const struct sockaddr FAR * name, int namelen) = connect;
 
 std::string format(const char *fmt, ...) 
 { 
@@ -182,7 +184,7 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 {
 	while (true)
 	{
-		WriteString(SelfLogHandle, "[LoLNotes] Creating pipe\n");
+		WriteString(SelfLogHandle, "Creating pipe\n");
 		HANDLE server = CreateNamedPipe( 
 			pipename,				  // pipe name 
 			PIPE_ACCESS_DUPLEX,       // read access 
@@ -196,19 +198,19 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 			NULL);                    // default security attribute 
 		if (server == INVALID_HANDLE_VALUE)
 		{
-			WriteString(SelfLogHandle, "[LoLNotes] Failed to create pipe (%ld)\n", GetLastError());
+			WriteString(SelfLogHandle, "Failed to create pipe (%ld)\n", GetLastError());
 			return -1;
 		}
 
-		WriteString(SelfLogHandle, "[LoLNotes] Accepting on %ld\n", server);
+		WriteString(SelfLogHandle, "Accepting on %ld\n", server);
 
 		if (!(ConnectNamedPipe(server, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED)))
 		{
-			WriteString(SelfLogHandle, "[LoLNotes] Failed to accept client (%ld)\n", GetLastError());
+			WriteString(SelfLogHandle, "Failed to accept client (%ld)\n", GetLastError());
 			return -1;
 		}
 
-		WriteString(SelfLogHandle, "[LoLNotes] Accepted\n");
+		WriteString(SelfLogHandle, "Accepted\n");
 
 		while (true)
 		{
@@ -227,10 +229,10 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 					DWORD written;
 					if (!WriteFile(server, buf.Data.get(), buf.Size, &written, NULL))
 					{
-						WriteString(SelfLogHandle, "[LoLNotes] Failed to send to client (%ld)\n", GetLastError());
+						WriteString(SelfLogHandle, "Failed to send to client (%ld)\n", GetLastError());
 						break;
 					}
-					WriteString(SelfLogHandle, "[LoLNotes] Sent %d bytes\n", buf.Size);
+					WriteString(SelfLogHandle, "Sent %d bytes\n", buf.Size);
 					FlushFileBuffers(server);
 				}
 			}
@@ -243,9 +245,9 @@ DWORD WINAPI InternalClientLoop(LPVOID ptr)
 
 DWORD WINAPI ClientLoop(LPVOID ptr)
 {
-	WriteString(SelfLogHandle, "[LoLNotes] Pipe loop created\n");
+	WriteString(SelfLogHandle, "Pipe loop created\n");
 	DWORD ret = InternalClientLoop(ptr);
-	WriteString(SelfLogHandle, "[LoLNotes] Pipe loop ended\n");
+	WriteString(SelfLogHandle, "Pipe loop ended\n");
 	return ret;
 }
 
@@ -269,11 +271,11 @@ HANDLE WINAPI MyCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwS
 			}
 			if (!CreateThread(NULL, NULL, ClientLoop, NULL, NULL, NULL))
 			{
-				WriteString(SelfLogHandle, "[LoLNotes] Failed to create server thread (%ld)\n", GetLastError());
+				WriteString(SelfLogHandle, "Failed to create server thread (%ld)\n", GetLastError());
 			}
 			else
 			{
-				WriteString(SelfLogHandle, "[LoLNotes] Started\n");
+				WriteString(SelfLogHandle, "Started\n");
 				LogHandle = ret;
 			}
 		}
@@ -289,7 +291,7 @@ BOOL WINAPI MyWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWr
 			boost::mutex::scoped_lock lk(mutex);
 			if (nNumberOfBytesToWrite > buffermax)
 			{
-				WriteString(SelfLogHandle, "[LoLNotes] Buffer exceeds %d", buffermax);
+				WriteString(SelfLogHandle, "Buffer exceeds %d\n", buffermax);
 			}
 			else
 			{
@@ -306,6 +308,22 @@ DWORD WINAPI UnloadSelf(LPVOID ptr)
 {
 	FreeLibraryAndExitThread((HMODULE)ptr, 0);
 	return 0;
+}
+
+int __stdcall Myconnect(SOCKET s, const struct sockaddr FAR * name, int namelen)
+{
+	sockaddr_in * in = (sockaddr_in*)name;
+
+	char* ip = inet_ntoa(in->sin_addr);
+
+	WriteString(SelfLogHandle, "Connecting to %s:%d (connect)\n", ip, _byteswap_ushort(in->sin_port));
+
+	if (in->sin_family == AF_INET && _byteswap_ushort(in->sin_port) == 2099)
+	{
+		in->sin_addr.s_addr = inet_addr("127.0.0.1");
+	}
+
+	return Trueconnect(s, name, namelen);
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
@@ -328,6 +346,11 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 				DetourUpdateThread(GetCurrentThread());
 				DetourAttach(&(PVOID&)TrueWriteFile, MyWriteFile);
 				error = DetourTransactionCommit();
+
+				DetourTransactionBegin();
+				DetourUpdateThread(GetCurrentThread());
+				DetourAttach(&(PVOID&)Trueconnect, Myconnect);
+				error = DetourTransactionCommit();
 			}
 			else
 			{
@@ -348,6 +371,11 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 				DetourTransactionBegin();
 				DetourUpdateThread(GetCurrentThread());
 				DetourDetach(&(PVOID&)TrueWriteFile, MyWriteFile);
+				error = DetourTransactionCommit();
+
+				DetourTransactionBegin();
+				DetourUpdateThread(GetCurrentThread());
+				DetourDetach(&(PVOID&)Trueconnect, Myconnect);
 				error = DetourTransactionCommit();
 			}
 

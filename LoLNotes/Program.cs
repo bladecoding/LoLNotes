@@ -21,35 +21,40 @@ THE SOFTWARE.
  */
 
 using System;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Windows.Forms;
 using LoLNotes.Gui;
 
 namespace LoLNotes
 {
-    internal static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main()
-        {
-            bool created;
-            using (var mutex = new Mutex(true, "LoLNotesApp", out created))
-            {
-                if (created)
-                {
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new MainForm());
-                }
-                else
-                {
-                    MessageBox.Show("LoLNotes is already running");
-                }
-            }
-        }
-    }
+	internal static class Program
+	{
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		[STAThread]
+		private static void Main()
+		{
+			bool created;
+			using (var mutex = new Mutex(true, "LoLNotesApp", out created))
+			{
+				if (created)
+				{
+					var host = new SecureProxyHost(2099, "prod.na1.lol.riotgames.com", 2099, new X509Certificate2("server.p12"));
+					host.Start();
+
+					Application.EnableVisualStyles();
+					Application.SetCompatibleTextRenderingDefault(false);
+					Application.Run(new MainForm());
+				}
+				else
+				{
+					MessageBox.Show("LoLNotes is already running");
+				}
+			}
+		}
+	}
 }
 

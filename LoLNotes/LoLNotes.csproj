@@ -111,6 +111,7 @@
     <Compile Include="Flash\LogReader.cs" />
     <Compile Include="Messages\GameStats\EndOfGameStats.cs" />
     <Compile Include="Messages\GameStats\GameItems.cs" />
+    <Compile Include="ProxyConnection.cs" />
     <Compile Include="Storage\PlayerEntry.cs" />
     <Compile Include="Messages\GameStats\PlayerStats\PlayerStatsSummary.cs" />
     <Compile Include="Messages\GameStats\PlayerStats\PlayerStatsSummaryList.cs" />
