@@ -20,42 +20,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-using System;
-using System.Net;
+using System.IO;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Windows.Forms;
-using LoLNotes.Gui;
-using LoLNotes.Proxy;
 
-namespace LoLNotes
+namespace LoLNotes.Proxy
 {
-	internal static class Program
+	public class SecureProxyClient : ProxyClient
 	{
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		private static void Main()
-		{
-			bool created;
-			using (var mutex = new Mutex(true, "LoLNotesApp", out created))
-			{
-				if (created)
-				{
-					var host = new SecureProxyHost(2099, "prod.na1.lol.riotgames.com", 2099, new X509Certificate2("server.p12"));
-					host.Start();
+		public X509Certificate Certificate { get; protected set; }
 
-					Application.EnableVisualStyles();
-					Application.SetCompatibleTextRenderingDefault(false);
-					Application.Run(new MainForm());
-				}
-				else
-				{
-					MessageBox.Show("LoLNotes is already running");
-				}
-			}
+		public SecureProxyClient(IProxyHost host, TcpClient src, X509Certificate cert)
+			: base(host, src)
+		{
+			Certificate = cert;
+		}
+
+		protected override Stream GetStream(TcpClient tcp)
+		{
+			return new SslStream(base.GetStream(tcp), false, AcceptAllCertificates) { ReadTimeout = 50000, WriteTimeout = 50000 };
+		}
+
+		protected override void ConnectRemote(string remoteip, int remoteport)
+		{
+			base.ConnectRemote(remoteip, remoteport);
+
+			var source = (SslStream)SourceStream;
+			var remote = (SslStream)RemoteStream;
+
+			source.AuthenticateAsServer(Certificate, false, SslProtocols.Default, false);
+			remote.AuthenticateAsClient(remoteip);
+		}
+
+		bool AcceptAllCertificates(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+		{
+			return true;
 		}
 	}
 }
-
