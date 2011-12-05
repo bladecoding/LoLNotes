@@ -20,7 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
 namespace LoLNotes.Proxy
@@ -34,9 +36,26 @@ namespace LoLNotes.Proxy
 			Certificate = cert;
 		}
 
-		public override ProxyClient NewClient(TcpClient tcp)
+		public override System.IO.Stream GetStream(TcpClient tcp)
 		{
-			return new SecureProxyClient(this, tcp, Certificate);
+			return new SslStream(base.GetStream(tcp), false, AcceptAllCertificates) { ReadTimeout = 50000, WriteTimeout = 50000 };
+		}
+
+		public override void OnConnect(ProxyClient sender)
+		{
+			var source = (SslStream)sender.SourceStream;
+			var remote = (SslStream)sender.RemoteStream;
+
+			source.AuthenticateAsServer(Certificate, false, SslProtocols.Default, false);
+			remote.AuthenticateAsClient(RemoteAddress);
+
+			base.OnConnect(sender);
+
+		}
+
+		bool AcceptAllCertificates(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+		{
+			return true;
 		}
 	}
 }

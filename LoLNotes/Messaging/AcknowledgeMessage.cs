@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,18 +20,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-using System;
-using System.IO;
-using System.Net.Sockets;
 
-namespace LoLNotes.Proxy
+using FluorineFx.AMF3;
+using LoLNotes.Extensions;
+
+namespace LoLNotes.Messaging
 {
-	public interface IProxyHost
+	public class AcknowledgeMessage : AsyncMessage
 	{
-		Stream GetStream(TcpClient tcp);
-		void OnConnect(ProxyClient sender);
-		void OnSend(ProxyClient sender, byte[] buffer, int len);
-		void OnReceive(ProxyClient sender, byte[] buffer, int len);
-		void OnException(ProxyClient sender, Exception ex);
+		public override void ReadExternal(IDataInput input)
+		{
+			base.ReadExternal(input);
+			var flags = input.ReadFlags();
+			for (int i = 0; i < flags.Count; i++)
+			{
+				ReadRemaining(input, flags[i], 0);
+			}
+		}
 	}
 }

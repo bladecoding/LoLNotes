@@ -51,46 +51,51 @@ namespace LoLNotes.Proxy
 			RemoteTcp = new TcpClient();
 		}
 
-		protected virtual Stream GetStream(TcpClient tcp)
-		{
-			return tcp.GetStream();
-		}
-
 		protected virtual void ConnectRemote(string remote, int remoteport)
 		{
 			RemoteTcp.Connect(remote, remoteport);
 
-			SourceStream = GetStream(SourceTcp);
-			RemoteStream = GetStream(RemoteTcp);
+			SourceStream = Host.GetStream(SourceTcp);
+			RemoteStream = Host.GetStream(RemoteTcp);
 		}
 
 		public virtual void Start(string remote, int remoteport)
 		{
-			ConnectRemote(remote, remoteport);
+			try
+			{
+				ConnectRemote(remote, remoteport);
 
-			SourceStream.BeginRead(SourceBuffer, 0, BufferSize, OnReceive, SourceStream);
-			RemoteStream.BeginRead(RemoteBuffer, 0, BufferSize, OnReceive, RemoteStream);
+				Host.OnConnect(this);
+
+				SourceStream.BeginRead(SourceBuffer, 0, BufferSize, BeginReceive, SourceStream);
+				RemoteStream.BeginRead(RemoteBuffer, 0, BufferSize, BeginReceive, RemoteStream);
+			}
+			catch (Exception ex)
+			{
+				Stop();
+				Host.OnException(this, ex);
+			}
 		}
 
 		public virtual void Stop()
 		{
 			Action<Action> runandlog = delegate(Action act)
-			                           	{
-			                           		try
-			                           		{
-			                           			act();
-			                           		}
-			                           		catch (Exception ex)
-			                           		{
-			                           			StaticLogger.Warning(ex);
-			                           		}
-			                           	};
+										{
+											try
+											{
+												act();
+											}
+											catch (Exception ex)
+											{
+												StaticLogger.Warning(ex);
+											}
+										};
 
 			runandlog(SourceTcp.Close);
 			runandlog(RemoteTcp.Close);
 		}
 
-		protected virtual void OnReceive(IAsyncResult ar)
+		protected virtual void BeginReceive(IAsyncResult ar)
 		{
 			try
 			{
@@ -102,28 +107,38 @@ namespace LoLNotes.Proxy
 
 				if (stream == SourceStream)
 				{
-					Host.OnSend(this, SourceBuffer, read);
-					RemoteStream.Write(SourceBuffer, 0, read);
+					OnSend(SourceBuffer, read);
 				}
 				else
 				{
-					Host.OnReceive(this, RemoteBuffer, read);
-					SourceStream.Write(RemoteBuffer, 0, read);
+					OnReceive(RemoteBuffer, read);
 				}
 
 				stream.BeginRead(
 					stream == SourceStream ? SourceBuffer : RemoteBuffer,
 					0,
 					BufferSize,
-					OnReceive,
+					BeginReceive,
 					stream
-					);
+				);
 			}
 			catch (Exception ex)
 			{
 				Stop();
 				Host.OnException(this, ex);
 			}
+		}
+
+		protected virtual void OnSend(byte[] buffer, int len)
+		{
+			Host.OnSend(this, SourceBuffer, len);
+			RemoteStream.Write(SourceBuffer, 0, len);
+		}
+
+		protected virtual void OnReceive(byte[] buffer, int len)
+		{
+			Host.OnReceive(this, RemoteBuffer, len);
+			SourceStream.Write(RemoteBuffer, 0, len);
 		}
 	}
 }

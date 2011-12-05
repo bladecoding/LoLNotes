@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,19 +19,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
 using System;
-using System.IO;
-using System.Net.Sockets;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using FluorineFx.AMF3;
+using LoLNotes.Extensions;
 
-namespace LoLNotes.Proxy
+namespace LoLNotes.Messaging
 {
-	public interface IProxyHost
+	public class AsyncMessage : AbstractMessage
 	{
-		Stream GetStream(TcpClient tcp);
-		void OnConnect(ProxyClient sender);
-		void OnSend(ProxyClient sender, byte[] buffer, int len);
-		void OnReceive(ProxyClient sender, byte[] buffer, int len);
-		void OnException(ProxyClient sender, Exception ex);
+		const uint CORRELATION_ID_FLAG = 1;
+		const uint CORRELATION_ID_BYTES_FLAG = 2;
+
+		public string CorrelationId { get; set; }
+
+		public override void ReadExternal(IDataInput input)
+		{
+			base.ReadExternal(input);
+			var flags = input.ReadFlags();
+			for (int i = 0; i < flags.Count; i++)
+			{
+				int bits = 0;
+				if (i == 0)
+				{
+					if ((flags[i] & CORRELATION_ID_FLAG) != 0)
+					{
+						CorrelationId = input.ReadObject() as string;
+					}
+					if ((flags[i] & CORRELATION_ID_BYTES_FLAG) != 0)
+					{
+						CorrelationId = FromByteArray(input.ReadObject() as ByteArray);
+					}
+					bits = 2;
+				}
+				ReadRemaining(input, flags[i], bits);
+			}
+		}
 	}
 }

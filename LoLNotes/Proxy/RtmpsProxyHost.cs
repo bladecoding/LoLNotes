@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,43 +20,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-using System.IO;
-using System.Net.Security;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Sockets;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace LoLNotes.Proxy
 {
-	public class SecureProxyClient : ProxyClient
+	public class RtmpsProxyHost : SecureProxyHost
 	{
-		public X509Certificate Certificate { get; protected set; }
-
-		public SecureProxyClient(IProxyHost host, TcpClient src, X509Certificate cert)
-			: base(host, src)
+		public RtmpsProxyHost(int srcport, string remote, int remoteport, X509Certificate cert)
+			: base(srcport, remote, remoteport, cert)
 		{
-			Certificate = cert;
 		}
 
-		protected override Stream GetStream(TcpClient tcp)
+		public override ProxyClient NewClient(TcpClient tcp)
 		{
-			return new SslStream(base.GetStream(tcp), false, AcceptAllCertificates) { ReadTimeout = 50000, WriteTimeout = 50000 };
-		}
-
-		protected override void ConnectRemote(string remoteip, int remoteport)
-		{
-			base.ConnectRemote(remoteip, remoteport);
-
-			var source = (SslStream)SourceStream;
-			var remote = (SslStream)RemoteStream;
-
-			source.AuthenticateAsServer(Certificate, false, SslProtocols.Default, false);
-			remote.AuthenticateAsClient(remoteip);
-		}
-
-		bool AcceptAllCertificates(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-		{
-			return true;
+			return new RtmpsProxyClient(this, tcp);
 		}
 	}
 }

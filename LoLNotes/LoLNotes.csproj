@@ -69,13 +69,32 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="antlr.runtime">
+      <HintPath>Dependencies\antlr.runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Db4objects.Db4o, Version=8.0.184.15484, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\db4o\Db4objects.Db4o.dll</HintPath>
     </Reference>
     <Reference Include="Db4objects.Db4o.Linq">
       <HintPath>Dependencies\db4o\Db4objects.Db4o.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="FluorineFx">
+      <HintPath>Dependencies\FluorineFx.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>Dependencies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Reflection">
       <HintPath>Dependencies\db4o\Mono.Reflection.dll</HintPath>
@@ -96,6 +115,9 @@
     <Compile Include="Assets\DescriptionEnumTypeConverter.cs" />
     <Compile Include="Assets\GameModes.cs" />
     <Compile Include="Assets\GameTypes.cs" />
+    <Compile Include="Messaging\AbstractMessage.cs" />
+    <Compile Include="Messaging\AcknowledgeMessage.cs" />
+    <Compile Include="Extensions\IDataInputExt.cs" />
     <Compile Include="Gui\Controls\TeamControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -111,10 +133,13 @@
     <Compile Include="Flash\LogReader.cs" />
     <Compile Include="Messages\GameStats\EndOfGameStats.cs" />
     <Compile Include="Messages\GameStats\GameItems.cs" />
+    <Compile Include="Messaging\AsyncMessage.cs" />
+    <Compile Include="Messaging\DSK.cs" />
     <Compile Include="Proxy\IProxyHost.cs" />
     <Compile Include="Proxy\ProxyClient.cs" />
     <Compile Include="Proxy\ProxyHost.cs" />
-    <Compile Include="Proxy\SecureProxyClient.cs" />
+    <Compile Include="Proxy\RtmpsProxyClient.cs" />
+    <Compile Include="Proxy\RtmpsProxyHost.cs" />
     <Compile Include="Proxy\SecureProxyHost.cs" />
     <Compile Include="Storage\PlayerEntry.cs" />
     <Compile Include="Messages\GameStats\PlayerStats\PlayerStatsSummary.cs" />
@@ -192,6 +217,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="bin\Debug\prod.na1.lol.riotgames.com.p12" />
+    <None Include="LoLNotes.licenseheader" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -201,6 +227,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\prod.na1.lol.riotgames.com.p12" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

@@ -31,10 +31,10 @@ namespace LoLNotes.Proxy
 {
 	public class ProxyHost : IProxyHost
 	{
-		public IPAddress Source { get; set; }
+		public IPAddress SourceAddress { get; set; }
 		public int SourcePort { get; set; }
 
-		public string Remote { get; set; }
+		public string RemoteAddress { get; set; }
 		public int RemotePort { get; set; }
 
 		public TcpListener Listener { get; protected set; }
@@ -48,16 +48,16 @@ namespace LoLNotes.Proxy
 		public ProxyHost(IPAddress src, int srcport, string remote, int remoteport)
 		{
 			Clients = new List<ProxyClient>();
-			Source = src;
+			SourceAddress = src;
 			SourcePort = srcport;
-			Remote = remote;
+			RemoteAddress = remote;
 			RemotePort = remoteport;
 			Listener = null;
 		}
 
 		public virtual void Start()
 		{
-			Listener = new TcpListener(Source, SourcePort);
+			Listener = new TcpListener(SourceAddress, SourcePort);
 			Listener.Start();
 			Listener.BeginAcceptTcpClient(OnAccept, null);
 		}
@@ -81,7 +81,7 @@ namespace LoLNotes.Proxy
 				lock (Clients)
 					Clients.Add(client);
 
-				client.Start(Remote, RemotePort);
+				client.Start(RemoteAddress, RemotePort);
 
 				StaticLogger.Info(string.Format("Client {0} connected", client.SourceTcp.Client.RemoteEndPoint));
 
@@ -99,7 +99,7 @@ namespace LoLNotes.Proxy
 			StaticLogger.Info(string.Format("Sent {0} bytes", len));
 			try
 			{
-				using (var fs = File.Open(string.Format("{0}_{1}_Sent.txt", Remote, RemotePort), FileMode.Append, FileAccess.Write))
+				using (var fs = File.Open(string.Format("{0}_{1}_Sent.txt", RemoteAddress, RemotePort), FileMode.Append, FileAccess.Write))
 				{
 					fs.Write(buffer, 0, len);
 				}
@@ -114,7 +114,7 @@ namespace LoLNotes.Proxy
 			StaticLogger.Info(string.Format("Received {0} bytes", len));
 			try
 			{
-				using (var fs = File.Open(string.Format("{0}_{1}_Received.txt", Remote, RemotePort), FileMode.Append, FileAccess.Write))
+				using (var fs = File.Open(string.Format("{0}_{1}_Received.txt", RemoteAddress, RemotePort), FileMode.Append, FileAccess.Write))
 				{
 					fs.Write(buffer, 0, len);
 				}
@@ -132,6 +132,16 @@ namespace LoLNotes.Proxy
 				Clients.Remove(sender);
 			}
 			StaticLogger.Warning(ex);
+		}
+
+		public virtual Stream GetStream(TcpClient tcp)
+		{
+			return tcp.GetStream(); 
+		}
+
+		public virtual void OnConnect(ProxyClient sender)
+		{
+			
 		}
 	}
 }

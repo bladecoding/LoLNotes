@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,19 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
 using System;
-using System.IO;
-using System.Net.Sockets;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using LoLNotes.Messaging;
 
-namespace LoLNotes.Proxy
+
+public class DSK : AcknowledgeMessage
 {
-	public interface IProxyHost
-	{
-		Stream GetStream(TcpClient tcp);
-		void OnConnect(ProxyClient sender);
-		void OnSend(ProxyClient sender, byte[] buffer, int len);
-		void OnReceive(ProxyClient sender, byte[] buffer, int len);
-		void OnException(ProxyClient sender, Exception ex);
-	}
 }
