@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-//#define TESTING
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,7 +59,7 @@ namespace LoLNotes.Proxy
 			if (!encode)
 				base.OnSend(buffer, len);
 
-			StaticLogger.Info(string.Format("Send {0} bytes", len));
+			StaticLogger.Trace(string.Format("Send {0} bytes", len));
 
 #if !TESTING
 			using (var fs = File.Open("realsend.dmp", FileMode.Append, FileAccess.Write))
@@ -128,7 +127,7 @@ namespace LoLNotes.Proxy
 					}
 					if (buf == null)
 					{
-						StaticLogger.Error("Unable to encode " + obj);
+						StaticLogger.Fatal("Unable to encode " + obj);
 					}
 					else
 					{
@@ -150,7 +149,7 @@ namespace LoLNotes.Proxy
 			if (!encode)
 				base.OnReceive(buffer, len);
 
-			StaticLogger.Info(string.Format("Recv {0} bytes", len));
+			StaticLogger.Trace(string.Format("Recv {0} bytes", len));
 
 #if !TESTING
 			using (var fs = File.Open("realrecv.dmp", FileMode.Append, FileAccess.Write))
@@ -191,30 +190,33 @@ namespace LoLNotes.Proxy
 					var result = pck.Message as Invoke;
 					if (result != null)
 					{
-						Invoke inv = null;
-						lock (InvokeList)
+						if (result.ServiceCall.ServiceMethodName == "_result" || result.ServiceCall.ServiceMethodName == "_error")
 						{
-							int idx = InvokeList.FindIndex(i => i.InvokeId == result.InvokeId);
-							if (idx == -1)
+							Invoke inv = null;
+							lock (InvokeList)
 							{
-								StaticLogger.Error(string.Format("Call not found for {0} (Id:{1})", result.InvokeId, pck.Header.ChannelId));
+								int idx = InvokeList.FindIndex(i => i.InvokeId == result.InvokeId);
+								if (idx == -1)
+								{
+									StaticLogger.Error(string.Format("Call not found for {0} (Id:{1})", result.InvokeId, pck.Header.ChannelId));
+								}
+								else
+								{
+									inv = InvokeList[idx];
+									InvokeList.RemoveAt(idx);
+								}
 							}
-							else
-							{
-								inv = InvokeList[idx];
-								InvokeList.RemoveAt(idx);
-							}
-						}
 
-						if (inv != null)
-						{
-							StaticLogger.Info(
-								string.Format(
-									"Ret  ({0}) (Id:{1})",
-									string.Join(", ", inv.ServiceCall.Arguments.Select(o => o.ToString())),
-									pck.Header.ChannelId
-								)
-							);
+							if (inv != null)
+							{
+								StaticLogger.Info(
+									string.Format(
+										"Ret  ({0}) (Id:{1})",
+										string.Join(", ", inv.ServiceCall.Arguments.Select(o => o.ToString())),
+										pck.Header.ChannelId
+									)
+								);
+							}
 						}
 					}
 					else
@@ -232,7 +234,7 @@ namespace LoLNotes.Proxy
 					}
 					if (buf == null)
 					{
-						StaticLogger.Error("Unable to encode " + obj);
+						StaticLogger.Fatal("Unable to encode " + obj);
 					}
 					else
 					{
