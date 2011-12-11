@@ -74,9 +74,11 @@ namespace LoLNotes.Proxy
 
 		protected virtual void OnAccept(IAsyncResult ar)
 		{
+			ProxyClient client = null;
 			try
 			{
-				var client = NewClient(Listener.EndAcceptTcpClient(ar));
+				client = NewClient(Listener.EndAcceptTcpClient(ar));
+				Listener.BeginAcceptTcpClient(OnAccept, null);
 
 				lock (Clients)
 					Clients.Add(client);
@@ -84,19 +86,20 @@ namespace LoLNotes.Proxy
 				client.Start(RemoteAddress, RemotePort);
 
 				StaticLogger.Info(string.Format("Client {0} connected", client.SourceTcp.Client.RemoteEndPoint));
-
-				Listener.BeginAcceptTcpClient(OnAccept, null);
 			}
 			catch (Exception ex)
 			{
-				StaticLogger.Error(ex);
+				if (client != null)
+					OnException(client, ex);
+				else
+					StaticLogger.Error(ex);
 			}
 
 		}
 
 		public virtual void OnSend(ProxyClient sender, byte[] buffer, int len)
 		{
-			StaticLogger.Info(string.Format("Sent {0} bytes", len));
+			/*StaticLogger.Info(string.Format("Sent {0} bytes", len));
 			try
 			{
 				using (var fs = File.Open(string.Format("{0}_{1}_Sent.txt", RemoteAddress, RemotePort), FileMode.Append, FileAccess.Write))
@@ -106,12 +109,12 @@ namespace LoLNotes.Proxy
 			}
 			catch (Exception ex)
 			{
-			}
+			}*/
 		}
 
 		public virtual void OnReceive(ProxyClient sender, byte[] buffer, int len)
 		{
-			StaticLogger.Info(string.Format("Received {0} bytes", len));
+			/*StaticLogger.Info(string.Format("Received {0} bytes", len));
 			try
 			{
 				using (var fs = File.Open(string.Format("{0}_{1}_Received.txt", RemoteAddress, RemotePort), FileMode.Append, FileAccess.Write))
@@ -121,7 +124,7 @@ namespace LoLNotes.Proxy
 			}
 			catch (Exception ex)
 			{
-			}
+			}*/
 		}
 
 
@@ -129,7 +132,9 @@ namespace LoLNotes.Proxy
 		{
 			lock (Clients)
 			{
-				Clients.Remove(sender);
+				int idx = Clients.IndexOf(sender);
+				if (idx != -1)
+					Clients.RemoveAt(idx);
 			}
 			StaticLogger.Warning(ex);
 		}

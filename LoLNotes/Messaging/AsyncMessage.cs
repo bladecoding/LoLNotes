@@ -24,21 +24,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluorineFx.AMF3;
-using LoLNotes.Extensions;
 
 namespace LoLNotes.Messaging
 {
 	public class AsyncMessage : AbstractMessage
 	{
-		const uint CORRELATION_ID_FLAG = 1;
-		const uint CORRELATION_ID_BYTES_FLAG = 2;
+		const byte CORRELATION_ID_FLAG = 1;
+		const byte CORRELATION_ID_BYTES_FLAG = 2;
 
 		public string CorrelationId { get; set; }
+		public ByteArray CorrelationIdBytes { get; set; }
+
 
 		public override void ReadExternal(IDataInput input)
 		{
 			base.ReadExternal(input);
-			var flags = input.ReadFlags();
+			var flags = ReadFlags(input);
 			for (int i = 0; i < flags.Count; i++)
 			{
 				int bits = 0;
@@ -56,6 +57,27 @@ namespace LoLNotes.Messaging
 				}
 				ReadRemaining(input, flags[i], bits);
 			}
+		}
+
+		public override void WriteExternal(IDataOutput output)
+		{
+			base.WriteExternal(output);
+
+			if (CorrelationIdBytes == null)
+				CorrelationIdBytes = ToByteArray(CorrelationId);
+
+			int flag = 0;
+			if (CorrelationId != null && CorrelationIdBytes == null)
+				flag |= CORRELATION_ID_FLAG;
+			if (CorrelationIdBytes != null)
+				flag |= CORRELATION_ID_BYTES_FLAG;
+
+			output.WriteByte((byte)flag);
+
+			if (CorrelationId != null && CorrelationIdBytes == null)
+				output.WriteObject(CorrelationId);
+			if (CorrelationIdBytes != null)
+				output.WriteObject(CorrelationIdBytes);
 		}
 	}
 }

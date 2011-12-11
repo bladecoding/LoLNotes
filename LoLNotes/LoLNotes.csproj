@@ -117,7 +117,6 @@
     <Compile Include="Assets\GameTypes.cs" />
     <Compile Include="Messaging\AbstractMessage.cs" />
     <Compile Include="Messaging\AcknowledgeMessage.cs" />
-    <Compile Include="Extensions\IDataInputExt.cs" />
     <Compile Include="Gui\Controls\TeamControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

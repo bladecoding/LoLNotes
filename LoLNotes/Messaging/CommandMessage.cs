@@ -24,13 +24,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluorineFx.AMF3;
-using LoLNotes.Extensions;
 
 namespace LoLNotes.Messaging
 {
 	public class CommandMessage : AsyncMessage
 	{
-		const uint OPERATION_FLAG = 1;
+		public const byte OPERATION_FLAG = 1;
 		public const uint SUBSCRIBE_OPERATION = 0;
 		public const uint CLIENT_SYNC_OPERATION = 4;
 		public const uint SUBSCRIPTION_INVALIDATE_OPERATION = 10;
@@ -63,18 +62,21 @@ namespace LoLNotes.Messaging
 			operationtexts[UNKNOWN_OPERATION] = "unknown";
 		}
 
-		public string Operation { get; set; }
+		public uint Operation { get; set; }
+		public string OperationString { get; set; }
 
 		protected void SetOperation(uint num)
 		{
+			Operation = num;
+
 			string str;
-			Operation = operationtexts.TryGetValue(num, out str) ? str : num.ToString();
+			OperationString = operationtexts.TryGetValue(num, out str) ? str : num.ToString();
 		}
 
 		public override void ReadExternal(IDataInput input)
 		{
 			base.ReadExternal(input);
-			var flags = input.ReadFlags();
+			var flags = ReadFlags(input);
 			for (int i = 0; i < flags.Count; i++)
 			{
 				int bits = 0;
@@ -88,6 +90,20 @@ namespace LoLNotes.Messaging
 				}
 				ReadRemaining(input, flags[i], bits);
 			}
+		}
+
+		public override void WriteExternal(IDataOutput output)
+		{
+			base.WriteExternal(output);
+
+			int flags = 0;
+			if (Operation != 0)
+				flags |= OPERATION_FLAG;
+
+			output.WriteByte((byte)flags);
+
+			if (Operation != 0)
+				output.WriteObject(Operation);
 		}
 	}
 }

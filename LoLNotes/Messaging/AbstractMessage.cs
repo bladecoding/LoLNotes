@@ -22,36 +22,39 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using FluorineFx.AMF3;
-using LoLNotes.Extensions;
 
 namespace LoLNotes.Messaging
 {
 	public class AbstractMessage : IExternalizable
 	{
-		public const uint MESSAGE_ID_FLAG = 16;
-		public const uint TIME_TO_LIVE_FLAG = 64;
-		public const uint TIMESTAMP_FLAG = 32;
-		public const uint CLIENT_ID_BYTES_FLAG = 1;
-		public const uint DESTINATION_FLAG = 4;
-		public const uint CLIENT_ID_FLAG = 2;
-		public const uint HEADERS_FLAG = 8;
-		public const uint BODY_FLAG = 1;
-		public const uint MESSAGE_ID_BYTES_FLAG = 2;
+		public const byte HAS_NEXT_FLAG = 128;
+		public const byte MESSAGE_ID_FLAG = 16;
+		public const byte TIME_TO_LIVE_FLAG = 64;
+		public const byte TIMESTAMP_FLAG = 32;
+		public const byte CLIENT_ID_BYTES_FLAG = 1;
+		public const byte DESTINATION_FLAG = 4;
+		public const byte CLIENT_ID_FLAG = 2;
+		public const byte HEADERS_FLAG = 8;
+		public const byte BODY_FLAG = 1;
+		public const byte MESSAGE_ID_BYTES_FLAG = 2;
 
 		public object Body { get; set; }
-		public object ClientId { get; set; }
+		public string ClientId { get; set; }
+		public ByteArray ClientIdBytes { get; set; }
 		public string Destination { get; set; }
 		public object Headers { get; set; }
 		public string MessageId { get; set; }
-		public double TimeStamp { get; set; }
-		public double TimeToLive { get; set; }
+		public ByteArray MessageIdBytes { get; set; }
+		public Int64 TimeStamp { get; set; }
+		public Int64 TimeToLive { get; set; }
 
 		public virtual void ReadExternal(IDataInput input)
 		{
-			var flags = input.ReadFlags();
+			var flags = ReadFlags(input);
 			for (int i = 0; i < flags.Count; i++)
 			{
 				int bits = 0;
@@ -63,7 +66,7 @@ namespace LoLNotes.Messaging
 					}
 					if ((flags[i] & CLIENT_ID_FLAG) != 0)
 					{
-						ClientId = input.ReadObject();
+						ClientId = input.ReadObject() as string;
 					}
 					if ((flags[i] & DESTINATION_FLAG) != 0)
 					{
@@ -79,11 +82,11 @@ namespace LoLNotes.Messaging
 					}
 					if ((flags[i] & TIMESTAMP_FLAG) != 0)
 					{
-						TimeStamp = (double)input.ReadObject();
+						TimeStamp = (Int64)(double)input.ReadObject();
 					}
 					if ((flags[i] & TIME_TO_LIVE_FLAG) != 0)
 					{
-						TimeToLive = (double)input.ReadObject();
+						TimeToLive = (Int64)(double)input.ReadObject();
 					}
 					bits = 7;
 				}
@@ -91,11 +94,13 @@ namespace LoLNotes.Messaging
 				{
 					if ((flags[i] & CLIENT_ID_BYTES_FLAG) != 0)
 					{
-						ClientId = FromByteArray(input.ReadObject() as ByteArray);
+						ClientIdBytes = input.ReadObject() as ByteArray;
+						ClientId = FromByteArray(ClientIdBytes);
 					}
 					if ((flags[i] & MESSAGE_ID_BYTES_FLAG) != 0)
 					{
-						MessageId = FromByteArray(input.ReadObject() as ByteArray);
+						MessageIdBytes = input.ReadObject() as ByteArray;
+						MessageId = FromByteArray(MessageIdBytes);
 					}
 					bits = 2;
 				}
@@ -105,10 +110,62 @@ namespace LoLNotes.Messaging
 
 		public virtual void WriteExternal(IDataOutput output)
 		{
-			throw new NotImplementedException();
+			if (ClientIdBytes == null)
+				ClientIdBytes = ToByteArray(ClientId);
+			if (MessageIdBytes == null)
+				MessageIdBytes = ToByteArray(MessageId);
+
+			int firstflags = 0;
+			if (Body != null)
+				firstflags |= BODY_FLAG;
+			if (ClientId != null && ClientIdBytes == null)
+				firstflags |= CLIENT_ID_FLAG;
+			if (Destination != null)
+				firstflags |= DESTINATION_FLAG;
+			if (Headers != null)
+				firstflags |= HEADERS_FLAG;
+			if (MessageId != null && MessageIdBytes == null)
+				firstflags |= MESSAGE_ID_FLAG;
+			if (TimeStamp != 0)
+				firstflags |= TIMESTAMP_FLAG;
+			if (TimeToLive != 0)
+				firstflags |= TIME_TO_LIVE_FLAG;
+
+			int secondflags = 0;
+			if (ClientIdBytes != null)
+				secondflags |= CLIENT_ID_BYTES_FLAG;
+			if (MessageIdBytes != null)
+				secondflags |= MESSAGE_ID_BYTES_FLAG;
+
+			if (secondflags != 0)
+				firstflags |= HAS_NEXT_FLAG;
+
+			output.WriteByte((byte)firstflags);
+			if (secondflags != 0)
+				output.WriteByte((byte)secondflags);
+
+			if (Body != null)
+				output.WriteObject(Body);
+			if (ClientId != null && ClientIdBytes == null)
+				output.WriteObject(ClientId);
+			if (Destination != null)
+				output.WriteObject(Destination);
+			if (Headers != null)
+				output.WriteObject(Headers);
+			if (MessageId != null && MessageIdBytes == null)
+				output.WriteObject(MessageId);
+			if (TimeStamp != 0)
+				output.WriteObject((double)TimeStamp);
+			if (TimeToLive != 0)
+				output.WriteObject((double)TimeToLive);
+
+			if (ClientIdBytes != null)
+				output.WriteObject(ClientIdBytes);
+			if (MessageIdBytes != null)
+				output.WriteObject(MessageIdBytes);
 		}
 
-		protected string FromByteArray(ByteArray obj)
+		protected static string FromByteArray(ByteArray obj)
 		{
 			if (obj == null)
 				return null;
@@ -129,6 +186,53 @@ namespace LoLNotes.Messaging
 
 			return ret.ToString();
 		}
+		protected static ByteArray ToByteArray(string str)
+		{
+			if (!IsUid(str))
+				return null;
+
+			str = str.Replace("-", "");
+
+			var ret = new ByteArray();
+			for (int i = 0; i < str.Length; i += 2)
+			{
+				byte num;
+				if (!byte.TryParse(str.Substring(i, 2), NumberStyles.HexNumber, null, out num))
+					return null;
+				ret.WriteByte(num);
+			}
+			ret.Position = 0;
+			return ret;
+		}
+
+		protected static bool IsUid(string str)
+		{
+            if (str != null && str.Length == 36)
+            {
+				int idx = 0;
+                while (idx < 36)
+                {
+
+					var c = str[idx];
+					if (idx == 8 || idx == 13 || idx == 18 || idx == 23)
+                    {
+                        if (c != 45)
+                        {
+                            return false;
+                        }
+                    }
+                    else if (c < 48 || c > 70 || c > 57 && c < 65)
+                    {
+                        return false;
+                    }
+					idx++;
+                }
+                return true;
+            }
+            return false;
+		}
+
+
 
 		protected void ReadRemaining(IDataInput input, int flag, int bits)
 		{
@@ -142,6 +246,20 @@ namespace LoLNotes.Messaging
 					}
 				}
 			}
+		}
+
+		public static List<byte> ReadFlags(IDataInput input)
+		{
+			var ret = new List<byte>();
+			byte read;
+
+			do
+			{
+				ret.Add(read = input.ReadUnsignedByte());
+			}
+			while ((read & HAS_NEXT_FLAG) != 0); //Highest bit reserved for declaring that there is another flag.
+
+			return ret;
 		}
 	}
 }

@@ -836,7 +836,7 @@ namespace LoLNotes.Gui
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			//Start after the form is shown otherwise Invokes will fail
-			Connection.Start();
+			//Connection.Start();
 		}
 	}
 }

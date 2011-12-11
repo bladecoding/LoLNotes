@@ -131,14 +131,14 @@ namespace LoLNotes.Proxy
 
 		protected virtual void OnSend(byte[] buffer, int len)
 		{
-			Host.OnSend(this, SourceBuffer, len);
-			RemoteStream.Write(SourceBuffer, 0, len);
+			Host.OnSend(this, buffer, len);
+			RemoteStream.Write(buffer, 0, len);
 		}
 
 		protected virtual void OnReceive(byte[] buffer, int len)
 		{
-			Host.OnReceive(this, RemoteBuffer, len);
-			SourceStream.Write(RemoteBuffer, 0, len);
+			Host.OnReceive(this, buffer, len);
+			SourceStream.Write(buffer, 0, len);
 		}
 	}
 }
