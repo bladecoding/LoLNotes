@@ -21,12 +21,13 @@ THE SOFTWARE.
 */
 
 using System;
+using FluorineFx;
 using LoLNotes.Flash;
 using NotMissing;
 
 namespace LoLNotes.Messages.GameLobby
 {
-    [Message("GameDTO")]
+	[Message("com.riotgames.platform.game.GameDTO")]
     public class GameDTO : MessageObject, ICloneable
     {
         public GameDTO()
@@ -34,10 +35,10 @@ namespace LoLNotes.Messages.GameLobby
         {
         }
 
-        public GameDTO(FlashObject obj)
+        public GameDTO(ASObject obj)
             : base(obj)
         {
-            FlashObject.SetFields(this, obj["body"]);
+            BaseObject.SetFields(this, obj);
         }
 
         [InternalName("maxNumPlayers")]
@@ -118,7 +119,6 @@ namespace LoLNotes.Messages.GameLobby
                 CreationTime = CreationTime,
                 TeamOne = new TeamParticipants(TeamOne.Clone()),
                 TeamTwo = new TeamParticipants(TeamTwo.Clone()),
-                Destination = Destination,
                 TimeStamp = TimeStamp,
             };
         }

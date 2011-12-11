@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 using System.Diagnostics;
+using FluorineFx;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.GameLobby.Participants
@@ -33,10 +34,10 @@ namespace LoLNotes.Messages.GameLobby.Participants
         {
         }
 
-        public ObfuscatedParticipant(FlashObject thebase)
+		public ObfuscatedParticipant(ASObject thebase)
             : base(thebase)
         {
-            FlashObject.SetFields(this, thebase);
+            BaseObject.SetFields(this, thebase);
         }
 
         [InternalName("gameUniqueId")]

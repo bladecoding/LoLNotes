@@ -20,14 +20,88 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using System;
+using System.Linq;
+using System.Reflection;
+using FluorineFx;
+using LoLNotes.Util;
+using NotMissing.Logging;
+
 namespace LoLNotes.Flash
 {
     public class BaseObject
     {
-        protected readonly FlashObject Base;
-        public BaseObject(FlashObject obj)
+        protected readonly ASObject Base;
+		public BaseObject(ASObject obj)
         {
             Base = obj;
         }
+
+		/// <summary>
+		/// Helper method which sets all the properties in the class to their respected FlashObject field.
+		/// Use InternalNameAttribute to specify a property which has a FlashObject counter-part.
+		/// SetFields does not travel the hierarchy. So Derived types must make their own separate call to SetFields.
+		/// </summary>
+		/// <param name="obj">Object to change properties</param>
+		/// <param name="flash">Flash object to get fields from</param>
+		public static void SetFields<T>(T obj, ASObject flash)
+		{
+			if (flash == null)
+				return;
+
+			foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+			{
+				var intern = prop.GetCustomAttributes(typeof(InternalNameAttribute), false).FirstOrDefault() as InternalNameAttribute;
+				if (intern == null)
+					continue;
+				
+				var type = prop.PropertyType;
+				object value;
+
+				if (!flash.TryGetValue(intern.Name, out value))
+				{
+					StaticLogger.Warning(string.Format("Missing ASObject property {0}", intern.Name));
+					continue;
+				}
+
+				try
+				{
+					if (type == typeof(string))
+					{
+						value = Convert.ToString(flash[intern.Name]);
+					}
+					else if (type == typeof(Int32))
+					{
+						value = Convert.ToInt32(flash[intern.Name]);
+					}
+					else if (type == typeof(Int64))
+					{
+						value = Convert.ToInt64(flash[intern.Name]);
+					}
+					else if (type == typeof(bool))
+					{
+						value = Convert.ToBoolean(flash[intern.Name]);
+					}
+					else
+					{
+						try
+						{
+							value = Activator.CreateInstance(type, flash[intern.Name]);
+						}
+						catch (Exception e)
+						{
+							throw new NotSupportedException(string.Format("Type {0} not supported by flash serializer", type.FullName), e);
+
+						}
+					}
+					prop.SetValue(obj, value, null);
+				}
+				catch (Exception e)
+				{
+					StaticLogger.Error(string.Format("Error parsing {0}#{1}", typeof(T).FullName, prop.Name));
+					StaticLogger.Error(e);
+				}
+			}
+		}
     }
 }

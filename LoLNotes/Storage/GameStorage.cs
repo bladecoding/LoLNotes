@@ -30,6 +30,7 @@ using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.Readers;
+using LoLNotes.Messaging;
 using NotMissing;
 using NotMissing.Logging;
 
@@ -42,7 +43,7 @@ namespace LoLNotes.Storage
         /// </summary>
         public readonly object DatabaseLock = new object();
         readonly IObjectContainer Database;
-        readonly IFlashProcessor Flash;
+		readonly IMessageProcessor Flash;
         readonly MessageReader Reader;
 
         public delegate void PlayerUpdateHandler(PlayerEntry player);
@@ -51,7 +52,7 @@ namespace LoLNotes.Storage
         /// </summary>
         public event PlayerUpdateHandler PlayerUpdate;
 
-        public GameStorage(IObjectContainer db, IFlashProcessor flash)
+        public GameStorage(IObjectContainer db, IMessageProcessor flash)
         {
             Database = db;
             Flash = flash;

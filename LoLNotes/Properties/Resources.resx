@@ -136,4 +136,10 @@
   <data name="prod_na1_lol_riotgames_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\prod.na1.lol.riotgames.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="prod_eun1_lol_riotgames_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\prod.eun1.lol.riotgames.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="prod_eu_lol_riotgames_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\prod.eu.lol.riotgames.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

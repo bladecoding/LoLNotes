@@ -20,8 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using System;
+using FluorineFx;
 using LoLNotes.Flash;
 using LoLNotes.Messages.Translators;
+using LoLNotes.Messaging;
 
 namespace LoLNotes.Messages.Readers
 {
@@ -31,22 +34,26 @@ namespace LoLNotes.Messages.Readers
     public class MessageReader : IObjectReader
     {
         public event ObjectReadD ObjectRead;
-        IFlashProcessor Flash;
+		IMessageProcessor Flash;
 
-        public MessageReader(IFlashProcessor flash)
+        public MessageReader(IMessageProcessor flash)
         {
             Flash = flash;
             Flash.ProcessObject += Flash_ProcessObject;
         }
 
-        void Flash_ProcessObject(FlashObject flashobj)
+        void Flash_ProcessObject(ASObject flashobj, Int64 timestamp)
         {
             if (ObjectRead == null)
                 return;
 
             var obj = MessageTranslator.Instance.GetObject(flashobj);
-            if (obj != null)
-                ObjectRead(obj);
+			if (obj != null)
+			{
+				if (obj is MessageObject)
+					((MessageObject)obj).TimeStamp = timestamp;
+				ObjectRead(obj);
+			}
         }
     }
 }

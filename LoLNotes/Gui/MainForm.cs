@@ -31,10 +31,12 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Net;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Db4objects.Db4o;
+using Db4objects.Db4o.Config;
 using Db4objects.Db4o.TA;
 using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
@@ -45,6 +47,7 @@ using LoLNotes.Messages.GameStats.PlayerStats;
 using LoLNotes.Messages.Readers;
 using LoLNotes.Messages.Translators;
 using LoLNotes.Properties;
+using LoLNotes.Proxy;
 using LoLNotes.Storage;
 using LoLNotes.Util;
 using NotMissing.Logging;
@@ -55,24 +58,28 @@ namespace LoLNotes.Gui
 	{
 		static readonly string LolBansPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans");
 		static readonly string LoaderFile = Path.Combine(LolBansPath, "LoLLoader.dll");
-		static readonly string LoaderVersion = "1.1";
-		static readonly string PipeName = "lolnotes";
+		const string LoaderVersion = "1.1";
+		const string SettingsFile = "settings.json";
 
 		readonly Dictionary<string, Icon> IconCache;
-		readonly PipeProcessor Connection;
-		readonly MessageReader Reader;
+		readonly Dictionary<string, CertificateHolder> Certificates; 
+		RtmpsProxyHost Connection;
+		MessageReader Reader;
 		readonly IObjectContainer Database;
-		readonly GameStorage Recorder;
+		GameStorage Recorder;
+		MainSettings Settings;
+
+
 
 		public MainForm()
 		{
 			InitializeComponent();
 
-			Logger.Instance.Register(new DefaultListener(Levels.All, OnLog));
-
+			Logger.Instance.Register(new DefaultListener(Levels.All & ~Levels.Trace, OnLog));
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
 			StaticLogger.Info(string.Format("Version {0}{1}", AssemblyAttributes.FileVersion, AssemblyAttributes.Configuration));
+
+			Settings = MainSettings.Load(SettingsFile);
 
 			IconCache = new Dictionary<string, Icon>
             {
@@ -80,22 +87,35 @@ namespace LoLNotes.Gui
                 {"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
                 {"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
             };
-
 			UpdateIcon();
 
-			var config = Db4oEmbedded.NewConfiguration();
-			config.Common.ObjectClass(typeof(PlayerEntry)).ObjectField("Id").Indexed(true);
-			config.Common.ObjectClass(typeof(PlayerEntry)).ObjectField("TimeStamp").Indexed(true);
-			config.Common.ObjectClass(typeof(GameDTO)).ObjectField("Id").Indexed(true);
-			config.Common.ObjectClass(typeof(GameDTO)).ObjectField("TimeStamp").Indexed(true);
-			config.Common.ObjectClass(typeof(EndOfGameStats)).ObjectField("GameId").Indexed(true);
-			config.Common.ObjectClass(typeof(EndOfGameStats)).ObjectField("TimeStamp").Indexed(true);
-			config.Common.Add(new TransparentPersistenceSupport());
-			config.Common.Add(new TransparentActivationSupport());
+			Database = Db4oEmbedded.OpenFile(CreateConfig(), "db.yap");
 
-			Database = Db4oEmbedded.OpenFile(config, "db.yap");
+			Certificates = new Dictionary<string, CertificateHolder>
+			{
+				{"NA", new CertificateHolder("prod.na1.lol.riotgames.com", Resources.prod_na1_lol_riotgames_com)},
+				{"EU", new CertificateHolder("prod.eu.lol.riotgames.com", Resources.prod_eu_lol_riotgames_com)},
+				{"EUN", new CertificateHolder("prod.eun1.lol.riotgames.com", Resources.prod_eun1_lol_riotgames_com)},
+ 			};
+			foreach (var kv in Certificates)
+				RegionList.Items.Add(kv.Key);
+			int idx = RegionList.Items.IndexOf(Settings.Region);
+			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
+			
 
-			Connection = new PipeProcessor(PipeName);
+			StaticLogger.Info("Startup Completed");
+		}
+
+		void UpdateRegion()
+		{
+			if (Connection != null)
+				Connection.Dispose();
+
+			var cert = Certificates.FirstOrDefault(kv => kv.Key == Settings.Region).Value;
+			if (cert == null)
+				cert = Certificates.First().Value;
+
+			Connection = new RtmpsProxyHost(2099, cert.Domain, 2099, cert.Certificate);
 			Reader = new MessageReader(Connection);
 
 			Connection.Connected += Connection_Connected;
@@ -106,19 +126,21 @@ namespace LoLNotes.Gui
 			Recorder = new GameStorage(Database, Connection);
 			Recorder.PlayerUpdate += Recorder_PlayerUpdate;
 
-#if TESTING
-            var pipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 254, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-            pipe.BeginWaitForConnection(delegate(IAsyncResult ar)
-            {
-                pipe.EndWaitForConnection(ar);
-                var bytes = File.ReadAllBytes("ExampleData\\ExampleGameDTO.txt");
-                pipe.Write(bytes, 0, bytes.Length);
-                bytes = File.ReadAllBytes("ExampleData\\ExampleEndOfGameStats.txt");
-                pipe.Write(bytes, 0, bytes.Length);
-            }, pipe);
-#endif
+			Connection.Start();
+		}
 
-			StaticLogger.Info("Startup Completed");
+		static IEmbeddedConfiguration CreateConfig()
+		{
+			var config = Db4oEmbedded.NewConfiguration();
+			config.Common.ObjectClass(typeof(PlayerEntry)).ObjectField("Id").Indexed(true);
+			config.Common.ObjectClass(typeof(PlayerEntry)).ObjectField("TimeStamp").Indexed(true);
+			config.Common.ObjectClass(typeof(GameDTO)).ObjectField("Id").Indexed(true);
+			config.Common.ObjectClass(typeof(GameDTO)).ObjectField("TimeStamp").Indexed(true);
+			config.Common.ObjectClass(typeof(EndOfGameStats)).ObjectField("GameId").Indexed(true);
+			config.Common.ObjectClass(typeof(EndOfGameStats)).ObjectField("TimeStamp").Indexed(true);
+			config.Common.Add(new TransparentPersistenceSupport());
+			config.Common.Add(new TransparentActivationSupport());
+			return config;
 		}
 
 		readonly object cachelock = new object();
@@ -640,141 +662,6 @@ namespace LoLNotes.Gui
 			return path.Substring(0, idx + search.Length);
 		}
 
-		private void RebuildButton_Click(object sender, EventArgs e)
-		{
-			if (RebuildWorker.IsBusy)
-			{
-				StaticLogger.Warning("Rebuild working already running");
-				return;
-			}
-
-			string path = GetRadsPath();
-			if (path == null)
-			{
-				var msg = "LoLLauncher must be running to rebuild. Or Rads is missing";
-				StaticLogger.Warning(msg);
-				MessageBox.Show(msg);
-				return;
-			}
-
-			RebuildButton.Text = "Rebuilding";
-			RebuildWorker.RunWorkerAsync(path);
-		}
-
-		private void RebuildWorker_DoWork(object sender, DoWorkEventArgs e)
-		{
-			var watch = Stopwatch.StartNew();
-			e.Result = watch;
-
-			var radspath = (string)e.Argument;
-			var releasepath = Path.Combine(radspath, "projects\\lol_air_client\\releases");
-			if (!Directory.Exists(releasepath))
-			{
-				StaticLogger.Warning("Unable to locate " + releasepath);
-				return;
-			}
-
-			var logs = new List<FileInfo>();
-			foreach (var dir in new DirectoryInfo(releasepath).GetDirectories())
-			{
-				var logpath = Path.Combine(dir.FullName, "deploy\\logs");
-				if (!dir.Exists)
-					continue;
-
-				foreach (var file in new DirectoryInfo(logpath).GetFiles())
-				{
-					if (file.Exists)
-						logs.Add(file);
-				}
-			}
-
-			long current = 0;
-			long filesizes = logs.Sum(file => file.Length);
-			long currentfile = 0;
-
-			foreach (var file in logs)
-			{
-				StaticLogger.Info(string.Format("Rebuilding {0}, {1}/{2} ({3}%)",
-						file.Name,
-						currentfile,
-						logs.Count,
-						(int)((Double)current / filesizes * 100d)
-				));
-				try
-				{
-					using (var reader = new LogReader(file.OpenRead()))
-					{
-
-						var templobbies = new List<GameDTO>();
-
-						try
-						{
-							while (true)
-							{
-								var flashobj = reader.Read() as FlashObject;
-								if (flashobj == null)
-									continue;
-
-								var obj = MessageTranslator.Instance.GetObject(flashobj);
-								var stats = obj as EndOfGameStats;
-								var lobby = obj as GameDTO;
-
-								if (stats != null)
-									Recorder.CommitGame(stats);
-								else if (lobby != null)
-									templobbies.Add(lobby);
-							}
-						}
-						catch (EndOfStreamException)
-						{
-						}
-
-						if (templobbies.Count > 0)
-						{
-							//Recording lobbies can be pre-filtered to improve store times
-							//By reducing the checks before sending to the database.
-							var lobbies = new List<GameDTO>();
-							foreach (var lobby in templobbies)
-							{
-								var idx = lobbies.FindIndex(l => l.Id == lobby.Id);
-								if (idx != -1)
-								{
-									if (lobby.TimeStamp > lobbies[idx].TimeStamp)
-										lobbies[idx] = lobby;
-								}
-								else
-								{
-									lobbies.Add(lobby);
-								}
-							}
-
-							foreach (var lobby in lobbies)
-								Recorder.CommitLobby(lobby);
-						}
-					}
-				}
-				catch (IOException ioex)
-				{
-					StaticLogger.Warning(ioex);
-				}
-				catch (Exception ex)
-				{
-					StaticLogger.Error(ex);
-				}
-				current += file.Length;
-				currentfile++;
-			}
-
-			watch.Stop();
-
-			StaticLogger.Info(string.Format("Finished rebuilding {0} files in {1} seconds", logs.Count, (int)watch.Elapsed.TotalSeconds));
-		}
-
-		private void RebuildWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			RebuildButton.Text = "Rebuild";
-		}
-
 		private void editToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var menuItem = sender as ToolStripItem;
@@ -836,7 +723,14 @@ namespace LoLNotes.Gui
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			//Start after the form is shown otherwise Invokes will fail
-			//Connection.Start();
+			Connection.Start();
+		}
+
+		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			Settings.Region = RegionList.SelectedItem.ToString();
+			Settings.Save(SettingsFile);
+			UpdateRegion();
 		}
 	}
 }

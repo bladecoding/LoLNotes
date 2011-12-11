@@ -22,22 +22,22 @@ THE SOFTWARE.
 
 using System;
 using System.Diagnostics;
+using FluorineFx;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.GameStats.PlayerStats
 {
     [DebuggerDisplay("{DisplayName}")]
-    public class PlayerStatCategory : ICloneable
+    public class PlayerStatCategory : BaseObject, ICloneable
     {
-        protected readonly FlashObject Base;
-        public PlayerStatCategory()
+		public PlayerStatCategory()
+			: base(null)
         {
         }
-        public PlayerStatCategory(FlashObject thebase)
+		public PlayerStatCategory(ASObject thebase)
+			: base(thebase)
         {
-            Base = thebase;
-
-            FlashObject.SetFields(this, Base);
+            BaseObject.SetFields(this, Base);
         }
 
         [InternalName("displayName")]

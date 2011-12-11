@@ -21,13 +21,15 @@ THE SOFTWARE.
 */
 
 using System.Collections.Generic;
+using FluorineFx;
+using FluorineFx.AMF3;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.GameStats.PlayerStats
 {
     public class PlayerStatList : List<PlayerStat>
     {
-        protected readonly FlashObject Base;
+		protected readonly ArrayCollection Base;
         public PlayerStatList()
         {
         }
@@ -36,17 +38,16 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
         {
         }
 
-        public PlayerStatList(FlashObject thebase)
+        public PlayerStatList(ArrayCollection thebase)
         {
             Base = thebase;
 
             if (Base == null)
                 return;
 
-            var array = Base["list"]["source"];
-            foreach (var field in array.Fields)
+            foreach (var item in Base)
             {
-                Add(new PlayerStat(field));
+                Add(new PlayerStat(item as ASObject));
             }
         }
     }

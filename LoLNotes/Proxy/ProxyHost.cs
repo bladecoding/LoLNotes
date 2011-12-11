@@ -29,7 +29,7 @@ using NotMissing.Logging;
 
 namespace LoLNotes.Proxy
 {
-	public class ProxyHost : IProxyHost
+	public class ProxyHost : IProxyHost, IDisposable
 	{
 		public IPAddress SourceAddress { get; set; }
 		public int SourcePort { get; set; }
@@ -39,6 +39,11 @@ namespace LoLNotes.Proxy
 
 		public TcpListener Listener { get; protected set; }
 		public List<ProxyClient> Clients { get; protected set; }
+
+		public bool IsListening
+		{
+			get { return Listener != null; }
+		}
 
 		public ProxyHost(int srcport, string remote, int remoteport)
 			: this(IPAddress.Loopback, srcport, remote, remoteport)
@@ -57,14 +62,24 @@ namespace LoLNotes.Proxy
 
 		public virtual void Start()
 		{
-			Listener = new TcpListener(SourceAddress, SourcePort);
-			Listener.Start();
-			Listener.BeginAcceptTcpClient(OnAccept, null);
+			if (!IsListening)
+			{
+				Listener = new TcpListener(SourceAddress, SourcePort);
+				Listener.Start();
+				Listener.BeginAcceptTcpClient(OnAccept, null);
+			}
 		}
 
 		public virtual void Stop()
 		{
-			Listener.Stop();
+			if (IsListening)
+			{
+				Listener.Stop();
+
+				for (int i = 0; i < Clients.Count; i++)
+					Clients[i].Stop();
+				Clients.Clear();
+			}
 		}
 
 		public virtual ProxyClient NewClient(TcpClient tcp)
@@ -87,6 +102,10 @@ namespace LoLNotes.Proxy
 
 				StaticLogger.Info(string.Format("Client {0} connected", client.SourceTcp.Client.RemoteEndPoint));
 			}
+			catch (ObjectDisposedException ode)
+			{
+				StaticLogger.Trace(ode);
+			}
 			catch (Exception ex)
 			{
 				if (client != null)
@@ -97,34 +116,12 @@ namespace LoLNotes.Proxy
 
 		}
 
-		public virtual void OnSend(ProxyClient sender, byte[] buffer, int len)
+		public virtual void OnSend(ProxyClient sender, byte[] buffer, int idx, int len)
 		{
-			/*StaticLogger.Info(string.Format("Sent {0} bytes", len));
-			try
-			{
-				using (var fs = File.Open(string.Format("{0}_{1}_Sent.txt", RemoteAddress, RemotePort), FileMode.Append, FileAccess.Write))
-				{
-					fs.Write(buffer, 0, len);
-				}
-			}
-			catch (Exception ex)
-			{
-			}*/
 		}
 
-		public virtual void OnReceive(ProxyClient sender, byte[] buffer, int len)
+		public virtual void OnReceive(ProxyClient sender, byte[] buffer, int idx, int len)
 		{
-			/*StaticLogger.Info(string.Format("Received {0} bytes", len));
-			try
-			{
-				using (var fs = File.Open(string.Format("{0}_{1}_Received.txt", RemoteAddress, RemotePort), FileMode.Append, FileAccess.Write))
-				{
-					fs.Write(buffer, 0, len);
-				}
-			}
-			catch (Exception ex)
-			{
-			}*/
 		}
 
 
@@ -136,7 +133,7 @@ namespace LoLNotes.Proxy
 				if (idx != -1)
 					Clients.RemoveAt(idx);
 			}
-			StaticLogger.Warning(ex);
+			StaticLogger.Debug(ex);
 		}
 
 		public virtual Stream GetStream(TcpClient tcp)
@@ -147,6 +144,23 @@ namespace LoLNotes.Proxy
 		public virtual void OnConnect(ProxyClient sender)
 		{
 			
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				Stop();
+			}
+		}
+		~ProxyHost()
+		{
+			Dispose(false);
 		}
 	}
 }

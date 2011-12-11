@@ -27,11 +27,31 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using FluorineFx;
+using LoLNotes.Messaging;
 
 namespace LoLNotes.Proxy
 {
-	public class RtmpsProxyHost : SecureProxyHost
+	public class RtmpsProxyHost : SecureProxyHost, IMessageProcessor
 	{
+		/// <summary>
+		/// Called when the IsConnected status changes.
+		/// </summary>
+		public event Action<object> Connected;
+
+		bool isconnected;
+		public bool IsConnected
+		{
+			get { return isconnected; }
+			protected set
+			{
+				bool old = isconnected;
+				isconnected = value;
+				if (old != value && Connected != null)
+					Connected(this);
+			}
+		}
+
 		public RtmpsProxyHost(int srcport, string remote, int remoteport, X509Certificate cert)
 			: base(srcport, remote, remoteport, cert)
 		{
@@ -40,6 +60,25 @@ namespace LoLNotes.Proxy
 		public override ProxyClient NewClient(TcpClient tcp)
 		{
 			return new RtmpsProxyClient(this, tcp);
+		}
+
+		public override void OnConnect(ProxyClient sender)
+		{
+			IsConnected = true;
+			base.OnConnect(sender);
+		}
+
+		public override void OnException(ProxyClient sender, Exception ex)
+		{
+			IsConnected = false;
+			base.OnException(sender, ex);
+		}
+
+		public event ProcessObjectD ProcessObject;
+		public virtual void OnProcessObject(ASObject obj, Int64 timestamp)
+		{
+			if (ProcessObject != null)
+				ProcessObject(obj, timestamp);
 		}
 	}
 }

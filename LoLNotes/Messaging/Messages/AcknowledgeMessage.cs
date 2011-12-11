@@ -23,7 +23,7 @@ THE SOFTWARE.
 
 using FluorineFx.AMF3;
 
-namespace LoLNotes.Messaging
+namespace LoLNotes.Messaging.Messages
 {
 	public class AcknowledgeMessage : AsyncMessage
 	{

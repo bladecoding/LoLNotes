@@ -30,8 +30,8 @@ namespace LoLNotes.Proxy
 	{
 		Stream GetStream(TcpClient tcp);
 		void OnConnect(ProxyClient sender);
-		void OnSend(ProxyClient sender, byte[] buffer, int len);
-		void OnReceive(ProxyClient sender, byte[] buffer, int len);
+		void OnSend(ProxyClient sender, byte[] buffer, int idx, int len);
+		void OnReceive(ProxyClient sender, byte[] buffer, int idx, int len);
 		void OnException(ProxyClient sender, Exception ex);
 	}
 }

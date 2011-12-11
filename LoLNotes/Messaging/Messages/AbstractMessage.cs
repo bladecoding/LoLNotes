@@ -19,15 +19,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using FluorineFx.AMF3;
 
-namespace LoLNotes.Messaging
+namespace LoLNotes.Messaging.Messages
 {
 	public class AbstractMessage : IExternalizable
 	{
@@ -82,11 +81,11 @@ namespace LoLNotes.Messaging
 					}
 					if ((flags[i] & TIMESTAMP_FLAG) != 0)
 					{
-						TimeStamp = (Int64)(double)input.ReadObject();
+						TimeStamp = Convert.ToInt64(input.ReadObject());
 					}
 					if ((flags[i] & TIME_TO_LIVE_FLAG) != 0)
 					{
-						TimeToLive = (Int64)(double)input.ReadObject();
+						TimeToLive = Convert.ToInt64(input.ReadObject());
 					}
 					bits = 7;
 				}
@@ -155,9 +154,9 @@ namespace LoLNotes.Messaging
 			if (MessageId != null && MessageIdBytes == null)
 				output.WriteObject(MessageId);
 			if (TimeStamp != 0)
-				output.WriteObject((double)TimeStamp);
+				output.WriteObject(TimeStamp);
 			if (TimeToLive != 0)
-				output.WriteObject((double)TimeToLive);
+				output.WriteObject(TimeToLive);
 
 			if (ClientIdBytes != null)
 				output.WriteObject(ClientIdBytes);

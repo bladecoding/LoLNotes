@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 using System.Diagnostics;
+using FluorineFx;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.GameLobby.Participants
@@ -33,18 +34,16 @@ namespace LoLNotes.Messages.GameLobby.Participants
         {
         }
 
-        public GameParticipant(FlashObject thebase)
+		public GameParticipant(ASObject thebase)
             : base(thebase)
         {
-            FlashObject.SetFields(this, thebase);
+            BaseObject.SetFields(this, thebase);
         }
-        [InternalName("isMe")]
         public bool IsMe
         {
             get;
             set;
         }
-        [InternalName("isGameOwner")]
         public bool IsGameOwner
         {
             get;

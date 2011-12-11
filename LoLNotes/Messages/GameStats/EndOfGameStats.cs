@@ -21,23 +21,24 @@ THE SOFTWARE.
 */
 
 using System;
+using FluorineFx;
 using LoLNotes.Flash;
 using LoLNotes.Messages.GameStats.PlayerStats;
 using NotMissing;
 
 namespace LoLNotes.Messages.GameStats
 {
-    [Message("EndOfGameStats")]
+	[Message("com.riotgames.platform.game.EndOfGameStats")]
     public class EndOfGameStats : MessageObject, ICloneable
     {
         public EndOfGameStats()
             : base(null)
         {
         }
-        public EndOfGameStats(FlashObject obj)
+        public EndOfGameStats(ASObject obj)
             : base(obj)
         {
-            FlashObject.SetFields(this, obj["body"]);
+            BaseObject.SetFields(this, obj);
         }
 
         [InternalName("basePoints")]
@@ -278,7 +279,6 @@ namespace LoLNotes.Messages.GameStats
                 TeamPlayerStats = new PlayerStatsSummaryList(TeamPlayerStats.Clone()),
                 TimeUntilNextFirstWinBonus = TimeUntilNextFirstWinBonus,
                 UserId = UserId,
-                Destination = Destination,
                 TimeStamp = TimeStamp,
             };
         }

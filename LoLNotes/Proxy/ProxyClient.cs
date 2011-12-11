@@ -87,7 +87,7 @@ namespace LoLNotes.Proxy
 											}
 											catch (Exception ex)
 											{
-												StaticLogger.Warning(ex);
+												StaticLogger.Debug(ex);
 											}
 										};
 
@@ -107,11 +107,11 @@ namespace LoLNotes.Proxy
 
 				if (stream == SourceStream)
 				{
-					OnSend(SourceBuffer, read);
+					OnSend(SourceBuffer, 0, read);
 				}
 				else
 				{
-					OnReceive(RemoteBuffer, read);
+					OnReceive(RemoteBuffer, 0, read);
 				}
 
 				stream.BeginRead(
@@ -129,16 +129,16 @@ namespace LoLNotes.Proxy
 			}
 		}
 
-		protected virtual void OnSend(byte[] buffer, int len)
+		protected virtual void OnSend(byte[] buffer, int idx, int len)
 		{
-			Host.OnSend(this, buffer, len);
-			RemoteStream.Write(buffer, 0, len);
+			Host.OnSend(this, buffer, idx, len);
+			RemoteStream.Write(buffer, idx, len);
 		}
 
-		protected virtual void OnReceive(byte[] buffer, int len)
+		protected virtual void OnReceive(byte[] buffer, int idx, int len)
 		{
-			Host.OnReceive(this, buffer, len);
-			SourceStream.Write(buffer, 0, len);
+			Host.OnReceive(this, buffer, idx, len);
+			SourceStream.Write(buffer, idx, len);
 		}
 	}
 }

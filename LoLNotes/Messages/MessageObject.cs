@@ -20,21 +20,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using System;
+using FluorineFx;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages
 {
     public class MessageObject : BaseObject
     {
-        public MessageObject(FlashObject obj)
+        public MessageObject(ASObject obj)
             : base(obj)
         {
-            FlashObject.SetFields(this, obj);
+            BaseObject.SetFields(this, obj);
         }
 
-        [InternalName("timestamp")]
-        public long TimeStamp { get; set; }
-        [InternalName("destination")]
-        public string Destination { get; set; }
+        public Int64 TimeStamp { get; set; }
     }
 }

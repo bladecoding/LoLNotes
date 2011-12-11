@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,35 +19,58 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
+using System;
 using System.Collections.Generic;
-using FluorineFx;
-using FluorineFx.AMF3;
-using LoLNotes.Flash;
+using System.IO;
+using System.Linq;
+using System.Text;
+using NotMissing.Logging;
 
-namespace LoLNotes.Messages.GameStats.PlayerStats
+namespace LoLNotes.Gui
 {
-    public class PlayerStatsSummaryList : List<PlayerStatsSummary>
-    {   
-        protected readonly ArrayCollection Base;
-        public PlayerStatsSummaryList()
-        {
-        }
-        public PlayerStatsSummaryList(IEnumerable<PlayerStatsSummary> collection)
-            : base(collection)
-        {
-        }
+	public class MainSettings
+	{
+		public string Region { get; set; }
 
-		public PlayerStatsSummaryList(ArrayCollection thebase)
-        {
-            Base = thebase;
-            if (Base == null)
-                return;
+		public MainSettings()
+		{
+			Region = "NA";
+		}
 
-            foreach (var item in Base)
-            {
-                Add(new PlayerStatsSummary(item as ASObject));
-            }
-        }
-    }
+		public bool Save(string file)
+		{
+			try
+			{
+				using (var sw = new StreamWriter(File.Open(file, FileMode.Create, FileAccess.Write)))
+				{
+					sw.Write(fastJSON.JSON.Instance.ToJSON(this, true, false));
+					return true;
+				}
+			}
+			catch (IOException io)
+			{
+				StaticLogger.Debug(io);
+				return false;
+			}
+		}
+
+		public static MainSettings Load(string file)
+		{
+			try
+			{
+				if (!File.Exists(file))
+					return new MainSettings();
+
+				using (var sr = new StreamReader(File.Open(file, FileMode.Open, FileAccess.Read)))
+				{
+					return fastJSON.JSON.Instance.ToObject<MainSettings>(sr.ReadToEnd());
+				}
+			}
+			catch (IOException io)
+			{
+				StaticLogger.Debug(io);
+				return new MainSettings();
+			}
+		}
+	}
 }

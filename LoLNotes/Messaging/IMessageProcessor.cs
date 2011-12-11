@@ -23,10 +23,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LoLNotes.Messaging;
+using FluorineFx;
 
-
-public class DSC : CommandMessage
+namespace LoLNotes.Messaging
 {
+	public delegate void ProcessObjectD(ASObject obj, Int64 timestamp);
+	public interface IMessageProcessor
+	{
+		event ProcessObjectD ProcessObject;
+	}
 }
-

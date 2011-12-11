@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,34 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-using System.Collections.Generic;
-using FluorineFx;
-using FluorineFx.AMF3;
-using LoLNotes.Flash;
+using LoLNotes.Messaging.Messages;
 
-namespace LoLNotes.Messages.GameStats.PlayerStats
+//Must be left out of namespaces for FluorineFx to find.
+public class DSK : AcknowledgeMessage
 {
-    public class PlayerStatsSummaryList : List<PlayerStatsSummary>
-    {   
-        protected readonly ArrayCollection Base;
-        public PlayerStatsSummaryList()
-        {
-        }
-        public PlayerStatsSummaryList(IEnumerable<PlayerStatsSummary> collection)
-            : base(collection)
-        {
-        }
 
-		public PlayerStatsSummaryList(ArrayCollection thebase)
-        {
-            Base = thebase;
-            if (Base == null)
-                return;
-
-            foreach (var item in Base)
-            {
-                Add(new PlayerStatsSummary(item as ASObject));
-            }
-        }
-    }
 }
+

@@ -22,10 +22,19 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using LoLNotes.Messaging;
 
-
-public class DSA : AsyncMessage
+namespace LoLNotes.Gui
 {
+	public class CertificateHolder
+	{
+		public string Domain { get; set; }
+		public X509Certificate Certificate { get; set; }
+		public CertificateHolder(string domain, byte[] bytes)
+		{
+			Domain = domain;
+			Certificate = new X509Certificate2(bytes, "");
+		}
+	}
 }

@@ -23,6 +23,7 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluorineFx;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.Translators
@@ -66,17 +67,12 @@ namespace LoLNotes.Messages.Translators
         /// </summary>
         /// <param name="flashobj">Flash object to get data from</param>
         /// <returns>T object from flash object if successful. Null if not successful.</returns>
-        public virtual object GetObject(FlashObject flashobj)
+        public virtual object GetObject(ASObject flashobj)
         {
             if (flashobj == null)
                 return null;
 
-            var body = flashobj["body"];
-            if (body == null)
-                return null;
-
-            var type = Types.Where(kv => body.Value.Contains(kv.Key)).FirstOrDefault();
-
+			var type = Types.Where(kv => flashobj.TypeName == kv.Key).FirstOrDefault();
             return type.Value != null ? Activator.CreateInstance(type.Value, flashobj) : null;
         }
     }

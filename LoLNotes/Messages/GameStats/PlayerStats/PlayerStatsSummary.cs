@@ -22,27 +22,25 @@ THE SOFTWARE.
 
 using System;
 using System.Diagnostics;
+using FluorineFx;
 using LoLNotes.Flash;
 using NotMissing;
 
 namespace LoLNotes.Messages.GameStats.PlayerStats
 {
     [DebuggerDisplay("{SummonerName}")]
-    public class PlayerStatsSummary : ICloneable
+    public class PlayerStatsSummary : BaseObject, ICloneable
     {
         protected readonly FlashObject Base;
 
         public PlayerStatsSummary()
+			: base(null)
         {
         }
-        public PlayerStatsSummary(FlashObject body)
+		public PlayerStatsSummary(ASObject body)
+			: base(body)
         {
-            if (body == null)
-                throw new ArgumentNullException("body");
-
-            Base = body;
-
-            FlashObject.SetFields(this, body);
+            BaseObject.SetFields(this, body);
         }
 
         [InternalName("botPlayer")]

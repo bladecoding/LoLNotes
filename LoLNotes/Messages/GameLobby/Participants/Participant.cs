@@ -21,21 +21,22 @@ THE SOFTWARE.
 */
 
 using System;
+using FluorineFx;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.GameLobby.Participants
 {
-    public class Participant : ICloneable
+    public class Participant : BaseObject, ICloneable
     {
-        protected readonly FlashObject Base;
         public Participant()
+			: base(null)
         {
         }
 
-        public Participant(FlashObject thebase)
+        public Participant(ASObject thebase)
+			: base(thebase)
         {
-            Base = thebase;
-            FlashObject.SetFields(this, thebase);
+            BaseObject.SetFields(this, thebase);
         }
         [InternalName("pickMode")]
         public int PickMode

@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 using System.Diagnostics;
+using FluorineFx;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.GameLobby.Participants
@@ -33,10 +34,10 @@ namespace LoLNotes.Messages.GameLobby.Participants
         {
         }
 
-        public BotParticipant(FlashObject thebase)
+		public BotParticipant(ASObject thebase)
             : base(thebase)
         {
-            FlashObject.SetFields(this, thebase);
+            BaseObject.SetFields(this, thebase);
         }
 
         [InternalName("botSkillLevel")]
@@ -45,7 +46,6 @@ namespace LoLNotes.Messages.GameLobby.Participants
             get;
             set;
         }
-        [InternalName("botSkillLevelName")]
         public string BotSkillLevelName
         {
             get;

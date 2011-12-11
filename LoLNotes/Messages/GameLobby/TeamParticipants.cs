@@ -23,6 +23,8 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using FluorineFx;
+using FluorineFx.AMF3;
 using LoLNotes.Flash;
 using LoLNotes.Messages.GameLobby.Participants;
 
@@ -31,7 +33,7 @@ namespace LoLNotes.Messages.GameLobby
     [DebuggerDisplay("Count: {Count}")]
     public class TeamParticipants : List<Participant>
     {
-        protected readonly FlashObject Base;
+        protected readonly ArrayCollection Base;
         public TeamParticipants()
         {
         }
@@ -40,31 +42,33 @@ namespace LoLNotes.Messages.GameLobby
         {
         }
 
-        public TeamParticipants(FlashObject thebase)
+		public TeamParticipants(ArrayCollection thebase)
         {
             Base = thebase;
-
             if (Base == null)
                 return;
 
-            var array = Base["list"]["source"];
-            foreach (var field in array.Fields)
+            foreach (var item in Base)
             {
-                if (field.Value.Contains("PlayerParticipant"))
+				var obj = item as ASObject;
+				if (obj == null)
+					continue;
+
+                if (obj.TypeName.Contains("PlayerParticipant"))
                 {
-                    Add(new PlayerParticipant(field));
+                    Add(new PlayerParticipant(obj));
                 }
-                else if (field.Value.Contains("ObfuscatedParticipant"))
+				else if (obj.TypeName.Contains("ObfuscatedParticipant"))
                 {
-                    Add(new ObfuscatedParticipant(field));
+                    Add(new ObfuscatedParticipant(obj));
                 }
-                else if (field.Value.Contains("BotParticipant"))
+				else if (obj.TypeName.Contains("BotParticipant"))
                 {
-                    Add(new BotParticipant(field));
+                    Add(new BotParticipant(obj));
                 }
                 else
                 {
-                    throw new NotSupportedException("Unexcepted type in team array " + field.Value);
+                    throw new NotSupportedException("Unexcepted type in team array " + obj.TypeName);
                 }
             }
         }

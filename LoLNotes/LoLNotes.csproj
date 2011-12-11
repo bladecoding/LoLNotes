@@ -115,8 +115,10 @@
     <Compile Include="Assets\DescriptionEnumTypeConverter.cs" />
     <Compile Include="Assets\GameModes.cs" />
     <Compile Include="Assets\GameTypes.cs" />
-    <Compile Include="Messaging\AbstractMessage.cs" />
-    <Compile Include="Messaging\AcknowledgeMessage.cs" />
+    <Compile Include="Gui\CertificateHolder.cs" />
+    <Compile Include="Gui\MainSettings.cs" />
+    <Compile Include="Messaging\Messages\AbstractMessage.cs" />
+    <Compile Include="Messaging\Messages\AcknowledgeMessage.cs" />
     <Compile Include="Gui\Controls\TeamControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -132,11 +134,12 @@
     <Compile Include="Flash\LogReader.cs" />
     <Compile Include="Messages\GameStats\EndOfGameStats.cs" />
     <Compile Include="Messages\GameStats\GameItems.cs" />
-    <Compile Include="Messaging\AsyncMessage.cs" />
-    <Compile Include="Messaging\CommandMessage.cs" />
-    <Compile Include="Messaging\DSA.cs" />
-    <Compile Include="Messaging\DSC.cs" />
-    <Compile Include="Messaging\DSK.cs" />
+    <Compile Include="Messaging\Messages\AsyncMessage.cs" />
+    <Compile Include="Messaging\Messages\CommandMessage.cs" />
+    <Compile Include="Messaging\Messages\DSA.cs" />
+    <Compile Include="Messaging\Messages\DSC.cs" />
+    <Compile Include="Messaging\Messages\DSK.cs" />
+    <Compile Include="Messaging\IMessageProcessor.cs" />
     <Compile Include="Proxy\IProxyHost.cs" />
     <Compile Include="Proxy\ProxyClient.cs" />
     <Compile Include="Proxy\ProxyHost.cs" />
@@ -218,6 +221,8 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="bin\Debug\prod.eu.lol.riotgames.com.p12" />
+    <None Include="bin\Debug\prod.eun1.lol.riotgames.com.p12" />
     <None Include="bin\Debug\prod.na1.lol.riotgames.com.p12" />
     <None Include="LoLNotes.licenseheader" />
     <None Include="Properties\Settings.settings">

@@ -22,6 +22,8 @@ THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using FluorineFx;
+using FluorineFx.AMF3;
 using LoLNotes.Flash;
 using LoLNotes.Util;
 
@@ -29,20 +31,19 @@ namespace LoLNotes.Messages.GameStats
 {
     public class GameItems : List<int>
     {
-        protected readonly FlashObject Base;
+        protected readonly ArrayCollection Base;
         public GameItems()
         {
         }
-        public GameItems(FlashObject body)
+        public GameItems(ArrayCollection body)
         {
             if (body == null)
                 throw new ArgumentNullException("body");
 
             Base = body;
 
-            var array = Base["list"]["source"];
-            foreach (var field in array.Fields)
-                Add(Parse.Int(field.Value));
+            foreach (var item in body)
+				Add(Convert.ToInt32(item));
         }
     }
 }

@@ -43,9 +43,6 @@ namespace LoLNotes
 			{
 				if (created)
 				{
-					var host = new RtmpsProxyHost(2099, "prod.na1.lol.riotgames.com", 2099, new X509Certificate2(Resources.prod_na1_lol_riotgames_com));
-					host.Start();
-
 					Application.EnableVisualStyles();
 					Application.SetCompatibleTextRenderingDefault(false);
 					Application.Run(new MainForm());

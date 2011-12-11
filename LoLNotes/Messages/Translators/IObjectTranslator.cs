@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using FluorineFx;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.Translators
 {
     public interface IObjectTranslator
     {
-        object GetObject(FlashObject flashobj);
+        object GetObject(ASObject flashobj);
     }
 }
