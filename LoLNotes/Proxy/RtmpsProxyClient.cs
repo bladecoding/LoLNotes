@@ -42,6 +42,7 @@ namespace LoLNotes.Proxy
 	public class RtmpsProxyClient : ProxyClient
 	{
 		const bool encode = false;
+		const bool logtofiles = false;
 
 		protected RtmpContext sourcecontext = new RtmpContext(RtmpMode.Server) { ObjectEncoding = ObjectEncoding.AMF0 };
 		protected RtmpContext remotecontext = new RtmpContext(RtmpMode.Client) { ObjectEncoding = ObjectEncoding.AMF0 };
@@ -118,9 +119,12 @@ namespace LoLNotes.Proxy
 			StaticLogger.Trace(string.Format("Send {0} bytes", len));
 
 #if !FILETESTING
-			using (var fs = File.Open("realsend.dmp", FileMode.Append, FileAccess.Write))
+			if (logtofiles)
 			{
-				fs.Write(buffer, idx, len);
+				using (var fs = File.Open("realsend.dmp", FileMode.Append, FileAccess.Write))
+				{
+					fs.Write(buffer, idx, len);
+				}
 			}
 #endif
 
@@ -174,7 +178,7 @@ namespace LoLNotes.Proxy
 					}
 				}
 
-				if (obj != null)
+				if (obj != null && encode)
 				{
 					var buf = RtmpProtocolEncoder.Encode(sourcecontext, obj);
 					if (pck != null && pck.Message is Notify)
@@ -188,9 +192,12 @@ namespace LoLNotes.Proxy
 					else
 					{
 						var buff = buf.ToArray();
-						using (var fs = File.Open("send.dmp", FileMode.Append, FileAccess.Write))
+						if (logtofiles)
 						{
-							fs.Write(buff, idx, buff.Length);
+							using (var fs = File.Open("send.dmp", FileMode.Append, FileAccess.Write))
+							{
+								fs.Write(buff, idx, buff.Length);
+							}
 						}
 						if (encode)
 							base.OnSend(buff, idx, buff.Length);
@@ -208,9 +215,12 @@ namespace LoLNotes.Proxy
 			StaticLogger.Trace(string.Format("Recv {0} bytes", len));
 
 #if !FILETESTING
-			using (var fs = File.Open("realrecv.dmp", FileMode.Append, FileAccess.Write))
+			if (logtofiles)
 			{
-				fs.Write(buffer, idx, len);
+				using (var fs = File.Open("realrecv.dmp", FileMode.Append, FileAccess.Write))
+				{
+					fs.Write(buffer, idx, len);
+				}
 			}
 #endif
 
@@ -278,7 +288,7 @@ namespace LoLNotes.Proxy
 						}
 
 						//Call was not found. Most likely a receive message.
-						if (inv != null)
+						if (inv == null)
 						{
 							OnNotify(result);
 						}
@@ -289,7 +299,7 @@ namespace LoLNotes.Proxy
 					}
 				}
 
-				if (obj != null)
+				if (obj != null && encode)
 				{
 					var buf = RtmpProtocolEncoder.Encode(remotecontext, obj);
 					if (pck != null && pck.Message is Notify)
@@ -303,9 +313,12 @@ namespace LoLNotes.Proxy
 					else
 					{
 						var buff = buf.ToArray();
-						using (var fs = File.Open("recv.dmp", FileMode.Append, FileAccess.Write))
+						if (logtofiles)
 						{
-							fs.Write(buff, idx, buff.Length);
+							using (var fs = File.Open("recv.dmp", FileMode.Append, FileAccess.Write))
+							{
+								fs.Write(buff, idx, buff.Length);
+							}
 						}
 						if (encode)
 							base.OnReceive(buff, idx, buff.Length);

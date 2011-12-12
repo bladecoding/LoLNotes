@@ -158,10 +158,13 @@ namespace LoLNotes.Gui.Controls
             if (Participant != null)
                 SetTitle(Participant);
 
-            if (Player == null || Player.StatsList.Count < 1)
+            if (Player == null)
                 return false;
 
             SetTitle(Player.Name);
+
+			if (Player.StatsList.Count < 1)
+				return false;
 
             var stat = Player.StatsList[Current % Player.StatsList.Count];
             if (stat == null || stat.Summary == null)

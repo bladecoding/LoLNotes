@@ -58,14 +58,14 @@ namespace LoLNotes.Gui
 	{
 		static readonly string LolBansPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans");
 		static readonly string LoaderFile = Path.Combine(LolBansPath, "LoLLoader.dll");
-		const string LoaderVersion = "1.1";
+		const string LoaderVersion = "1.2";
 		const string SettingsFile = "settings.json";
 
 		readonly Dictionary<string, Icon> IconCache;
 		readonly Dictionary<string, CertificateHolder> Certificates; 
 		RtmpsProxyHost Connection;
 		MessageReader Reader;
-		readonly IObjectContainer Database;
+		IObjectContainer Database;
 		GameStorage Recorder;
 		MainSettings Settings;
 
@@ -438,11 +438,18 @@ namespace LoLNotes.Gui
 				var oldteams = new List<TeamParticipants> { CurrentGame.TeamOne, CurrentGame.TeamTwo };
 				var newteams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
 
+				bool same = true;
 				for (int i = 0; i < oldteams.Count && i < newteams.Count; i++)
 				{
 					if (!oldteams[i].SequenceEqual(newteams[i]))
-						return;
+					{
+						same = false;
+						break;
+					}
 				}
+
+				if (same)
+					return;
 			}
 
 			var teams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
@@ -546,16 +553,16 @@ namespace LoLNotes.Gui
 				if (!Directory.Exists(LolBansPath))
 					Directory.CreateDirectory(LolBansPath);
 
+				File.WriteAllBytes(LoaderFile, Resources.LolLoader);
+
 				var shortfilename = AppInit.GetShortPath(LoaderFile);
 
 				var dlls = AppInit.AppInitDlls32;
 				if (!dlls.Contains(shortfilename))
 				{
-					dlls.Add(AppInit.GetShortPath(shortfilename));
+					dlls.Add(shortfilename);
 					AppInit.AppInitDlls32 = dlls;
 				}
-
-				File.WriteAllBytes(LoaderFile, Resources.LolLoader);
 			}
 			catch (SecurityException se)
 			{

@@ -43,7 +43,7 @@ namespace LoLNotes.Gui
 			{
 				using (var sw = new StreamWriter(File.Open(file, FileMode.Create, FileAccess.Write)))
 				{
-					sw.Write(fastJSON.JSON.Instance.ToJSON(this, true, false));
+					sw.Write(fastJSON.JSON.Instance.ToJSON(this, false, false));
 					return true;
 				}
 			}
