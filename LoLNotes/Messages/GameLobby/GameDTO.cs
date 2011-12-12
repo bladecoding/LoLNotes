@@ -27,7 +27,7 @@ using NotMissing;
 
 namespace LoLNotes.Messages.GameLobby
 {
-	[Message("com.riotgames.platform.game.GameDTO")]
+	[Message(".GameDTO")]
     public class GameDTO : MessageObject, ICloneable
     {
         public GameDTO()

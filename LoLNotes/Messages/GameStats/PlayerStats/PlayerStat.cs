@@ -42,15 +42,6 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
             BaseObject.SetFields(this, Base);
         }
 
-        [InternalName("displayName")]
-        public string DisplayName { get; set; }
-
-        [InternalName("priority")]
-        public int Priority { get; set; }
-
-        [InternalName("statCategory")]
-        public PlayerStatCategory Category { get; set; }
-
         [InternalName("statTypeName")]
         public string StatTypeName { get; set; }
 
@@ -61,9 +52,6 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
         {
             return new PlayerStat
             {
-                DisplayName = DisplayName,
-                Priority = Priority,
-                Category = Category.CloneT(),
                 StatTypeName = StatTypeName,
                 Value = Value,
             };

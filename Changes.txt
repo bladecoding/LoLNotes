@@ -1,4 +1,8 @@
 {
+	"1.1":
+	[
+		"Now works after log files were broken.",
+	],
 	"1.0f": 
 	[
 		"Fixed LoLLoader depending on msvcrt (crashing origin)",

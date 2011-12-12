@@ -38,6 +38,7 @@ using System.Windows.Forms;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
 using Db4objects.Db4o.TA;
+using FluorineFx;
 using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
 using LoLNotes.Messages.GameLobby;
@@ -148,16 +149,6 @@ namespace LoLNotes.Gui
 		{
 			lock (cachelock)
 			{
-				for (int i = 0; i < PlayerCache.Count; i++)
-				{
-					var plrentry = PlayerCache[i];
-					if (plrentry.Id == player.Id && player.GameTimeStamp >= plrentry.GameTimeStamp)
-					{
-						PlayerCache[i] = player;
-						StaticLogger.Trace("Updating stale player cache " + player.Name);
-						break;
-					}
-				}
 				var lists = new List<TeamControl> { teamControl1, teamControl2 };
 				foreach (var list in lists)
 				{
@@ -169,6 +160,16 @@ namespace LoLNotes.Gui
 							StaticLogger.Trace("Updating stale player " + player.Name);
 							break;
 						}
+					}
+				}
+				for (int i = 0; i < PlayerCache.Count; i++)
+				{
+					var plrentry = PlayerCache[i];
+					if (plrentry.Id == player.Id && player.GameTimeStamp >= plrentry.GameTimeStamp)
+					{
+						PlayerCache[i] = player;
+						StaticLogger.Trace("Updating stale player cache " + player.Name);
+						break;
 					}
 				}
 			}

@@ -28,7 +28,7 @@ using NotMissing;
 
 namespace LoLNotes.Messages.GameStats
 {
-	[Message("com.riotgames.platform.game.EndOfGameStats")]
+	[Message(".EndOfGameStats")]
     public class EndOfGameStats : MessageObject, ICloneable
     {
         public EndOfGameStats()
@@ -86,7 +86,6 @@ namespace LoLNotes.Messages.GameStats
         {
             get; set;
         }
-        [InternalName("expPointsToNextLevel")]
         public int ExpPointsToNextLevel
         {
             get; set;
@@ -136,12 +135,10 @@ namespace LoLNotes.Messages.GameStats
         {
             get; set;
         }
-        [InternalName("locationBoostIpEarned")]
         public int LocationBoostIpEarned
         {
             get; set;
         }
-        [InternalName("locationBoostXpEarned")]
         public int LocationBoostXpEarned
         {
             get; set;

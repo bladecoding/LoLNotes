@@ -55,14 +55,7 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
         [InternalName("gameId")]
         public int GameId { get; set; }
 
-        [InternalName("gameItems")]
         public GameItems Items { get; set; }
-
-        [InternalName("inChat")]
-        public bool InChat { get; set; }
-
-        [InternalName("isMe")]
-        public bool IsMe { get; set; }
 
         [InternalName("leaver")]
         public bool Leaver { get; set; }
@@ -113,9 +106,6 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
                 Elo = Elo,
                 EloChange = EloChange,
                 GameId = GameId,
-                Items = Items,
-                InChat = InChat,
-                IsMe = IsMe,
                 Leaver = Leaver,
                 Leaves = Leaves,
                 Level = Level,

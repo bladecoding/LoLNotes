@@ -93,7 +93,7 @@ namespace LoLNotes.Storage
                 Database.Commit();
             }
             sw.Stop();
-            StaticLogger.Trace(string.Format("GameDTO committed in {0}ms", sw.ElapsedMilliseconds));
+            StaticLogger.Debug(string.Format("GameDTO committed in {0}ms", sw.ElapsedMilliseconds));
         }
         /// <summary>
         /// Checks the database for the lobby and if it does not exist then it adds it.
@@ -148,7 +148,7 @@ namespace LoLNotes.Storage
                 Database.Commit();
             }
             sw.Stop();
-            StaticLogger.Trace(string.Format("PlayerEntry committed in {0}ms", sw.ElapsedMilliseconds));
+            StaticLogger.Debug(string.Format("PlayerEntry committed in {0}ms", sw.ElapsedMilliseconds));
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace LoLNotes.Storage
                 Database.Commit();
             }
             sw.Stop();
-            StaticLogger.Trace(string.Format("EndOfGameStats committed in {0}ms", sw.ElapsedMilliseconds));
+            StaticLogger.Debug(string.Format("EndOfGameStats committed in {0}ms", sw.ElapsedMilliseconds));
         }
 
         public EndOfGameStats RecordGame(EndOfGameStats game)
