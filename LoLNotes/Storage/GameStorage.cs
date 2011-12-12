@@ -124,7 +124,8 @@ namespace LoLNotes.Storage
 
             foreach (PlayerParticipant plr in lobby.TeamOne.Union(lobby.TeamTwo).Where(p => p is PlayerParticipant).ToList())
             {
-                RecordPlayer(new PlayerEntry(lobby, plr), false);
+				if (GetPlayer(plr.Id) == null) //Only record them if they don't exist.
+					RecordPlayer(new PlayerEntry(lobby, plr), false);
             }
 
             return match;
@@ -189,9 +190,7 @@ namespace LoLNotes.Storage
         {
             lock (DatabaseLock)
             {
-                var ret = Database.Query<PlayerEntry>().
-                    Where(e => e.Id == id).
-                    FirstOrDefault();
+                var ret = Database.Query<PlayerEntry>().FirstOrDefault(e => e.Id == id);
                 if (ret == null)
                     return null;
                 ret = ret.CloneT();
