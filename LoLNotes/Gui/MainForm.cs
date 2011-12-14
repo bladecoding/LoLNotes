@@ -51,6 +51,8 @@ using LoLNotes.Properties;
 using LoLNotes.Proxy;
 using LoLNotes.Storage;
 using LoLNotes.Util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NotMissing.Logging;
 
 namespace LoLNotes.Gui
@@ -201,7 +203,7 @@ namespace LoLNotes.Gui
 				using (var wc = new WebClient())
 				{
 					string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/Release.txt");
-					var dict = fastJSON.JSON.Instance.Parse(raw) as Dictionary<string, object>;
+					var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(raw);
 					BeginInvoke(new Action<string>(SetTitle), string.Format("v{0}{1}", dict["Version"], dict["ReleaseName"]));
 					BeginInvoke(new Action<string>(SetDownloadLink), dict["Link"]);
 				}
@@ -220,7 +222,7 @@ namespace LoLNotes.Gui
 		{
 			try
 			{
-				var dict = fastJSON.JSON.Instance.Parse(data) as Dictionary<string, object>;
+				var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
 
 				ChangesText.Text = "";
 
@@ -231,9 +233,9 @@ namespace LoLNotes.Gui
 					ChangesText.AppendText(kv.Key);
 					ChangesText.AppendText(Environment.NewLine);
 					ChangesText.SelectionFont = new Font(ChangesText.Font.FontFamily, ChangesText.Font.SizeInPoints, ChangesText.Font.Style);
-					if (kv.Value is ArrayList)
+					if (kv.Value is JArray)
 					{
-						var list = kv.Value as ArrayList;
+						var list = kv.Value as JArray;
 						foreach (var item in list)
 						{
 							ChangesText.AppendText(item.ToString());

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using NotMissing.Logging;
 
 namespace LoLNotes.Gui
@@ -43,7 +44,7 @@ namespace LoLNotes.Gui
 			{
 				using (var sw = new StreamWriter(File.Open(file, FileMode.Create, FileAccess.Write)))
 				{
-					sw.Write(fastJSON.JSON.Instance.ToJSON(this, false, false));
+					sw.Write(JsonConvert.SerializeObject(this, Formatting.Indented));
 					return true;
 				}
 			}
@@ -63,7 +64,7 @@ namespace LoLNotes.Gui
 
 				using (var sr = new StreamReader(File.Open(file, FileMode.Open, FileAccess.Read)))
 				{
-					return fastJSON.JSON.Instance.ToObject<MainSettings>(sr.ReadToEnd());
+					return JsonConvert.DeserializeObject<MainSettings>(sr.ReadToEnd());
 				}
 			}
 			catch (IOException io)

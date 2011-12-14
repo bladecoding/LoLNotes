@@ -68,31 +68,35 @@ namespace LoLNotes.Gui
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
-			this.SearchTab = new System.Windows.Forms.TabPage();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.ExportButton = new System.Windows.Forms.Button();
+			this.ImportButton = new System.Windows.Forms.Button();
 			this.RegionList = new System.Windows.Forms.ComboBox();
 			this.DownloadLink = new System.Windows.Forms.LinkLabel();
 			this.InstallButton = new System.Windows.Forms.Button();
 			this.LogTab = new System.Windows.Forms.TabPage();
 			this.LogList = new System.Windows.Forms.ListBox();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.ChangesTab = new System.Windows.Forms.TabPage();
 			this.ChangesText = new System.Windows.Forms.RichTextBox();
+			this.DevTab = new System.Windows.Forms.TabPage();
 			this.RebuildWorker = new System.ComponentModel.BackgroundWorker();
 			this.tabControl1.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.PlayerEditStrip.SuspendLayout();
 			this.SettingsTab.SuspendLayout();
+			this.groupBox1.SuspendLayout();
 			this.LogTab.SuspendLayout();
-			this.tabPage1.SuspendLayout();
+			this.ChangesTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.GameTab);
-			this.tabControl1.Controls.Add(this.SearchTab);
 			this.tabControl1.Controls.Add(this.SettingsTab);
 			this.tabControl1.Controls.Add(this.LogTab);
-			this.tabControl1.Controls.Add(this.tabPage1);
+			this.tabControl1.Controls.Add(this.ChangesTab);
+			this.tabControl1.Controls.Add(this.DevTab);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -155,17 +159,9 @@ namespace LoLNotes.Gui
 			this.teamControl1.TeamSize = 5;
 			this.teamControl1.Text = "Team 1";
 			// 
-			// SearchTab
-			// 
-			this.SearchTab.Location = new System.Drawing.Point(4, 22);
-			this.SearchTab.Name = "SearchTab";
-			this.SearchTab.Size = new System.Drawing.Size(476, 696);
-			this.SearchTab.TabIndex = 1;
-			this.SearchTab.Text = "Search";
-			this.SearchTab.UseVisualStyleBackColor = true;
-			// 
 			// SettingsTab
 			// 
+			this.SettingsTab.Controls.Add(this.groupBox1);
 			this.SettingsTab.Controls.Add(this.RegionList);
 			this.SettingsTab.Controls.Add(this.DownloadLink);
 			this.SettingsTab.Controls.Add(this.InstallButton);
@@ -175,6 +171,35 @@ namespace LoLNotes.Gui
 			this.SettingsTab.TabIndex = 2;
 			this.SettingsTab.Text = "Settings";
 			this.SettingsTab.UseVisualStyleBackColor = true;
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.ExportButton);
+			this.groupBox1.Controls.Add(this.ImportButton);
+			this.groupBox1.Location = new System.Drawing.Point(11, 84);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(90, 82);
+			this.groupBox1.TabIndex = 4;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Database";
+			// 
+			// ExportButton
+			// 
+			this.ExportButton.Location = new System.Drawing.Point(6, 48);
+			this.ExportButton.Name = "ExportButton";
+			this.ExportButton.Size = new System.Drawing.Size(75, 23);
+			this.ExportButton.TabIndex = 1;
+			this.ExportButton.Text = "Export";
+			this.ExportButton.UseVisualStyleBackColor = true;
+			// 
+			// ImportButton
+			// 
+			this.ImportButton.Location = new System.Drawing.Point(6, 19);
+			this.ImportButton.Name = "ImportButton";
+			this.ImportButton.Size = new System.Drawing.Size(75, 23);
+			this.ImportButton.TabIndex = 0;
+			this.ImportButton.Text = "Import";
+			this.ImportButton.UseVisualStyleBackColor = true;
 			// 
 			// RegionList
 			// 
@@ -226,16 +251,16 @@ namespace LoLNotes.Gui
 			this.LogList.Size = new System.Drawing.Size(476, 696);
 			this.LogList.TabIndex = 0;
 			// 
-			// tabPage1
+			// ChangesTab
 			// 
-			this.tabPage1.Controls.Add(this.ChangesText);
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(476, 696);
-			this.tabPage1.TabIndex = 4;
-			this.tabPage1.Text = "Changes";
-			this.tabPage1.UseVisualStyleBackColor = true;
+			this.ChangesTab.Controls.Add(this.ChangesText);
+			this.ChangesTab.Location = new System.Drawing.Point(4, 22);
+			this.ChangesTab.Name = "ChangesTab";
+			this.ChangesTab.Padding = new System.Windows.Forms.Padding(3);
+			this.ChangesTab.Size = new System.Drawing.Size(476, 696);
+			this.ChangesTab.TabIndex = 4;
+			this.ChangesTab.Text = "Changes";
+			this.ChangesTab.UseVisualStyleBackColor = true;
 			// 
 			// ChangesText
 			// 
@@ -247,6 +272,15 @@ namespace LoLNotes.Gui
 			this.ChangesText.Size = new System.Drawing.Size(470, 690);
 			this.ChangesText.TabIndex = 0;
 			this.ChangesText.Text = "Loading...";
+			// 
+			// DevTab
+			// 
+			this.DevTab.Location = new System.Drawing.Point(4, 22);
+			this.DevTab.Name = "DevTab";
+			this.DevTab.Size = new System.Drawing.Size(476, 696);
+			this.DevTab.TabIndex = 5;
+			this.DevTab.Text = "Dev";
+			this.DevTab.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -263,8 +297,9 @@ namespace LoLNotes.Gui
 			this.PlayerEditStrip.ResumeLayout(false);
 			this.SettingsTab.ResumeLayout(false);
 			this.SettingsTab.PerformLayout();
+			this.groupBox1.ResumeLayout(false);
 			this.LogTab.ResumeLayout(false);
-			this.tabPage1.ResumeLayout(false);
+			this.ChangesTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
         }
@@ -274,8 +309,7 @@ namespace LoLNotes.Gui
         #endregion
 
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage GameTab;
-        private System.Windows.Forms.TabPage SearchTab;
+		private System.Windows.Forms.TabPage GameTab;
         private System.Windows.Forms.TabPage SettingsTab;
         private Controls.TeamControl teamControl1;
         private System.Windows.Forms.Button InstallButton;
@@ -287,9 +321,13 @@ namespace LoLNotes.Gui
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.LinkLabel DownloadLink;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage ChangesTab;
         private System.Windows.Forms.RichTextBox ChangesText;
 		private System.Windows.Forms.ComboBox RegionList;
+		private System.Windows.Forms.TabPage DevTab;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.Button ExportButton;
+		private System.Windows.Forms.Button ImportButton;
 
     }
 }
