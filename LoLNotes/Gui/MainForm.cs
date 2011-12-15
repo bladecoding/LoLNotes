@@ -65,7 +65,7 @@ namespace LoLNotes.Gui
 		const string SettingsFile = "settings.json";
 
 		readonly Dictionary<string, Icon> IconCache;
-		readonly Dictionary<string, CertificateHolder> Certificates; 
+		readonly Dictionary<string, CertificateHolder> Certificates;
 		RtmpsProxyHost Connection;
 		MessageReader Reader;
 		IObjectContainer Database;
@@ -104,7 +104,7 @@ namespace LoLNotes.Gui
 				RegionList.Items.Add(kv.Key);
 			int idx = RegionList.Items.IndexOf(Settings.Region);
 			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
-			
+
 
 			StaticLogger.Info("Startup Completed");
 		}
@@ -741,6 +741,83 @@ namespace LoLNotes.Gui
 			Settings.Region = RegionList.SelectedItem.ToString();
 			Settings.Save(SettingsFile);
 			UpdateRegion();
+		}
+
+		private void ImportButton_Click(object sender, EventArgs e)
+		{
+			using (var ofd = new OpenFileDialog())
+			{
+				ofd.Filter = "json files (*.json)|*.json";
+				ofd.InitialDirectory = Application.StartupPath;
+				ofd.RestoreDirectory = true;
+
+				if (ofd.ShowDialog() != DialogResult.OK)
+					return;
+
+				var serializer = new JsonSerializer();
+				serializer.TypeNameHandling = TypeNameHandling.Auto;
+				using (var json = new JsonTextReader(new StreamReader(ofd.OpenFile())))
+				{
+					var export = serializer.Deserialize<JsonExportHolder>(json);
+
+					foreach (var ply in export.Players)
+						Recorder.RecordPlayer(ply, false); 
+					
+					foreach (var lobby in export.GameDtos)
+						Recorder.RecordLobby(lobby);
+
+					foreach (var end in export.EndStats)
+						Recorder.RecordGame(end);
+
+					Recorder.Commit();
+				}
+			}
+		}
+
+		void ActivateList(IList list)
+		{
+			foreach (var obj in list)
+			{
+				Database.Activate(obj, int.MaxValue);
+			}
+		}
+
+		class JsonExportHolder
+		{
+			public List<GameDTO> GameDtos;
+			public List<EndOfGameStats> EndStats;
+			public List<PlayerEntry> Players;
+		}
+
+		private void ExportButton_Click(object sender, EventArgs e)
+		{
+			using (var sfd = new SaveFileDialog())
+			{
+				sfd.Filter = "json files (*.json)|*.json";
+				sfd.InitialDirectory = Application.StartupPath;
+				sfd.RestoreDirectory = true;
+
+				if (sfd.ShowDialog() != DialogResult.OK)
+					return;
+
+				var export = new JsonExportHolder
+				{
+					GameDtos = Database.Query<GameDTO>().ToList(),
+					EndStats = Database.Query<EndOfGameStats>().ToList(),
+					Players = Database.Query<PlayerEntry>().ToList(),
+				};
+				ActivateList(export.EndStats);
+				ActivateList(export.GameDtos);
+				ActivateList(export.Players);
+
+				var serializer = new JsonSerializer();
+				serializer.TypeNameHandling = TypeNameHandling.Auto;
+				using (var json = new JsonTextWriter(new StreamWriter(sfd.OpenFile())))
+				{
+					json.Formatting = Formatting.Indented;
+					serializer.Serialize(json, export);
+				}
+			}
 		}
 	}
 }

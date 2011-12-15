@@ -63,11 +63,9 @@ namespace LoLNotes.Gui
 			this.components = new System.ComponentModel.Container();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.GameTab = new System.Windows.Forms.TabPage();
-			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.ExportButton = new System.Windows.Forms.Button();
@@ -81,6 +79,8 @@ namespace LoLNotes.Gui
 			this.ChangesText = new System.Windows.Forms.RichTextBox();
 			this.DevTab = new System.Windows.Forms.TabPage();
 			this.RebuildWorker = new System.ComponentModel.BackgroundWorker();
+			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
+			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.tabControl1.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.PlayerEditStrip.SuspendLayout();
@@ -117,16 +117,6 @@ namespace LoLNotes.Gui
 			this.GameTab.Text = "Game";
 			this.GameTab.UseVisualStyleBackColor = true;
 			// 
-			// teamControl2
-			// 
-			this.teamControl2.Location = new System.Drawing.Point(268, 6);
-			this.teamControl2.Name = "teamControl2";
-			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(200, 686);
-			this.teamControl2.TabIndex = 1;
-			this.teamControl2.TeamSize = 5;
-			this.teamControl2.Text = "Team 2";
-			// 
 			// PlayerEditStrip
 			// 
 			this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -148,16 +138,6 @@ namespace LoLNotes.Gui
 			this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
 			this.clearToolStripMenuItem.Text = "Clear";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
-			// 
-			// teamControl1
-			// 
-			this.teamControl1.Location = new System.Drawing.Point(8, 6);
-			this.teamControl1.Name = "teamControl1";
-			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(200, 686);
-			this.teamControl1.TabIndex = 0;
-			this.teamControl1.TeamSize = 5;
-			this.teamControl1.Text = "Team 1";
 			// 
 			// SettingsTab
 			// 
@@ -191,6 +171,7 @@ namespace LoLNotes.Gui
 			this.ExportButton.TabIndex = 1;
 			this.ExportButton.Text = "Export";
 			this.ExportButton.UseVisualStyleBackColor = true;
+			this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
 			// 
 			// ImportButton
 			// 
@@ -200,6 +181,7 @@ namespace LoLNotes.Gui
 			this.ImportButton.TabIndex = 0;
 			this.ImportButton.Text = "Import";
 			this.ImportButton.UseVisualStyleBackColor = true;
+			this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
 			// 
 			// RegionList
 			// 
@@ -281,6 +263,26 @@ namespace LoLNotes.Gui
 			this.DevTab.TabIndex = 5;
 			this.DevTab.Text = "Dev";
 			this.DevTab.UseVisualStyleBackColor = true;
+			// 
+			// teamControl2
+			// 
+			this.teamControl2.Location = new System.Drawing.Point(268, 6);
+			this.teamControl2.Name = "teamControl2";
+			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl2.Size = new System.Drawing.Size(200, 686);
+			this.teamControl2.TabIndex = 1;
+			this.teamControl2.TeamSize = 5;
+			this.teamControl2.Text = "Team 2";
+			// 
+			// teamControl1
+			// 
+			this.teamControl1.Location = new System.Drawing.Point(8, 6);
+			this.teamControl1.Name = "teamControl1";
+			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl1.Size = new System.Drawing.Size(200, 686);
+			this.teamControl1.TabIndex = 0;
+			this.teamControl1.TeamSize = 5;
+			this.teamControl1.Text = "Team 1";
 			// 
 			// MainForm
 			// 

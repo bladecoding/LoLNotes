@@ -78,6 +78,22 @@ namespace LoLNotes.Storage
             Task.Factory.StartNew(() => CommitGame(game));
         }
 
+		/// <summary>
+		/// Lock the database and commit changes.
+		/// </summary>
+		public void Commit()
+		{
+			Stopwatch sw;
+			lock (DatabaseLock)
+			{
+				sw = Stopwatch.StartNew();
+
+				Database.Commit();
+			}
+			sw.Stop();
+			StaticLogger.Debug(string.Format("Committed in {0}ms", sw.ElapsedMilliseconds));
+		}
+
         /// <summary>
         /// Records/Commits the lobby to the database. Locking the database lock.
         /// </summary>
