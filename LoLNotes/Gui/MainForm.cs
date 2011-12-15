@@ -566,10 +566,24 @@ namespace LoLNotes.Gui
 					dlls.Add(shortfilename);
 					AppInit.AppInitDlls32 = dlls;
 				}
+
+				var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
+				store.Open(OpenFlags.ReadWrite);
+				foreach (var hold in Certificates)
+				{
+					if (store.Certificates.Contains(hold.Value.Certificate))
+						continue;
+					store.Add(hold.Value.Certificate);
+				}
+				store.Close();
 			}
 			catch (SecurityException se)
 			{
 				StaticLogger.Warning(se);
+			}
+			catch (Exception e)
+			{
+				StaticLogger.Error("Failed to install " + e);
 			}
 		}
 
@@ -614,10 +628,24 @@ namespace LoLNotes.Gui
 
 				if (File.Exists(LoaderFile))
 					File.Delete(LoaderFile);
+
+				var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
+				store.Open(OpenFlags.ReadWrite);
+				foreach (var hold in Certificates)
+				{
+					if (!store.Certificates.Contains(hold.Value.Certificate))
+						continue;
+					store.Remove(hold.Value.Certificate);
+				}
+				store.Close();
 			}
 			catch (SecurityException se)
 			{
 				StaticLogger.Warning(se);
+			}
+			catch (Exception e)
+			{
+				StaticLogger.Error("Failed to uninstall " + e);
 			}
 		}
 

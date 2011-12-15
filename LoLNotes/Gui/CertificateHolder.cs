@@ -30,7 +30,7 @@ namespace LoLNotes.Gui
 	public class CertificateHolder
 	{
 		public string Domain { get; set; }
-		public X509Certificate Certificate { get; set; }
+		public X509Certificate2 Certificate { get; set; }
 		public CertificateHolder(string domain, byte[] bytes)
 		{
 			Domain = domain;
