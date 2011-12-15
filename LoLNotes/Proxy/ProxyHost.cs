@@ -100,7 +100,8 @@ namespace LoLNotes.Proxy
 
 				client.Start(RemoteAddress, RemotePort);
 
-				StaticLogger.Info(string.Format("Client {0} connected", client.SourceTcp.Client.RemoteEndPoint));
+				if (client.SourceTcp.Client != null)
+					StaticLogger.Info(string.Format("Client {0} connected", client.SourceTcp.Client.RemoteEndPoint));
 			}
 			catch (Exception ex)
 			{

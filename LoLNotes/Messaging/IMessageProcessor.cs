@@ -24,12 +24,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluorineFx;
+using FluorineFx.Messaging.Rtmp.Event;
 
 namespace LoLNotes.Messaging
 {
-	public delegate void ProcessObjectD(ASObject obj, Int64 timestamp);
+	public delegate void ProcessObjectHandler(object sender, ASObject obj, Int64 timestamp);
+	public delegate void CallHandler(object sender, Notify call, Notify result);
+	public delegate void NotifyHandler(object sender, Notify notify);
 	public interface IMessageProcessor
 	{
-		event ProcessObjectD ProcessObject;
+		event ProcessObjectHandler ProcessObject;
+		event CallHandler Call;
+		event NotifyHandler Notify;
 	}
 }

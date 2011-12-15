@@ -25,6 +25,5 @@ using LoLNotes.Messaging.Messages;
 //Must be left out of namespaces for FluorineFx to find.
 public class DSK : AcknowledgeMessage
 {
-
 }
 

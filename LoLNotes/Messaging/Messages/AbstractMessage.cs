@@ -260,5 +260,10 @@ namespace LoLNotes.Messaging.Messages
 
 			return ret;
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}({1})", !string.IsNullOrEmpty(Destination) ? Destination + " " : "" , GetType().Name);
+		}
 	}
 }

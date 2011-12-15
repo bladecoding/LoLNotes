@@ -74,12 +74,26 @@ namespace LoLNotes.Gui
 				OnPropertyChanged("DebugLog");
 			}
 		}
+		bool _devmode;
+		public bool DevMode
+		{
+			get
+			{
+				return _devmode;
+			}
+			set
+			{
+				_devmode = value;
+				OnPropertyChanged("DevMode");
+			}
+		}
 
 		public MainSettings()
 		{
 			_region = "NA";
 			_tracelog = false;
 			_debuglog = true;
+			_devmode = false;
 		}
 
 		public bool Save(string file)
@@ -124,6 +138,7 @@ namespace LoLNotes.Gui
 			_region = src._region;
 			_debuglog = src._debuglog;
 			_tracelog = src._tracelog;
+			_devmode = src._devmode;
 		}
 
 		protected void OnLoad()

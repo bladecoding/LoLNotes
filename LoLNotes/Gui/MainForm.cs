@@ -39,6 +39,9 @@ using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
 using Db4objects.Db4o.TA;
 using FluorineFx;
+using FluorineFx.AMF3;
+using FluorineFx.Messaging.Messages;
+using FluorineFx.Messaging.Rtmp.Event;
 using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
 using LoLNotes.Messages.GameLobby;
@@ -47,6 +50,7 @@ using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.GameStats.PlayerStats;
 using LoLNotes.Messages.Readers;
 using LoLNotes.Messages.Translators;
+using LoLNotes.Messaging.Messages;
 using LoLNotes.Properties;
 using LoLNotes.Proxy;
 using LoLNotes.Storage;
@@ -116,6 +120,7 @@ namespace LoLNotes.Gui
 		{
 			TraceCheck.Checked = Settings.TraceLog;
 			DebugCheck.Checked = Settings.DebugLog;
+			DevCheck.Checked = Settings.DevMode;
 		}
 
 		readonly object settingslock = new object();
@@ -128,7 +133,7 @@ namespace LoLNotes.Gui
 			}
 		}
 
-		void UpdateRegion()
+		void RefreshConnection()
 		{
 			if (Connection != null)
 				Connection.Dispose();
@@ -148,8 +153,13 @@ namespace LoLNotes.Gui
 			Recorder = new GameStorage(Database, Connection);
 			Recorder.PlayerUpdate += Recorder_PlayerUpdate;
 
+			Connection.Call += Connection_Call;
+			Connection.Notify += Connection_Notify;
+
 			Connection.Start();
 		}
+
+
 
 		static IEmbeddedConfiguration CreateConfig()
 		{
@@ -368,7 +378,7 @@ namespace LoLNotes.Gui
 				Icon = IconCache["Yellow"];
 		}
 
-		void Connection_Connected(object obj)
+		void Connection_Connected(object sender, EventArgs e)
 		{
 			if (Created)
 				BeginInvoke(new Action(UpdateIcon));
@@ -592,7 +602,7 @@ namespace LoLNotes.Gui
 				}
 
 				var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
-				store.Open(OpenFlags.ReadWrite);
+				store.Open(OpenFlags.MaxAllowed);
 				foreach (var hold in Certificates)
 				{
 					if (store.Certificates.Contains(hold.Value.Certificate))
@@ -654,7 +664,7 @@ namespace LoLNotes.Gui
 					File.Delete(LoaderFile);
 
 				var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
-				store.Open(OpenFlags.ReadWrite);
+				store.Open(OpenFlags.MaxAllowed);
 				foreach (var hold in Certificates)
 				{
 					if (!store.Certificates.Contains(hold.Value.Certificate))
@@ -777,7 +787,7 @@ namespace LoLNotes.Gui
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			Settings.Region = RegionList.SelectedItem.ToString();
-			UpdateRegion();
+			RefreshConnection();
 		}
 
 		private void ImportButton_Click(object sender, EventArgs e)
@@ -798,8 +808,8 @@ namespace LoLNotes.Gui
 					var export = serializer.Deserialize<JsonExportHolder>(json);
 
 					foreach (var ply in export.Players)
-						Recorder.RecordPlayer(ply, false); 
-					
+						Recorder.RecordPlayer(ply, false);
+
 					foreach (var lobby in export.GameDtos)
 						Recorder.RecordLobby(lobby);
 
@@ -865,6 +875,213 @@ namespace LoLNotes.Gui
 		private void TraceCheck_Click(object sender, EventArgs e)
 		{
 			Settings.TraceLog = TraceCheck.Checked;
+		}
+
+		private void DevCheck_Click(object sender, EventArgs e)
+		{
+			Settings.DevMode = DevCheck.Checked;
+		}
+
+		static string CallArgToString(object arg)
+		{
+			if (arg is RemotingMessage)
+			{
+				return ((RemotingMessage)arg).operation;
+			}
+			if (arg is DSK)
+			{
+				var dsk = (DSK)arg;
+				var ao = dsk.Body as ASObject;
+				if (ao != null)
+					return ao.TypeName;
+			}
+			if (arg is FluorineFx.Messaging.Messages.CommandMessage)
+			{
+				return FluorineFx.Messaging.Messages.CommandMessage.OperationToString(
+					((FluorineFx.Messaging.Messages.CommandMessage)arg).operation
+				);
+			}
+			return arg.ToString();
+		}
+
+		void Connection_Call(object sender, Notify call, Notify result)
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<object, Notify, Notify>(Connection_Call), sender, call, result);
+				return;
+			}
+
+			if (!DevCheck.Checked)
+				return;
+
+			var text = string.Format(
+				"Call {0} ({1}), Return ({2})",
+				call.ServiceCall.ServiceMethodName,
+				string.Join(", ", call.ServiceCall.Arguments.Select(CallArgToString)),
+				string.Join(", ", result.ServiceCall.Arguments.Select(CallArgToString))
+			);
+			var item = new ListViewItem(text)
+			{
+				Tag = new List<Notify> { call, result }
+			};
+
+			CallView.Items.Add(item);
+
+		}
+		void Connection_Notify(object sender, Notify notify)
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<object, Notify>(Connection_Notify), sender, notify);
+				return;
+			}
+
+			if (!DevCheck.Checked)
+				return;
+
+			var text = string.Format(
+				"Recv {0}({1})",
+				!string.IsNullOrEmpty(notify.ServiceCall.ServiceMethodName) ? notify.ServiceCall.ServiceMethodName + " " : "",
+				string.Join(", ", notify.ServiceCall.Arguments.Select(CallArgToString))
+			);
+			var item = new ListViewItem(text)
+			{
+				Tag = new List<Notify> { notify }
+			};
+
+			CallView.Items.Add(item);
+		}
+
+		private void clearToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			CallView.Items.Clear();
+		}
+
+		private void CallView_Resize(object sender, EventArgs e)
+		{
+			CallView.Columns[0].Width = CallView.Width;
+		}
+
+		static IEnumerable<object> GetBodies(Notify notify)
+		{
+			var ret = new List<object>();
+			foreach (var arg in notify.ServiceCall.Arguments)
+			{
+				object obj = null;
+				if (arg is AbstractMessage)
+				{
+					var msg = (AbstractMessage)arg;
+					obj = msg.Body;
+				}
+				else if (arg is MessageBase)
+				{
+					var msg = (MessageBase)arg;
+					obj = msg.body;
+				}
+
+				if (obj != null)
+					ret.Add(obj);
+			}
+			return ret;
+		}
+
+		static TreeNode GetNode(object arg, string name = "")
+		{
+			if (arg is ASObject)
+			{
+				var ao = (ASObject)arg;
+				var children = new List<TreeNode>();
+				foreach (var kv in ao)
+				{
+					var node = GetNode(kv.Value, kv.Key);
+					if (node == null)
+						node = new TreeNode(kv.Key + " = " + (kv.Value ?? "null"));
+					children.Add(node);
+				}
+				return new TreeNode(ao.TypeName, children.ToArray());
+			}
+			if (arg is Dictionary<string, object>)
+			{
+				var dict = (Dictionary<string, object>)arg;
+
+				var children = new List<TreeNode>();
+				foreach (var kv in dict)
+				{
+					var node = GetNode(kv.Value, kv.Key);
+					if (node == null)
+						node = new TreeNode(kv.Key + " = " + (kv.Value ?? "null"));
+					children.Add(node);
+				}
+				return new TreeNode("", children.ToArray());
+			}
+			if (arg is ArrayCollection)
+			{
+				var list = (ArrayCollection)arg;
+				var children = new List<TreeNode>();
+				foreach (var item in list)
+				{
+					var node = GetNode(item, name);
+					if (node == null)
+						node = new TreeNode(item.ToString());
+					children.Add(node);
+				}
+				if (string.IsNullOrEmpty(name))
+					name = "ArrayCollection";
+				return new TreeNode(children.Count != 0 ? name : name + " = { }", children.ToArray());
+			}
+			if (arg is object[])
+			{
+				var list = (object[])arg;
+				var children = new List<TreeNode>();
+				foreach (var item in list)
+				{
+					var node = GetNode(item, name);
+					if (node == null)
+						node = new TreeNode(item.ToString());
+					children.Add(node);
+				}
+				if (string.IsNullOrEmpty(name))
+					name = "Array";
+				return new TreeNode(children.Count != 0 ? name : name + " = { }", children.ToArray());
+			}
+			return null;
+		}
+
+		private void CallView_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			CallTree.Nodes.Clear();
+
+			if (CallView.SelectedItems.Count < 1)
+				return;
+
+			var notifies = CallView.SelectedItems[0].Tag as List<Notify>;
+			if (notifies == null)
+				return;
+
+			foreach (var notify in notifies)
+			{
+				bool isresult = (notify.ServiceCall.ServiceMethodName == "_result" ||
+								 notify.ServiceCall.ServiceMethodName == "_error");
+
+				var children = new List<TreeNode>();
+				var bodies = GetBodies(notify);
+				foreach (var body in bodies)
+				{
+					children.Add(GetNode(body) ?? new TreeNode(body.ToString()));
+				}
+
+				CallTree.Nodes.Add(new TreeNode(!isresult ? "Call" : "Return", children.ToArray()));
+			}
+
+			foreach (TreeNode node in CallTree.Nodes)
+			{
+				node.Expand();
+				foreach (TreeNode node2 in node.Nodes)
+				{
+					node2.Expand();
+				}
+			}
 		}
 	}
 }

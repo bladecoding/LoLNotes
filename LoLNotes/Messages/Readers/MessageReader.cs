@@ -42,7 +42,7 @@ namespace LoLNotes.Messages.Readers
             Flash.ProcessObject += Flash_ProcessObject;
         }
 
-        void Flash_ProcessObject(ASObject flashobj, Int64 timestamp)
+        void Flash_ProcessObject(object sender, ASObject flashobj, Int64 timestamp)
         {
             if (ObjectRead == null)
                 return;

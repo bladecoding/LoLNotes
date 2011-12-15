@@ -306,30 +306,11 @@ namespace LoLNotes.Proxy
 
 		protected virtual void OnCall(Notify call, Notify result)
 		{
-			OnNotify(result);
+			Host.OnCall(this, call, result);
 		}
-		protected virtual void OnNotify(Notify result)
+		protected virtual void OnNotify(Notify notify)
 		{
-			foreach (var arg in result.ServiceCall.Arguments)
-			{
-				Int64 timestamp = 0;
-				ASObject obj = null;
-				if (arg is AbstractMessage)
-				{
-					var msg = (AbstractMessage)arg;
-					obj = msg.Body as ASObject;
-					timestamp = msg.TimeStamp;
-				}
-				else if (arg is MessageBase)
-				{
-					var msg = (MessageBase)arg;
-					obj = msg.body as ASObject;
-					timestamp = msg.timestamp;
-				}
-
-				if (obj != null)
-					Host.OnProcessObject(obj, timestamp);
-			}
+			Host.OnNotify(this, notify);
 		}
 	}
 }
