@@ -990,6 +990,9 @@ namespace LoLNotes.Gui
 		{
 			if (arg is ASObject)
 			{
+				if (string.IsNullOrEmpty(name))
+					name = "ASObject";
+
 				var ao = (ASObject)arg;
 				var children = new List<TreeNode>();
 				foreach (var kv in ao)
@@ -999,12 +1002,14 @@ namespace LoLNotes.Gui
 						node = new TreeNode(kv.Key + " = " + (kv.Value ?? "null"));
 					children.Add(node);
 				}
-				return new TreeNode(ao.TypeName, children.ToArray());
+				return new TreeNode(ao.TypeName ?? name, children.ToArray());
 			}
 			if (arg is Dictionary<string, object>)
 			{
-				var dict = (Dictionary<string, object>)arg;
+				if (string.IsNullOrEmpty(name))
+					name = "Dictionary";
 
+				var dict = (Dictionary<string, object>)arg;
 				var children = new List<TreeNode>();
 				foreach (var kv in dict)
 				{
@@ -1013,10 +1018,13 @@ namespace LoLNotes.Gui
 						node = new TreeNode(kv.Key + " = " + (kv.Value ?? "null"));
 					children.Add(node);
 				}
-				return new TreeNode("", children.ToArray());
+				return new TreeNode(name, children.ToArray());
 			}
 			if (arg is ArrayCollection)
 			{
+				if (string.IsNullOrEmpty(name))
+					name = "ArrayCollection";
+
 				var list = (ArrayCollection)arg;
 				var children = new List<TreeNode>();
 				foreach (var item in list)
@@ -1026,12 +1034,14 @@ namespace LoLNotes.Gui
 						node = new TreeNode(item.ToString());
 					children.Add(node);
 				}
-				if (string.IsNullOrEmpty(name))
-					name = "ArrayCollection";
+
 				return new TreeNode(children.Count != 0 ? name : name + " = { }", children.ToArray());
 			}
 			if (arg is object[])
 			{
+				if (string.IsNullOrEmpty(name))
+					name = "Array";
+
 				var list = (object[])arg;
 				var children = new List<TreeNode>();
 				foreach (var item in list)
@@ -1041,8 +1051,7 @@ namespace LoLNotes.Gui
 						node = new TreeNode(item.ToString());
 					children.Add(node);
 				}
-				if (string.IsNullOrEmpty(name))
-					name = "Array";
+
 				return new TreeNode(children.Count != 0 ? name : name + " = { }", children.ToArray());
 			}
 			return null;
