@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,11 +32,54 @@ namespace LoLNotes.Gui
 {
 	public class MainSettings
 	{
-		public string Region { get; set; }
+		public event PropertyChangedEventHandler PropertyChanged;
+		public event EventHandler Loaded;
+
+		string _region;
+		public string Region
+		{
+			get
+			{
+				return _region;
+			}
+			set
+			{
+				_region = value;
+				OnPropertyChanged("Region");
+			}
+		}
+		bool _tracelog;
+		public bool TraceLog
+		{
+			get
+			{
+				return _tracelog;
+			}
+			set
+			{
+				_tracelog = value;
+				OnPropertyChanged("TraceLog");
+			}
+		}
+		bool _debuglog;
+		public bool DebugLog
+		{
+			get
+			{
+				return _debuglog;
+			}
+			set
+			{
+				_debuglog = value;
+				OnPropertyChanged("DebugLog");
+			}
+		}
 
 		public MainSettings()
 		{
-			Region = "NA";
+			_region = "NA";
+			_tracelog = false;
+			_debuglog = true;
 		}
 
 		public bool Save(string file)
@@ -55,22 +99,45 @@ namespace LoLNotes.Gui
 			}
 		}
 
-		public static MainSettings Load(string file)
+		public void Load(string file)
 		{
 			try
 			{
 				if (!File.Exists(file))
-					return new MainSettings();
+					return;
 
 				using (var sr = new StreamReader(File.Open(file, FileMode.Open, FileAccess.Read)))
 				{
-					return JsonConvert.DeserializeObject<MainSettings>(sr.ReadToEnd());
+					CopyFrom(JsonConvert.DeserializeObject<MainSettings>(sr.ReadToEnd()));
 				}
+
+				OnLoad();
 			}
 			catch (IOException io)
 			{
 				StaticLogger.Debug(io);
-				return new MainSettings();
+			}
+		}
+
+		protected void CopyFrom(MainSettings src)
+		{
+			_region = src._region;
+			_debuglog = src._debuglog;
+			_tracelog = src._tracelog;
+		}
+
+		protected void OnLoad()
+		{
+			if (Loaded != null)
+				Loaded(this, new EventArgs());
+		}
+
+		protected void OnPropertyChanged(string name)
+		{
+			PropertyChangedEventHandler handler = PropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(name));
 			}
 		}
 	}

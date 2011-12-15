@@ -71,47 +71,24 @@ namespace LoLNotes.Proxy
 		{
 		}
 
-		int SkipPost(byte[] buf, int idx, int len)
-		{
-			postbuffer.Append(buf, idx, len);
-			if (postbuffer.GetInt() == 0x504f5354) //POST
-			{
-				var find = new byte[] { 0x0D, 0x0A, 0x0D, 0x0A, 0x00 };
-				int fidx = 0;
-				while (postbuffer.Position < postbuffer.Length)
-				{
-					fidx = postbuffer.Get() == find[fidx] ? fidx + 1 : 0;
-					if (fidx == find.Length)
-					{
-						//Found the end of a post request. Return how much of the buffer to skip.
-						return (int)(postbuffer.Position - (postbuffer.Length - len));
-					}
-				}
-
-				//End of post was not found, return len to prevent OnSend from decoding it.
-				postbuffer.Rewind();
-				return len;
-			}
-
-			//Post buffer did not start with POST. Stop looking for it.
-			postbuffer = null;
-			return idx;
-		}
-
 		protected override void OnSend(byte[] buffer, int idx, int len)
 		{
-			//if (postbuffer != null)
-			//{
-			//    idx = SkipPost(buffer, idx, len);
-			//    len -= idx;
-
-			//    //Post was found, lets tell the client to continue
-			//    if (postbuffer == null && idx != 0)
-			//    {
-			//        var str = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\nVary: Accept-Encoding\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nContent-Encoding: gzip\r\nServer: None\r\nContent-Length: 1\r\nDate: Sun, 11 Dec 2011 21:43:57 GMT\r\nConnection: keep-alive\r\n\r\n\0";
-			//        base.OnReceive(Encoding.ASCII.GetBytes(str), 0, str.Length);
-			//    }
-			//}
+			if (postbuffer != null)
+			{
+				postbuffer.Append(buffer, idx, len);
+				if (postbuffer.Length > 4)
+				{
+					int num = 0;
+					postbuffer.Dispose();
+					postbuffer = null;
+					if (num == 0x504f5354)
+					{
+						StaticLogger.Trace(string.Format("Rejecting POST request", len));
+						Stop();
+						return;
+					}
+				}
+			}
 
 			if (!encode)
 				base.OnSend(buffer, idx, len);

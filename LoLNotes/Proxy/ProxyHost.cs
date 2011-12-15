@@ -102,16 +102,18 @@ namespace LoLNotes.Proxy
 
 				StaticLogger.Info(string.Format("Client {0} connected", client.SourceTcp.Client.RemoteEndPoint));
 			}
-			catch (ObjectDisposedException ode)
-			{
-				StaticLogger.Trace(ode);
-			}
 			catch (Exception ex)
 			{
 				if (client != null)
+				{
 					OnException(client, ex);
+				}
 				else
-					StaticLogger.Error(ex);
+				{
+					//Ignore objectdisposed, happens when stopping
+					if (!(ex is ObjectDisposedException))
+						StaticLogger.Error(ex);
+				}
 			}
 
 		}

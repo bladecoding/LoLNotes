@@ -78,11 +78,12 @@ namespace LoLNotes.Gui
 		{
 			InitializeComponent();
 
-			Logger.Instance.Register(new DefaultListener(Levels.All & ~Levels.Trace, OnLog));
+			Logger.Instance.Register(new DefaultListener(Levels.All, OnLog));
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			StaticLogger.Info(string.Format("Version {0}{1}", AssemblyAttributes.FileVersion, AssemblyAttributes.Configuration));
 
-			Settings = MainSettings.Load(SettingsFile);
+			Settings = new MainSettings();
+			Settings.Load(SettingsFile);
 
 			IconCache = new Dictionary<string, Icon>
             {
@@ -105,8 +106,26 @@ namespace LoLNotes.Gui
 			int idx = RegionList.Items.IndexOf(Settings.Region);
 			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
 
+			//Add this after otherwise it will save immediately due to RegionList.SelectedIndex
+			Settings.PropertyChanged += Settings_PropertyChanged;
 
 			StaticLogger.Info("Startup Completed");
+		}
+
+		void Settings_Loaded(object sender, EventArgs e)
+		{
+			TraceCheck.Checked = Settings.TraceLog;
+			DebugCheck.Checked = Settings.DebugLog;
+		}
+
+		readonly object settingslock = new object();
+		void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			lock (settingslock)
+			{
+				StaticLogger.Trace("Settings saved");
+				Settings.Save(SettingsFile);
+			}
 		}
 
 		void UpdateRegion()
@@ -297,6 +316,11 @@ namespace LoLNotes.Gui
 
 		void OnLog(Levels level, object obj)
 		{
+			if (level == Levels.Trace && !Settings.TraceLog)
+				return;
+			if (level == Levels.Debug && !Settings.DebugLog)
+				return;
+
 			if (obj is Exception)
 				Log(level, string.Format("{0} [{1}]", ((Exception)obj).Message, Convert.ToBase64String(Encoding.ASCII.GetBytes(obj.ToString()))));
 			else
@@ -685,21 +709,6 @@ namespace LoLNotes.Gui
 			}
 		}
 
-		static string GetRadsPath()
-		{
-			var proc = Process.GetProcessesByName("LoLLauncher").FirstOrDefault();
-			if (proc == null)
-				return null;
-
-			const string search = "rads";
-			string path = proc.MainModule.FileName;
-			int idx = path.ToLower().IndexOf(search);
-			if (idx == -1)
-				return null;
-
-			return path.Substring(0, idx + search.Length);
-		}
-
 		private void editToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var menuItem = sender as ToolStripItem;
@@ -760,6 +769,7 @@ namespace LoLNotes.Gui
 
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
+			Settings_Loaded(this, new EventArgs());
 			//Start after the form is shown otherwise Invokes will fail
 			Connection.Start();
 		}
@@ -767,7 +777,6 @@ namespace LoLNotes.Gui
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			Settings.Region = RegionList.SelectedItem.ToString();
-			Settings.Save(SettingsFile);
 			UpdateRegion();
 		}
 
@@ -846,6 +855,16 @@ namespace LoLNotes.Gui
 					serializer.Serialize(json, export);
 				}
 			}
+		}
+
+		private void DebugCheck_Click(object sender, EventArgs e)
+		{
+			Settings.DebugLog = DebugCheck.Checked;
+		}
+
+		private void TraceCheck_Click(object sender, EventArgs e)
+		{
+			Settings.TraceLog = TraceCheck.Checked;
 		}
 	}
 }

@@ -63,10 +63,15 @@ namespace LoLNotes.Gui
 			this.components = new System.ComponentModel.Container();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.GameTab = new System.Windows.Forms.TabPage();
+			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
+			this.LogGroupBox = new System.Windows.Forms.GroupBox();
+			this.DebugCheck = new System.Windows.Forms.CheckBox();
+			this.TraceCheck = new System.Windows.Forms.CheckBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.ExportButton = new System.Windows.Forms.Button();
 			this.ImportButton = new System.Windows.Forms.Button();
@@ -79,12 +84,11 @@ namespace LoLNotes.Gui
 			this.ChangesText = new System.Windows.Forms.RichTextBox();
 			this.DevTab = new System.Windows.Forms.TabPage();
 			this.RebuildWorker = new System.ComponentModel.BackgroundWorker();
-			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
-			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.tabControl1.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.PlayerEditStrip.SuspendLayout();
 			this.SettingsTab.SuspendLayout();
+			this.LogGroupBox.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.LogTab.SuspendLayout();
 			this.ChangesTab.SuspendLayout();
@@ -117,6 +121,16 @@ namespace LoLNotes.Gui
 			this.GameTab.Text = "Game";
 			this.GameTab.UseVisualStyleBackColor = true;
 			// 
+			// teamControl2
+			// 
+			this.teamControl2.Location = new System.Drawing.Point(268, 6);
+			this.teamControl2.Name = "teamControl2";
+			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl2.Size = new System.Drawing.Size(200, 686);
+			this.teamControl2.TabIndex = 1;
+			this.teamControl2.TeamSize = 5;
+			this.teamControl2.Text = "Team 2";
+			// 
 			// PlayerEditStrip
 			// 
 			this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -139,8 +153,19 @@ namespace LoLNotes.Gui
 			this.clearToolStripMenuItem.Text = "Clear";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
 			// 
+			// teamControl1
+			// 
+			this.teamControl1.Location = new System.Drawing.Point(8, 6);
+			this.teamControl1.Name = "teamControl1";
+			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl1.Size = new System.Drawing.Size(200, 686);
+			this.teamControl1.TabIndex = 0;
+			this.teamControl1.TeamSize = 5;
+			this.teamControl1.Text = "Team 1";
+			// 
 			// SettingsTab
 			// 
+			this.SettingsTab.Controls.Add(this.LogGroupBox);
 			this.SettingsTab.Controls.Add(this.groupBox1);
 			this.SettingsTab.Controls.Add(this.RegionList);
 			this.SettingsTab.Controls.Add(this.DownloadLink);
@@ -151,6 +176,39 @@ namespace LoLNotes.Gui
 			this.SettingsTab.TabIndex = 2;
 			this.SettingsTab.Text = "Settings";
 			this.SettingsTab.UseVisualStyleBackColor = true;
+			// 
+			// LogGroupBox
+			// 
+			this.LogGroupBox.Controls.Add(this.DebugCheck);
+			this.LogGroupBox.Controls.Add(this.TraceCheck);
+			this.LogGroupBox.Location = new System.Drawing.Point(10, 172);
+			this.LogGroupBox.Name = "LogGroupBox";
+			this.LogGroupBox.Size = new System.Drawing.Size(91, 69);
+			this.LogGroupBox.TabIndex = 5;
+			this.LogGroupBox.TabStop = false;
+			this.LogGroupBox.Text = "Log Levels";
+			// 
+			// DebugCheck
+			// 
+			this.DebugCheck.AutoSize = true;
+			this.DebugCheck.Location = new System.Drawing.Point(6, 42);
+			this.DebugCheck.Name = "DebugCheck";
+			this.DebugCheck.Size = new System.Drawing.Size(58, 17);
+			this.DebugCheck.TabIndex = 1;
+			this.DebugCheck.Text = "Debug";
+			this.DebugCheck.UseVisualStyleBackColor = true;
+			this.DebugCheck.Click += new System.EventHandler(this.DebugCheck_Click);
+			// 
+			// TraceCheck
+			// 
+			this.TraceCheck.AutoSize = true;
+			this.TraceCheck.Location = new System.Drawing.Point(6, 19);
+			this.TraceCheck.Name = "TraceCheck";
+			this.TraceCheck.Size = new System.Drawing.Size(54, 17);
+			this.TraceCheck.TabIndex = 0;
+			this.TraceCheck.Text = "Trace";
+			this.TraceCheck.UseVisualStyleBackColor = true;
+			this.TraceCheck.Click += new System.EventHandler(this.TraceCheck_Click);
 			// 
 			// groupBox1
 			// 
@@ -264,26 +322,6 @@ namespace LoLNotes.Gui
 			this.DevTab.Text = "Dev";
 			this.DevTab.UseVisualStyleBackColor = true;
 			// 
-			// teamControl2
-			// 
-			this.teamControl2.Location = new System.Drawing.Point(268, 6);
-			this.teamControl2.Name = "teamControl2";
-			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(200, 686);
-			this.teamControl2.TabIndex = 1;
-			this.teamControl2.TeamSize = 5;
-			this.teamControl2.Text = "Team 2";
-			// 
-			// teamControl1
-			// 
-			this.teamControl1.Location = new System.Drawing.Point(8, 6);
-			this.teamControl1.Name = "teamControl1";
-			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(200, 686);
-			this.teamControl1.TabIndex = 0;
-			this.teamControl1.TeamSize = 5;
-			this.teamControl1.Text = "Team 1";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,6 +337,8 @@ namespace LoLNotes.Gui
 			this.PlayerEditStrip.ResumeLayout(false);
 			this.SettingsTab.ResumeLayout(false);
 			this.SettingsTab.PerformLayout();
+			this.LogGroupBox.ResumeLayout(false);
+			this.LogGroupBox.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
 			this.LogTab.ResumeLayout(false);
 			this.ChangesTab.ResumeLayout(false);
@@ -330,6 +370,9 @@ namespace LoLNotes.Gui
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.Button ExportButton;
 		private System.Windows.Forms.Button ImportButton;
+		private System.Windows.Forms.GroupBox LogGroupBox;
+		private System.Windows.Forms.CheckBox DebugCheck;
+		private System.Windows.Forms.CheckBox TraceCheck;
 
     }
 }
