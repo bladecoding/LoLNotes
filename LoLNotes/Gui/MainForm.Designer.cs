@@ -426,7 +426,6 @@ namespace LoLNotes.Gui
 			this.Controls.Add(this.tabControl1);
 			this.Name = "MainForm";
 			this.Text = "LoL";
-			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.tabControl1.ResumeLayout(false);
 			this.GameTab.ResumeLayout(false);

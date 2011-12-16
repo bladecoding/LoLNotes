@@ -63,8 +63,8 @@ namespace LoLNotes.Gui
 {
 	public partial class MainForm : Form
 	{
-		static readonly string LolBansPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans");
-		static readonly string LoaderFile = Path.Combine(LolBansPath, "LoLLoader.dll");
+		static readonly string LoaderFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans", "LoLLoader.dll");
+		public static readonly string Version =  AssemblyAttributes.FileVersion + AssemblyAttributes.Configuration;
 		const string LoaderVersion = "1.2";
 		const string SettingsFile = "settings.json";
 
@@ -75,6 +75,7 @@ namespace LoLNotes.Gui
 		IObjectContainer Database;
 		GameStorage Recorder;
 		MainSettings Settings;
+		LoaderInstaller Installer;
 
 
 
@@ -84,7 +85,7 @@ namespace LoLNotes.Gui
 
 			Logger.Instance.Register(new DefaultListener(Levels.All, OnLog));
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-			StaticLogger.Info(string.Format("Version {0}{1}", AssemblyAttributes.FileVersion, AssemblyAttributes.Configuration));
+			StaticLogger.Info(string.Format("Version {0}", Version));
 
 			Settings = new MainSettings();
 			Settings.Load(SettingsFile);
@@ -95,7 +96,6 @@ namespace LoLNotes.Gui
                 {"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
                 {"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
             };
-			UpdateIcon();
 
 			Database = Db4oEmbedded.OpenFile(CreateConfig(), "db.yap");
 
@@ -109,6 +109,8 @@ namespace LoLNotes.Gui
 				RegionList.Items.Add(kv.Key);
 			int idx = RegionList.Items.IndexOf(Settings.Region);
 			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
+
+			Installer = new LoaderInstaller(LoaderFile, Resources.LolLoader, LoaderVersion, Certificates.Select(c => c.Value.Certificate).ToArray());
 
 			//Add this after otherwise it will save immediately due to RegionList.SelectedIndex
 			Settings.PropertyChanged += Settings_PropertyChanged;
@@ -300,13 +302,6 @@ namespace LoLNotes.Gui
 			}
 		}
 
-		void MainForm_Load(object sender, EventArgs e)
-		{
-			SetTitle("(Checking)");
-			Task.Factory.StartNew(CheckVersion);
-			Task.Factory.StartNew(GetChanges);
-		}
-
 		void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
 			LogToFile(string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", Levels.Fatal.ToString().ToUpper(), e.ExceptionObject, DateTime.UtcNow));
@@ -370,7 +365,7 @@ namespace LoLNotes.Gui
 
 		void UpdateIcon()
 		{
-			if (!IsInstalled)
+			if (!Installer.IsInstalled)
 				Icon = IconCache["Red"];
 			else if (Connection != null && Connection.IsConnected)
 				Icon = IconCache["Green"];
@@ -583,105 +578,9 @@ namespace LoLNotes.Gui
 		}
 
 
-		void Install()
-		{
-			try
-			{
-				if (!Directory.Exists(LolBansPath))
-					Directory.CreateDirectory(LolBansPath);
+		
 
-				File.WriteAllBytes(LoaderFile, Resources.LolLoader);
-
-				var shortfilename = AppInit.GetShortPath(LoaderFile);
-
-				var dlls = AppInit.AppInitDlls32;
-				if (!dlls.Contains(shortfilename))
-				{
-					dlls.Add(shortfilename);
-					AppInit.AppInitDlls32 = dlls;
-				}
-
-				var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
-				store.Open(OpenFlags.MaxAllowed);
-				foreach (var hold in Certificates)
-				{
-					if (store.Certificates.Contains(hold.Value.Certificate))
-						continue;
-					store.Add(hold.Value.Certificate);
-				}
-				store.Close();
-			}
-			catch (SecurityException se)
-			{
-				StaticLogger.Warning(se);
-			}
-			catch (Exception e)
-			{
-				StaticLogger.Error("Failed to install " + e);
-			}
-		}
-
-		bool IsInstalled
-		{
-			get
-			{
-				try
-				{
-					if (!File.Exists(LoaderFile))
-						return false;
-
-					var version = FileVersionInfo.GetVersionInfo(LoaderFile);
-					if (version.FileVersion == null || version.FileVersion != LoaderVersion)
-						return false;
-
-					var shortfilename = AppInit.GetShortPath(LoaderFile);
-					var dlls = AppInit.AppInitDlls32;
-
-					return dlls.Contains(shortfilename);
-				}
-				catch (SecurityException se)
-				{
-					StaticLogger.Warning(se);
-					return false;
-				}
-			}
-		}
-
-		void Uninstall()
-		{
-			try
-			{
-				var shortfilename = AppInit.GetShortPath(LoaderFile);
-
-				var dlls = AppInit.AppInitDlls32;
-				if (dlls.Contains(shortfilename))
-				{
-					dlls.Remove(AppInit.GetShortPath(shortfilename));
-					AppInit.AppInitDlls32 = dlls;
-				}
-
-				if (File.Exists(LoaderFile))
-					File.Delete(LoaderFile);
-
-				var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
-				store.Open(OpenFlags.MaxAllowed);
-				foreach (var hold in Certificates)
-				{
-					if (!store.Certificates.Contains(hold.Value.Certificate))
-						continue;
-					store.Remove(hold.Value.Certificate);
-				}
-				store.Close();
-			}
-			catch (SecurityException se)
-			{
-				StaticLogger.Warning(se);
-			}
-			catch (Exception e)
-			{
-				StaticLogger.Error("Failed to uninstall " + e);
-			}
-		}
+		
 
 		private void button1_Click(object sender, EventArgs e)
 		{
@@ -693,13 +592,13 @@ namespace LoLNotes.Gui
 			try
 			{
 
-				if (IsInstalled)
+				if (Installer.IsInstalled)
 				{
-					Uninstall();
+					Installer.Uninstall();
 				}
 				else
 				{
-					Install();
+					Installer.Install();
 				}
 			}
 			catch (UnauthorizedAccessException uaex)
@@ -707,7 +606,7 @@ namespace LoLNotes.Gui
 				MessageBox.Show("Unable to fully install/uninstall. Make sure LoL is not running.");
 				StaticLogger.Warning(uaex);
 			}
-			InstallButton.Text = IsInstalled ? "Uninstall" : "Install";
+			InstallButton.Text = Installer.IsInstalled ? "Uninstall" : "Install";
 			UpdateIcon();
 		}
 
@@ -715,7 +614,7 @@ namespace LoLNotes.Gui
 		{
 			if (e.Action == TabControlAction.Selected && e.TabPage == SettingsTab)
 			{
-				InstallButton.Text = IsInstalled ? "Uninstall" : "Install";
+				InstallButton.Text = Installer.IsInstalled ? "Uninstall" : "Install";
 			}
 		}
 
@@ -779,7 +678,12 @@ namespace LoLNotes.Gui
 
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
+			SetTitle("(Checking)");
+			Task.Factory.StartNew(CheckVersion);
+			Task.Factory.StartNew(GetChanges);
+
 			Settings_Loaded(this, new EventArgs());
+			UpdateIcon();
 			//Start after the form is shown otherwise Invokes will fail
 			Connection.Start();
 		}
@@ -801,39 +705,11 @@ namespace LoLNotes.Gui
 				if (ofd.ShowDialog() != DialogResult.OK)
 					return;
 
-				var serializer = new JsonSerializer();
-				serializer.TypeNameHandling = TypeNameHandling.Auto;
-				using (var json = new JsonTextReader(new StreamReader(ofd.OpenFile())))
+				using (var fs = ofd.OpenFile())
 				{
-					var export = serializer.Deserialize<JsonExportHolder>(json);
-
-					foreach (var ply in export.Players)
-						Recorder.RecordPlayer(ply, false);
-
-					foreach (var lobby in export.GameDtos)
-						Recorder.RecordLobby(lobby);
-
-					foreach (var end in export.EndStats)
-						Recorder.RecordGame(end);
-
-					Recorder.Commit();
+					DbExporter.Import(Recorder, fs);
 				}
 			}
-		}
-
-		void ActivateList(IList list)
-		{
-			foreach (var obj in list)
-			{
-				Database.Activate(obj, int.MaxValue);
-			}
-		}
-
-		class JsonExportHolder
-		{
-			public List<GameDTO> GameDtos;
-			public List<EndOfGameStats> EndStats;
-			public List<PlayerEntry> Players;
 		}
 
 		private void ExportButton_Click(object sender, EventArgs e)
@@ -847,22 +723,9 @@ namespace LoLNotes.Gui
 				if (sfd.ShowDialog() != DialogResult.OK)
 					return;
 
-				var export = new JsonExportHolder
+				using (var fs = sfd.OpenFile())
 				{
-					GameDtos = Database.Query<GameDTO>().ToList(),
-					EndStats = Database.Query<EndOfGameStats>().ToList(),
-					Players = Database.Query<PlayerEntry>().ToList(),
-				};
-				ActivateList(export.EndStats);
-				ActivateList(export.GameDtos);
-				ActivateList(export.Players);
-
-				var serializer = new JsonSerializer();
-				serializer.TypeNameHandling = TypeNameHandling.Auto;
-				using (var json = new JsonTextWriter(new StreamWriter(sfd.OpenFile())))
-				{
-					json.Formatting = Formatting.Indented;
-					serializer.Serialize(json, export);
+					DbExporter.Export(Version, Database, fs);
 				}
 			}
 		}
