@@ -90,12 +90,8 @@ namespace LoLNotes.Proxy
 				}
 			}
 
-			if (!encode)
-				base.OnSend(buffer, idx, len);
-
 			StaticLogger.Trace(string.Format("Send {0} bytes", len));
 
-#if !FILETESTING
 			if (logtofiles)
 			{
 				using (var fs = File.Open("realsend.dmp", FileMode.Append, FileAccess.Write))
@@ -103,95 +99,74 @@ namespace LoLNotes.Proxy
 					fs.Write(buffer, idx, len);
 				}
 			}
-#endif
-
-#if FILETESTING
-			buffer = File.ReadAllBytes("realsend.dmp");
-			len = buffer.Length;
-#endif
 
 			sendbuffer.Append(buffer, idx, len);
 
 			var objs = RtmpProtocolDecoder.DecodeBuffer(sourcecontext, sendbuffer);
-			if (objs == null || objs.Count < 1)
-				return;
-
-#if FILETESTING
-			sourcecontext.ObjectEncoding = ObjectEncoding.AMF3;
-			for (int i = 0; i < objs.Count; i++)
-				RtmpProtocolEncoder.Encode(sourcecontext, objs[i]);
-
-			//var bufferf = buffs.ToArray();
-			//using (var fs = File.Open("send.dmp", FileMode.Append, FileAccess.Write))
-			//{
-			//    fs.Write(bufferf, 0, bufferf.Length);
-			//}
-			return;
-#endif
-
-			foreach (var obj in objs)
+			if (objs != null)
 			{
-				var pck = obj as RtmpPacket;
-				if (pck != null)
+				foreach (var obj in objs)
 				{
-					var inv = pck.Message as Notify;
-					if (inv != null)
+					var pck = obj as RtmpPacket;
+					if (pck != null)
 					{
-						lock (InvokeList)
+						var inv = pck.Message as Notify;
+						if (inv != null)
 						{
-							InvokeList.Add(inv);
-						}
-						StaticLogger.Trace(
-							string.Format("Call {0}({1}) (Id:{2})",
-								inv.ServiceCall.ServiceMethodName,
-								string.Join(", ", inv.ServiceCall.Arguments.Select(o => o.ToString())),
-								pck.Header.ChannelId
-							)
-						);
-					}
-					else
-					{
-						StaticLogger.Trace(string.Format("Sent {0} (Id:{1})", pck.Message.GetType(), pck.Header.ChannelId));
-					}
-				}
-
-				if (obj != null && encode)
-				{
-					var buf = RtmpProtocolEncoder.Encode(sourcecontext, obj);
-					if (pck != null && pck.Message is Notify)
-					{
-						sourcecontext.ObjectEncoding = ObjectEncoding.AMF3;
-					}
-					if (buf == null)
-					{
-						StaticLogger.Fatal("Unable to encode " + obj);
-					}
-					else
-					{
-						var buff = buf.ToArray();
-						if (logtofiles)
-						{
-							using (var fs = File.Open("send.dmp", FileMode.Append, FileAccess.Write))
+							lock (InvokeList)
 							{
-								fs.Write(buff, idx, buff.Length);
+								InvokeList.Add(inv);
 							}
+							StaticLogger.Trace(
+								string.Format("Call {0}({1}) (Id:{2})",
+									inv.ServiceCall.ServiceMethodName,
+									string.Join(", ", inv.ServiceCall.Arguments.Select(o => o.ToString())),
+									pck.Header.ChannelId
+								)
+							);
 						}
-						if (encode)
-							base.OnSend(buff, idx, buff.Length);
+						else
+						{
+							StaticLogger.Trace(string.Format("Sent {0} (Id:{1})", pck.Message.GetType(), pck.Header.ChannelId));
+						}
+					}
+
+					if (obj != null && encode)
+					{
+						var buf = RtmpProtocolEncoder.Encode(sourcecontext, obj);
+						if (pck != null && pck.Message is Notify)
+						{
+							sourcecontext.ObjectEncoding = ObjectEncoding.AMF3;
+						}
+						if (buf == null)
+						{
+							StaticLogger.Fatal("Unable to encode " + obj);
+						}
+						else
+						{
+							var buff = buf.ToArray();
+							if (logtofiles)
+							{
+								using (var fs = File.Open("send.dmp", FileMode.Append, FileAccess.Write))
+								{
+									fs.Write(buff, idx, buff.Length);
+								}
+							}
+							if (encode)
+								base.OnSend(buff, idx, buff.Length);
+						}
 					}
 				}
 			}
 
+			if (!encode)
+				base.OnSend(buffer, idx, len);
 		}
 
 		protected override void OnReceive(byte[] buffer, int idx, int len)
 		{
-			if (!encode)
-				base.OnReceive(buffer, idx, len);
-
 			StaticLogger.Trace(string.Format("Recv {0} bytes", len));
 
-#if !FILETESTING
 			if (logtofiles)
 			{
 				using (var fs = File.Open("realrecv.dmp", FileMode.Append, FileAccess.Write))
@@ -199,109 +174,95 @@ namespace LoLNotes.Proxy
 					fs.Write(buffer, idx, len);
 				}
 			}
-#endif
-
-#if FILETESTING
-			buffer = File.ReadAllBytes("realrecv.dmp");
-			len = buffer.Length;
-#endif
 
 			receivebuffer.Append(buffer, idx, len);
 
 			var objs = RtmpProtocolDecoder.DecodeBuffer(remotecontext, receivebuffer);
-			if (objs == null || objs.Count < 1)
-				return;
-
-#if FILETESTING
-			remotecontext.ObjectEncoding = ObjectEncoding.AMF3;
-			for (int i = 0; i < objs.Count; i++)
-				RtmpProtocolEncoder.Encode(remotecontext, objs[i]);
-
-			//var bufferf = buffs.ToArray();
-			//using (var fs = File.Open("recv.dmp", FileMode.Append, FileAccess.Write))
-			//{
-			//    fs.Write(bufferf, 0, bufferf.Length);
-			//}
-			return;
-#endif
-
-			foreach (var obj in objs)
+			if (objs != null)
 			{
-				var pck = obj as RtmpPacket;
-				if (pck != null)
+
+				foreach (var obj in objs)
 				{
-					var result = pck.Message as Notify;
-					if (result != null)
+					var pck = obj as RtmpPacket;
+					if (pck != null)
 					{
-						Notify inv = null;
-						if (result.ServiceCall.ServiceMethodName == "_result" || result.ServiceCall.ServiceMethodName == "_error")
+						var result = pck.Message as Notify;
+						if (result != null)
 						{
-							lock (InvokeList)
+							Notify inv = null;
+							if (result.ServiceCall.ServiceMethodName == "_result" || result.ServiceCall.ServiceMethodName == "_error")
 							{
-								int fidx = InvokeList.FindIndex(i => i.InvokeId == result.InvokeId);
-								if (fidx == -1)
+								lock (InvokeList)
 								{
-									StaticLogger.Warning(string.Format("Call not found for {0} (Id:{1})", result.InvokeId, pck.Header.ChannelId));
+									int fidx = InvokeList.FindIndex(i => i.InvokeId == result.InvokeId);
+									if (fidx == -1)
+									{
+										StaticLogger.Warning(string.Format("Call not found for {0} (Id:{1})", result.InvokeId, pck.Header.ChannelId));
+									}
+									else
+									{
+										inv = InvokeList[fidx];
+										InvokeList.RemoveAt(fidx);
+									}
 								}
-								else
+
+								if (inv != null)
 								{
-									inv = InvokeList[fidx];
-									InvokeList.RemoveAt(fidx);
+									OnCall(inv, result);
+
+									StaticLogger.Trace(
+										string.Format(
+											"Ret  ({0}) (Id:{1})",
+											string.Join(", ", inv.ServiceCall.Arguments.Select(o => o.ToString())),
+											pck.Header.ChannelId
+										)
+									);
 								}
 							}
 
-							if (inv != null)
+							//Call was not found. Most likely a receive message.
+							if (inv == null)
 							{
-								OnCall(inv, result);
-
-								StaticLogger.Trace(
-									string.Format(
-										"Ret  ({0}) (Id:{1})",
-										string.Join(", ", inv.ServiceCall.Arguments.Select(o => o.ToString())),
-										pck.Header.ChannelId
-									)
-								);
+								OnNotify(result);
 							}
 						}
-
-						//Call was not found. Most likely a receive message.
-						if (inv == null)
+						else
 						{
-							OnNotify(result);
+							StaticLogger.Trace(string.Format("Recv {0} (Id:{1})", pck.Message, pck.Header.ChannelId));
 						}
 					}
-					else
-					{
-						StaticLogger.Trace(string.Format("Recv {0} (Id:{1})", pck.Message, pck.Header.ChannelId));
-					}
-				}
 
-				if (obj != null && encode)
-				{
-					var buf = RtmpProtocolEncoder.Encode(remotecontext, obj);
-					if (pck != null && pck.Message is Notify)
+					if (obj != null && encode)
 					{
-						remotecontext.ObjectEncoding = ObjectEncoding.AMF3;
-					}
-					if (buf == null)
-					{
-						StaticLogger.Fatal("Unable to encode " + obj);
-					}
-					else
-					{
-						var buff = buf.ToArray();
-						if (logtofiles)
+						var buf = RtmpProtocolEncoder.Encode(remotecontext, obj);
+						if (pck != null && pck.Message is Notify)
 						{
-							using (var fs = File.Open("recv.dmp", FileMode.Append, FileAccess.Write))
+							remotecontext.ObjectEncoding = ObjectEncoding.AMF3;
+						}
+						if (buf == null)
+						{
+							StaticLogger.Fatal("Unable to encode " + obj);
+						}
+						else
+						{
+							var buff = buf.ToArray();
+							if (logtofiles)
 							{
-								fs.Write(buff, idx, buff.Length);
+								using (var fs = File.Open("recv.dmp", FileMode.Append, FileAccess.Write))
+								{
+									fs.Write(buff, idx, buff.Length);
+								}
 							}
+							if (encode)
+								base.OnReceive(buff, idx, buff.Length);
 						}
-						if (encode)
-							base.OnReceive(buff, idx, buff.Length);
 					}
 				}
 			}
+
+			if (!encode)
+				base.OnReceive(buffer, idx, len);
+
 		}
 
 		protected virtual void OnCall(Notify call, Notify result)
