@@ -64,7 +64,7 @@ namespace LoLNotes.Gui
 	public partial class MainForm : Form
 	{
 		static readonly string LoaderFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans", "LoLLoader.dll");
-		public static readonly string Version =  AssemblyAttributes.FileVersion + AssemblyAttributes.Configuration;
+		public static readonly string Version = AssemblyAttributes.FileVersion + AssemblyAttributes.Configuration;
 		const string LoaderVersion = "1.2";
 		const string SettingsFile = "settings.json";
 
@@ -96,21 +96,15 @@ namespace LoLNotes.Gui
                 {"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
                 {"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
             };
-
-			Database = Db4oEmbedded.OpenFile(CreateConfig(), "db.yap");
-
 			Certificates = new Dictionary<string, CertificateHolder>
 			{
 				{"NA", new CertificateHolder("prod.na1.lol.riotgames.com", Resources.prod_na1_lol_riotgames_com)},
 				{"EU", new CertificateHolder("prod.eu.lol.riotgames.com", Resources.prod_eu_lol_riotgames_com)},
 				{"EUN", new CertificateHolder("prod.eun1.lol.riotgames.com", Resources.prod_eun1_lol_riotgames_com)},
  			};
-			foreach (var kv in Certificates)
-				RegionList.Items.Add(kv.Key);
-			int idx = RegionList.Items.IndexOf(Settings.Region);
-			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
 
-			Installer = new LoaderInstaller(LoaderFile, Resources.LolLoader, LoaderVersion, Certificates.Select(c => c.Value.Certificate).ToArray());
+			Database = Db4oEmbedded.OpenFile(CreateConfig(), "db.yap");
+
 
 			var cert = Certificates.FirstOrDefault(kv => kv.Key == Settings.Region).Value;
 			if (cert == null)
@@ -130,6 +124,13 @@ namespace LoLNotes.Gui
 			Connection.CallResult += Connection_Call;
 			Connection.Notify += Connection_Notify;
 
+
+			foreach (var kv in Certificates)
+				RegionList.Items.Add(kv.Key);
+			int idx = RegionList.Items.IndexOf(Settings.Region);
+			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
+
+			Installer = new LoaderInstaller(LoaderFile, Resources.LolLoader, LoaderVersion, Certificates.Select(c => c.Value.Certificate).ToArray());
 
 			//Add this after otherwise it will save immediately due to RegionList.SelectedIndex
 			Settings.PropertyChanged += Settings_PropertyChanged;
@@ -569,9 +570,9 @@ namespace LoLNotes.Gui
 		}
 
 
-		
 
-		
+
+
 
 		private void button1_Click(object sender, EventArgs e)
 		{
@@ -926,6 +927,30 @@ namespace LoLNotes.Gui
 			}
 		}
 
+		/// <summary>
+		/// Recursively adds a "TypeName" key to the ASObjects as newtonsoft doesn't serialize it.
+		/// </summary>
+		/// <param name="ao"></param>
+		void AddMissingTypeNames(object obj)
+		{
+			if (obj == null)
+				return;
+
+			if (obj is ASObject)
+			{
+				var ao = (ASObject)obj;
+				ao["TypeNane"] = ao.TypeName;
+				foreach (var kv in ao)
+					AddMissingTypeNames(kv.Value);
+			}
+			else if (obj is IList)
+			{
+				var list = (IList)obj;
+				foreach (var item in list)
+					AddMissingTypeNames(item);
+			}
+		}
+
 		private void dumpToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (CallView.SelectedItems.Count < 1)
@@ -943,6 +968,15 @@ namespace LoLNotes.Gui
 
 				if (sfd.ShowDialog() != DialogResult.OK)
 					return;
+
+				//TypeName in ASObject is not serialized(Most likely due to inheriting Dictionary?).
+				//Lets manually add the TypeName field to the dictionary.
+				foreach (var notify in notifies)
+				{
+					var bodies = RtmpUtil.GetBodies(notify);
+					foreach (var body in bodies)
+						AddMissingTypeNames(body.Item1);
+				}
 
 				using (var sw = new StreamWriter(sfd.OpenFile()))
 				{
