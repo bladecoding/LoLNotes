@@ -112,6 +112,25 @@ namespace LoLNotes.Gui
 
 			Installer = new LoaderInstaller(LoaderFile, Resources.LolLoader, LoaderVersion, Certificates.Select(c => c.Value.Certificate).ToArray());
 
+			var cert = Certificates.FirstOrDefault(kv => kv.Key == Settings.Region).Value;
+			if (cert == null)
+				cert = Certificates.First().Value;
+
+			Connection = new RtmpsProxyHost(2099, cert.Domain, 2099, cert.Certificate);
+			Reader = new MessageReader(Connection);
+
+			Connection.Connected += Connection_Connected;
+			Reader.ObjectRead += Reader_ObjectRead;
+
+			//Recorder must be initiated after Reader.ObjectRead as
+			//the last event handler is called first
+			Recorder = new GameStorage(Database, Connection);
+			Recorder.PlayerUpdate += Recorder_PlayerUpdate;
+
+			Connection.CallResult += Connection_Call;
+			Connection.Notify += Connection_Notify;
+
+
 			//Add this after otherwise it will save immediately due to RegionList.SelectedIndex
 			Settings.PropertyChanged += Settings_PropertyChanged;
 
@@ -134,34 +153,6 @@ namespace LoLNotes.Gui
 				Settings.Save(SettingsFile);
 			}
 		}
-
-		void RefreshConnection()
-		{
-			if (Connection != null)
-				Connection.Dispose();
-
-			var cert = Certificates.FirstOrDefault(kv => kv.Key == Settings.Region).Value;
-			if (cert == null)
-				cert = Certificates.First().Value;
-
-			Connection = new RtmpsProxyHost(2099, cert.Domain, 2099, cert.Certificate);
-			Reader = new MessageReader(Connection);
-
-			Connection.Connected += Connection_Connected;
-			Reader.ObjectRead += Reader_ObjectRead;
-
-			//Recorder must be initiated after Reader.ObjectRead as
-			//the last event handler is called first
-			Recorder = new GameStorage(Database, Connection);
-			Recorder.PlayerUpdate += Recorder_PlayerUpdate;
-
-			Connection.CallResult += Connection_Call;
-			Connection.Notify += Connection_Notify;
-
-			Connection.Start();
-		}
-
-
 
 		static IEmbeddedConfiguration CreateConfig()
 		{
@@ -691,7 +682,12 @@ namespace LoLNotes.Gui
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			Settings.Region = RegionList.SelectedItem.ToString();
-			RefreshConnection();
+
+			var cert = Certificates.FirstOrDefault(kv => kv.Key == Settings.Region).Value;
+			if (cert == null)
+				cert = Certificates.First().Value;
+
+			Connection.ChangeRemote(cert.Domain, cert.Certificate);
 		}
 
 		private void ImportButton_Click(object sender, EventArgs e)

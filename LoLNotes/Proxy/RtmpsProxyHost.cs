@@ -67,6 +67,12 @@ namespace LoLNotes.Proxy
 		{
 		}
 
+		public void ChangeRemote(string domain, X509Certificate cert)
+		{
+			RemoteAddress = domain;
+			Certificate = cert;
+		}
+
 		public override ProxyClient NewClient(TcpClient tcp)
 		{
 			return new RtmpsProxyClient(this, tcp);
