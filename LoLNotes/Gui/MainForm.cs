@@ -933,9 +933,6 @@ namespace LoLNotes.Gui
 
 			foreach (var notify in notifies)
 			{
-				bool isresult = (notify.ServiceCall.ServiceMethodName == "_result" ||
-								 notify.ServiceCall.ServiceMethodName == "_error");
-
 				var children = new List<TreeNode>();
 				var bodies = GetBodies(notify);
 				foreach (var body in bodies)
@@ -943,7 +940,7 @@ namespace LoLNotes.Gui
 					children.Add(GetNode(body) ?? new TreeNode(body.ToString()));
 				}
 
-				CallTree.Nodes.Add(new TreeNode(!isresult ? "Call" : "Return", children.ToArray()));
+				CallTree.Nodes.Add(new TreeNode(!RtmpUtil.IsResult(notify) ? "Call" : "Return", children.ToArray()));
 			}
 
 			foreach (TreeNode node in CallTree.Nodes)
@@ -952,6 +949,31 @@ namespace LoLNotes.Gui
 				foreach (TreeNode node2 in node.Nodes)
 				{
 					node2.Expand();
+				}
+			}
+		}
+
+		private void dumpToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (CallView.SelectedItems.Count < 1)
+				return;
+
+			var notifies = CallView.SelectedItems[0].Tag as List<Notify>;
+			if (notifies == null)
+				return;
+
+			using (var sfd = new SaveFileDialog())
+			{
+				sfd.Filter = "text files (*.txt)|*.txt";
+				sfd.InitialDirectory = Application.StartupPath;
+				sfd.RestoreDirectory = true;
+
+				if (sfd.ShowDialog() != DialogResult.OK)
+					return;
+
+				using (var sw = new StreamWriter(sfd.OpenFile()))
+				{
+					sw.Write(JsonConvert.SerializeObject(notifies, Formatting.Indented));
 				}
 			}
 		}

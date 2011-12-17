@@ -194,6 +194,7 @@
     <Compile Include="Messages\GameLobby\TeamParticipants.cs" />
     <Compile Include="Messages\Readers\IObjectReader.cs" />
     <Compile Include="Util\AppInit.cs" />
+    <Compile Include="Util\RtmpUtil.cs" />
     <Compile Include="Util\Wow.cs" />
     <EmbeddedResource Include="Gui\Controls\TeamControl.resx">
       <DependentUpon>TeamControl.cs</DependentUpon>

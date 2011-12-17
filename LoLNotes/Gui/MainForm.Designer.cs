@@ -63,10 +63,13 @@ namespace LoLNotes.Gui
 			this.components = new System.ComponentModel.Container();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.GameTab = new System.Windows.Forms.TabPage();
+			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
+			this.DevCheck = new System.Windows.Forms.CheckBox();
 			this.LogGroupBox = new System.Windows.Forms.GroupBox();
 			this.DebugCheck = new System.Windows.Forms.CheckBox();
 			this.TraceCheck = new System.Windows.Forms.CheckBox();
@@ -83,14 +86,11 @@ namespace LoLNotes.Gui
 			this.DevTab = new System.Windows.Forms.TabPage();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.CallView = new System.Windows.Forms.ListView();
-			this.CallEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.DevCheck = new System.Windows.Forms.CheckBox();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
-			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
-			this.CallTree = new System.Windows.Forms.TreeView();
+			this.CallEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.CallTree = new System.Windows.Forms.TreeView();
 			this.tabControl1.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.PlayerEditStrip.SuspendLayout();
@@ -134,6 +134,16 @@ namespace LoLNotes.Gui
 			this.GameTab.Text = "Game";
 			this.GameTab.UseVisualStyleBackColor = true;
 			// 
+			// teamControl2
+			// 
+			this.teamControl2.Location = new System.Drawing.Point(268, 6);
+			this.teamControl2.Name = "teamControl2";
+			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl2.Size = new System.Drawing.Size(200, 686);
+			this.teamControl2.TabIndex = 1;
+			this.teamControl2.TeamSize = 5;
+			this.teamControl2.Text = "Team 2";
+			// 
 			// PlayerEditStrip
 			// 
 			this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -156,6 +166,16 @@ namespace LoLNotes.Gui
 			this.clearToolStripMenuItem.Text = "Clear";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
 			// 
+			// teamControl1
+			// 
+			this.teamControl1.Location = new System.Drawing.Point(8, 6);
+			this.teamControl1.Name = "teamControl1";
+			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl1.Size = new System.Drawing.Size(200, 686);
+			this.teamControl1.TabIndex = 0;
+			this.teamControl1.TeamSize = 5;
+			this.teamControl1.Text = "Team 1";
+			// 
 			// SettingsTab
 			// 
 			this.SettingsTab.Controls.Add(this.DevCheck);
@@ -170,6 +190,17 @@ namespace LoLNotes.Gui
 			this.SettingsTab.TabIndex = 2;
 			this.SettingsTab.Text = "Settings";
 			this.SettingsTab.UseVisualStyleBackColor = true;
+			// 
+			// DevCheck
+			// 
+			this.DevCheck.AutoSize = true;
+			this.DevCheck.Location = new System.Drawing.Point(16, 247);
+			this.DevCheck.Name = "DevCheck";
+			this.DevCheck.Size = new System.Drawing.Size(76, 17);
+			this.DevCheck.TabIndex = 6;
+			this.DevCheck.Text = "Dev Mode";
+			this.DevCheck.UseVisualStyleBackColor = true;
+			this.DevCheck.Click += new System.EventHandler(this.DevCheck_Click);
 			// 
 			// LogGroupBox
 			// 
@@ -354,55 +385,31 @@ namespace LoLNotes.Gui
 			this.CallView.SelectedIndexChanged += new System.EventHandler(this.CallView_SelectedIndexChanged);
 			this.CallView.Resize += new System.EventHandler(this.CallView_Resize);
 			// 
+			// columnHeader1
+			// 
+			this.columnHeader1.Width = 476;
+			// 
 			// CallEditStrip
 			// 
 			this.CallEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dumpToolStripMenuItem,
             this.clearToolStripMenuItem1});
 			this.CallEditStrip.Name = "CallEditStrip";
-			this.CallEditStrip.Size = new System.Drawing.Size(108, 48);
+			this.CallEditStrip.Size = new System.Drawing.Size(153, 70);
+			// 
+			// dumpToolStripMenuItem
+			// 
+			this.dumpToolStripMenuItem.Name = "dumpToolStripMenuItem";
+			this.dumpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.dumpToolStripMenuItem.Text = "Dump";
+			this.dumpToolStripMenuItem.Click += new System.EventHandler(this.dumpToolStripMenuItem_Click);
 			// 
 			// clearToolStripMenuItem1
 			// 
 			this.clearToolStripMenuItem1.Name = "clearToolStripMenuItem1";
-			this.clearToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+			this.clearToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.clearToolStripMenuItem1.Text = "Clear";
 			this.clearToolStripMenuItem1.Click += new System.EventHandler(this.clearToolStripMenuItem1_Click);
-			// 
-			// DevCheck
-			// 
-			this.DevCheck.AutoSize = true;
-			this.DevCheck.Location = new System.Drawing.Point(16, 247);
-			this.DevCheck.Name = "DevCheck";
-			this.DevCheck.Size = new System.Drawing.Size(76, 17);
-			this.DevCheck.TabIndex = 6;
-			this.DevCheck.Text = "Dev Mode";
-			this.DevCheck.UseVisualStyleBackColor = true;
-			this.DevCheck.Click += new System.EventHandler(this.DevCheck_Click);
-			// 
-			// columnHeader1
-			// 
-			this.columnHeader1.Width = 476;
-			// 
-			// teamControl2
-			// 
-			this.teamControl2.Location = new System.Drawing.Point(268, 6);
-			this.teamControl2.Name = "teamControl2";
-			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(200, 686);
-			this.teamControl2.TabIndex = 1;
-			this.teamControl2.TeamSize = 5;
-			this.teamControl2.Text = "Team 2";
-			// 
-			// teamControl1
-			// 
-			this.teamControl1.Location = new System.Drawing.Point(8, 6);
-			this.teamControl1.Name = "teamControl1";
-			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(200, 686);
-			this.teamControl1.TabIndex = 0;
-			this.teamControl1.TeamSize = 5;
-			this.teamControl1.Text = "Team 1";
 			// 
 			// CallTree
 			// 
@@ -411,12 +418,6 @@ namespace LoLNotes.Gui
 			this.CallTree.Name = "CallTree";
 			this.CallTree.Size = new System.Drawing.Size(476, 468);
 			this.CallTree.TabIndex = 0;
-			// 
-			// dumpToolStripMenuItem
-			// 
-			this.dumpToolStripMenuItem.Name = "dumpToolStripMenuItem";
-			this.dumpToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-			this.dumpToolStripMenuItem.Text = "Dump";
 			// 
 			// MainForm
 			// 

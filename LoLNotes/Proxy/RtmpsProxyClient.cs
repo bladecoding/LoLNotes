@@ -28,6 +28,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
+using System.Threading;
 using FluorineFx;
 using FluorineFx.Configuration;
 using FluorineFx.Messaging.Messages;
@@ -35,25 +36,45 @@ using FluorineFx.Messaging.Rtmp;
 using FluorineFx.Messaging.Rtmp.Event;
 using FluorineFx.Util;
 using LoLNotes.Messaging.Messages;
+using LoLNotes.Util;
 using NotMissing.Logging;
 
 namespace LoLNotes.Proxy
 {
+	public class CallResultWait
+	{
+		public Notify Call { get; set; }
+		public Notify Result { get; set; }
+		public AutoResetEvent Wait { get; set; }
+		public CallResultWait(Notify call)
+		{
+			Call = call;
+			Wait = new AutoResetEvent(false);
+		}
+	}
 	public class RtmpsProxyClient : ProxyClient
 	{
-		const bool encode = false;
+		const bool encode = true;
 		const bool logtofiles = false;
 
+		public new RtmpsProxyHost Host { get; protected set; }
 		protected RtmpContext sourcecontext = new RtmpContext(RtmpMode.Server) { ObjectEncoding = ObjectEncoding.AMF0 };
 		protected RtmpContext remotecontext = new RtmpContext(RtmpMode.Client) { ObjectEncoding = ObjectEncoding.AMF0 };
-		readonly ByteBuffer sendbuffer = new ByteBuffer(new MemoryStream());
-		readonly ByteBuffer receivebuffer = new ByteBuffer(new MemoryStream());
-		readonly List<Notify> InvokeList = new List<Notify>();
-
-		public new RtmpsProxyHost Host { get; protected set; }
-
 		protected ByteBuffer postbuffer = new ByteBuffer(new MemoryStream());
 
+		protected readonly ByteBuffer sendbuffer = new ByteBuffer(new MemoryStream());
+		protected readonly ByteBuffer receivebuffer = new ByteBuffer(new MemoryStream());
+		/// <summary>
+		/// This invoke list is used to record call/returns by the client.
+		/// </summary>
+		protected readonly List<Notify> InvokeList = new List<Notify>();
+		/// <summary>
+		/// This invoke list is used to record our call/returns.
+		/// </summary>
+		protected readonly List<CallResultWait> WaitInvokeList = new List<CallResultWait>();
+
+		protected readonly Dictionary<int, int> InvokeIds = new Dictionary<int, int>();
+		protected AtomicInteger CurrentInvoke = new AtomicInteger();
 
 		public RtmpsProxyClient(IProxyHost host, TcpClient src)
 			: base(host, src)
@@ -71,6 +92,143 @@ namespace LoLNotes.Proxy
 		{
 		}
 
+		/// <summary>
+		/// Call blocks until the result is received. Use Send for a nonblocking call.
+		/// </summary>
+		/// <param name="notify">Call</param>
+		/// <returns>Result</returns>
+		public Notify Call(Notify notify)
+		{
+			notify.InvokeId = CurrentInvoke.Increment();
+
+			var callresult = new CallResultWait(notify);
+			lock (WaitInvokeList)
+				WaitInvokeList.Add(callresult);
+
+			InternalSend(notify, false);
+
+			callresult.Wait.WaitOne(-1);
+			return callresult.Result;
+		}
+
+		/// <summary>
+		/// Send does not block and returns immediately. Use Call for a blocking call
+		/// </summary>
+		/// <param name="notify">Call</param>
+		public void Send(Notify notify)
+		{
+			notify.InvokeId = CurrentInvoke.Increment();
+
+			//Might as well use the waitlist so InternalReceive doesn't freak out about the invoke id not being found.
+			var callresult = new CallResultWait(notify);
+			lock (WaitInvokeList)
+				WaitInvokeList.Add(callresult);
+
+			InternalSend(notify, false);
+		}
+
+		/// <summary>
+		/// Replaces the invokeid
+		/// </summary>
+		/// <param name="notify"></param>
+		protected void InternalReceive(Notify notify)
+		{
+			if (RtmpUtil.IsResult(notify))
+			{
+				int ourid = notify.InvokeId;
+
+				CallResultWait callresult = null;
+				lock (WaitInvokeList)
+				{
+					callresult = WaitInvokeList.Find(crw => crw.Call.InvokeId == ourid);
+				}
+
+				//InvokeId was found in the waitlist, that means its one of our calls.
+				if (callresult != null)
+				{
+					callresult.Result = notify;
+					callresult.Wait.Set();
+					return; //Return, we don't want LoL receiving the message.
+				}
+
+				int theirid;
+				lock (InvokeIds)
+				{
+					if (!InvokeIds.TryGetValue(ourid, out theirid))
+					{
+						StaticLogger.Error(string.Format("Call id not found for {0}", notify));
+						return;
+					}
+					InvokeIds.Remove(ourid);
+				}
+				notify.InvokeId = theirid;
+
+			}
+
+			var buf = RtmpProtocolEncoder.Encode(remotecontext, CreatePacket(notify));
+			if (buf == null)
+			{
+				StaticLogger.Fatal("Unable to encode " + notify);
+			}
+			else
+			{
+				var buff = buf.ToArray();
+				if (logtofiles)
+				{
+					using (var fs = File.Open("recv.dmp", FileMode.Append, FileAccess.Write))
+					{
+						fs.Write(buff, 0, buff.Length);
+					}
+				}
+				if (encode)
+					base.OnReceive(buff, 0, buff.Length);
+			}
+		}
+		/// <summary>
+		/// Replaces the invokeid
+		/// </summary>
+		/// <param name="notify"></param>
+		protected void InternalSend(Notify notify, bool overwriteid)
+		{
+			if (overwriteid)
+			{
+				int current = CurrentInvoke.Increment();
+				lock (InvokeIds)
+					InvokeIds.Add(current, notify.InvokeId);
+				notify.InvokeId = current;
+			}
+
+			var buf = RtmpProtocolEncoder.Encode(sourcecontext, CreatePacket(notify));
+			if (buf == null)
+			{
+				StaticLogger.Fatal("Unable to encode " + notify);
+			}
+			else
+			{
+				var buff = buf.ToArray();
+				if (logtofiles)
+				{
+					using (var fs = File.Open("send.dmp", FileMode.Append, FileAccess.Write))
+					{
+						fs.Write(buff, 0, buff.Length);
+					}
+				}
+				if (encode)
+					base.OnSend(buff, 0, buff.Length);
+			}
+		}
+
+		public RtmpPacket CreatePacket(Notify notify)
+		{
+			var header = new RtmpHeader
+			{
+				ChannelId = 3,
+				DataType = notify.DataType,
+				Timer = notify.Timestamp
+			};
+			return new RtmpPacket(header, notify);
+		}
+
 		protected override void OnSend(byte[] buffer, int idx, int len)
 		{
 			if (postbuffer != null)
@@ -78,7 +236,7 @@ namespace LoLNotes.Proxy
 				postbuffer.Append(buffer, idx, len);
 				if (postbuffer.Length > 4)
 				{
-					int num = 0;
+					int num = postbuffer.GetInt();
 					postbuffer.Dispose();
 					postbuffer = null;
 					if (num == 0x504f5354)
@@ -130,30 +288,42 @@ namespace LoLNotes.Proxy
 							StaticLogger.Trace(string.Format("Sent {0} (Id:{1})", pck.Message.GetType(), pck.Header.ChannelId));
 						}
 					}
+					else if (obj is ByteBuffer)
+					{
+						//Just handshakes, ignore
+					}
+					else
+					{
+						StaticLogger.Warning(string.Format("Unknown object {0}", obj.GetType()));
+					}
 
 					if (obj != null && encode)
 					{
-						var buf = RtmpProtocolEncoder.Encode(sourcecontext, obj);
 						if (pck != null && pck.Message is Notify)
 						{
+							InternalSend((Notify)pck.Message, true);
 							sourcecontext.ObjectEncoding = ObjectEncoding.AMF3;
-						}
-						if (buf == null)
-						{
-							StaticLogger.Fatal("Unable to encode " + obj);
 						}
 						else
 						{
-							var buff = buf.ToArray();
-							if (logtofiles)
+							var buf = RtmpProtocolEncoder.Encode(sourcecontext, obj);
+							if (buf == null)
 							{
-								using (var fs = File.Open("send.dmp", FileMode.Append, FileAccess.Write))
-								{
-									fs.Write(buff, idx, buff.Length);
-								}
+								StaticLogger.Fatal("Unable to encode " + obj);
 							}
-							if (encode)
-								base.OnSend(buff, idx, buff.Length);
+							else
+							{
+								var buff = buf.ToArray();
+								if (logtofiles)
+								{
+									using (var fs = File.Open("send.dmp", FileMode.Append, FileAccess.Write))
+									{
+										fs.Write(buff, 0, buff.Length);
+									}
+								}
+								if (encode)
+									base.OnSend(buff, 0, buff.Length);
+							}
 						}
 					}
 				}
@@ -180,7 +350,6 @@ namespace LoLNotes.Proxy
 			var objs = RtmpProtocolDecoder.DecodeBuffer(remotecontext, receivebuffer);
 			if (objs != null)
 			{
-
 				foreach (var obj in objs)
 				{
 					var pck = obj as RtmpPacket;
@@ -190,7 +359,7 @@ namespace LoLNotes.Proxy
 						if (result != null)
 						{
 							Notify inv = null;
-							if (result.ServiceCall.ServiceMethodName == "_result" || result.ServiceCall.ServiceMethodName == "_error")
+							if (RtmpUtil.IsResult(result))
 							{
 								lock (InvokeList)
 								{
@@ -231,30 +400,43 @@ namespace LoLNotes.Proxy
 							StaticLogger.Trace(string.Format("Recv {0} (Id:{1})", pck.Message, pck.Header.ChannelId));
 						}
 					}
+					else if (obj is ByteBuffer)
+					{
+						//Just handshakes, ignore
+					}
+					else
+					{
+						StaticLogger.Warning(string.Format("Unknown object {0}", obj.GetType()));
+					}
 
 					if (obj != null && encode)
 					{
-						var buf = RtmpProtocolEncoder.Encode(remotecontext, obj);
+
 						if (pck != null && pck.Message is Notify)
 						{
+							InternalReceive((Notify)pck.Message);
 							remotecontext.ObjectEncoding = ObjectEncoding.AMF3;
-						}
-						if (buf == null)
-						{
-							StaticLogger.Fatal("Unable to encode " + obj);
 						}
 						else
 						{
-							var buff = buf.ToArray();
-							if (logtofiles)
+							var buf = RtmpProtocolEncoder.Encode(remotecontext, obj);
+							if (buf == null)
 							{
-								using (var fs = File.Open("recv.dmp", FileMode.Append, FileAccess.Write))
-								{
-									fs.Write(buff, idx, buff.Length);
-								}
+								StaticLogger.Fatal("Unable to encode " + obj);
 							}
-							if (encode)
-								base.OnReceive(buff, idx, buff.Length);
+							else
+							{
+								var buff = buf.ToArray();
+								if (logtofiles)
+								{
+									using (var fs = File.Open("recv.dmp", FileMode.Append, FileAccess.Write))
+									{
+										fs.Write(buff, 0, buff.Length);
+									}
+								}
+								if (encode)
+									base.OnReceive(buff, 0, buff.Length);
+							}
 						}
 					}
 				}
