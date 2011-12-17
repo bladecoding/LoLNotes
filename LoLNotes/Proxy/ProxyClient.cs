@@ -74,7 +74,6 @@ namespace LoLNotes.Proxy
 			}
 			catch (Exception ex)
 			{
-				Stop();
 				Host.OnException(this, ex);
 			}
 		}
@@ -89,7 +88,7 @@ namespace LoLNotes.Proxy
 											}
 											catch (Exception ex)
 											{
-												StaticLogger.Debug(ex);
+												StaticLogger.Trace(ex);
 											}
 										};
 
@@ -126,7 +125,6 @@ namespace LoLNotes.Proxy
 			}
 			catch (Exception ex)
 			{
-				Stop();
 				Host.OnException(this, ex);
 			}
 		}

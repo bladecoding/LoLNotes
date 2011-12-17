@@ -163,8 +163,7 @@ namespace LoLNotes.Proxy
 		{
 			if (disposing)
 			{
-				if (IsListening)
-					Stop();
+				Stop();
 			}
 		}
 		~ProxyHost()
