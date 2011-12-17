@@ -141,6 +141,7 @@
     <Compile Include="Messaging\Messages\DSK.cs" />
     <Compile Include="Messaging\IMessageProcessor.cs" />
     <Compile Include="LoaderInstaller.cs" />
+    <Compile Include="Proxy\CallResultWait.cs" />
     <Compile Include="Proxy\IProxyHost.cs" />
     <Compile Include="Proxy\ProxyClient.cs" />
     <Compile Include="Proxy\ProxyHost.cs" />

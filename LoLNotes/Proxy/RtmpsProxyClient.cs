@@ -28,7 +28,6 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
-using System.Threading;
 using FluorineFx;
 using FluorineFx.Configuration;
 using FluorineFx.Messaging.Messages;
@@ -41,17 +40,6 @@ using NotMissing.Logging;
 
 namespace LoLNotes.Proxy
 {
-	public class CallResultWait
-	{
-		public Notify Call { get; set; }
-		public Notify Result { get; set; }
-		public AutoResetEvent Wait { get; set; }
-		public CallResultWait(Notify call)
-		{
-			Call = call;
-			Wait = new AutoResetEvent(false);
-		}
-	}
 	public class RtmpsProxyClient : ProxyClient
 	{
 		const bool encode = true;
@@ -100,7 +88,7 @@ namespace LoLNotes.Proxy
 		/// <returns>Result or null if failed</returns>
 		public Notify Call(Notify notify)
 		{
-			var callresult = new CallResultWait(notify);
+			var callresult = new CallResultWait(notify, true);
 			lock (WaitLock)
 			{
 				if (WaitInvokeList == null)
@@ -126,7 +114,7 @@ namespace LoLNotes.Proxy
 			{
 				if (WaitInvokeList == null)
 					return;
-				WaitInvokeList.Add(new CallResultWait(notify));
+				WaitInvokeList.Add(new CallResultWait(notify, false));
 			}
 
 			notify.InvokeId = CurrentInvoke.Increment();
@@ -163,6 +151,11 @@ namespace LoLNotes.Proxy
 				{
 					callresult.Result = notify;
 					callresult.Wait.Set();
+
+					//Not blocking, lets send it to the handler instead.
+					if (!callresult.Blocking)
+						OnCall(callresult.Call, callresult.Result);
+
 					return; //Return, we don't want LoL receiving the message.
 				}
 
