@@ -966,6 +966,18 @@ namespace LoLNotes.Gui
 			msg.body = new object[] { "high7" };
 			msg.messageId = RtmpUtil.RandomUidString();
 			var result = Connection.Call(msg);
+			if (result == null)
+				return;
+
+			var bodies = RtmpUtil.GetBodies(result);
+			foreach (var body in bodies)
+			{
+				var ao = body.Item1 as ASObject;
+				if (ao == null)
+					continue;
+
+				label1.Text = string.Format("Level: {0}\r\nIconId: {1}", Convert.ToInt32(ao["summonerLevel"]), ao["profileIconId"]);
+			}
 		}
 	}
 }
