@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using FluorineFx.AMF3;
+using LoLNotes.Util;
 
 namespace LoLNotes.Messaging.Messages
 {
@@ -94,12 +95,12 @@ namespace LoLNotes.Messaging.Messages
 					if ((flags[i] & CLIENT_ID_BYTES_FLAG) != 0)
 					{
 						ClientIdBytes = input.ReadObject() as ByteArray;
-						ClientId = FromByteArray(ClientIdBytes);
+						ClientId = RtmpUtil.FromByteArray(ClientIdBytes);
 					}
 					if ((flags[i] & MESSAGE_ID_BYTES_FLAG) != 0)
 					{
 						MessageIdBytes = input.ReadObject() as ByteArray;
-						MessageId = FromByteArray(MessageIdBytes);
+						MessageId = RtmpUtil.FromByteArray(MessageIdBytes);
 					}
 					bits = 2;
 				}
@@ -110,9 +111,9 @@ namespace LoLNotes.Messaging.Messages
 		public virtual void WriteExternal(IDataOutput output)
 		{
 			if (ClientIdBytes == null)
-				ClientIdBytes = ToByteArray(ClientId);
+				ClientIdBytes = RtmpUtil.ToByteArray(ClientId);
 			if (MessageIdBytes == null)
-				MessageIdBytes = ToByteArray(MessageId);
+				MessageIdBytes = RtmpUtil.ToByteArray(MessageId);
 
 			int firstflags = 0;
 			if (Body != null)
@@ -163,75 +164,6 @@ namespace LoLNotes.Messaging.Messages
 			if (MessageIdBytes != null)
 				output.WriteObject(MessageIdBytes);
 		}
-
-		protected static string FromByteArray(ByteArray obj)
-		{
-			if (obj == null)
-				return null;
-
-			var bytes = obj.MemoryStream.ToArray();
-			if (bytes.Length < 16)
-				return null;
-
-			var ret = new StringBuilder();
-			for (int i = 0; i < bytes.Length; i++)
-			{
-				if (i == 4 || i == 6 || i == 8 || i == 10)
-				{
-					ret.Append('-');
-				}
-				ret.AppendFormat("{0:X2}", bytes[i]);
-			}
-
-			return ret.ToString();
-		}
-		protected static ByteArray ToByteArray(string str)
-		{
-			if (!IsUid(str))
-				return null;
-
-			str = str.Replace("-", "");
-
-			var ret = new ByteArray();
-			for (int i = 0; i < str.Length; i += 2)
-			{
-				byte num;
-				if (!byte.TryParse(str.Substring(i, 2), NumberStyles.HexNumber, null, out num))
-					return null;
-				ret.WriteByte(num);
-			}
-			ret.Position = 0;
-			return ret;
-		}
-
-		protected static bool IsUid(string str)
-		{
-            if (str != null && str.Length == 36)
-            {
-				int idx = 0;
-                while (idx < 36)
-                {
-
-					var c = str[idx];
-					if (idx == 8 || idx == 13 || idx == 18 || idx == 23)
-                    {
-                        if (c != 45)
-                        {
-                            return false;
-                        }
-                    }
-                    else if (c < 48 || c > 70 || c > 57 && c < 65)
-                    {
-                        return false;
-                    }
-					idx++;
-                }
-                return true;
-            }
-            return false;
-		}
-
-
 
 		protected void ReadRemaining(IDataInput input, int flag, int bits)
 		{

@@ -27,9 +27,11 @@ using NotMissing.Logging;
 
 namespace LoLNotes.Proxy
 {
-	public class ProxyClient
+	public class ProxyClient : IDisposable
 	{
 		const int BufferSize = 65535;
+
+		protected bool _disposed = false;
 
 		public TcpClient SourceTcp { get; protected set; }
 		public Stream SourceStream { get; protected set; }
@@ -139,6 +141,26 @@ namespace LoLNotes.Proxy
 		{
 			Host.OnReceive(this, buffer, idx, len);
 			SourceStream.Write(buffer, idx, len);
+		}
+
+
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing && !_disposed)
+			{
+				_disposed = true;
+				Stop();
+			}
+		}
+		~ProxyClient()
+		{
+			Dispose(false);
 		}
 	}
 }

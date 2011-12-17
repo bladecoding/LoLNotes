@@ -75,10 +75,14 @@ namespace LoLNotes.Proxy
 			if (IsListening)
 			{
 				Listener.Stop();
+				Listener = null;
 
-				for (int i = 0; i < Clients.Count; i++)
-					Clients[i].Stop();
-				Clients.Clear();
+				lock (Clients)
+				{
+					for (int i = 0; i < Clients.Count; i++)
+						Clients[i].Dispose();
+					Clients.Clear();
+				}
 			}
 		}
 
@@ -136,6 +140,7 @@ namespace LoLNotes.Proxy
 				if (idx != -1)
 					Clients.RemoveAt(idx);
 			}
+			sender.Dispose();
 			StaticLogger.Debug(ex);
 		}
 
@@ -158,7 +163,8 @@ namespace LoLNotes.Proxy
 		{
 			if (disposing)
 			{
-				Stop();
+				if (IsListening)
+					Stop();
 			}
 		}
 		~ProxyHost()

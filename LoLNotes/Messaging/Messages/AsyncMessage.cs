@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 using FluorineFx.AMF3;
+using LoLNotes.Util;
 
 namespace LoLNotes.Messaging.Messages
 {
@@ -48,7 +49,7 @@ namespace LoLNotes.Messaging.Messages
 					}
 					if ((flags[i] & CORRELATION_ID_BYTES_FLAG) != 0)
 					{
-						CorrelationId = FromByteArray(input.ReadObject() as ByteArray);
+						CorrelationId = RtmpUtil.FromByteArray(input.ReadObject() as ByteArray);
 					}
 					bits = 2;
 				}
@@ -61,7 +62,7 @@ namespace LoLNotes.Messaging.Messages
 			base.WriteExternal(output);
 
 			if (CorrelationIdBytes == null)
-				CorrelationIdBytes = ToByteArray(CorrelationId);
+				CorrelationIdBytes = RtmpUtil.ToByteArray(CorrelationId);
 
 			int flag = 0;
 			if (CorrelationId != null && CorrelationIdBytes == null)

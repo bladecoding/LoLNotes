@@ -71,7 +71,8 @@ namespace LoLNotes.Proxy
 		/// <summary>
 		/// This invoke list is used to record our call/returns.
 		/// </summary>
-		protected readonly List<CallResultWait> WaitInvokeList = new List<CallResultWait>();
+		protected List<CallResultWait> WaitInvokeList = new List<CallResultWait>();
+		protected readonly object WaitLock = new object();
 
 		protected readonly Dictionary<int, int> InvokeIds = new Dictionary<int, int>();
 		protected AtomicInteger CurrentInvoke = new AtomicInteger();
@@ -96,14 +97,17 @@ namespace LoLNotes.Proxy
 		/// Call blocks until the result is received. Use Send for a nonblocking call.
 		/// </summary>
 		/// <param name="notify">Call</param>
-		/// <returns>Result</returns>
+		/// <returns>Result or null if failed</returns>
 		public Notify Call(Notify notify)
 		{
-			notify.InvokeId = CurrentInvoke.Increment();
-
 			var callresult = new CallResultWait(notify);
-			lock (WaitInvokeList)
+			lock (WaitLock)
+			{
+				if (WaitInvokeList == null)
+					return null;
 				WaitInvokeList.Add(callresult);
+			}
+			notify.InvokeId = CurrentInvoke.Increment();
 
 			InternalSend(notify, false);
 
@@ -117,12 +121,15 @@ namespace LoLNotes.Proxy
 		/// <param name="notify">Call</param>
 		public void Send(Notify notify)
 		{
-			notify.InvokeId = CurrentInvoke.Increment();
-
 			//Might as well use the waitlist so InternalReceive doesn't freak out about the invoke id not being found.
-			var callresult = new CallResultWait(notify);
-			lock (WaitInvokeList)
-				WaitInvokeList.Add(callresult);
+			lock (WaitLock)
+			{
+				if (WaitInvokeList == null)
+					return;
+				WaitInvokeList.Add(new CallResultWait(notify));
+			}
+
+			notify.InvokeId = CurrentInvoke.Increment();
 
 			InternalSend(notify, false);
 		}
@@ -138,9 +145,10 @@ namespace LoLNotes.Proxy
 				int ourid = notify.InvokeId;
 
 				CallResultWait callresult = null;
-				lock (WaitInvokeList)
+				lock (WaitLock)
 				{
-					callresult = WaitInvokeList.Find(crw => crw.Call.InvokeId == ourid);
+					if (WaitInvokeList != null)
+						callresult = WaitInvokeList.Find(crw => crw.Call.InvokeId == ourid);
 				}
 
 				//InvokeId was found in the waitlist, that means its one of our calls.
@@ -454,6 +462,21 @@ namespace LoLNotes.Proxy
 		protected virtual void OnNotify(Notify notify)
 		{
 			Host.OnNotify(this, notify);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				//Lets release all waits when the client is disposed.
+				lock (WaitLock)
+				{
+					foreach (var wait in WaitInvokeList)
+						wait.Wait.Set();
+					WaitInvokeList = null;
+				}
+			}
+			base.Dispose(disposing);
 		}
 	}
 }
