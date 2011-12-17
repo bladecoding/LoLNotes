@@ -826,29 +826,6 @@ namespace LoLNotes.Gui
 			CallView.Columns[0].Width = CallView.Width;
 		}
 
-		static IEnumerable<object> GetBodies(Notify notify)
-		{
-			var ret = new List<object>();
-			foreach (var arg in notify.ServiceCall.Arguments)
-			{
-				object obj = null;
-				if (arg is AbstractMessage)
-				{
-					var msg = (AbstractMessage)arg;
-					obj = msg.Body;
-				}
-				else if (arg is MessageBase)
-				{
-					var msg = (MessageBase)arg;
-					obj = msg.body;
-				}
-
-				if (obj != null)
-					ret.Add(obj);
-			}
-			return ret;
-		}
-
 		static TreeNode GetNode(object arg, string name = "")
 		{
 			if (arg is ASObject)
@@ -934,10 +911,10 @@ namespace LoLNotes.Gui
 			foreach (var notify in notifies)
 			{
 				var children = new List<TreeNode>();
-				var bodies = GetBodies(notify);
+				var bodies = RtmpUtil.GetBodies(notify);
 				foreach (var body in bodies)
 				{
-					children.Add(GetNode(body) ?? new TreeNode(body.ToString()));
+					children.Add(GetNode(body.Item1) ?? new TreeNode(body.Item1.ToString()));
 				}
 
 				CallTree.Nodes.Add(new TreeNode(!RtmpUtil.IsResult(notify) ? "Call" : "Return", children.ToArray()));

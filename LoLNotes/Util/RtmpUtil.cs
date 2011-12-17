@@ -25,7 +25,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using FluorineFx.AMF3;
+using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
+using LoLNotes.Messaging.Messages;
 
 namespace LoLNotes.Util
 {
@@ -121,6 +123,34 @@ namespace LoLNotes.Util
 				return true;
 			}
 			return false;
+		}
+
+		/// <summary>
+		/// Gets the bodies of all the message arguments.
+		/// </summary>
+		/// <param name="notify"></param>
+		/// <returns>Tuple, Item1 = Body, Item2 = TimeStamp</returns>
+		public static IEnumerable<Tuple<object, Int64>> GetBodies(Notify notify)
+		{
+			var ret = new List<Tuple<object, Int64>>();
+			foreach (var arg in notify.ServiceCall.Arguments)
+			{
+				Tuple<object, Int64> obj = null;
+				if (arg is AbstractMessage)
+				{
+					var msg = (AbstractMessage)arg;
+					obj = Tuple.Create(msg.Body, msg.TimeStamp);
+				}
+				else if (arg is MessageBase)
+				{
+					var msg = (MessageBase)arg;
+					obj = Tuple.Create(msg.body, msg.timestamp);
+				}
+
+				if (obj != null)
+					ret.Add(obj);
+			}
+			return ret;
 		}
 	}
 }

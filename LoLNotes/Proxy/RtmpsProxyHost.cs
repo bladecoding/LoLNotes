@@ -32,6 +32,7 @@ using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
 using LoLNotes.Messaging;
 using LoLNotes.Messaging.Messages;
+using LoLNotes.Util;
 
 namespace LoLNotes.Proxy
 {
@@ -105,25 +106,11 @@ namespace LoLNotes.Proxy
 		}
 		public virtual void OnProcessResults(object sender, Notify results)
 		{
-			foreach (var arg in results.ServiceCall.Arguments)
+			var bodies = RtmpUtil.GetBodies(results);
+			foreach (var obj in bodies)
 			{
-				Int64 timestamp = 0;
-				ASObject obj = null;
-				if (arg is AbstractMessage)
-				{
-					var msg = (AbstractMessage)arg;
-					obj = msg.Body as ASObject;
-					timestamp = msg.TimeStamp;
-				}
-				else if (arg is MessageBase)
-				{
-					var msg = (MessageBase)arg;
-					obj = msg.body as ASObject;
-					timestamp = msg.timestamp;
-				}
-
-				if (obj != null)
-					OnProcessObject(this, obj, timestamp);
+				if (obj.Item1 is ASObject)
+					OnProcessObject(this, (ASObject)obj.Item1, obj.Item2);
 			}
 		}
 
