@@ -148,7 +148,14 @@ namespace LoLNotes.Proxy
 				lock (WaitLock)
 				{
 					if (WaitInvokeList != null)
-						callresult = WaitInvokeList.Find(crw => crw.Call.InvokeId == ourid);
+					{
+						int idx = WaitInvokeList.FindIndex(crw => crw.Call.InvokeId == ourid);
+						if (idx != -1)
+						{
+							callresult = WaitInvokeList[idx];
+							WaitInvokeList.RemoveAt(idx);
+						}
+					}
 				}
 
 				//InvokeId was found in the waitlist, that means its one of our calls.
@@ -372,11 +379,7 @@ namespace LoLNotes.Proxy
 								lock (InvokeList)
 								{
 									int fidx = InvokeList.FindIndex(i => i.InvokeId == result.InvokeId);
-									if (fidx == -1)
-									{
-										StaticLogger.Warning(string.Format("Call not found for {0} (Id:{1})", result.InvokeId, pck.Header.ChannelId));
-									}
-									else
+									if (fidx != -1)
 									{
 										inv = InvokeList[fidx];
 										InvokeList.RemoveAt(fidx);
@@ -396,9 +399,7 @@ namespace LoLNotes.Proxy
 									);
 								}
 							}
-
-							//Call was not found. Most likely a receive message.
-							if (inv == null)
+							else
 							{
 								OnNotify(result);
 							}
@@ -471,9 +472,12 @@ namespace LoLNotes.Proxy
 				//Lets release all waits when the client is disposed.
 				lock (WaitLock)
 				{
-					foreach (var wait in WaitInvokeList)
-						wait.Wait.Set();
-					WaitInvokeList = null;
+					if (WaitInvokeList != null)
+					{
+						foreach (var wait in WaitInvokeList)
+							wait.Wait.Set();
+						WaitInvokeList = null;
+					}
 				}
 			}
 			base.Dispose(disposing);

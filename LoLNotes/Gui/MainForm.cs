@@ -155,7 +155,7 @@ namespace LoLNotes.Gui
 			Recorder = new GameStorage(Database, Connection);
 			Recorder.PlayerUpdate += Recorder_PlayerUpdate;
 
-			Connection.Call += Connection_Call;
+			Connection.CallResult += Connection_Call;
 			Connection.Notify += Connection_Notify;
 
 			Connection.Start();
@@ -771,7 +771,7 @@ namespace LoLNotes.Gui
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new Action<object, Notify, Notify>(Connection_Call), sender, call, result);
+				BeginInvoke(new Action<object, Notify, Notify>(Connection_Call), sender, call, result);
 				return;
 			}
 
@@ -796,7 +796,7 @@ namespace LoLNotes.Gui
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new Action<object, Notify>(Connection_Notify), sender, notify);
+				BeginInvoke(new Action<object, Notify>(Connection_Notify), sender, notify);
 				return;
 			}
 
@@ -950,9 +950,22 @@ namespace LoLNotes.Gui
 
 				using (var sw = new StreamWriter(sfd.OpenFile()))
 				{
-					sw.Write(JsonConvert.SerializeObject(notifies, Formatting.Indented));
+					sw.Write(JsonConvert.SerializeObject(notifies, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }));
 				}
 			}
+		}
+
+		private void button1_Click_1(object sender, EventArgs e)
+		{
+			var msg = new RemotingMessage();
+			msg.operation = "getSummonerByName";
+			msg.destination = "summonerService";
+			msg.headers["DSRequestTimeout"] = 60;
+			msg.headers["DSId"] = RtmpUtil.RandomUidString();
+			msg.headers["DSEndpoint"] = "my-rtmps";
+			msg.body = new object[] { "high7" };
+			msg.messageId = RtmpUtil.RandomUidString();
+			var result = Connection.Call(msg);
 		}
 	}
 }

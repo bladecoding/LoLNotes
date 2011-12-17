@@ -28,8 +28,10 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using FluorineFx;
+using FluorineFx.Messaging.Api.Event;
 using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
+using FluorineFx.Messaging.Rtmp.Service;
 using LoLNotes.Messaging;
 using LoLNotes.Messaging.Messages;
 using LoLNotes.Util;
@@ -43,7 +45,7 @@ namespace LoLNotes.Proxy
 		/// </summary>
 		public event EventHandler Connected;
 
-		public event CallHandler Call;
+		public event CallHandler CallResult;
 		public event NotifyHandler Notify;
 		public event ProcessObjectHandler ProcessObject;
 
@@ -82,7 +84,35 @@ namespace LoLNotes.Proxy
 			base.OnException(sender, ex);
 		}
 
+		/// <summary>
+		/// Invokes the first client's Call method with a FlexInvoke which will block.
+		/// </summary>
+		/// <param name="msg"></param>
+		/// <returns>Result or null on failed</returns>
+		public Notify Call(object msg)
+		{
+			var inv = new FlexInvoke();
+			inv.EventType = (EventType)2;
+			inv.ServiceCall = new PendingCall(null, new [] { msg });
+			return CallWithInvoke(inv);
+		}
+		/// <summary>
+		/// Invokes the first client's Call method which will block.
+		/// </summary>
+		/// <param name="notify"></param>
+		/// <returns>Result or null on failed</returns>
+		public Notify CallWithInvoke(Notify notify)
+		{
+			RtmpsProxyClient client = null;
+			lock (Clients)
+			{
+				if (Clients.Count < 1)
+					return null;
+				client = (RtmpsProxyClient)Clients[0];
+			}
 
+			return client.Call(notify);
+		}
 
 		public virtual void OnProcessObject(object sender, ASObject obj, Int64 timestamp)
 		{
@@ -92,11 +122,12 @@ namespace LoLNotes.Proxy
 
 		public virtual void OnCall(object sender, Notify call, Notify result)
 		{
-			if (Call != null)
-				Call(sender, call, result);
+			if (CallResult != null)
+				CallResult(sender, call, result);
 
 			OnProcessResults(sender, result);
 		}
+
 		public virtual void OnNotify(object sender, Notify notify)
 		{
 			if (Notify != null)
@@ -104,6 +135,7 @@ namespace LoLNotes.Proxy
 
 			OnProcessResults(this, notify);
 		}
+
 		public virtual void OnProcessResults(object sender, Notify results)
 		{
 			var bodies = RtmpUtil.GetBodies(results);

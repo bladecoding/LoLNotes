@@ -34,7 +34,7 @@ namespace LoLNotes.Messaging
 	public interface IMessageProcessor
 	{
 		event ProcessObjectHandler ProcessObject;
-		event CallHandler Call;
+		event CallHandler CallResult;
 		event NotifyHandler Notify;
 	}
 }
