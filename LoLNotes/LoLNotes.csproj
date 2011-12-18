@@ -115,8 +115,15 @@
     <Compile Include="Assets\DescriptionEnumTypeConverter.cs" />
     <Compile Include="Assets\GameModes.cs" />
     <Compile Include="Assets\GameTypes.cs" />
+    <Compile Include="Flash\BaseList.cs" />
     <Compile Include="Gui\CertificateHolder.cs" />
     <Compile Include="Gui\MainSettings.cs" />
+    <Compile Include="Messages\Commands\PlayerCommands.cs" />
+    <Compile Include="Messages\Statistics\PlayerLifetimeStats.cs" />
+    <Compile Include="Messages\Statistics\PlayerStatSummaries.cs" />
+    <Compile Include="Messages\Statistics\PlayerStatSummary.cs" />
+    <Compile Include="Messages\Statistics\PlayerStatSummaryList.cs" />
+    <Compile Include="Messages\Summoner\PublicSummoner.cs" />
     <Compile Include="Messaging\Messages\AbstractMessage.cs" />
     <Compile Include="Messaging\Messages\AcknowledgeMessage.cs" />
     <Compile Include="Gui\Controls\TeamControl.cs">

@@ -44,6 +44,7 @@ using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
 using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
+using LoLNotes.Messages.Commands;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
@@ -930,7 +931,7 @@ namespace LoLNotes.Gui
 		/// <summary>
 		/// Recursively adds a "TypeName" key to the ASObjects as newtonsoft doesn't serialize it.
 		/// </summary>
-		/// <param name="ao"></param>
+		/// <param name="obj"></param>
 		void AddMissingTypeNames(object obj)
 		{
 			if (obj == null)
@@ -939,7 +940,7 @@ namespace LoLNotes.Gui
 			if (obj is ASObject)
 			{
 				var ao = (ASObject)obj;
-				ao["TypeNane"] = ao.TypeName;
+				ao["TypeName"] = ao.TypeName;
 				foreach (var kv in ao)
 					AddMissingTypeNames(kv.Value);
 			}
@@ -982,31 +983,6 @@ namespace LoLNotes.Gui
 				{
 					sw.Write(JsonConvert.SerializeObject(notifies, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }));
 				}
-			}
-		}
-
-		private void button1_Click_1(object sender, EventArgs e)
-		{
-			var msg = new RemotingMessage();
-			msg.operation = "getSummonerByName";
-			msg.destination = "summonerService";
-			msg.headers["DSRequestTimeout"] = 60;
-			msg.headers["DSId"] = RtmpUtil.RandomUidString();
-			msg.headers["DSEndpoint"] = "my-rtmps";
-			msg.body = new object[] { "high7" };
-			msg.messageId = RtmpUtil.RandomUidString();
-			var result = Connection.Call(msg);
-			if (result == null)
-				return;
-
-			var bodies = RtmpUtil.GetBodies(result);
-			foreach (var body in bodies)
-			{
-				var ao = body.Item1 as ASObject;
-				if (ao == null)
-					continue;
-
-				label1.Text = string.Format("Level: {0}\r\nIconId: {1}", Convert.ToInt32(ao["summonerLevel"]), ao["profileIconId"]);
 			}
 		}
 	}

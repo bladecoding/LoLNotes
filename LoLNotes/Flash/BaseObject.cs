@@ -24,6 +24,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using FluorineFx;
+using FluorineFx.AMF3;
 using LoLNotes.Util;
 using NotMissing.Logging;
 
@@ -81,6 +82,18 @@ namespace LoLNotes.Flash
 					else if (type == typeof(bool))
 					{
 						value = Convert.ToBoolean(flash[intern.Name]);
+					}
+					else if (type == typeof(ASObject))
+					{
+						value = flash[intern.Name] as ASObject;
+					}
+					else if (type == typeof(ArrayCollection))
+					{
+						value = flash[intern.Name] as ArrayCollection;
+					}
+					else if (type == typeof(object))
+					{
+						value = flash[intern.Name];
 					}
 					else
 					{
