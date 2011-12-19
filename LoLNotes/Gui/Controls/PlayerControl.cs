@@ -34,207 +34,194 @@ using NotMissing.Logging;
 
 namespace LoLNotes.Gui.Controls
 {
-    public partial class PlayerControl : UserControl
-    {
-        PlayerEntry player;
-        public PlayerEntry Player
-        {
-            get { return player; }
-            protected set { player = value; participant = null; }
-        }
+	public partial class PlayerControl : UserControl
+	{
+		public string Name { get; set; }
+		public PlayerEntry Player { get; set; }
+		public PlayerLifetimeStats LifetimeStats { get; set; }
 
-        Participant participant;
-        /// <summary>
-        /// Overrides Player.Name, used for "Summoner x"
-        /// </summary>
-        public Participant Participant
-        {
-            get { return participant; }
-            protected set { participant = value; player = null; }
-        }
+		int CurrentPage;
 
-        int Current;
-
-        public bool Loading { get; set; }
-
-
-        public PlayerControl()
-        {
-            SetStyle(ControlStyles.ResizeRedraw, true);
-            SetStyle(ControlStyles.UserPaint, true);
-            SetStyle(ControlStyles.DoubleBuffer, true);
-            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            InitializeComponent();
-
-            foreach (Control c in Controls)
-                c.Click += c_Click;
-        }
-
-        void c_Click(object sender, EventArgs e)
-        {
-            Current++;
-            UpdateView();
-        }
-
-        const int BorderSize = 5;
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            var pen = new Pen(Player != null && Player.NoteColor.A != 0 ? Player.NoteColor : Color.Green, BorderSize);
-            e.Graphics.DrawRectangle(pen, BorderSize, BorderSize, Width - BorderSize * 2, Height - BorderSize * 2);
-        }
-
-        void SetTitle(string str)
-        {
-            if (NameLabel.InvokeRequired)
-            {
-                NameLabel.BeginInvoke(new Action<string>(SetTitle), str);
-                return;
-            }
-            NameLabel.Text = str;
-        }
-
-        void SetDescription(string str)
-        {
-            if (DescLabel.InvokeRequired)
-            {
-                DescLabel.BeginInvoke(new Action<string>(SetDescription), str);
-                return;
-            }
-            DescLabel.Text = str;
-        }
-
-        void SetVisible(bool visible)
-        {
-            if (DescLabel.InvokeRequired)
-            {
-                DescLabel.BeginInvoke(new Action<bool>(SetVisible), visible);
-                return;
-            }
-            Visible = visible;
-        }
-
-        void SetTitle(Participant part)
-        {
-            var opart = part as ObfuscatedParticipant;
-            var gpart = part as GameParticipant;
-            if (gpart != null)
-            {
-                SetTitle(gpart.Name);
-            }
-            else if (opart != null)
-            {
-                SetTitle("Summoner " + opart.GameUniqueId);
-                Loading = false;
-            }
-            else
-            {
-                SetTitle("Unknown");
-                Loading = false;
-            }
-        }
-
-        public void SetData()
-        {
-            Player = null;
-            Participant = null;
-            SetVisible(false);
-        }
-
-        public void SetData(PlayerEntry plr)
-        {
-            Player = plr;
-            Loading = false;
-            UpdateView();
-            SetVisible(true);
-        }
-        public void SetData(Participant part)
-        {
-            Participant = part;
-            UpdateView();
-            SetVisible(true);
-        }
-
-		public void SetData(PublicSummoner ply, PlayerLifetimeStats stats, PlayerStatSummary odin)
+		public PlayerControl()
 		{
-			Loading = false;
+			SetStyle(ControlStyles.ResizeRedraw, true);
+			SetStyle(ControlStyles.UserPaint, true);
+			SetStyle(ControlStyles.DoubleBuffer, true);
+			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+			SetStyle(ControlStyles.StandardDoubleClick, false);
 
-			SetTitle(ply.Name);
+			InitializeComponent();
 
-			SetDescription(string.Format(
-				"{0}\nLevel: {1}\nWins: {2}\nLosses: {3}\nLeaves: {4}",
-				odin.PlayerStatSummaryType,
-				ply.SummonerLevel,
-				odin.Wins,
-				odin.Losses,
-				odin.Leaves
-			));
+			Stats.Visible = false;
+			LoadingPicture.Visible = false;
+			NotesLabel.Visible = false;
+			LevelLabel.Text = "Level: ";
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			Stats.ContextMenuStrip = ContextMenuStrip;
+			base.OnLoad(e);
+		}
+
+		const int BorderSize = 5;
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			base.OnPaint(e);
+			var pen = new Pen(Player != null && Player.NoteColor.A != 0 ? Player.NoteColor : Color.Green, BorderSize);
+			e.Graphics.DrawRectangle(pen, BorderSize, BorderSize, Width - BorderSize * 2, Height - BorderSize * 2);
+		}
+
+		void SetName(string str)
+		{
+			if (NameLabel.InvokeRequired)
+			{
+				NameLabel.BeginInvoke(new Action<string>(SetName), str);
+				return;
+			}
+			NameLabel.Text = str;
+		}
+
+		void SetVisible(bool visible)
+		{
+			if (InvokeRequired)
+			{
+				BeginInvoke(new Action<bool>(SetVisible), visible);
+				return;
+			}
+			Visible = visible;
+		}
+
+		public void SetLoading(bool loading)
+		{
+			if (InvokeRequired)
+			{
+				BeginInvoke(new Action<bool>(SetLoading), loading);
+				return;
+			}
+			if (loading)
+			{
+				foreach (Control c in InfoPanel.Controls)
+					c.Visible = false;
+			}
+			LoadingPicture.Visible = loading;
+		}
+
+		void SetTitle(PlayerEntry ply)
+		{
+			SetName(ply.Name);
+		}
+		void SetTitle(Participant part)
+		{
+			var opart = part as ObfuscatedParticipant;
+			var gpart = part as GameParticipant;
+			if (gpart != null)
+			{
+				SetName(gpart.Name);
+			}
+			else if (opart != null)
+			{
+				SetName("Summoner " + opart.GameUniqueId);
+			}
+			else
+			{
+				SetName("Unknown");
+			}
+		}
+
+		public void SetLevel(int level)
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<int>(SetLevel), level);
+				return;
+			}
+
+			LevelLabel.Text = "Level: " + level;
+		}
+
+		public void SetEmpty()
+		{
+			Player = null;
+			SetVisible(false);
+		}
+
+		public void SetPlayer(PlayerEntry plr)
+		{
+			Player = plr;
+			LifetimeStats = null;
+			SetTitle(plr);
+			UpdateView();
+			SetVisible(true);
+		}
+		public void SetParticipant(Participant part)
+		{
+			LifetimeStats = null;
+			SetTitle(part);
 			SetVisible(true);
 		}
 
-        bool SetStats()
-        {
-            if (Participant != null)
-                SetTitle(Participant);
+		public void SetPlayerStats(PlayerEntry plr, PublicSummoner summoner, PlayerLifetimeStats stats)
+		{
+			Player = plr;
+			SetTitle(plr);
+			SetStats(summoner, stats);
+		}
 
-            if (Player == null)
-                return false;
+		public void SetStats(PublicSummoner summoner, PlayerLifetimeStats stats)
+		{
+			SetLoading(false);
+			LifetimeStats = stats;
 
-            SetTitle(Player.Name);
+			if (Player == null || string.IsNullOrEmpty(Player.Note))
+				CurrentPage = 1; //Skip the first page if no note is set.
 
-			if (Player.StatsList.Count < 1)
-				return false;
+			SetLevel(summoner.SummonerLevel);
 
-            var stat = Player.StatsList[Current % Player.StatsList.Count];
-            if (stat == null || stat.Summary == null)
-                return false;
+			UpdateView();
+			SetVisible(true);
+		}
 
-            GameModes mode;
-            if (!Enum.TryParse(stat.GameMode, out mode))
-                mode = GameModes.UNKNOWN;
+		public void UpdateView()
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action(UpdateView));
+				return;
+			}
+			int count = LifetimeStats != null ? LifetimeStats.PlayerStatSummaries.PlayerStatSummarySet.Count : 0;
+			int page = count == 0 ? 0 : Math.Abs(CurrentPage) % (count + 1);
 
-            GameTypes type;
-            if (!Enum.TryParse(stat.GameType, out type))
-                type = GameTypes.UNKNOWN;
+			if (page == 0 || LifetimeStats == null)
+			{
+				NotesLabel.Text = Player != null && !string.IsNullOrEmpty(Player.Note) ? Player.Note : "No note";
 
-            if (mode == GameModes.UNKNOWN)
-                StaticLogger.Error("Unknown GameMode " + stat.GameMode);
-            if (type == GameTypes.UNKNOWN)
-                StaticLogger.Error("Unknown GameType " + stat.GameType);
+				Stats.Visible = false;
+				NotesLabel.Visible = true;
+			}
+			else
+			{
+				Stats.SetStatSummary(LifetimeStats.PlayerStatSummaries.PlayerStatSummarySet[page - 1]);
 
-            SetDescription(string.Format(
-                "{0} {1}\nLevel: {2}\nWins: {3}\nLosses: {4}\nLeaves: {5}\n{6}",
-                new DescriptionEnumTypeConverter<GameModes>().ConvertToString(mode),
-                new DescriptionEnumTypeConverter<GameTypes>().ConvertToString(type),
-                stat.Summary.Level,
-                stat.Summary.Wins,
-                stat.Summary.Losses,
-                stat.Summary.Leaves,
-                !string.IsNullOrEmpty(Player.Note) ? string.Format("Note: {0}\n", Player.Note) : ""
-            ));
+				Stats.Visible = true;
+				NotesLabel.Visible = false;
+			}
 
-            return true;
-        }
+			PageLabel.Text = string.Format("{0} / {1}", page + 1, count + 1);
 
-        public void SetNoStats()
-        {
-            if (Loading)
-            {
-                SetDescription("Loading...");
-                return;
-            }
+			Invalidate();
+		}
 
-            SetDescription(string.Format(
-                "No Stats\n{0}",
-                (Player != null && !string.IsNullOrEmpty(Player.Note)) ? string.Format("Note: {0}\n", Player.Note) : ""));
-        }
+		private void LeftArrow_Click(object sender, EventArgs e)
+		{
+			CurrentPage--;
+			UpdateView();
+		}
 
-        public void UpdateView()
-        {
-            if (!SetStats())
-                SetNoStats();
-
-            Invalidate();
-        }
-    }
+		private void RightArrow_Click(object sender, EventArgs e)
+		{
+			CurrentPage++;
+			UpdateView();
+		}
+	}
 }

@@ -30,9 +30,14 @@ namespace LoLNotes.Messages.Statistics
 {
 	public class PlayerStatSummaries : BaseObject
 	{
+		public PlayerStatSummaries()
+			: base(null)
+		{
+		}
 		public PlayerStatSummaries(ASObject obj)
 			: base(obj)
 		{
+			PlayerStatSummarySet = new PlayerStatSummaryList();
 			BaseObject.SetFields(this, obj);
 		}
 

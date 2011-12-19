@@ -71,7 +71,7 @@ namespace LoLNotes.Gui
 		const string LoaderVersion = "1.2";
 		const string SettingsFile = "settings.json";
 
-		readonly Dictionary<string, Icon> IconCache;
+		readonly Dictionary<string, Icon> Icons;
 		readonly Dictionary<string, CertificateHolder> Certificates;
 		RtmpsProxyHost Connection;
 		MessageReader Reader;
@@ -80,7 +80,8 @@ namespace LoLNotes.Gui
 		MainSettings Settings;
 		LoaderInstaller Installer;
 
-
+		public GameDTO CurrentGame;
+		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>(); 
 
 		public MainForm()
 		{
@@ -93,7 +94,7 @@ namespace LoLNotes.Gui
 			Settings = new MainSettings();
 			Settings.Load(SettingsFile);
 
-			IconCache = new Dictionary<string, Icon>
+			Icons = new Dictionary<string, Icon>
             {
                 {"Red",  Icon.FromHandle(Resources.circle_red.GetHicon())},
                 {"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
@@ -334,11 +335,11 @@ namespace LoLNotes.Gui
 		void UpdateIcon()
 		{
 			if (!Installer.IsInstalled)
-				Icon = IconCache["Red"];
+				Icon = Icons["Red"];
 			else if (Connection != null && Connection.IsConnected)
-				Icon = IconCache["Green"];
+				Icon = Icons["Green"];
 			else
-				Icon = IconCache["Yellow"];
+				Icon = Icons["Yellow"];
 		}
 
 		void Connection_Connected(object sender, EventArgs e)
@@ -357,8 +358,7 @@ namespace LoLNotes.Gui
 				UpdateLists(game);
 		}
 
-		public GameDTO CurrentGame;
-		public List<PlayerEntry> PlayerCache = new List<PlayerEntry>();
+		
 
 		public void UpdateLists(EndOfGameStats game)
 		{
@@ -390,26 +390,26 @@ namespace LoLNotes.Gui
 
 						if (ply != null)
 						{
-							lock (cachelock)
+							lock (PlayersCache)
 							{
-								var entry = PlayerCache.Find(p => p.Id == ply.UserId);
+								var entry = PlayersCache.Find(p => p.Player.Id == ply.UserId);
 								if (entry == null)
 								{
 									var plycontrol = list.Players[o];
-									plycontrol.Loading = true;
-									plycontrol.SetData(new GameParticipant { Name = ply.SummonerName });
+									plycontrol.SetLoading(true);
+									plycontrol.SetParticipant(new GameParticipant { Name = ply.SummonerName });
 									Task.Factory.StartNew(() => LoadPlayer(ply.SummonerName, ply.UserId, plycontrol));
 								}
 								else
 								{
-									list.Players[o].SetData(entry);
+									list.Players[o].SetPlayerStats(entry.Player, entry.Summoner, entry.Stats);
 								}
 							}
 						}
 					}
 					else
 					{
-						list.Players[o].SetData();
+						list.Players[o].SetEmpty();
 					}
 				}
 			}
@@ -425,9 +425,9 @@ namespace LoLNotes.Gui
 
 			if (CurrentGame == null || CurrentGame.Id != lobby.Id)
 			{
-				lock (cachelock)
+				lock (PlayersCache)
 				{
-					PlayerCache.Clear();
+					PlayersCache.Clear();
 					CurrentGame = lobby;
 				}
 			}
@@ -441,7 +441,7 @@ namespace LoLNotes.Gui
 				bool same = true;
 				for (int i = 0; i < oldteams.Count && i < newteams.Count; i++)
 				{
-					if (!oldteams[i].SequenceEqual(newteams[i]))
+					if (oldteams[i].Count != newteams[i].Count || !oldteams[i].SequenceEqual(newteams[i]))
 					{
 						same = false;
 						break;
@@ -474,49 +474,35 @@ namespace LoLNotes.Gui
 
 						if (ply != null)
 						{
-							lock (cachelock)
+							lock (PlayersCache)
 							{
-								var entry = PlayerCache.Find(p => p.Id == ply.Id);
+								var entry = PlayersCache.Find(p => p.Player.Id == ply.Id);
 								if (entry == null)
 								{
 									var plycontrol = list.Players[o];
-									plycontrol.Loading = true;
-									plycontrol.SetData(ply);
+									plycontrol.SetLoading(true);
+									plycontrol.SetParticipant(ply);
 									Task.Factory.StartNew(() => LoadPlayer(ply.Name, ply.Id, plycontrol));
 								}
 								else
 								{
-									list.Players[o].SetData(entry);
+									list.Players[o].SetPlayerStats(entry.Player, entry.Summoner, entry.Stats);
 								}
 							}
 						}
 						else
 						{
-							list.Players[o].SetData(team[o]);
+							list.Players[o].SetParticipant(team[o]);
 						}
 					}
 					else
 					{
-						list.Players[o].SetData();
+						list.Players[o].SetEmpty();
 					}
 				}
 			}
 		}
 
-		void UpdatePlayerControl(PlayerControl control, PlayerEntry entry)
-		{
-			if (entry != null)
-			{
-				control.SetData(entry);
-			}
-			else
-			{
-				control.Loading = false;
-				control.SetNoStats();
-			}
-		}
-
-		readonly List<Tuple<PublicSummoner, PlayerLifetimeStats, PlayerStatSummary>> PlrCache = new List<Tuple<PublicSummoner, PlayerLifetimeStats, PlayerStatSummary>>(); 
 		/// <summary>
 		/// Query and cache player data
 		/// </summary>
@@ -525,56 +511,51 @@ namespace LoLNotes.Gui
 		/// <param name="control">Control to update</param>
 		void LoadPlayer(string name, int id, PlayerControl control)
 		{
-			lock (PlrCache)
+			var ply = new PlayerCache();
+			lock (PlayersCache)
 			{
-				var tup = PlrCache.Find(t => t.Item1.Name == name);
-				if (tup != null)
+				//Clear the cache every 1000 players to prevent crashing afk lobbies.
+				if (PlayersCache.Count > 1000)
+					PlayersCache.Clear();
+
+				if (PlayersCache.Find(p => p.Player.Id == id) != null)
 				{
-					control.SetData(tup.Item1, tup.Item2, tup.Item3);
+					//Player got cached or is getting cached by another thread.
 					return;
 				}
+				//Temporary player entry so we don't keep PlayersCache locked while querying
+				ply.Player = new PlayerEntry() { Id = id, Name = "Loading..." };
+				PlayersCache.Add(ply);
 			}
-			var cmd = new PlayerCommands(Connection);
-			var ply = cmd.GetPlayerByName(name);
-			if (ply != null)
+
+
+			var sw = Stopwatch.StartNew();
 			{
-				var stats = cmd.RetrievePlayerStatsByAccountId(ply.AccountId);
-				if (stats != null)
+				var entry = Recorder.GetPlayer(id);
+				ply.Player = entry ?? ply.Player;
+			}
+			sw.Stop();
+
+			StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+
+			control.SetPlayer(ply.Player);
+
+			sw = Stopwatch.StartNew();
+			{
+				var cmd = new PlayerCommands(Connection);
+				var summoner = cmd.GetPlayerByName(name);
+				if (summoner != null)
 				{
-					var odin = stats.PlayerStatSummaries.PlayerStatSummarySet.Find(p => p.PlayerStatSummaryType == "OdinUnranked");
-					if (odin != null)
-					{
-						lock (PlrCache)
-						{
-							PlrCache.Add(Tuple.Create(ply, stats, odin));
-							control.SetData(ply, stats, odin);
-							return;
-						}
-					}
+					ply.Summoner = summoner;
+					ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
 				}
 			}
-			control.SetNoStats();
+			sw.Stop();
 
-			//Stopwatch sw = Stopwatch.StartNew();
+			StaticLogger.Trace(string.Format("Stats query in {0}ms", sw.ElapsedMilliseconds));
 
-			//var entry = Recorder.GetPlayer(id);
-
-			//if (entry == null)
-			//{
-			//    //Create a fake entry so that the UpdatePlayerHandler can update it
-			//    entry = new PlayerEntry { Id = id };
-			//}
-
-			//lock (cachelock)
-			//{
-			//    if (PlayerCache.FindIndex(p => p.Id == entry.Id) == -1)
-			//        PlayerCache.Add(entry);
-			//}
-
-			//sw.Stop();
-			//StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
-
-			//UpdatePlayerControl(control, entry);
+			if (ply.Stats != null)
+				control.SetStats(ply.Summoner, ply.Stats);
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -623,7 +604,8 @@ namespace LoLNotes.Gui
 			if (owner == null)
 				return;
 
-			var plrcontrol = owner.SourceControl as PlayerControl;
+			Control cont = owner.SourceControl is StatsControl ? owner.SourceControl.Parent : owner.SourceControl;
+			var plrcontrol = cont as PlayerControl;
 			if (plrcontrol == null)
 				return;
 

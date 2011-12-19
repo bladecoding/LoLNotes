@@ -31,6 +31,10 @@ namespace LoLNotes.Messages.Statistics
 {
 	public class PlayerStatSummaryList : BaseList<PlayerStatSummary>
 	{
+		public PlayerStatSummaryList()
+			: base(null)
+		{
+		}
 		public PlayerStatSummaryList(ArrayCollection obj)
 			: base(obj)
 		{

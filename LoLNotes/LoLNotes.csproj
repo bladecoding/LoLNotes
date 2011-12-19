@@ -117,7 +117,14 @@
     <Compile Include="Assets\GameTypes.cs" />
     <Compile Include="Flash\BaseList.cs" />
     <Compile Include="Gui\CertificateHolder.cs" />
+    <Compile Include="Gui\Controls\StatsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Controls\StatsControl.Designer.cs">
+      <DependentUpon>StatsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\MainSettings.cs" />
+    <Compile Include="Gui\PlayerCache.cs" />
     <Compile Include="Messages\Commands\PlayerCommands.cs" />
     <Compile Include="Messages\Statistics\PlayerLifetimeStats.cs" />
     <Compile Include="Messages\Statistics\PlayerStatSummaries.cs" />
@@ -204,6 +211,9 @@
     <Compile Include="Util\AppInit.cs" />
     <Compile Include="Util\RtmpUtil.cs" />
     <Compile Include="Util\Wow.cs" />
+    <EmbeddedResource Include="Gui\Controls\StatsControl.resx">
+      <DependentUpon>StatsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\Controls\TeamControl.resx">
       <DependentUpon>TeamControl.cs</DependentUpon>
     </EmbeddedResource>

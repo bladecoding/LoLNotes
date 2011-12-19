@@ -118,7 +118,7 @@ namespace LoLNotes.Gui
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(484, 722);
+			this.tabControl1.Size = new System.Drawing.Size(822, 812);
 			this.tabControl1.TabIndex = 0;
 			this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
 			// 
@@ -129,17 +129,18 @@ namespace LoLNotes.Gui
 			this.GameTab.Location = new System.Drawing.Point(4, 22);
 			this.GameTab.Name = "GameTab";
 			this.GameTab.Padding = new System.Windows.Forms.Padding(3);
-			this.GameTab.Size = new System.Drawing.Size(476, 696);
+			this.GameTab.Size = new System.Drawing.Size(814, 786);
 			this.GameTab.TabIndex = 0;
 			this.GameTab.Text = "Game";
 			this.GameTab.UseVisualStyleBackColor = true;
 			// 
 			// teamControl2
 			// 
-			this.teamControl2.Location = new System.Drawing.Point(268, 6);
+			this.teamControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.teamControl2.Location = new System.Drawing.Point(409, 2);
 			this.teamControl2.Name = "teamControl2";
 			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(200, 686);
+			this.teamControl2.Size = new System.Drawing.Size(400, 836);
 			this.teamControl2.TabIndex = 1;
 			this.teamControl2.TeamSize = 5;
 			this.teamControl2.Text = "Team 2";
@@ -168,10 +169,10 @@ namespace LoLNotes.Gui
 			// 
 			// teamControl1
 			// 
-			this.teamControl1.Location = new System.Drawing.Point(8, 6);
+			this.teamControl1.Location = new System.Drawing.Point(3, 2);
 			this.teamControl1.Name = "teamControl1";
 			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(200, 686);
+			this.teamControl1.Size = new System.Drawing.Size(400, 836);
 			this.teamControl1.TabIndex = 0;
 			this.teamControl1.TeamSize = 5;
 			this.teamControl1.Text = "Team 1";
@@ -186,7 +187,7 @@ namespace LoLNotes.Gui
 			this.SettingsTab.Controls.Add(this.InstallButton);
 			this.SettingsTab.Location = new System.Drawing.Point(4, 22);
 			this.SettingsTab.Name = "SettingsTab";
-			this.SettingsTab.Size = new System.Drawing.Size(476, 696);
+			this.SettingsTab.Size = new System.Drawing.Size(814, 696);
 			this.SettingsTab.TabIndex = 2;
 			this.SettingsTab.Text = "Settings";
 			this.SettingsTab.UseVisualStyleBackColor = true;
@@ -302,7 +303,7 @@ namespace LoLNotes.Gui
 			this.LogTab.Controls.Add(this.LogList);
 			this.LogTab.Location = new System.Drawing.Point(4, 22);
 			this.LogTab.Name = "LogTab";
-			this.LogTab.Size = new System.Drawing.Size(476, 696);
+			this.LogTab.Size = new System.Drawing.Size(814, 696);
 			this.LogTab.TabIndex = 3;
 			this.LogTab.Text = "Log";
 			this.LogTab.UseVisualStyleBackColor = true;
@@ -322,7 +323,7 @@ namespace LoLNotes.Gui
 			this.ChangesTab.Location = new System.Drawing.Point(4, 22);
 			this.ChangesTab.Name = "ChangesTab";
 			this.ChangesTab.Padding = new System.Windows.Forms.Padding(3);
-			this.ChangesTab.Size = new System.Drawing.Size(476, 696);
+			this.ChangesTab.Size = new System.Drawing.Size(814, 696);
 			this.ChangesTab.TabIndex = 4;
 			this.ChangesTab.Text = "Changes";
 			this.ChangesTab.UseVisualStyleBackColor = true;
@@ -343,7 +344,7 @@ namespace LoLNotes.Gui
 			this.DevTab.Controls.Add(this.splitContainer1);
 			this.DevTab.Location = new System.Drawing.Point(4, 22);
 			this.DevTab.Name = "DevTab";
-			this.DevTab.Size = new System.Drawing.Size(476, 696);
+			this.DevTab.Size = new System.Drawing.Size(814, 696);
 			this.DevTab.TabIndex = 5;
 			this.DevTab.Text = "Dev";
 			this.DevTab.UseVisualStyleBackColor = true;
@@ -423,7 +424,7 @@ namespace LoLNotes.Gui
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(484, 722);
+			this.ClientSize = new System.Drawing.Size(822, 812);
 			this.Controls.Add(this.tabControl1);
 			this.Name = "MainForm";
 			this.Text = "LoL";

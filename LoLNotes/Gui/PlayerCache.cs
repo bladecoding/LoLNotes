@@ -23,37 +23,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FluorineFx;
-using LoLNotes.Flash;
+using LoLNotes.Messages.Statistics;
+using LoLNotes.Messages.Summoner;
+using LoLNotes.Storage;
 
-namespace LoLNotes.Messages.Statistics
+namespace LoLNotes.Gui
 {
-	[Message(".PlayerLifetimeStats")]
-	public class PlayerLifetimeStats : MessageObject
+	public class PlayerCache
 	{
-		public PlayerLifetimeStats(ASObject obj)
-			: base(obj)
-		{
-			PlayerStatSummaries = new PlayerStatSummaries();
-			BaseObject.SetFields(this, obj);
-		}
-
-		[InternalName("playerStatSummaries")]
-		public PlayerStatSummaries PlayerStatSummaries { get; set; }
-
-		[InternalName("leaverPenaltyStats")]
-		public ASObject LeaverPenaltyStats { get; set; }
-
-		[InternalName("dataVersion")]
-		public Int32 DataVersion { get; set; }
-
-		[InternalName("userId")]
-		public Int32 UserId { get; set; }
-
-		[InternalName("dodgeStreak")]
-		public Int32 DodgeStreak { get; set; }
-
-		[InternalName("playerStats")]
-		public ASObject PlayerStats { get; set; }
+		public PlayerEntry Player { get; set; }
+		public PublicSummoner Summoner { get; set; }
+		public PlayerLifetimeStats Stats { get; set; }
 	}
 }

@@ -74,5 +74,15 @@ namespace LoLNotes.Gui
                 g.FillRectangle(brush, rect.X + 110, rect.Y, rect.Width, rect.Height);
             }
         }
+
+		private void NoteText_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+			{
+				DialogResult = DialogResult.OK;
+				Close();
+				e.Handled = true;
+			}
+		}
     }
 }
