@@ -59,10 +59,10 @@ namespace LoLNotes.Gui.Controls
 			this.InfoPanel = new System.Windows.Forms.Panel();
 			this.NotesLabel = new System.Windows.Forms.Label();
 			this.LoadingPicture = new System.Windows.Forms.PictureBox();
+			this.Stats = new LoLNotes.Gui.Controls.StatsControl();
 			this.RightArrow = new System.Windows.Forms.PictureBox();
 			this.LeftArrow = new System.Windows.Forms.PictureBox();
 			this.PageLabel = new System.Windows.Forms.Label();
-			this.Stats = new LoLNotes.Gui.Controls.StatsControl();
 			((System.ComponentModel.ISupportInitialize)(this.IconPicture)).BeginInit();
 			this.InfoPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.LoadingPicture)).BeginInit();
@@ -132,6 +132,14 @@ namespace LoLNotes.Gui.Controls
 			this.LoadingPicture.TabIndex = 0;
 			this.LoadingPicture.TabStop = false;
 			// 
+			// Stats
+			// 
+			this.Stats.BackColor = System.Drawing.Color.Transparent;
+			this.Stats.Location = new System.Drawing.Point(0, 0);
+			this.Stats.Name = "Stats";
+			this.Stats.Size = new System.Drawing.Size(300, 100);
+			this.Stats.TabIndex = 2;
+			// 
 			// RightArrow
 			// 
 			this.RightArrow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -145,7 +153,7 @@ namespace LoLNotes.Gui.Controls
 			this.RightArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.RightArrow.TabIndex = 5;
 			this.RightArrow.TabStop = false;
-			this.RightArrow.Click += new System.EventHandler(this.RightArrow_Click);
+			this.RightArrow.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RightArrow_MouseDown);
 			// 
 			// LeftArrow
 			// 
@@ -160,7 +168,7 @@ namespace LoLNotes.Gui.Controls
 			this.LeftArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.LeftArrow.TabIndex = 6;
 			this.LeftArrow.TabStop = false;
-			this.LeftArrow.Click += new System.EventHandler(this.LeftArrow_Click);
+			this.LeftArrow.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LeftArrow_MouseDown);
 			// 
 			// PageLabel
 			// 
@@ -171,14 +179,6 @@ namespace LoLNotes.Gui.Controls
 			this.PageLabel.TabIndex = 7;
 			this.PageLabel.Text = "0 / 0";
 			this.PageLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			// 
-			// Stats
-			// 
-			this.Stats.BackColor = System.Drawing.Color.Transparent;
-			this.Stats.Location = new System.Drawing.Point(0, 0);
-			this.Stats.Name = "Stats";
-			this.Stats.Size = new System.Drawing.Size(300, 100);
-			this.Stats.TabIndex = 2;
 			// 
 			// PlayerControl
 			// 

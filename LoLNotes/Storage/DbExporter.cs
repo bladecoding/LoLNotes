@@ -49,10 +49,7 @@ namespace LoLNotes.Storage
 			var export = serializer.Deserialize<JsonExportHolder>(json);
 
 			foreach (var ply in export.Players)
-				storage.RecordPlayer(ply, false);
-
-			foreach (var lobby in export.GameDtos)
-				storage.RecordLobby(lobby);
+				storage.RecordPlayer(ply, true);
 
 			foreach (var end in export.EndStats)
 				storage.RecordGame(end);
@@ -64,12 +61,10 @@ namespace LoLNotes.Storage
 			var export = new JsonExportHolder
 			{
 				Version = version,
-				GameDtos = db.Query<GameDTO>().ToList(),
 				EndStats = db.Query<EndOfGameStats>().ToList(),
 				Players = db.Query<PlayerEntry>().ToList(),
 			};
 			ActivateList(db, export.EndStats);
-			ActivateList(db, export.GameDtos);
 			ActivateList(db, export.Players);
 
 			var serializer = new JsonSerializer();
@@ -83,7 +78,6 @@ namespace LoLNotes.Storage
 	class JsonExportHolder
 	{
 		public string Version;
-		public List<GameDTO> GameDtos;
 		public List<EndOfGameStats> EndStats;
 		public List<PlayerEntry> Players;
 	}

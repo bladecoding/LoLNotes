@@ -60,6 +60,7 @@ using LoLNotes.Storage;
 using LoLNotes.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NotMissing;
 using NotMissing.Logging;
 
 namespace LoLNotes.Gui
@@ -80,7 +81,7 @@ namespace LoLNotes.Gui
 		MainSettings Settings;
 		LoaderInstaller Installer;
 
-		public GameDTO CurrentGame;
+		static GameDTO CurrentGame;
 		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>(); 
 
 		public MainForm()
@@ -441,7 +442,7 @@ namespace LoLNotes.Gui
 				bool same = true;
 				for (int i = 0; i < oldteams.Count && i < newteams.Count; i++)
 				{
-					if (oldteams[i].Count != newteams[i].Count || !oldteams[i].SequenceEqual(newteams[i]))
+					if (!oldteams[i].SequenceEqual(newteams[i]))
 					{
 						same = false;
 						break;
@@ -450,6 +451,8 @@ namespace LoLNotes.Gui
 
 				if (same)
 					return;
+
+				CurrentGame = lobby;
 			}
 
 			var teams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
@@ -621,7 +624,7 @@ namespace LoLNotes.Gui
 				plrcontrol.Player.NoteColor = Color.FromName(form.ColorBox.Items[form.ColorBox.SelectedIndex].ToString());
 			plrcontrol.UpdateView();
 
-			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player, true));
+			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player));
 		}
 
 		private void clearToolStripMenuItem_Click(object sender, EventArgs e)
@@ -634,7 +637,8 @@ namespace LoLNotes.Gui
 			if (owner == null)
 				return;
 
-			var plrcontrol = owner.SourceControl as PlayerControl;
+			Control cont = owner.SourceControl is StatsControl ? owner.SourceControl.Parent : owner.SourceControl;
+			var plrcontrol = cont as PlayerControl;
 			if (plrcontrol == null)
 				return;
 
@@ -645,7 +649,7 @@ namespace LoLNotes.Gui
 			plrcontrol.Player.NoteColor = default(Color);
 			plrcontrol.UpdateView();
 
-			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player, true));
+			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player));
 		}
 
 		private void DownloadLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

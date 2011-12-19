@@ -48,7 +48,6 @@ namespace LoLNotes.Gui.Controls
 			SetStyle(ControlStyles.UserPaint, true);
 			SetStyle(ControlStyles.DoubleBuffer, true);
 			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-			SetStyle(ControlStyles.StandardDoubleClick, false);
 
 			InitializeComponent();
 
@@ -212,13 +211,13 @@ namespace LoLNotes.Gui.Controls
 			Invalidate();
 		}
 
-		private void LeftArrow_Click(object sender, EventArgs e)
+		private void LeftArrow_MouseDown(object sender, MouseEventArgs e)
 		{
 			CurrentPage--;
 			UpdateView();
 		}
 
-		private void RightArrow_Click(object sender, EventArgs e)
+		private void RightArrow_MouseDown(object sender, MouseEventArgs e)
 		{
 			CurrentPage++;
 			UpdateView();

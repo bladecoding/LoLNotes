@@ -106,19 +106,20 @@ namespace LoLNotes.Storage
 			{
 				sw = Stopwatch.StartNew();
 
-				RecordLobby(lobby);
-				Database.Commit();
+				if (RecordLobby(lobby))
+					Database.Commit();
 			}
 			sw.Stop();
-			StaticLogger.Debug(string.Format("GameDTO committed in {0}ms", sw.ElapsedMilliseconds));
+			StaticLogger.Debug(string.Format("Lobby committed in {0}ms", sw.ElapsedMilliseconds));
 		}
+
 		/// <summary>
 		/// Checks the database for the lobby and if it does not exist then it adds it.
 		/// Does not lock the database or commit
 		/// </summary>
 		/// <param name="lobby"></param>
-		/// <returns>The GameDTO from the database</returns>
-		public void RecordLobby(GameDTO lobby)
+		/// <returns>True if players need to be committed</returns>
+		public bool RecordLobby(GameDTO lobby)
 		{
 			if (lobby == null)
 				throw new ArgumentNullException("lobby");
@@ -135,32 +136,43 @@ namespace LoLNotes.Storage
 			}
 
 
+			bool commit = false;
+
 			foreach (PlayerParticipant plr in lobby.TeamOne.Union(lobby.TeamTwo).Where(p => p is PlayerParticipant).ToList())
 			{
-				if (GetPlayer(plr.Id) == null) //Only record them if they don't exist.
-					RecordPlayer(new PlayerEntry(plr), false);
+				var entry = new PlayerEntry(plr);
+				lock (_lobbycache)
+				{
+					if (_lobbycache.Find(p => p.Id == plr.Id) != null)
+						continue;
+
+					_lobbycache.Add(entry);
+				}
+				if (RecordPlayer(entry, false))
+				{
+					commit = true;
+				}
 			}
 
-			return;
+			return commit;
 		}
 		protected int _currentlobby = 0;
-		protected readonly List<PlayerParticipant> _lobbycache = new List<PlayerParticipant>();
+		protected readonly List<PlayerEntry> _lobbycache = new List<PlayerEntry>();
 
 
 		/// <summary>
 		/// Records/Commits the player to the database. Locking the database lock.
 		/// </summary>
 		/// <param name="entry">Player to record</param>
-		/// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
 		/// <returns>The PlayerEntry from the database</returns>
-		public void CommitPlayer(PlayerEntry entry, bool ignoretimestamp)
+		public void CommitPlayer(PlayerEntry entry)
 		{
 			Stopwatch sw;
 			lock (DatabaseLock)
 			{
 				sw = Stopwatch.StartNew();
 
-				RecordPlayer(entry, ignoretimestamp);
+				RecordPlayer(entry, true);
 				Database.Commit();
 			}
 			sw.Stop();
@@ -172,17 +184,21 @@ namespace LoLNotes.Storage
 		/// Does not lock the database or commit
 		/// </summary>
 		/// <param name="entry">Player to record</param>
-		/// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
+		/// <param name="overwrite">Overwrite an existing entry</param>
 		/// <returns>Returns true if the player was recorded, otherwise false</returns>
-		public bool RecordPlayer(PlayerEntry entry, bool ignoretimestamp)
+		public bool RecordPlayer(PlayerEntry entry, bool overwrite)
 		{
 			if (entry == null)
 				throw new ArgumentNullException("entry");
 
 			var match = Database.Query<PlayerEntry>().FirstOrDefault(m => m.Id == entry.Id);
-			if (match == null)
+			if (match == null || overwrite)
 			{
 				Database.Store(entry.CloneT());
+			}
+			else
+			{
+				return false;
 			}
 			OnPlayerUpdate(entry);
 			return true;
@@ -190,6 +206,12 @@ namespace LoLNotes.Storage
 
 		public PlayerEntry GetPlayer(int id)
 		{
+			lock (_lobbycache)
+			{
+				var ply = _lobbycache.Find(p => p.Id == id);
+				if (ply != null)
+					return ply;
+			}
 			lock (DatabaseLock)
 			{
 				var ret = Database.Query<PlayerEntry>().FirstOrDefault(e => e.Id == id);
