@@ -597,6 +597,17 @@ namespace LoLNotes.Gui
 			}
 		}
 
+		static T GetParent<T>(Control c) where T : Control
+		{
+			if (c == null)
+				return null;
+			if (c.GetType() == typeof(T))
+			{
+				return (T)c;
+			}
+			return GetParent<T>(c.Parent);
+		}
+
 		private void editToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var menuItem = sender as ToolStripItem;
@@ -607,8 +618,7 @@ namespace LoLNotes.Gui
 			if (owner == null)
 				return;
 
-			Control cont = owner.SourceControl is StatsControl ? owner.SourceControl.Parent : owner.SourceControl;
-			var plrcontrol = cont as PlayerControl;
+			var plrcontrol = GetParent<PlayerControl>(owner.SourceControl);
 			if (plrcontrol == null)
 				return;
 
@@ -637,8 +647,7 @@ namespace LoLNotes.Gui
 			if (owner == null)
 				return;
 
-			Control cont = owner.SourceControl is StatsControl ? owner.SourceControl.Parent : owner.SourceControl;
-			var plrcontrol = cont as PlayerControl;
+			var plrcontrol = GetParent<PlayerControl>(owner.SourceControl);
 			if (plrcontrol == null)
 				return;
 
