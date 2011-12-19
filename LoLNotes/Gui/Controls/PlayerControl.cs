@@ -26,6 +26,8 @@ using System.Windows.Forms;
 using LoLNotes.Assets;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
+using LoLNotes.Messages.Statistics;
+using LoLNotes.Messages.Summoner;
 using LoLNotes.Storage;
 using System.Linq;
 using NotMissing.Logging;
@@ -152,6 +154,23 @@ namespace LoLNotes.Gui.Controls
             UpdateView();
             SetVisible(true);
         }
+
+		public void SetData(PublicSummoner ply, PlayerLifetimeStats stats, PlayerStatSummary odin)
+		{
+			Loading = false;
+
+			SetTitle(ply.Name);
+
+			SetDescription(string.Format(
+				"{0}\nLevel: {1}\nWins: {2}\nLosses: {3}\nLeaves: {4}",
+				odin.PlayerStatSummaryType,
+				ply.SummonerLevel,
+				odin.Wins,
+				odin.Losses,
+				odin.Leaves
+			));
+			SetVisible(true);
+		}
 
         bool SetStats()
         {

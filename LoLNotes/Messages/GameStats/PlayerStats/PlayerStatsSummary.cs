@@ -31,8 +31,6 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
     [DebuggerDisplay("{SummonerName}")]
     public class PlayerStatsSummary : BaseObject, ICloneable
     {
-        protected readonly FlashObject Base;
-
         public PlayerStatsSummary()
 			: base(null)
         {

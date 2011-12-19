@@ -50,6 +50,8 @@ using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.GameStats.PlayerStats;
 using LoLNotes.Messages.Readers;
+using LoLNotes.Messages.Statistics;
+using LoLNotes.Messages.Summoner;
 using LoLNotes.Messages.Translators;
 using LoLNotes.Messaging.Messages;
 using LoLNotes.Properties;
@@ -170,35 +172,8 @@ namespace LoLNotes.Gui
 			return config;
 		}
 
-		readonly object cachelock = new object();
 		void UpdatePlayer(PlayerEntry player)
 		{
-			lock (cachelock)
-			{
-				var lists = new List<TeamControl> { teamControl1, teamControl2 };
-				foreach (var list in lists)
-				{
-					foreach (var plr in list.Players)
-					{
-						if (plr != null && plr.Player != null && plr.Player.Id == player.Id && player.GameTimeStamp >= plr.Player.GameTimeStamp)
-						{
-							plr.SetData(player);
-							StaticLogger.Trace("Updating stale player " + player.Name);
-							break;
-						}
-					}
-				}
-				for (int i = 0; i < PlayerCache.Count; i++)
-				{
-					var plrentry = PlayerCache[i];
-					if (plrentry.Id == player.Id && player.GameTimeStamp >= plrentry.GameTimeStamp)
-					{
-						PlayerCache[i] = player;
-						StaticLogger.Trace("Updating stale player cache " + player.Name);
-						break;
-					}
-				}
-			}
 		}
 
 		void Recorder_PlayerUpdate(PlayerEntry player)
@@ -423,7 +398,7 @@ namespace LoLNotes.Gui
 									var plycontrol = list.Players[o];
 									plycontrol.Loading = true;
 									plycontrol.SetData(new GameParticipant { Name = ply.SummonerName });
-									Task.Factory.StartNew(() => LoadPlayer(ply.UserId, plycontrol));
+									Task.Factory.StartNew(() => LoadPlayer(ply.SummonerName, ply.UserId, plycontrol));
 								}
 								else
 								{
@@ -507,7 +482,7 @@ namespace LoLNotes.Gui
 									var plycontrol = list.Players[o];
 									plycontrol.Loading = true;
 									plycontrol.SetData(ply);
-									Task.Factory.StartNew(() => LoadPlayer(ply.Id, plycontrol));
+									Task.Factory.StartNew(() => LoadPlayer(ply.Name, ply.Id, plycontrol));
 								}
 								else
 								{
@@ -541,39 +516,66 @@ namespace LoLNotes.Gui
 			}
 		}
 
+		readonly List<Tuple<PublicSummoner, PlayerLifetimeStats, PlayerStatSummary>> PlrCache = new List<Tuple<PublicSummoner, PlayerLifetimeStats, PlayerStatSummary>>(); 
 		/// <summary>
 		/// Query and cache player data
 		/// </summary>
+		/// <param name="name">Name of the player to load</param>
 		/// <param name="id">Id of the player to load</param>
 		/// <param name="control">Control to update</param>
-		void LoadPlayer(int id, PlayerControl control)
+		void LoadPlayer(string name, int id, PlayerControl control)
 		{
-			Stopwatch sw = Stopwatch.StartNew();
-
-			var entry = Recorder.GetPlayer(id);
-
-			if (entry == null)
+			lock (PlrCache)
 			{
-				//Create a fake entry so that the UpdatePlayerHandler can update it
-				entry = new PlayerEntry { Id = id };
+				var tup = PlrCache.Find(t => t.Item1.Name == name);
+				if (tup != null)
+				{
+					control.SetData(tup.Item1, tup.Item2, tup.Item3);
+					return;
+				}
 			}
-
-			lock (cachelock)
+			var cmd = new PlayerCommands(Connection);
+			var ply = cmd.GetPlayerByName(name);
+			if (ply != null)
 			{
-				if (PlayerCache.FindIndex(p => p.Id == entry.Id) == -1)
-					PlayerCache.Add(entry);
+				var stats = cmd.RetrievePlayerStatsByAccountId(ply.AccountId);
+				if (stats != null)
+				{
+					var odin = stats.PlayerStatSummaries.PlayerStatSummarySet.Find(p => p.PlayerStatSummaryType == "OdinUnranked");
+					if (odin != null)
+					{
+						lock (PlrCache)
+						{
+							PlrCache.Add(Tuple.Create(ply, stats, odin));
+							control.SetData(ply, stats, odin);
+							return;
+						}
+					}
+				}
 			}
+			control.SetNoStats();
 
-			sw.Stop();
-			StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+			//Stopwatch sw = Stopwatch.StartNew();
 
-			UpdatePlayerControl(control, entry);
+			//var entry = Recorder.GetPlayer(id);
+
+			//if (entry == null)
+			//{
+			//    //Create a fake entry so that the UpdatePlayerHandler can update it
+			//    entry = new PlayerEntry { Id = id };
+			//}
+
+			//lock (cachelock)
+			//{
+			//    if (PlayerCache.FindIndex(p => p.Id == entry.Id) == -1)
+			//        PlayerCache.Add(entry);
+			//}
+
+			//sw.Stop();
+			//StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
+
+			//UpdatePlayerControl(control, entry);
 		}
-
-
-
-
-
 
 		private void button1_Click(object sender, EventArgs e)
 		{
@@ -912,7 +914,7 @@ namespace LoLNotes.Gui
 				var bodies = RtmpUtil.GetBodies(notify);
 				foreach (var body in bodies)
 				{
-					children.Add(GetNode(body.Item1) ?? new TreeNode(body.Item1.ToString()));
+					children.Add(GetNode(body.Item1) ?? new TreeNode(body.Item1 != null ? body.Item1.ToString() : ""));
 				}
 
 				CallTree.Nodes.Add(new TreeNode(!RtmpUtil.IsResult(notify) ? "Call" : "Return", children.ToArray()));

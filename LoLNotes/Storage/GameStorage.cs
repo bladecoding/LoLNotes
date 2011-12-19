@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,47 +37,47 @@ using NotMissing.Logging;
 
 namespace LoLNotes.Storage
 {
-    public class GameStorage
-    {
-        /// <summary>
-        /// This lock is to prevents 2 objects from being added at the same time.
-        /// </summary>
-        public readonly object DatabaseLock = new object();
-        readonly IObjectContainer Database;
+	public class GameStorage
+	{
+		/// <summary>
+		/// This lock is to prevents 2 objects from being added at the same time.
+		/// </summary>
+		public readonly object DatabaseLock = new object();
+		readonly IObjectContainer Database;
 		readonly IMessageProcessor Flash;
-        readonly MessageReader Reader;
+		readonly MessageReader Reader;
 
-        public delegate void PlayerUpdateHandler(PlayerEntry player);
-        /// <summary>
-        /// Called when the recorder gets a new/updated player.
-        /// </summary>
-        public event PlayerUpdateHandler PlayerUpdate;
+		public delegate void PlayerUpdateHandler(PlayerEntry player);
+		/// <summary>
+		/// Called when the recorder gets a new/updated player.
+		/// </summary>
+		public event PlayerUpdateHandler PlayerUpdate;
 
-        public GameStorage(IObjectContainer db, IMessageProcessor flash)
-        {
-            Database = db;
-            Flash = flash;
+		public GameStorage(IObjectContainer db, IMessageProcessor flash)
+		{
+			Database = db;
+			Flash = flash;
 
-            Reader = new MessageReader(Flash);
-            Reader.ObjectRead += Reader_ObjectRead;
-        }
+			Reader = new MessageReader(Flash);
+			Reader.ObjectRead += Reader_ObjectRead;
+		}
 
-        void Reader_ObjectRead(object obj)
-        {
-            if (obj is GameDTO)
-                LobbyRead((GameDTO)obj);
-            else if (obj is EndOfGameStats)
-                StatsRead((EndOfGameStats)obj);
-        }
+		void Reader_ObjectRead(object obj)
+		{
+			if (obj is GameDTO)
+				LobbyRead((GameDTO)obj);
+			else if (obj is EndOfGameStats)
+				StatsRead((EndOfGameStats)obj);
+		}
 
-        void LobbyRead(GameDTO lobby)
-        {
-            Task.Factory.StartNew(() => CommitLobby(lobby));
-        }
-        void StatsRead(EndOfGameStats game)
-        {
-            Task.Factory.StartNew(() => CommitGame(game));
-        }
+		void LobbyRead(GameDTO lobby)
+		{
+			Task.Factory.StartNew(() => CommitLobby(lobby));
+		}
+		void StatsRead(EndOfGameStats game)
+		{
+			Task.Factory.StartNew(() => CommitGame(game));
+		}
 
 		/// <summary>
 		/// Lock the database and commit changes.
@@ -94,190 +95,169 @@ namespace LoLNotes.Storage
 			StaticLogger.Debug(string.Format("Committed in {0}ms", sw.ElapsedMilliseconds));
 		}
 
-        /// <summary>
-        /// Records/Commits the lobby to the database. Locking the database lock.
-        /// </summary>
-        /// <param name="lobby"></param>
-        public void CommitLobby(GameDTO lobby)
-        {
-            Stopwatch sw;
-            lock (DatabaseLock)
-            {
-                sw = Stopwatch.StartNew();
+		/// <summary>
+		/// Records/Commits the lobby to the database. Locking the database lock.
+		/// </summary>
+		/// <param name="lobby"></param>
+		public void CommitLobby(GameDTO lobby)
+		{
+			Stopwatch sw;
+			lock (DatabaseLock)
+			{
+				sw = Stopwatch.StartNew();
 
-                RecordLobby(lobby);
-                Database.Commit();
-            }
-            sw.Stop();
-            StaticLogger.Debug(string.Format("GameDTO committed in {0}ms", sw.ElapsedMilliseconds));
-        }
-        /// <summary>
-        /// Checks the database for the lobby and if it does not exist then it adds it.
-        /// Does not lock the database or commit
-        /// </summary>
-        /// <param name="lobby"></param>
-        /// <returns>The GameDTO from the database</returns>
-        public GameDTO RecordLobby(GameDTO lobby)
-        {
-            if (lobby == null)
-                throw new ArgumentNullException("lobby");
+				RecordLobby(lobby);
+				Database.Commit();
+			}
+			sw.Stop();
+			StaticLogger.Debug(string.Format("GameDTO committed in {0}ms", sw.ElapsedMilliseconds));
+		}
+		/// <summary>
+		/// Checks the database for the lobby and if it does not exist then it adds it.
+		/// Does not lock the database or commit
+		/// </summary>
+		/// <param name="lobby"></param>
+		/// <returns>The GameDTO from the database</returns>
+		public void RecordLobby(GameDTO lobby)
+		{
+			if (lobby == null)
+				throw new ArgumentNullException("lobby");
 
-            var match = Database.Query<GameDTO>().FirstOrDefault(m => m.Id == lobby.Id);
-            if (match != null)
-            {
-                //If the object read is older then don't bother adding it.
-                if (lobby.TimeStamp > match.TimeStamp)
-                {
-                    Database.Delete(match);
-                    Database.Store(lobby.CloneT());
-                }
-            }
-            else
-            {
-                Database.Store(lobby.CloneT());
-            }
+			lock (_lobbycache)
+			{
+				//Lets clear the cache if it somehow hits 1k people.
+				//That way people who afk in lobbies don't complain about a memory leak.
+				if (_currentlobby == 0 || _currentlobby != lobby.Id || _lobbycache.Count > 1000)
+				{
+					_currentlobby = lobby.Id;
+					_lobbycache.Clear();
+				}
+			}
 
 
-            foreach (PlayerParticipant plr in lobby.TeamOne.Union(lobby.TeamTwo).Where(p => p is PlayerParticipant).ToList())
-            {
+			foreach (PlayerParticipant plr in lobby.TeamOne.Union(lobby.TeamTwo).Where(p => p is PlayerParticipant).ToList())
+			{
 				if (GetPlayer(plr.Id) == null) //Only record them if they don't exist.
-					RecordPlayer(new PlayerEntry(lobby, plr), false);
-            }
+					RecordPlayer(new PlayerEntry(plr), false);
+			}
 
-            return match;
-        }
+			return;
+		}
+		protected int _currentlobby = 0;
+		protected readonly List<PlayerParticipant> _lobbycache = new List<PlayerParticipant>();
 
-        /// <summary>
-        /// Records/Commits the player to the database. Locking the database lock.
-        /// </summary>
-        /// <param name="entry">Player to record</param>
-        /// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
-        /// <returns>The PlayerEntry from the database</returns>
-        public void CommitPlayer(PlayerEntry entry, bool ignoretimestamp)
-        {
-            Stopwatch sw;
-            lock (DatabaseLock)
-            {
-                sw = Stopwatch.StartNew();
 
-                RecordPlayer(entry, ignoretimestamp);
-                Database.Commit();
-            }
-            sw.Stop();
-            StaticLogger.Debug(string.Format("PlayerEntry committed in {0}ms", sw.ElapsedMilliseconds));
-        }
+		/// <summary>
+		/// Records/Commits the player to the database. Locking the database lock.
+		/// </summary>
+		/// <param name="entry">Player to record</param>
+		/// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
+		/// <returns>The PlayerEntry from the database</returns>
+		public void CommitPlayer(PlayerEntry entry, bool ignoretimestamp)
+		{
+			Stopwatch sw;
+			lock (DatabaseLock)
+			{
+				sw = Stopwatch.StartNew();
 
-        /// <summary>
-        /// Checks the database for the player and if it does not exist then it adds it.
-        /// Does not lock the database or commit
-        /// </summary>
-        /// <param name="entry">Player to record</param>
-        /// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
-        /// <returns>Returns true if the player was recorded, otherwise false</returns>
-        public bool RecordPlayer(PlayerEntry entry, bool ignoretimestamp)
-        {
-            if (entry == null)
-                throw new ArgumentNullException("entry");
+				RecordPlayer(entry, ignoretimestamp);
+				Database.Commit();
+			}
+			sw.Stop();
+			StaticLogger.Debug(string.Format("PlayerEntry committed in {0}ms", sw.ElapsedMilliseconds));
+		}
 
-            var match = Database.Query<PlayerEntry>().FirstOrDefault(m => m.Id == entry.Id);
-            if (match != null)
-            {
-                if (!ignoretimestamp)
-                {
-                    //If the object read is older then don't bother adding it.
-                    if (entry.GameTimeStamp != 0 && entry.GameTimeStamp <= match.GameTimeStamp)
-                        return false;
-                    if (entry.LobbyTimeStamp != 0 && entry.LobbyTimeStamp <= match.LobbyTimeStamp)
-                        return false;
-                }
+		/// <summary>
+		/// Checks the database for the player and if it does not exist then it adds it.
+		/// Does not lock the database or commit
+		/// </summary>
+		/// <param name="entry">Player to record</param>
+		/// <param name="ignoretimestamp">Whether or not to ignore the timestamp when updating</param>
+		/// <returns>Returns true if the player was recorded, otherwise false</returns>
+		public bool RecordPlayer(PlayerEntry entry, bool ignoretimestamp)
+		{
+			if (entry == null)
+				throw new ArgumentNullException("entry");
 
-                Database.Delete(match);
-                Database.Store(entry.CloneT());
-            }
-            else
-            {
-                Database.Store(entry.CloneT());
-            }
-            OnPlayerUpdate(entry);
-            return true;
-        }
+			var match = Database.Query<PlayerEntry>().FirstOrDefault(m => m.Id == entry.Id);
+			if (match == null)
+			{
+				Database.Store(entry.CloneT());
+			}
+			OnPlayerUpdate(entry);
+			return true;
+		}
 
-        public PlayerEntry GetPlayer(int id)
-        {
-            lock (DatabaseLock)
-            {
-                var ret = Database.Query<PlayerEntry>().FirstOrDefault(e => e.Id == id);
-                if (ret == null)
-                    return null;
-                ret = ret.CloneT();
-                Database.Deactivate(ret, int.MaxValue);
-                return ret;
-            }
-        }
+		public PlayerEntry GetPlayer(int id)
+		{
+			lock (DatabaseLock)
+			{
+				var ret = Database.Query<PlayerEntry>().FirstOrDefault(e => e.Id == id);
+				if (ret == null)
+					return null;
+				ret = ret.CloneT();
+				Database.Deactivate(ret, int.MaxValue);
+				return ret;
+			}
+		}
 
-        public void CommitGame(EndOfGameStats game)
-        {
-            Stopwatch sw;
-            lock (DatabaseLock)
-            {
-                sw = Stopwatch.StartNew();
+		public void CommitGame(EndOfGameStats game)
+		{
+			Stopwatch sw;
+			lock (DatabaseLock)
+			{
+				sw = Stopwatch.StartNew();
 
-                RecordGame(game);
-                Database.Commit();
-            }
-            sw.Stop();
-            StaticLogger.Debug(string.Format("EndOfGameStats committed in {0}ms", sw.ElapsedMilliseconds));
-        }
+				RecordGame(game);
+				Database.Commit();
+			}
+			sw.Stop();
+			StaticLogger.Debug(string.Format("EndOfGameStats committed in {0}ms", sw.ElapsedMilliseconds));
+		}
 
-        public EndOfGameStats RecordGame(EndOfGameStats game)
-        {
-            if (game == null)
-                throw new ArgumentNullException("game");
+		public EndOfGameStats RecordGame(EndOfGameStats game)
+		{
+			if (game == null)
+				throw new ArgumentNullException("game");
 
-            var match = Database.Query<EndOfGameStats>().FirstOrDefault(m => m.GameId == game.GameId);
-            if (match != null)
-            {
-                //If the object read is older then don't bother adding it.
-                //However it may have new player information so don't return.
-                if (game.TimeStamp > match.TimeStamp)
-                {
-                    Database.Delete(match);
-                    Database.Store(game.CloneT());
-                }
-            }
-            else
-            {
-                Database.Store(game.CloneT());
-            }
+			var match = Database.Query<EndOfGameStats>().FirstOrDefault(m => m.GameId == game.GameId);
+			if (match != null)
+			{
+				//If the object read is older then don't bother adding it.
+				//However it may have new player information so don't return.
+				if (game.TimeStamp > match.TimeStamp)
+				{
+					Database.Delete(match);
+					Database.Store(game.CloneT());
+				}
+			}
+			else
+			{
+				Database.Store(game.CloneT());
+			}
 
-            var statslist = game.TeamPlayerStats.Union(game.OtherTeamPlayerStats).ToList();
-            for (int i = 0; i < statslist.Count; i++)
-            {
-                var entry = GetPlayer(statslist[i].UserId);
-                //RecordPlayer returned a PlayerEntry that we did not pass.
-                //That means it returned a PlayerEntry that it found in the DB.
-                //So lets update that PlayerEntry's stats.
-                if (entry != null)
-                {
-                    //Checking that stats age is done inside UpdateStats
-                    //otherwise you would be searching for gamemode/gametype twice.
-                    if (entry.UpdateStats(game, statslist[i]))
-                        RecordPlayer(entry, true);
-                }
-                else
-                {
-                    entry = new PlayerEntry(game, statslist[i]);
-                    RecordPlayer(entry, false);
-                }
-            }
 
-            return match;
-        }
+			//No reason to record players here?
+			//We should have gotten them all in the GameDTO
 
-        protected virtual void OnPlayerUpdate(PlayerEntry player)
-        {
-            if (PlayerUpdate != null)
-                PlayerUpdate(player);
-        }
-    }
+			//var statslist = game.TeamPlayerStats.Union(game.OtherTeamPlayerStats).ToList();
+			//for (int i = 0; i < statslist.Count; i++)
+			//{
+			//    var entry = GetPlayer(statslist[i].UserId);
+			//    if (entry == null)
+			//    {
+			//        entry = new PlayerEntry(statslist[i]);
+			//        RecordPlayer(entry, false);
+			//    }
+			//}
+
+			return match;
+		}
+
+		protected virtual void OnPlayerUpdate(PlayerEntry player)
+		{
+			if (PlayerUpdate != null)
+				PlayerUpdate(player);
+		}
+	}
 }
