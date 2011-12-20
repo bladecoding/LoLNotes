@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using NotMissing.Logging;
@@ -44,6 +45,9 @@ namespace LoLNotes.Proxy
 		byte[] SourceBuffer { get; set; }
 		byte[] RemoteBuffer { get; set; }
 
+		protected ProcessQueue<Tuple<byte[], int, int>> SourceQueue = new ProcessQueue<Tuple<byte[], int, int>>();
+		protected ProcessQueue<Tuple<byte[], int, int>> RemoteQueue = new ProcessQueue<Tuple<byte[], int, int>>();
+
 		public ProxyClient(IProxyHost host, TcpClient src)
 		{
 			Host = host;
@@ -51,6 +55,8 @@ namespace LoLNotes.Proxy
 			SourceBuffer = new byte[BufferSize];
 			RemoteBuffer = new byte[BufferSize];
 			RemoteTcp = new TcpClient();
+			SourceQueue.Process += SourceQueue_Process;
+			RemoteQueue.Process += RemoteQueue_Process;
 		}
 
 		protected virtual void ConnectRemote(string remote, int remoteport)
@@ -132,19 +138,32 @@ namespace LoLNotes.Proxy
 		protected virtual void OnSend(byte[] buffer, int idx, int len)
 		{
 			Host.OnSend(this, buffer, idx, len);
-			RemoteStream.BeginWrite(buffer, idx, len, OnBeginWrite, RemoteStream);
+			RemoteQueue.Enqueue(Tuple.Create(buffer, idx, len));
 		}
 
 		protected virtual void OnReceive(byte[] buffer, int idx, int len)
 		{
 			Host.OnReceive(this, buffer, idx, len);
-			SourceStream.BeginWrite(buffer, idx, len, OnBeginWrite, SourceStream);
+			SourceQueue.Enqueue(Tuple.Create(buffer, idx, len));
 		}
 
-		protected void OnBeginWrite(IAsyncResult ar)
+		void SourceQueue_Process(object sender, ProcessQueueEventArgs<Tuple<byte[], int, int>> e)
 		{
-			var stream = (Stream)ar.AsyncState;
-			stream.EndWrite(ar);
+			var ar = SourceStream.BeginWrite(e.Item.Item1, e.Item.Item2, e.Item.Item3, null, null);
+			using (ar.AsyncWaitHandle)
+			{
+				if (ar.AsyncWaitHandle.WaitOne(-1))
+					SourceStream.EndWrite(ar);
+			}
+		}
+		void RemoteQueue_Process(object sender, ProcessQueueEventArgs<Tuple<byte[], int, int>> e)
+		{
+			var ar = RemoteStream.BeginWrite(e.Item.Item1, e.Item.Item2, e.Item.Item3, null, null);
+			using (ar.AsyncWaitHandle)
+			{
+				if (ar.AsyncWaitHandle.WaitOne(-1))
+					RemoteStream.EndWrite(ar);
+			}
 		}
 
 		public void Dispose()
@@ -158,6 +177,8 @@ namespace LoLNotes.Proxy
 			{
 				_disposed = true;
 				Stop();
+				SourceQueue.Dispose();
+				RemoteQueue.Dispose();
 			}
 		}
 		~ProxyClient()

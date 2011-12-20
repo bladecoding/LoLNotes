@@ -295,7 +295,7 @@ namespace LoLNotes.Gui.Controls
 
 				var lbl = new Label
 				{
-					Font = new Font("Bitstream Vera Sans Mono", 9F, FontStyle.Bold),
+					Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold),
 					AutoSize = true,
 					Text = string.Format(
 						"[{0}] {1} ({2}/{3}/{4}){5}",
