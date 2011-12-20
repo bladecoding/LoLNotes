@@ -138,7 +138,7 @@ namespace LoLNotes.Gui
 			// 
 			this.teamControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.teamControl2.BackColor = System.Drawing.Color.Silver;
+			this.teamControl2.BackColor = System.Drawing.Color.Transparent;
 			this.teamControl2.Location = new System.Drawing.Point(509, 2);
 			this.teamControl2.Name = "teamControl2";
 			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
@@ -173,7 +173,7 @@ namespace LoLNotes.Gui
 			// 
 			this.teamControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.teamControl1.BackColor = System.Drawing.Color.Maroon;
+			this.teamControl1.BackColor = System.Drawing.Color.Transparent;
 			this.teamControl1.Location = new System.Drawing.Point(3, 2);
 			this.teamControl1.Name = "teamControl1";
 			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
