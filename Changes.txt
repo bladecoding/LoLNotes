@@ -1,6 +1,16 @@
 {
 	"1.1":
 	[
+		"Added database import/export",
+		"Added player stats lookup (Includes recent matches, rankings, top champions)",
+		"Made UI bigger to allow for more information. Can be made a bitsmaller horizontally.",
+		"Install/Uninstall now takes care of the certificates for you",
+		"Added Dev tab which logs packets for developers.",
+		"Disabled lobby logging and player stats logging. Became obsolete with the stats lookup. Improved performance removing them.",
+		"Added dropdown for quickly changing all tabs to the selected."
+	],
+	"1.1":
+	[
 		"Now works after log files were broken.",
 	],
 	"1.0f": 
