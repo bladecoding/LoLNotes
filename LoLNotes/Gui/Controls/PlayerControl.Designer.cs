@@ -114,8 +114,7 @@ namespace LoLNotes.Gui.Controls
 			// 
 			// PlayerControl
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.White;
 			this.Controls.Add(this.NameLabel);
 			this.Controls.Add(this.InfoTabs);
@@ -138,6 +137,6 @@ namespace LoLNotes.Gui.Controls
 		private System.Windows.Forms.PictureBox IconPicture;
 		private System.Windows.Forms.Label LevelLabel;
 		private System.Windows.Forms.PictureBox LoadingPicture;
-		private System.Windows.Forms.TabControl InfoTabs;
+		public System.Windows.Forms.TabControl InfoTabs;
     }
 }

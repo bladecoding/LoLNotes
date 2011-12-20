@@ -63,9 +63,11 @@ namespace LoLNotes.Gui
 			this.components = new System.ComponentModel.Container();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.GameTab = new System.Windows.Forms.TabPage();
+			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
 			this.DevCheck = new System.Windows.Forms.CheckBox();
 			this.LogGroupBox = new System.Windows.Forms.GroupBox();
@@ -89,8 +91,7 @@ namespace LoLNotes.Gui
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.CallTree = new System.Windows.Forms.TreeView();
-			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
-			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
+			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.tabControl1.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.PlayerEditStrip.SuspendLayout();
@@ -124,6 +125,7 @@ namespace LoLNotes.Gui
 			// 
 			// GameTab
 			// 
+			this.GameTab.Controls.Add(this.comboBox1);
 			this.GameTab.Controls.Add(this.teamControl2);
 			this.GameTab.Controls.Add(this.teamControl1);
 			this.GameTab.Location = new System.Drawing.Point(4, 22);
@@ -133,6 +135,19 @@ namespace LoLNotes.Gui
 			this.GameTab.TabIndex = 0;
 			this.GameTab.Text = "Game";
 			this.GameTab.UseVisualStyleBackColor = true;
+			// 
+			// teamControl2
+			// 
+			this.teamControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.teamControl2.BackColor = System.Drawing.Color.Transparent;
+			this.teamControl2.Location = new System.Drawing.Point(509, 2);
+			this.teamControl2.Name = "teamControl2";
+			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl2.Size = new System.Drawing.Size(500, 836);
+			this.teamControl2.TabIndex = 1;
+			this.teamControl2.TeamSize = 5;
+			this.teamControl2.Text = "Team 2";
 			// 
 			// PlayerEditStrip
 			// 
@@ -155,6 +170,19 @@ namespace LoLNotes.Gui
 			this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
 			this.clearToolStripMenuItem.Text = "Clear";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+			// 
+			// teamControl1
+			// 
+			this.teamControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.teamControl1.BackColor = System.Drawing.Color.Transparent;
+			this.teamControl1.Location = new System.Drawing.Point(3, 2);
+			this.teamControl1.Name = "teamControl1";
+			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl1.Size = new System.Drawing.Size(500, 836);
+			this.teamControl1.TabIndex = 0;
+			this.teamControl1.TeamSize = 5;
+			this.teamControl1.Text = "Team 1";
 			// 
 			// SettingsTab
 			// 
@@ -399,31 +427,18 @@ namespace LoLNotes.Gui
 			this.CallTree.Size = new System.Drawing.Size(1014, 563);
 			this.CallTree.TabIndex = 0;
 			// 
-			// teamControl2
+			// comboBox1
 			// 
-			this.teamControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.teamControl2.BackColor = System.Drawing.Color.Transparent;
-			this.teamControl2.Location = new System.Drawing.Point(509, 2);
-			this.teamControl2.Name = "teamControl2";
-			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(500, 836);
-			this.teamControl2.TabIndex = 1;
-			this.teamControl2.TeamSize = 5;
-			this.teamControl2.Text = "Team 2";
-			// 
-			// teamControl1
-			// 
-			this.teamControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.teamControl1.BackColor = System.Drawing.Color.Transparent;
-			this.teamControl1.Location = new System.Drawing.Point(3, 2);
-			this.teamControl1.Name = "teamControl1";
-			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(500, 836);
-			this.teamControl1.TabIndex = 0;
-			this.teamControl1.TeamSize = 5;
-			this.teamControl1.Text = "Team 1";
+			this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.comboBox1.FormattingEnabled = true;
+			this.comboBox1.Items.AddRange(new object[] {
+            "Champs",
+            "Recent"});
+			this.comboBox1.Location = new System.Drawing.Point(382, 6);
+			this.comboBox1.Name = "comboBox1";
+			this.comboBox1.Size = new System.Drawing.Size(121, 21);
+			this.comboBox1.TabIndex = 2;
+			this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
 			// 
 			// MainForm
 			// 
@@ -492,6 +507,7 @@ namespace LoLNotes.Gui
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.ToolStripMenuItem dumpToolStripMenuItem;
 		private System.Windows.Forms.TreeView CallTree;
+		private System.Windows.Forms.ComboBox comboBox1;
 
     }
 }

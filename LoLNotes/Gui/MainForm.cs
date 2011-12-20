@@ -1029,5 +1029,26 @@ namespace LoLNotes.Gui
 			ResumeLayout(true);
 			MainForm_Resize(sender, e); //Force one last adjustment
 		}
+
+		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var str = comboBox1.SelectedItem as string;
+			var teams = new List<TeamControl> { teamControl1, teamControl2 };
+			foreach (var team in teams)
+			{
+				foreach (var ply in team.Players)
+				{
+					for (int i = 0; i < ply.InfoTabs.TabPages.Count; i++)
+					{
+						if ((ply.InfoTabs.TabPages[i].Tag as string) == str)
+						{
+							ply.InfoTabs.SelectedIndex = i;
+							break;
+						}
+					}
+				}
+			}
+			comboBox1.SelectedIndex = -1;
+		}
 	}
 }
