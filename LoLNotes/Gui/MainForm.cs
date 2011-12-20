@@ -399,6 +399,7 @@ namespace LoLNotes.Gui
 								{
 									var plycontrol = list.Players[o];
 									plycontrol.SetLoading(true);
+									plycontrol.SetEmpty();
 									plycontrol.SetParticipant(new GameParticipant { Name = ply.SummonerName });
 									Task.Factory.StartNew(() => LoadPlayer(ply.SummonerName, ply.UserId, plycontrol));
 								}
@@ -407,6 +408,8 @@ namespace LoLNotes.Gui
 									list.Players[o].SetEmpty();
 									list.Players[o].SetPlayer(entry.Player);
 									list.Players[o].SetStats(entry.Summoner, entry.Stats);
+									list.Players[o].SetChamps(entry.RecentChamps);
+									list.Players[o].SetGames(entry.Games);
 								}
 							}
 						}
@@ -490,6 +493,7 @@ namespace LoLNotes.Gui
 								{
 									var plycontrol = list.Players[o];
 									plycontrol.SetLoading(true);
+									plycontrol.SetEmpty();
 									plycontrol.SetParticipant(ply);
 									Task.Factory.StartNew(() => LoadPlayer(ply.Name, ply.Id, plycontrol));
 								}
@@ -498,11 +502,14 @@ namespace LoLNotes.Gui
 									list.Players[o].SetEmpty();
 									list.Players[o].SetPlayer(entry.Player);
 									list.Players[o].SetStats(entry.Summoner, entry.Stats);
+									list.Players[o].SetChamps(entry.RecentChamps);
+									list.Players[o].SetGames(entry.Games);
 								}
 							}
 						}
 						else
 						{
+							list.Players[o].SetEmpty();
 							list.Players[o].SetParticipant(team[o]);
 						}
 					}
