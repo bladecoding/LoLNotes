@@ -156,5 +156,28 @@ namespace LoLNotes.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///	&quot;WIN&quot;:&quot;Victories&quot;,
+        ///	&quot;CHAMPIONS_KILLED&quot;:&quot;Champion Kills&quot;,
+        ///	&quot;TOTAL_ASSISTS&quot;:&quot;Assists&quot;,
+        ///	&quot;FRIENDLY_HQ_LOST&quot;:&quot;Friendly Nexus Destroyed&quot;,
+        ///	&quot;TOTAL_TIMES_SPELL4_CAST&quot;:&quot;Spell 4 Casts&quot;,
+        ///	&quot;UNREAL_KILLS&quot;:&quot;Unreal Kills&quot;,
+        ///	&quot;MAX_CHAMPIONS_KILLED&quot;:&quot;Max Kills&quot;,
+        ///	&quot;TOTAL_PLAYER_SCORE&quot;:&quot;Total Score&quot;,
+        ///	&quot;SPELL2_CAST&quot;:&quot;Spell 2 Casts&quot;,
+        ///	&quot;TOTAL_CHAMPION_KILLS&quot;:&quot;Total Champion Kills&quot;,
+        ///	&quot;EXP&quot;:&quot;Champion Experience&quot;,
+        ///	&quot;MINIONS_KILLED&quot;:&quot;Minions Slain&quot;,
+        ///	&quot;MAGIC_DAMAGE_TAKEN&quot;:&quot;Magic Damage Taken&quot;,
+        ///	&quot;SUPER_MONSTER_KILLED&quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string StatsData {
+            get {
+                return ResourceManager.GetString("StatsData", resourceCulture);
+            }
+        }
     }
 }

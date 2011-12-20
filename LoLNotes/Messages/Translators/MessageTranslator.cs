@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluorineFx;
+using FluorineFx.AMF3;
 using LoLNotes.Flash;
 using NotMissing.Logging;
 
@@ -64,7 +65,7 @@ namespace LoLNotes.Messages.Translators
 		}
 
 		/// <summary>
-		/// Gets the T object from the flash object
+		/// Gets an object from the flash object
 		/// </summary>
 		/// <param name="flashobj">Flash object to get data from</param>
 		/// <returns>T object from flash object if successful. Null if not successful.</returns>

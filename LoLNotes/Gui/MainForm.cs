@@ -403,7 +403,9 @@ namespace LoLNotes.Gui
 								}
 								else
 								{
-									list.Players[o].SetPlayerStats(entry.Player, entry.Summoner, entry.Stats);
+									list.Players[o].SetEmpty();
+									list.Players[o].SetPlayer(entry.Player);
+									list.Players[o].SetStats(entry.Summoner, entry.Stats);
 								}
 							}
 						}
@@ -489,7 +491,9 @@ namespace LoLNotes.Gui
 								}
 								else
 								{
-									list.Players[o].SetPlayerStats(entry.Player, entry.Summoner, entry.Stats);
+									list.Players[o].SetEmpty();
+									list.Players[o].SetPlayer(entry.Player);
+									list.Players[o].SetStats(entry.Summoner, entry.Stats);
 								}
 							}
 						}
@@ -551,14 +555,17 @@ namespace LoLNotes.Gui
 				{
 					ply.Summoner = summoner;
 					ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
+					ply.RecentChamps = cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
+					ply.Games = cmd.GetRecentGames(summoner.AccountId);
 				}
 			}
 			sw.Stop();
 
 			StaticLogger.Trace(string.Format("Stats query in {0}ms", sw.ElapsedMilliseconds));
 
-			if (ply.Stats != null)
-				control.SetStats(ply.Summoner, ply.Stats);
+			control.SetStats(ply.Summoner, ply.Stats);
+			//control.SetChamps(ply.Summoner, ply.Stats);
+			//control.SetRecent(ply.Summoner, ply.Stats);
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -632,7 +639,7 @@ namespace LoLNotes.Gui
 			plrcontrol.Player.Note = form.NoteText.Text;
 			if (form.ColorBox.SelectedIndex != -1)
 				plrcontrol.Player.NoteColor = Color.FromName(form.ColorBox.Items[form.ColorBox.SelectedIndex].ToString());
-			plrcontrol.UpdateView();
+			//plrcontrol.UpdateView();
 
 			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player));
 		}
@@ -656,7 +663,7 @@ namespace LoLNotes.Gui
 
 			plrcontrol.Player.Note = "";
 			plrcontrol.Player.NoteColor = default(Color);
-			plrcontrol.UpdateView();
+			//plrcontrol.UpdateView();
 
 			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player));
 		}

@@ -73,22 +73,7 @@ namespace LoLNotes.Gui.Controls
 
 		void SetName(string str)
 		{
-			if (NameLabel.InvokeRequired)
-			{
-				NameLabel.BeginInvoke(new Action<string>(SetName), str);
-				return;
-			}
 			NameLabel.Text = str;
-		}
-
-		void SetVisible(bool visible)
-		{
-			if (InvokeRequired)
-			{
-				BeginInvoke(new Action<bool>(SetVisible), visible);
-				return;
-			}
-			Visible = visible;
 		}
 
 		public void SetLoading(bool loading)
@@ -128,7 +113,7 @@ namespace LoLNotes.Gui.Controls
 			}
 		}
 
-		public void SetLevel(int level)
+		void SetLevel(int level)
 		{
 			if (InvokeRequired)
 			{
@@ -141,35 +126,46 @@ namespace LoLNotes.Gui.Controls
 
 		public void SetEmpty()
 		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action(SetEmpty));
+				return;
+			}
 			Player = null;
-			SetVisible(false);
+			LifetimeStats = null;
+			UpdateView();
 		}
 
 		public void SetPlayer(PlayerEntry plr)
 		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<PlayerEntry>(SetPlayer), plr);
+				return;
+			}
 			Player = plr;
-			LifetimeStats = null;
 			SetTitle(plr);
 			UpdateView();
-			SetVisible(true);
 		}
 		public void SetParticipant(Participant part)
 		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<Participant>(SetParticipant), part);
+				return;
+			}
 			LifetimeStats = null;
 			SetTitle(part);
-			SetVisible(true);
-		}
-
-		public void SetPlayerStats(PlayerEntry plr, PublicSummoner summoner, PlayerLifetimeStats stats)
-		{
-			Player = plr;
-			SetTitle(plr);
-			SetStats(summoner, stats);
 		}
 
 		public void SetStats(PublicSummoner summoner, PlayerLifetimeStats stats)
 		{
-			SetLoading(false);
+			if (InvokeRequired)
+			{
+				Invoke(new Action<PublicSummoner, PlayerLifetimeStats>(SetStats), summoner, stats);
+				return;
+			}
+
 			LifetimeStats = stats;
 
 			if (Player == null || string.IsNullOrEmpty(Player.Note))
@@ -178,16 +174,11 @@ namespace LoLNotes.Gui.Controls
 			SetLevel(summoner.SummonerLevel);
 
 			UpdateView();
-			SetVisible(true);
 		}
 
-		public void UpdateView()
+		void UpdateView()
 		{
-			if (InvokeRequired)
-			{
-				Invoke(new Action(UpdateView));
-				return;
-			}
+
 			int count = LifetimeStats != null ? LifetimeStats.PlayerStatSummaries.PlayerStatSummarySet.Count : 0;
 			int page = count == 0 ? 0 : Math.Abs(CurrentPage) % (count + 1);
 

@@ -23,18 +23,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LoLNotes.Messages.Statistics;
-using LoLNotes.Messages.Summoner;
-using LoLNotes.Storage;
+using FluorineFx;
+using FluorineFx.AMF3;
+using LoLNotes.Flash;
 
-namespace LoLNotes.Gui
+namespace LoLNotes.Messages.Statistics
 {
-	public class PlayerCache
+	public class ChampionStatInfoList : BaseList<ChampionStatInfo>
 	{
-		public PlayerEntry Player { get; set; }
-		public PublicSummoner Summoner { get; set; }
-		public PlayerLifetimeStats Stats { get; set; }
-		public RecentGames Games { get; set; }
-		public ChampionStatInfoList RecentChamps { get; set; }
+		public ChampionStatInfoList()
+			: base(null)
+		{
+		}
+		public ChampionStatInfoList(ArrayCollection obj)
+			: base(obj)
+		{
+			if (obj == null)
+				return;
+
+			foreach(var ao in obj)
+				Add(new ChampionStatInfo(ao as ASObject));
+		}
 	}
 }

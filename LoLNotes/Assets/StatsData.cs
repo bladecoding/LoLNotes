@@ -23,18 +23,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LoLNotes.Messages.Statistics;
-using LoLNotes.Messages.Summoner;
-using LoLNotes.Storage;
+using LoLNotes.Properties;
+using Newtonsoft.Json;
 
-namespace LoLNotes.Gui
+namespace LoLNotes.Assets
 {
-	public class PlayerCache
+	public class StatsData : Dictionary<string, string>
 	{
-		public PlayerEntry Player { get; set; }
-		public PublicSummoner Summoner { get; set; }
-		public PlayerLifetimeStats Stats { get; set; }
-		public RecentGames Games { get; set; }
-		public ChampionStatInfoList RecentChamps { get; set; }
+		protected static readonly StatsData _instance;
+		public static StatsData Instance { get { return _instance; } }
+
+		static StatsData()
+		{
+			_instance = JsonConvert.DeserializeObject<StatsData>(Resources.StatsData);
+		}
+
+		public static string Get(string key)
+		{
+			string ret;
+			return _instance.TryGetValue(key, out ret) ? ret : key;
+		}
 	}
 }

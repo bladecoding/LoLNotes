@@ -23,18 +23,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LoLNotes.Messages.Statistics;
-using LoLNotes.Messages.Summoner;
-using LoLNotes.Storage;
+using FluorineFx;
+using LoLNotes.Flash;
 
-namespace LoLNotes.Gui
+namespace LoLNotes.Messages.Statistics
 {
-	public class PlayerCache
+	[Message(".RecentGames")]
+	public class RecentGames : MessageObject
 	{
-		public PlayerEntry Player { get; set; }
-		public PublicSummoner Summoner { get; set; }
-		public PlayerLifetimeStats Stats { get; set; }
-		public RecentGames Games { get; set; }
-		public ChampionStatInfoList RecentChamps { get; set; }
+		public RecentGames(ASObject obj)
+			: base(obj)
+		{
+			GameStatistics = new PlayerGameStatsList();
+			BaseObject.SetFields(this, obj);
+		}
+
+		[InternalName("gameStatistics")]
+		public PlayerGameStatsList GameStatistics { get; set; }
 	}
 }

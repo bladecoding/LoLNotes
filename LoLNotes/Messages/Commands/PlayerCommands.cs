@@ -20,9 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using System;
 using System.Linq;
 using FluorineFx;
+using FluorineFx.AMF3;
 using FluorineFx.Messaging.Messages;
+using FluorineFx.Messaging.Rtmp.Event;
+using LoLNotes.Flash;
 using LoLNotes.Messages.Statistics;
 using LoLNotes.Messages.Summoner;
 using LoLNotes.Messages.Translators;
@@ -40,90 +44,111 @@ namespace LoLNotes.Messages.Commands
 			Host = host;
 		}
 
-		public PublicSummoner GetPlayerByName(string name)
+		public T InvokeService<T>(string service, string operation, params object[] args) where T : class
 		{
 			var msg = new RemotingMessage();
-			msg.operation = "getSummonerByName";
-			msg.destination = "summonerService";
+			msg.operation = operation;
+			msg.destination = service;
 			msg.headers["DSRequestTimeout"] = 60;
 			msg.headers["DSId"] = RtmpUtil.RandomUidString();
 			msg.headers["DSEndpoint"] = "my-rtmps";
-			msg.body = new object[] { name };
+			msg.body = args;
 			msg.messageId = RtmpUtil.RandomUidString();
+
+			string endpoint = service + "." + operation;
 
 			var result = Host.Call(msg);
 			if (result == null)
 			{
-				StaticLogger.Warning("GetPlayerByName Host.Call returned null");
+				StaticLogger.Warning(string.Format("Invoking {0} returned null", endpoint));
 				return null;
 			}
 
 			var body = RtmpUtil.GetBodies(result).FirstOrDefault();
 			if (body == null)
 			{
-				StaticLogger.Debug("GetPlayerByName RtmpUtil.GetBodies returned null");
+				StaticLogger.Debug(endpoint + " RtmpUtil.GetBodies returned null");
 				return null;
 			}
 
-			var ao = body.Item1 as ASObject;
-			if (ao == null)
+			if (body.Item1 == null)
 			{
-				StaticLogger.Debug("GetPlayerByName expected ASObject, got " + body.Item1.GetType());
+				StaticLogger.Debug(endpoint + " Body.Item1 returned null");
 				return null;
 			}
-
-			var summoner = MessageTranslator.Instance.GetObject<PublicSummoner>(ao);
-			if (summoner == null)
+			
+			object obj = null;
+			if (body.Item1 is ASObject)
 			{
-				StaticLogger.Debug("GetPlayerByName expected PublicSummoner, got " + ao.TypeName);
+				var ao = (ASObject)body.Item1;
+				obj = MessageTranslator.Instance.GetObject<T>(ao);
+				if (obj == null)
+				{
+					StaticLogger.Debug(endpoint + " expected " + typeof(T) + ", got " + ao.TypeName);
+					return null;
+				}
+			}
+			else if (body.Item1 is ArrayCollection)
+			{
+				try
+				{
+					obj = Activator.CreateInstance(typeof(T), (ArrayCollection)body.Item1);
+				}
+				catch (Exception ex)
+				{
+					StaticLogger.Warning(endpoint + " failed to construct " + typeof(T));
+					StaticLogger.Debug(ex);
+					return null;
+				}
+			}
+			else
+			{
+				StaticLogger.Debug(endpoint + " unknown object " + body.Item1.GetType());
 				return null;
 			}
 
-			summoner.TimeStamp = body.Item2;
-			return summoner;
+			if (obj is MessageObject)
+				((MessageObject)obj).TimeStamp = body.Item2;
+
+			return (T)obj;
 		}
 
-		public PlayerLifetimeStats RetrievePlayerStatsByAccountId(int id)
+		public PublicSummoner GetPlayerByName(string name)
 		{
-			var msg = new RemotingMessage();
-			msg.operation = "retrievePlayerStatsByAccountId";
-			msg.destination = "playerStatsService";
-			msg.headers["DSRequestTimeout"] = 60;
-			msg.headers["DSId"] = RtmpUtil.RandomUidString();
-			msg.headers["DSEndpoint"] = "my-rtmps";
-			msg.body = new object[] { id, "CURRENT" };
-			msg.messageId = RtmpUtil.RandomUidString();
+			return InvokeService<PublicSummoner>(
+				"summonerService", 
+				"getSummonerByName",
+				name
+			);
+		}
 
-			var result = Host.Call(msg);
-			if (result == null)
-			{
-				StaticLogger.Warning("RetrievePlayerStatsByAccountId Host.Call returned null");
-				return null;
-			}
+		public PlayerLifetimeStats RetrievePlayerStatsByAccountId(int acctid)
+		{
+			return InvokeService<PlayerLifetimeStats>(
+				"playerStatsService",
+				"retrievePlayerStatsByAccountId",
+				acctid,
+				"CURRENT"
+			);
+		}
 
-			var body = RtmpUtil.GetBodies(result).FirstOrDefault();
-			if (body == null)
-			{
-				StaticLogger.Debug("RetrievePlayerStatsByAccountId RtmpUtil.GetBodies returned null");
-				return null;
-			}
+		public RecentGames GetRecentGames(int acctid)
+		{
+			return InvokeService<RecentGames>(
+				"playerStatsService",
+				"getRecentGames",
+				acctid
+			);
+		}
 
-			var ao = body.Item1 as ASObject;
-			if (ao == null)
-			{
-				StaticLogger.Debug("RetrievePlayerStatsByAccountId expected ASObject, got " + body.Item1.GetType());
-				return null;
-			}
-
-			var stats = MessageTranslator.Instance.GetObject<PlayerLifetimeStats>(ao);
-			if (stats == null)
-			{
-				StaticLogger.Debug("RetrievePlayerStatsByAccountId expected PlayerLifetimeStats, got " + ao.TypeName);
-				return null;
-			}
-
-			stats.TimeStamp = body.Item2;
-			return stats;
+		public ChampionStatInfoList RetrieveTopPlayedChampions(int acctid, string gamemode)
+		{
+			return InvokeService<ChampionStatInfoList>(
+				"playerStatsService",
+				"retrieveTopPlayedChampions",
+				acctid,
+				gamemode
+			);
 		}
 	}
 }

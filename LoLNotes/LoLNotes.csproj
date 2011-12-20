@@ -115,6 +115,7 @@
     <Compile Include="Assets\DescriptionEnumTypeConverter.cs" />
     <Compile Include="Assets\GameModes.cs" />
     <Compile Include="Assets\GameTypes.cs" />
+    <Compile Include="Assets\StatsData.cs" />
     <Compile Include="Flash\BaseList.cs" />
     <Compile Include="Gui\CertificateHolder.cs" />
     <Compile Include="Gui\Controls\StatsControl.cs">
@@ -126,10 +127,17 @@
     <Compile Include="Gui\MainSettings.cs" />
     <Compile Include="Gui\PlayerCache.cs" />
     <Compile Include="Messages\Commands\PlayerCommands.cs" />
+    <Compile Include="Messages\Statistics\AggregatedStat.cs" />
+    <Compile Include="Messages\Statistics\AggregatedStatList.cs" />
+    <Compile Include="Messages\Statistics\ChampionStatInfo.cs" />
+    <Compile Include="Messages\Statistics\ChampionStatInfoList.cs" />
+    <Compile Include="Messages\Statistics\PlayerGameStatsList.cs" />
+    <Compile Include="Messages\Statistics\PlayerGameStats.cs" />
     <Compile Include="Messages\Statistics\PlayerLifetimeStats.cs" />
     <Compile Include="Messages\Statistics\PlayerStatSummaries.cs" />
     <Compile Include="Messages\Statistics\PlayerStatSummary.cs" />
     <Compile Include="Messages\Statistics\PlayerStatSummaryList.cs" />
+    <Compile Include="Messages\Statistics\RecentGames.cs" />
     <Compile Include="Messages\Summoner\PublicSummoner.cs" />
     <Compile Include="Messaging\Messages\AbstractMessage.cs" />
     <Compile Include="Messaging\Messages\AcknowledgeMessage.cs" />
@@ -294,6 +302,7 @@
     <Content Include="ExampleData\ExampleGameDTO.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\StatsData.txt" />
     <None Include="Resources\circle_green.png" />
     <None Include="Resources\circle_yellow.png" />
     <None Include="Resources\circle_red.png" />

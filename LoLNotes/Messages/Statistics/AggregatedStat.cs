@@ -23,18 +23,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LoLNotes.Messages.Statistics;
-using LoLNotes.Messages.Summoner;
-using LoLNotes.Storage;
+using FluorineFx;
+using LoLNotes.Assets;
+using LoLNotes.Flash;
 
-namespace LoLNotes.Gui
+namespace LoLNotes.Messages.Statistics
 {
-	public class PlayerCache
+	public class AggregatedStat	: BaseObject
 	{
-		public PlayerEntry Player { get; set; }
-		public PublicSummoner Summoner { get; set; }
-		public PlayerLifetimeStats Stats { get; set; }
-		public RecentGames Games { get; set; }
-		public ChampionStatInfoList RecentChamps { get; set; }
+		public AggregatedStat(ASObject obj)
+			: base(obj)
+		{
+			BaseObject.SetFields(this, obj);
+		}
+
+		[InternalName("statType")]
+		public string StatType { get; set; }
+
+		[InternalName("value")]
+		public object Value { get; set; }
+
+		public string StatTypeString { get { return StatsData.Get(StatType); } }
+
 	}
 }
