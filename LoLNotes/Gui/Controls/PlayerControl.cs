@@ -153,6 +153,8 @@ namespace LoLNotes.Gui.Controls
 			if (string.IsNullOrWhiteSpace(plr.Note))
 				return;
 
+			SuspendLayout();
+
 			var tab = new TabPage("Note")
 			{
 				Tag = "Note",
@@ -165,6 +167,8 @@ namespace LoLNotes.Gui.Controls
 			};
 			tab.Controls.Add(lbl);
 			InfoTabs.TabPages.Add(tab);
+
+			ResumeLayout();
 
 			Invalidate(); //Forces the color change
 		}
@@ -192,6 +196,8 @@ namespace LoLNotes.Gui.Controls
 			if (summoner == null || stats == null)
 				return;
 
+			SuspendLayout();
+
 			SetLevel(summoner.SummonerLevel);
 
 			foreach (var stat in stats.PlayerStatSummaries.PlayerStatSummarySet)
@@ -208,6 +214,8 @@ namespace LoLNotes.Gui.Controls
 
 				InfoTabs.TabPages.Add(tab);
 			}
+
+			ResumeLayout();
 		}
 
 		static string MinifyStatType(string name)
@@ -240,6 +248,8 @@ namespace LoLNotes.Gui.Controls
 			if (champs.Count < 1)
 				return;
 
+			SuspendLayout();
+
 			var layout = new TableLayoutPanel();
 			layout.Dock = DockStyle.Fill;
 			foreach (var champ in champs)
@@ -263,6 +273,8 @@ namespace LoLNotes.Gui.Controls
 			};
 			tab.Controls.Add(layout);
 			InfoTabs.TabPages.Add(tab);
+
+			ResumeLayout();
 		}
 		public void SetGames(RecentGames games)
 		{
@@ -277,37 +289,57 @@ namespace LoLNotes.Gui.Controls
 			if (games.GameStatistics.Count < 1)
 				return;
 
+			SuspendLayout();
+
 			var layout = new TableLayoutPanel();
 			layout.Dock = DockStyle.Fill;
-			layout.RowCount = Math.Max(1, games.GameStatistics.Count / 2);
-			layout.ColumnCount = 2;
 
-			foreach (var game in games.GameStatistics)
+			int rows = Math.Max(1, games.GameStatistics.Count / 2);
+			int cols = 2;
+
+			while (layout.RowStyles.Count < rows)
+				layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+			while (layout.ColumnStyles.Count < cols)
+				layout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+
+			layout.RowCount = rows;
+			layout.ColumnCount = cols;
+
+			var list = games.GameStatistics.OrderByDescending(p => p.GameId).ToList();
+			for (int x = 0; x < cols; x++)
 			{
-				if (game.ChampionId == 0)
-					continue;
-
-				var champ = ChampNames.Get(game.ChampionId);
-				var won = game.Statistics.GetInt(RawStat.WIN) != 0;
-				var kills = game.Statistics.GetInt(RawStat.CHAMPION_KILLS);
-				var deaths = game.Statistics.GetInt(RawStat.DEATHS);
-				var assists = game.Statistics.GetInt(RawStat.ASSISTS);
-
-				var lbl = new Label
+				for (int y = 0; y < rows;  y++)
 				{
-					Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold),
-					AutoSize = true,
-					Text = string.Format(
-						"[{0}] {1} ({2}/{3}/{4}){5}",
-						won ? "W" : "L",
-						champ,
-						kills,
-						deaths,
-						assists,
-						game.QueueType == "BOT" ? " (B)" : ""
-					)
-				};
-				layout.Controls.Add(lbl);
+					int idx = y + (x * rows);
+					if (idx >= list.Count)
+						break;
+
+					var game = list[idx];
+					if (game.ChampionId == 0)
+						continue;
+
+					var champ = ChampNames.Get(game.ChampionId);
+					var won = game.Statistics.GetInt(RawStat.WIN) != 0;
+					var kills = game.Statistics.GetInt(RawStat.CHAMPION_KILLS);
+					var deaths = game.Statistics.GetInt(RawStat.DEATHS);
+					var assists = game.Statistics.GetInt(RawStat.ASSISTS);
+
+					var lbl = new Label
+					{
+						Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold),
+						AutoSize = true,
+						Text = string.Format(
+							"[{0}] {1} ({2}/{3}/{4}){5}",
+							won ? "W" : "L",
+							champ,
+							kills,
+							deaths,
+							assists,
+							game.QueueType == "BOT" ? " (B)" : ""
+						)
+					};
+					layout.Controls.Add(lbl, x, y);
+				}
 			}
 
 			var tab = new TabPage("Recent")
@@ -317,6 +349,8 @@ namespace LoLNotes.Gui.Controls
 			};
 			tab.Controls.Add(layout);
 			InfoTabs.TabPages.Add(tab);
+
+			ResumeLayout();
 		}
 	}
 }

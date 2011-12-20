@@ -268,6 +268,7 @@
     </Compile>
     <None Include="Resources\prod.eu.lol.riotgames.com.p12" />
     <None Include="Resources\prod.eun1.lol.riotgames.com.p12" />
+    <None Include="Resources\prod.lol.garenanow.com.p12" />
     <None Include="Resources\prod.na1.lol.riotgames.com.p12" />
   </ItemGroup>
   <ItemGroup>

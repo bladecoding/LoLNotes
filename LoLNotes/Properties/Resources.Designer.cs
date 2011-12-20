@@ -189,6 +189,13 @@ namespace LoLNotes.Properties {
             }
         }
         
+        internal static byte[] prod_lol_garenanow_com {
+            get {
+                object obj = ResourceManager.GetObject("prod_lol_garenanow_com", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] prod_na1_lol_riotgames_com {
             get {
                 object obj = ResourceManager.GetObject("prod_na1_lol_riotgames_com", resourceCulture);

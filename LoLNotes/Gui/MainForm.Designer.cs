@@ -63,11 +63,9 @@ namespace LoLNotes.Gui
 			this.components = new System.ComponentModel.Container();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.GameTab = new System.Windows.Forms.TabPage();
-			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
 			this.DevCheck = new System.Windows.Forms.CheckBox();
 			this.LogGroupBox = new System.Windows.Forms.GroupBox();
@@ -91,6 +89,8 @@ namespace LoLNotes.Gui
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.CallTree = new System.Windows.Forms.TreeView();
+			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
+			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.tabControl1.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.PlayerEditStrip.SuspendLayout();
@@ -134,19 +134,6 @@ namespace LoLNotes.Gui
 			this.GameTab.Text = "Game";
 			this.GameTab.UseVisualStyleBackColor = true;
 			// 
-			// teamControl2
-			// 
-			this.teamControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.teamControl2.BackColor = System.Drawing.Color.Transparent;
-			this.teamControl2.Location = new System.Drawing.Point(509, 2);
-			this.teamControl2.Name = "teamControl2";
-			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(500, 836);
-			this.teamControl2.TabIndex = 1;
-			this.teamControl2.TeamSize = 5;
-			this.teamControl2.Text = "Team 2";
-			// 
 			// PlayerEditStrip
 			// 
 			this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -168,19 +155,6 @@ namespace LoLNotes.Gui
 			this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
 			this.clearToolStripMenuItem.Text = "Clear";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
-			// 
-			// teamControl1
-			// 
-			this.teamControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.teamControl1.BackColor = System.Drawing.Color.Transparent;
-			this.teamControl1.Location = new System.Drawing.Point(3, 2);
-			this.teamControl1.Name = "teamControl1";
-			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(500, 836);
-			this.teamControl1.TabIndex = 0;
-			this.teamControl1.TeamSize = 5;
-			this.teamControl1.Text = "Team 1";
 			// 
 			// SettingsTab
 			// 
@@ -425,6 +399,32 @@ namespace LoLNotes.Gui
 			this.CallTree.Size = new System.Drawing.Size(1014, 563);
 			this.CallTree.TabIndex = 0;
 			// 
+			// teamControl2
+			// 
+			this.teamControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.teamControl2.BackColor = System.Drawing.Color.Transparent;
+			this.teamControl2.Location = new System.Drawing.Point(509, 2);
+			this.teamControl2.Name = "teamControl2";
+			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl2.Size = new System.Drawing.Size(500, 836);
+			this.teamControl2.TabIndex = 1;
+			this.teamControl2.TeamSize = 5;
+			this.teamControl2.Text = "Team 2";
+			// 
+			// teamControl1
+			// 
+			this.teamControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.teamControl1.BackColor = System.Drawing.Color.Transparent;
+			this.teamControl1.Location = new System.Drawing.Point(3, 2);
+			this.teamControl1.Name = "teamControl1";
+			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl1.Size = new System.Drawing.Size(500, 836);
+			this.teamControl1.TabIndex = 0;
+			this.teamControl1.TeamSize = 5;
+			this.teamControl1.Text = "Team 1";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -435,6 +435,8 @@ namespace LoLNotes.Gui
 			this.Name = "MainForm";
 			this.Text = "LoL";
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
+			this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
+			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.tabControl1.ResumeLayout(false);
 			this.GameTab.ResumeLayout(false);

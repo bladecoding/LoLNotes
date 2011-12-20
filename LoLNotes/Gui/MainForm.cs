@@ -106,6 +106,7 @@ namespace LoLNotes.Gui
 				{"NA", new CertificateHolder("prod.na1.lol.riotgames.com", Resources.prod_na1_lol_riotgames_com)},
 				{"EU", new CertificateHolder("prod.eu.lol.riotgames.com", Resources.prod_eu_lol_riotgames_com)},
 				{"EUN", new CertificateHolder("prod.eun1.lol.riotgames.com", Resources.prod_eun1_lol_riotgames_com)},
+				{"GARENA", new CertificateHolder("prod.lol.garenanow.com", Resources.prod_lol_garenanow_com)},
  			};
 
 			Database = Db4oEmbedded.OpenFile(CreateConfig(), "db.yap");
@@ -1016,6 +1017,17 @@ namespace LoLNotes.Gui
 			teamControl2.Location = new Point((tab.Width / 2), teamControl2.Location.Y);
 			teamControl2.Width = tab.Width / 2;
 			teamControl2.Height = tab.Height;
+		}
+
+		private void MainForm_ResizeBegin(object sender, EventArgs e)
+		{
+			SuspendLayout();
+		}
+
+		private void MainForm_ResizeEnd(object sender, EventArgs e)
+		{
+			ResumeLayout(true);
+			MainForm_Resize(sender, e); //Force one last adjustment
 		}
 	}
 }
