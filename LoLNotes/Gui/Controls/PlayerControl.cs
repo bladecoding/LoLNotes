@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using LoLNotes.Assets;
@@ -36,11 +37,7 @@ namespace LoLNotes.Gui.Controls
 {
 	public partial class PlayerControl : UserControl
 	{
-		public string Name { get; set; }
 		public PlayerEntry Player { get; set; }
-		public PlayerLifetimeStats LifetimeStats { get; set; }
-
-		int CurrentPage;
 
 		public PlayerControl()
 		{
@@ -51,15 +48,13 @@ namespace LoLNotes.Gui.Controls
 
 			InitializeComponent();
 
-			Stats.Visible = false;
 			LoadingPicture.Visible = false;
-			NotesLabel.Visible = false;
 			LevelLabel.Text = "Level: ";
 		}
 
 		protected override void OnLoad(EventArgs e)
 		{
-			Stats.ContextMenuStrip = ContextMenuStrip;
+			InfoTabs.ContextMenuStrip = ContextMenuStrip; //Set here because its virtual
 			base.OnLoad(e);
 		}
 
@@ -85,8 +80,7 @@ namespace LoLNotes.Gui.Controls
 			}
 			if (loading)
 			{
-				foreach (Control c in InfoPanel.Controls)
-					c.Visible = false;
+				InfoTabs.TabPages.Clear();
 			}
 			LoadingPicture.Visible = loading;
 		}
@@ -124,6 +118,15 @@ namespace LoLNotes.Gui.Controls
 			LevelLabel.Text = "Level: " + level;
 		}
 
+		void RemoveAll(Predicate<TabPage> find)
+		{
+			for (int i = 0; i < InfoTabs.TabPages.Count; i++)
+			{
+				if (find(InfoTabs.TabPages[i]))
+					InfoTabs.TabPages.RemoveAt(i--);
+			}
+		}
+
 		public void SetEmpty()
 		{
 			if (InvokeRequired)
@@ -132,8 +135,7 @@ namespace LoLNotes.Gui.Controls
 				return;
 			}
 			Player = null;
-			LifetimeStats = null;
-			UpdateView();
+			InfoTabs.TabPages.Clear();
 		}
 
 		public void SetPlayer(PlayerEntry plr)
@@ -145,7 +147,26 @@ namespace LoLNotes.Gui.Controls
 			}
 			Player = plr;
 			SetTitle(plr);
-			UpdateView();
+
+			RemoveAll(t => (t.Tag as string) == "Note");
+
+			if (string.IsNullOrWhiteSpace(plr.Note))
+				return;
+
+			var tab = new TabPage("Note")
+			{
+				Tag = "Note",
+				BackColor = this.BackColor
+			};
+			var lbl = new Label
+			{
+				Font = new Font(Font.FontFamily, Font.SizeInPoints, FontStyle.Bold),
+				Text = plr.Note
+			};
+			tab.Controls.Add(lbl);
+			InfoTabs.TabPages.Add(tab);
+
+			Invalidate(); //Forces the color change
 		}
 		public void SetParticipant(Participant part)
 		{
@@ -154,7 +175,7 @@ namespace LoLNotes.Gui.Controls
 				Invoke(new Action<Participant>(SetParticipant), part);
 				return;
 			}
-			LifetimeStats = null;
+			Player = null;
 			SetTitle(part);
 		}
 
@@ -166,52 +187,136 @@ namespace LoLNotes.Gui.Controls
 				return;
 			}
 
-			LifetimeStats = stats;
+			RemoveAll(t => (t.Tag as string) == "Stats");
 
-			if (Player == null || string.IsNullOrEmpty(Player.Note))
-				CurrentPage = 1; //Skip the first page if no note is set.
+			if (summoner == null || stats == null)
+				return;
 
 			SetLevel(summoner.SummonerLevel);
 
-			UpdateView();
-		}
-
-		void UpdateView()
-		{
-
-			int count = LifetimeStats != null ? LifetimeStats.PlayerStatSummaries.PlayerStatSummarySet.Count : 0;
-			int page = count == 0 ? 0 : Math.Abs(CurrentPage) % (count + 1);
-
-			if (page == 0 || LifetimeStats == null)
+			foreach (var stat in stats.PlayerStatSummaries.PlayerStatSummarySet)
 			{
-				NotesLabel.Text = Player != null && !string.IsNullOrEmpty(Player.Note) ? Player.Note : "No note";
+				var sc = new StatsControl { Dock = DockStyle.Fill, Tag = "Stats" };
+				sc.SetStatSummary(stat);
 
-				Stats.Visible = false;
-				NotesLabel.Visible = true;
+				var tab = new TabPage(MinifyStatType(stat.PlayerStatSummaryType))
+				{
+					BackColor = this.BackColor,
+					Tag = "Stats"
+				};
+				tab.Controls.Add(sc);
+
+				InfoTabs.TabPages.Add(tab);
 			}
-			else
+		}
+
+		static string MinifyStatType(string name)
+		{
+			var replacements = new Dictionary<string, string>
 			{
-				Stats.SetStatSummary(LifetimeStats.PlayerStatSummaries.PlayerStatSummarySet[page - 1]);
+				{"Ranked", "R"},
+				{"Premade", "P"},
+				{"Solo", "S"},
+				{"Unranked", "UR"},
+			};
+			foreach (var kv in replacements)
+				name = name.Replace(kv.Key, kv.Value);
+			return name;
+		}
 
-				Stats.Visible = true;
-				NotesLabel.Visible = false;
+		public void SetChamps(ChampionStatInfoList champs)
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<ChampionStatInfoList>(SetChamps), champs);
+				return;
 			}
 
-			PageLabel.Text = string.Format("{0} / {1}", page + 1, count + 1);
+			RemoveAll(t => (t.Tag as string) == "Champs");
 
-			Invalidate();
+			if (champs == null)
+				return;
+
+			if (champs.Count < 1)
+				return;
+
+			var layout = new TableLayoutPanel();
+			layout.Dock = DockStyle.Fill;
+			foreach (var champ in champs)
+			{
+				if (champ.ChampionId == 0)
+					continue;
+
+				var lbl = new Label
+				{
+					Font = new Font(Font.FontFamily, Font.SizeInPoints, FontStyle.Bold),
+					AutoSize = true,
+					Text = string.Format("{0} ({1})", ChampNames.Get(champ.ChampionId), champ.TotalGamesPlayed)
+				};
+				layout.Controls.Add(lbl);
+			}
+
+			var tab = new TabPage("Champs")
+			{
+				BackColor = this.BackColor,
+				Tag = "Champs"
+			};
+			tab.Controls.Add(layout);
+			InfoTabs.TabPages.Add(tab);
 		}
-
-		private void LeftArrow_MouseDown(object sender, MouseEventArgs e)
+		public void SetGames(RecentGames games)
 		{
-			CurrentPage--;
-			UpdateView();
-		}
+			if (InvokeRequired)
+			{
+				Invoke(new Action<RecentGames>(SetGames), games);
+				return;
+			}
 
-		private void RightArrow_MouseDown(object sender, MouseEventArgs e)
-		{
-			CurrentPage++;
-			UpdateView();
+			RemoveAll(t => (t.Tag as string) == "Recent");
+
+			if (games.GameStatistics.Count < 1)
+				return;
+
+			var layout = new TableLayoutPanel();
+			layout.Dock = DockStyle.Fill;
+			layout.RowCount = Math.Max(1, games.GameStatistics.Count / 2);
+			layout.ColumnCount = 2;
+
+			foreach (var game in games.GameStatistics)
+			{
+				if (game.ChampionId == 0)
+					continue;
+
+				var champ = ChampNames.Get(game.ChampionId);
+				var won = game.Statistics.GetInt(RawStat.WIN) != 0;
+				var kills = game.Statistics.GetInt(RawStat.CHAMPION_KILLS);
+				var deaths = game.Statistics.GetInt(RawStat.DEATHS);
+				var assists = game.Statistics.GetInt(RawStat.ASSISTS);
+
+				var lbl = new Label
+				{
+					Font = new Font("Bitstream Vera Sans Mono", 9F, FontStyle.Bold),
+					AutoSize = true,
+					Text = string.Format(
+						"[{0}] {1} ({2}/{3}/{4}){5}",
+						won ? "W" : "L",
+						champ,
+						kills,
+						deaths,
+						assists,
+						game.QueueType == "BOT" ? " (B)" : ""
+					)
+				};
+				layout.Controls.Add(lbl);
+			}
+
+			var tab = new TabPage("Recent")
+			{
+				BackColor = this.BackColor,
+				Tag = "Recent"
+			};
+			tab.Controls.Add(layout);
+			InfoTabs.TabPages.Add(tab);
 		}
 	}
 }

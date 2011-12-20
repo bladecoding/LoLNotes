@@ -79,6 +79,10 @@ namespace LoLNotes.Flash
 					{
 						value = Convert.ToInt64(flash[intern.Name]);
 					}
+					else if (type == typeof(double))
+					{
+						value = Convert.ToInt64(flash[intern.Name]);
+					}
 					else if (type == typeof(bool))
 					{
 						value = Convert.ToBoolean(flash[intern.Name]);

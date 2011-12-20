@@ -112,6 +112,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ChampNames.cs" />
     <Compile Include="Assets\DescriptionEnumTypeConverter.cs" />
     <Compile Include="Assets\GameModes.cs" />
     <Compile Include="Assets\GameTypes.cs" />
@@ -137,6 +138,8 @@
     <Compile Include="Messages\Statistics\PlayerStatSummaries.cs" />
     <Compile Include="Messages\Statistics\PlayerStatSummary.cs" />
     <Compile Include="Messages\Statistics\PlayerStatSummaryList.cs" />
+    <Compile Include="Messages\Statistics\RawStat.cs" />
+    <Compile Include="Messages\Statistics\RawStatList.cs" />
     <Compile Include="Messages\Statistics\RecentGames.cs" />
     <Compile Include="Messages\Summoner\PublicSummoner.cs" />
     <Compile Include="Messaging\Messages\AbstractMessage.cs" />
@@ -302,6 +305,7 @@
     <Content Include="ExampleData\ExampleGameDTO.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\ChampData.txt" />
     <None Include="Resources\StatsData.txt" />
     <None Include="Resources\circle_green.png" />
     <None Include="Resources\circle_yellow.png" />

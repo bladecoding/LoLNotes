@@ -132,16 +132,20 @@ namespace LoLNotes.Proxy
 		protected virtual void OnSend(byte[] buffer, int idx, int len)
 		{
 			Host.OnSend(this, buffer, idx, len);
-			RemoteStream.Write(buffer, idx, len);
+			RemoteStream.BeginWrite(buffer, idx, len, OnBeginWrite, RemoteStream);
 		}
 
 		protected virtual void OnReceive(byte[] buffer, int idx, int len)
 		{
 			Host.OnReceive(this, buffer, idx, len);
-			SourceStream.Write(buffer, idx, len);
+			SourceStream.BeginWrite(buffer, idx, len, OnBeginWrite, SourceStream);
 		}
 
-
+		protected void OnBeginWrite(IAsyncResult ar)
+		{
+			var stream = (Stream)ar.AsyncState;
+			stream.EndWrite(ar);
+		}
 
 		public void Dispose()
 		{

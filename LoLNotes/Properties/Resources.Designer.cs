@@ -60,6 +60,45 @@ namespace LoLNotes.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///	&quot;1&quot;:&quot;Annie&quot;,
+        ///	&quot;2&quot;:&quot;Olaf&quot;,
+        ///	&quot;3&quot;:&quot;Galio&quot;,
+        ///	&quot;4&quot;:&quot;TwistedFate&quot;,
+        ///	&quot;5&quot;:&quot;XinZhao&quot;,
+        ///	&quot;6&quot;:&quot;Urgot&quot;,
+        ///	&quot;7&quot;:&quot;Leblanc&quot;,
+        ///	&quot;8&quot;:&quot;Vladimir&quot;,
+        ///	&quot;9&quot;:&quot;FiddleSticks&quot;,
+        ///	&quot;10&quot;:&quot;Kayle&quot;,
+        ///	&quot;11&quot;:&quot;MasterYi&quot;,
+        ///	&quot;12&quot;:&quot;Alistar&quot;,
+        ///	&quot;13&quot;:&quot;Ryze&quot;,
+        ///	&quot;14&quot;:&quot;Sion&quot;,
+        ///	&quot;15&quot;:&quot;Sivir&quot;,
+        ///	&quot;16&quot;:&quot;Soraka&quot;,
+        ///	&quot;17&quot;:&quot;Teemo&quot;,
+        ///	&quot;18&quot;:&quot;Tristana&quot;,
+        ///	&quot;19&quot;:&quot;Warwick&quot;,
+        ///	&quot;20&quot;:&quot;Nunu&quot;,
+        ///	&quot;21&quot;:&quot;MissFortune&quot;,
+        ///	&quot;22&quot;:&quot;Ashe&quot;,
+        ///	&quot;23&quot;:&quot;Tryndamere&quot;,
+        ///	&quot;24&quot;:&quot;Jax&quot;,
+        ///	&quot;25&quot;:&quot;Morgana&quot;,
+        ///	&quot;26&quot;:&quot;Zilean&quot;,
+        ///	&quot;27&quot;:&quot;Singed&quot;,
+        ///	&quot;28&quot;:&quot;Evelynn&quot;,
+        ///	&quot;29&quot;:&quot;Twitch&quot;,
+        ///	&quot;30&quot;:&quot;Karth [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ChampData {
+            get {
+                return ResourceManager.GetString("ChampData", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap circle_green {
             get {
                 object obj = ResourceManager.GetObject("circle_green", resourceCulture);

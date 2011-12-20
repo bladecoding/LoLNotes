@@ -73,6 +73,9 @@ namespace LoLNotes.Messages.Statistics
 		[InternalName("summonerId")]
 		public Int32 SummonerId { get; set; }
 
+		[InternalName("statistics")]
+		public RawStatList Statistics { get; set; }
+
 		[InternalName("spell2")]
 		public Int32 Spell2 { get; set; }
 

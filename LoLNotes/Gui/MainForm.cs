@@ -82,7 +82,7 @@ namespace LoLNotes.Gui
 		LoaderInstaller Installer;
 
 		static GameDTO CurrentGame;
-		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>(); 
+		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
 
 		public MainForm()
 		{
@@ -359,7 +359,7 @@ namespace LoLNotes.Gui
 				UpdateLists(game);
 		}
 
-		
+
 
 		public void UpdateLists(EndOfGameStats game)
 		{
@@ -391,6 +391,7 @@ namespace LoLNotes.Gui
 
 						if (ply != null)
 						{
+							list.Players[o].Visible = true;
 							lock (PlayersCache)
 							{
 								var entry = PlayersCache.Find(p => p.Player.Id == ply.UserId);
@@ -412,6 +413,7 @@ namespace LoLNotes.Gui
 					}
 					else
 					{
+						list.Players[o].Visible = false;
 						list.Players[o].SetEmpty();
 					}
 				}
@@ -470,11 +472,13 @@ namespace LoLNotes.Gui
 					list.Visible = false;
 					continue;
 				}
+				list.Visible = true;
 
 				for (int o = 0; o < list.Players.Count; o++)
 				{
 					if (o < team.Count)
 					{
+						list.Players[o].Visible = true;
 						var ply = team[o] as PlayerParticipant;
 
 						if (ply != null)
@@ -504,6 +508,7 @@ namespace LoLNotes.Gui
 					}
 					else
 					{
+						list.Players[o].Visible = false;
 						list.Players[o].SetEmpty();
 					}
 				}
@@ -564,8 +569,9 @@ namespace LoLNotes.Gui
 			StaticLogger.Trace(string.Format("Stats query in {0}ms", sw.ElapsedMilliseconds));
 
 			control.SetStats(ply.Summoner, ply.Stats);
-			//control.SetChamps(ply.Summoner, ply.Stats);
-			//control.SetRecent(ply.Summoner, ply.Stats);
+			control.SetChamps(ply.RecentChamps);
+			control.SetGames(ply.Games);
+			control.SetLoading(false);
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -639,7 +645,7 @@ namespace LoLNotes.Gui
 			plrcontrol.Player.Note = form.NoteText.Text;
 			if (form.ColorBox.SelectedIndex != -1)
 				plrcontrol.Player.NoteColor = Color.FromName(form.ColorBox.Items[form.ColorBox.SelectedIndex].ToString());
-			//plrcontrol.UpdateView();
+			plrcontrol.SetPlayer(plrcontrol.Player); //Forces the notes/color to update
 
 			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player));
 		}
@@ -663,7 +669,7 @@ namespace LoLNotes.Gui
 
 			plrcontrol.Player.Note = "";
 			plrcontrol.Player.NoteColor = default(Color);
-			//plrcontrol.UpdateView();
+			plrcontrol.SetPlayer(plrcontrol.Player); //Forces the notes/color to update
 
 			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player));
 		}
