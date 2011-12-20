@@ -249,7 +249,7 @@ namespace LoLNotes.Gui.Controls
 
 				var lbl = new Label
 				{
-					Font = new Font(Font.FontFamily, Font.SizeInPoints, FontStyle.Bold),
+					Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold),
 					AutoSize = true,
 					Text = string.Format("{0} ({1})", ChampNames.Get(champ.ChampionId), champ.TotalGamesPlayed)
 				};

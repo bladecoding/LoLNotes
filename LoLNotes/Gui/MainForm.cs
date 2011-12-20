@@ -696,6 +696,9 @@ namespace LoLNotes.Gui
 			UpdateIcon();
 			//Start after the form is shown otherwise Invokes will fail
 			Connection.Start();
+
+			//Fixes the team controls size on start as they keep getting messed up in the WYSIWYG
+			MainForm_Resize(this, new EventArgs());
 		}
 
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
@@ -1001,6 +1004,18 @@ namespace LoLNotes.Gui
 					sw.Write(JsonConvert.SerializeObject(notifies, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }));
 				}
 			}
+		}
+
+		private void MainForm_Resize(object sender, EventArgs e)
+		{
+			var tab = tabControl1.TabPages[0];
+
+			teamControl1.Width = tab.Width / 2;
+			teamControl1.Height = tab.Height;
+
+			teamControl2.Location = new Point((tab.Width / 2), teamControl2.Location.Y);
+			teamControl2.Width = tab.Width / 2;
+			teamControl2.Height = tab.Height;
 		}
 	}
 }

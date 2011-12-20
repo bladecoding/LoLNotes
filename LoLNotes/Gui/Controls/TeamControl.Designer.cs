@@ -67,9 +67,11 @@ namespace LoLNotes.Gui.Controls
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.Color.Transparent;
 			this.Controls.Add(this.NameLabel);
 			this.Name = "TeamControl";
-			this.Size = new System.Drawing.Size(366, 383);
+			this.Size = new System.Drawing.Size(500, 890);
+			this.Load += new System.EventHandler(this.TeamControl_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

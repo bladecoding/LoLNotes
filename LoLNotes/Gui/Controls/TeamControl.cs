@@ -48,8 +48,6 @@ namespace LoLNotes.Gui.Controls
             set
             {
                 teamsize = value;
-                Width = BasePlayer.Width;
-                Height = PlayersStartY + value * (BasePlayer.Height + PlayersYSpacing);
 
                 foreach (PlayerControl p in Players)
                     p.Dispose();
@@ -61,6 +59,7 @@ namespace LoLNotes.Gui.Controls
                     control.Location = new Point(0, PlayersStartY + (BasePlayer.Height + PlayersYSpacing) * i);
                     control.ContextMenuStrip = PlayerContextMenuStrip;
                     control.Visible = false;
+					control.Anchor = AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left;
                     Players.Add(control);
                     Controls.Add(control);
                 }
@@ -123,14 +122,9 @@ namespace LoLNotes.Gui.Controls
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Sets the data for the player at idx.
-        /// </summary>
-        /// <param name="idx">Index of the player</param>
-        /// <param name="entry">Data of the player</param>
-        public void SetData(int idx, PlayerEntry entry)
-        {
+		private void TeamControl_Load(object sender, System.EventArgs e)
+		{
 
-        }
+		}
     }
 }

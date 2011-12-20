@@ -118,7 +118,7 @@ namespace LoLNotes.Gui
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(824, 812);
+			this.tabControl1.Size = new System.Drawing.Size(1022, 862);
 			this.tabControl1.TabIndex = 0;
 			this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
 			// 
@@ -129,18 +129,20 @@ namespace LoLNotes.Gui
 			this.GameTab.Location = new System.Drawing.Point(4, 22);
 			this.GameTab.Name = "GameTab";
 			this.GameTab.Padding = new System.Windows.Forms.Padding(3);
-			this.GameTab.Size = new System.Drawing.Size(816, 786);
+			this.GameTab.Size = new System.Drawing.Size(1014, 836);
 			this.GameTab.TabIndex = 0;
 			this.GameTab.Text = "Game";
 			this.GameTab.UseVisualStyleBackColor = true;
 			// 
 			// teamControl2
 			// 
-			this.teamControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.teamControl2.Location = new System.Drawing.Point(411, 2);
+			this.teamControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.teamControl2.BackColor = System.Drawing.Color.Silver;
+			this.teamControl2.Location = new System.Drawing.Point(509, 2);
 			this.teamControl2.Name = "teamControl2";
 			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(400, 836);
+			this.teamControl2.Size = new System.Drawing.Size(500, 836);
 			this.teamControl2.TabIndex = 1;
 			this.teamControl2.TeamSize = 5;
 			this.teamControl2.Text = "Team 2";
@@ -169,10 +171,13 @@ namespace LoLNotes.Gui
 			// 
 			// teamControl1
 			// 
+			this.teamControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.teamControl1.BackColor = System.Drawing.Color.Maroon;
 			this.teamControl1.Location = new System.Drawing.Point(3, 2);
 			this.teamControl1.Name = "teamControl1";
 			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(400, 836);
+			this.teamControl1.Size = new System.Drawing.Size(500, 836);
 			this.teamControl1.TabIndex = 0;
 			this.teamControl1.TeamSize = 5;
 			this.teamControl1.Text = "Team 1";
@@ -187,7 +192,7 @@ namespace LoLNotes.Gui
 			this.SettingsTab.Controls.Add(this.InstallButton);
 			this.SettingsTab.Location = new System.Drawing.Point(4, 22);
 			this.SettingsTab.Name = "SettingsTab";
-			this.SettingsTab.Size = new System.Drawing.Size(814, 786);
+			this.SettingsTab.Size = new System.Drawing.Size(1014, 836);
 			this.SettingsTab.TabIndex = 2;
 			this.SettingsTab.Text = "Settings";
 			this.SettingsTab.UseVisualStyleBackColor = true;
@@ -303,7 +308,7 @@ namespace LoLNotes.Gui
 			this.LogTab.Controls.Add(this.LogList);
 			this.LogTab.Location = new System.Drawing.Point(4, 22);
 			this.LogTab.Name = "LogTab";
-			this.LogTab.Size = new System.Drawing.Size(814, 786);
+			this.LogTab.Size = new System.Drawing.Size(1014, 836);
 			this.LogTab.TabIndex = 3;
 			this.LogTab.Text = "Log";
 			this.LogTab.UseVisualStyleBackColor = true;
@@ -314,7 +319,7 @@ namespace LoLNotes.Gui
 			this.LogList.FormattingEnabled = true;
 			this.LogList.Location = new System.Drawing.Point(0, 0);
 			this.LogList.Name = "LogList";
-			this.LogList.Size = new System.Drawing.Size(814, 696);
+			this.LogList.Size = new System.Drawing.Size(1014, 836);
 			this.LogList.TabIndex = 0;
 			// 
 			// ChangesTab
@@ -323,7 +328,7 @@ namespace LoLNotes.Gui
 			this.ChangesTab.Location = new System.Drawing.Point(4, 22);
 			this.ChangesTab.Name = "ChangesTab";
 			this.ChangesTab.Padding = new System.Windows.Forms.Padding(3);
-			this.ChangesTab.Size = new System.Drawing.Size(814, 786);
+			this.ChangesTab.Size = new System.Drawing.Size(1014, 836);
 			this.ChangesTab.TabIndex = 4;
 			this.ChangesTab.Text = "Changes";
 			this.ChangesTab.UseVisualStyleBackColor = true;
@@ -335,7 +340,7 @@ namespace LoLNotes.Gui
 			this.ChangesText.Location = new System.Drawing.Point(3, 3);
 			this.ChangesText.Name = "ChangesText";
 			this.ChangesText.ReadOnly = true;
-			this.ChangesText.Size = new System.Drawing.Size(470, 690);
+			this.ChangesText.Size = new System.Drawing.Size(1008, 830);
 			this.ChangesText.TabIndex = 0;
 			this.ChangesText.Text = "Loading...";
 			// 
@@ -344,7 +349,7 @@ namespace LoLNotes.Gui
 			this.DevTab.Controls.Add(this.splitContainer1);
 			this.DevTab.Location = new System.Drawing.Point(4, 22);
 			this.DevTab.Name = "DevTab";
-			this.DevTab.Size = new System.Drawing.Size(814, 786);
+			this.DevTab.Size = new System.Drawing.Size(1014, 836);
 			this.DevTab.TabIndex = 5;
 			this.DevTab.Text = "Dev";
 			this.DevTab.UseVisualStyleBackColor = true;
@@ -363,8 +368,8 @@ namespace LoLNotes.Gui
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.CallTree);
-			this.splitContainer1.Size = new System.Drawing.Size(476, 696);
-			this.splitContainer1.SplitterDistance = 224;
+			this.splitContainer1.Size = new System.Drawing.Size(1014, 836);
+			this.splitContainer1.SplitterDistance = 269;
 			this.splitContainer1.TabIndex = 0;
 			// 
 			// CallView
@@ -379,7 +384,7 @@ namespace LoLNotes.Gui
 			this.CallView.Location = new System.Drawing.Point(0, 0);
 			this.CallView.MultiSelect = false;
 			this.CallView.Name = "CallView";
-			this.CallView.Size = new System.Drawing.Size(476, 224);
+			this.CallView.Size = new System.Drawing.Size(1014, 269);
 			this.CallView.TabIndex = 0;
 			this.CallView.UseCompatibleStateImageBehavior = false;
 			this.CallView.View = System.Windows.Forms.View.Details;
@@ -417,19 +422,20 @@ namespace LoLNotes.Gui
 			this.CallTree.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.CallTree.Location = new System.Drawing.Point(0, 0);
 			this.CallTree.Name = "CallTree";
-			this.CallTree.Size = new System.Drawing.Size(476, 468);
+			this.CallTree.Size = new System.Drawing.Size(1014, 563);
 			this.CallTree.TabIndex = 0;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(824, 812);
+			this.ClientSize = new System.Drawing.Size(1022, 862);
 			this.Controls.Add(this.tabControl1);
-			this.MinimumSize = new System.Drawing.Size(840, 0);
+			this.MinimumSize = new System.Drawing.Size(800, 38);
 			this.Name = "MainForm";
 			this.Text = "LoL";
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
+			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.tabControl1.ResumeLayout(false);
 			this.GameTab.ResumeLayout(false);
 			this.PlayerEditStrip.ResumeLayout(false);

@@ -87,7 +87,7 @@ namespace LoLNotes.Gui.Controls
 			this.LevelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LevelLabel.Location = new System.Drawing.Point(10, 110);
 			this.LevelLabel.Name = "LevelLabel";
-			this.LevelLabel.Size = new System.Drawing.Size(56, 14);
+			this.LevelLabel.Size = new System.Drawing.Size(46, 13);
 			this.LevelLabel.TabIndex = 2;
 			this.LevelLabel.Text = "Level: ";
 			// 
@@ -103,11 +103,13 @@ namespace LoLNotes.Gui.Controls
 			// 
 			// InfoTabs
 			// 
+			this.InfoTabs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.InfoTabs.Location = new System.Drawing.Point(80, 26);
 			this.InfoTabs.Multiline = true;
 			this.InfoTabs.Name = "InfoTabs";
 			this.InfoTabs.SelectedIndex = 0;
-			this.InfoTabs.Size = new System.Drawing.Size(310, 114);
+			this.InfoTabs.Size = new System.Drawing.Size(410, 114);
 			this.InfoTabs.TabIndex = 3;
 			// 
 			// PlayerControl
@@ -121,7 +123,7 @@ namespace LoLNotes.Gui.Controls
 			this.Controls.Add(this.LevelLabel);
 			this.Controls.Add(this.IconPicture);
 			this.Name = "PlayerControl";
-			this.Size = new System.Drawing.Size(400, 150);
+			this.Size = new System.Drawing.Size(500, 150);
 			((System.ComponentModel.ISupportInitialize)(this.IconPicture)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.LoadingPicture)).EndInit();
 			this.ResumeLayout(false);
