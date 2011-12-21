@@ -220,6 +220,29 @@ namespace LoLNotes.Gui
 			}
 		}
 
+		void Tracking()
+		{
+			try
+			{
+				var hr = (HttpWebRequest)WebRequest.Create("http://bit.ly/unCoIY");
+				hr.ServicePoint.Expect100Continue = false;
+				hr.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:8.0) Gecko/20100101 Firefox/8.0";
+				hr.Referer = "http://lolnotesapp.org/" + Version;
+				hr.AllowAutoRedirect = false;
+				using (var resp = (HttpWebResponse)hr.GetResponse())
+				{
+				}
+			}
+			catch (WebException we)
+			{
+				StaticLogger.Warning(we);
+			}
+			catch (Exception e)
+			{
+				StaticLogger.Error(e);
+			}
+		}
+
 		void SetChanges(string data)
 		{
 			try
@@ -692,6 +715,7 @@ namespace LoLNotes.Gui
 			SetTitle("(Checking)");
 			Task.Factory.StartNew(CheckVersion);
 			Task.Factory.StartNew(GetChanges);
+			Task.Factory.StartNew(Tracking);
 
 			Settings_Loaded(this, new EventArgs());
 			UpdateIcon();
@@ -700,6 +724,8 @@ namespace LoLNotes.Gui
 
 			//Fixes the team controls size on start as they keep getting messed up in the WYSIWYG
 			MainForm_Resize(this, new EventArgs());
+			teamControl1.Height = GamePanel.Height - 3;
+			teamControl2.Height = GamePanel.Height - 3;
 		}
 
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
@@ -1009,14 +1035,10 @@ namespace LoLNotes.Gui
 
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
-			var tab = tabControl1.TabPages[0];
+			teamControl1.Width = GamePanel.Width / 2;
 
-			teamControl1.Width = tab.Width / 2;
-			teamControl1.Height = tab.Height;
-
-			teamControl2.Location = new Point((tab.Width / 2), teamControl2.Location.Y);
-			teamControl2.Width = tab.Width / 2;
-			teamControl2.Height = tab.Height;
+			teamControl2.Location = new Point((GamePanel.Width / 2), teamControl2.Location.Y);
+			teamControl2.Width = GamePanel.Width / 2;
 		}
 
 		private void MainForm_ResizeBegin(object sender, EventArgs e)
@@ -1026,7 +1048,7 @@ namespace LoLNotes.Gui
 
 		private void MainForm_ResizeEnd(object sender, EventArgs e)
 		{
-			ResumeLayout(true);
+			ResumeLayout();
 			MainForm_Resize(sender, e); //Force one last adjustment
 		}
 

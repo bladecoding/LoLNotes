@@ -150,25 +150,25 @@ namespace LoLNotes.Gui.Controls
 
 			RemoveAll(t => (t.Tag as string) == "Note");
 
-			if (string.IsNullOrWhiteSpace(plr.Note))
-				return;
-
-			SuspendLayout();
-
-			var tab = new TabPage("Note")
+			if (!string.IsNullOrWhiteSpace(plr.Note))
 			{
-				Tag = "Note",
-				BackColor = this.BackColor
-			};
-			var lbl = new Label
-			{
-				Font = new Font(Font.FontFamily, Font.SizeInPoints, FontStyle.Bold),
-				Text = plr.Note
-			};
-			tab.Controls.Add(lbl);
-			InfoTabs.TabPages.Add(tab);
+				SuspendLayout();
 
-			ResumeLayout();
+				var tab = new TabPage("Note")
+				{
+					Tag = "Note",
+					BackColor = this.BackColor
+				};
+				var lbl = new Label
+				{
+					Font = new Font(Font.FontFamily, Font.SizeInPoints, FontStyle.Bold),
+					Text = plr.Note
+				};
+				tab.Controls.Add(lbl);
+				InfoTabs.TabPages.Add(tab);
+
+				ResumeLayout();
+			}
 
 			Invalidate(); //Forces the color change
 		}
