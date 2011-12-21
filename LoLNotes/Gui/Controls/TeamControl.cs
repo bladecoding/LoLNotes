@@ -58,12 +58,14 @@ namespace LoLNotes.Gui.Controls
                     var control = new PlayerControl();
                     control.Location = new Point(0, PlayersStartY + (BasePlayer.Height + PlayersYSpacing) * i);
                     control.ContextMenuStrip = PlayerContextMenuStrip;
+					control.Width = this.Width;
                     control.Visible = false;
 					control.Anchor = AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left;
                     Players.Add(control);
                     Controls.Add(control);
                 }
 
+				Height = PlayersStartY + ((BasePlayer.Height + PlayersYSpacing) * teamsize);
             }
         }
 

@@ -79,6 +79,6 @@ namespace LoLNotes.Gui.Controls
 
         #endregion
 
-        private System.Windows.Forms.Label NameLabel;
+		private System.Windows.Forms.Label NameLabel;
     }
 }

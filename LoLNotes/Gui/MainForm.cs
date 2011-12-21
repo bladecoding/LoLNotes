@@ -724,8 +724,6 @@ namespace LoLNotes.Gui
 
 			//Fixes the team controls size on start as they keep getting messed up in the WYSIWYG
 			MainForm_Resize(this, new EventArgs());
-			teamControl1.Height = GamePanel.Height - 3;
-			teamControl2.Height = GamePanel.Height - 3;
 		}
 
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
@@ -1035,10 +1033,14 @@ namespace LoLNotes.Gui
 
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
-			teamControl1.Width = GamePanel.Width / 2;
+			var rect = tabControl1.TabPages[0].ClientRectangle;
+			teamControl1.Location = new Point(0, 0);
+			teamControl1.Width = rect.Width / 2;
 
-			teamControl2.Location = new Point((GamePanel.Width / 2), teamControl2.Location.Y);
-			teamControl2.Width = GamePanel.Width / 2;
+			teamControl2.Location = new Point((rect.Width / 2), 0);
+			teamControl2.Width = rect.Width / 2;
+
+			GamePanel.Height = teamControl1.Height;
 		}
 
 		private void MainForm_ResizeBegin(object sender, EventArgs e)
