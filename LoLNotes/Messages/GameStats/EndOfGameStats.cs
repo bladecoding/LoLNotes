@@ -174,11 +174,6 @@ namespace LoLNotes.Messages.GameStats
         {
             get; set;
         }
-        [InternalName("practiceMinutesPlayedToday")]
-        public int PracticeMinutesPlayedToday
-        {
-            get; set;
-        }
         [InternalName("practiceMsecsUntilReset")]
         public int PracticeMsecsUntilReset
         {
@@ -201,11 +196,6 @@ namespace LoLNotes.Messages.GameStats
         }
         [InternalName("skinIndex")]
         public int SkinIndex
-        {
-            get; set;
-        }
-        [InternalName("skinName")]
-        public string SkinName
         {
             get; set;
         }
@@ -265,13 +255,11 @@ namespace LoLNotes.Messages.GameStats
                 OdinBonusIp = OdinBonusIp,
                 OtherTeamPlayerStats =  new PlayerStatsSummaryList(OtherTeamPlayerStats.Clone()),
                 PracticeMinutesLeftToday = PracticeMinutesLeftToday,
-                PracticeMinutesPlayedToday = PracticeMinutesPlayedToday,
                 PracticeMsecsUntilReset = PracticeMsecsUntilReset,
                 QueueBonusEarned = QueueBonusEarned,
                 QueueType = QueueType,
                 Ranked = Ranked,
                 SkinIndex = SkinIndex,
-                SkinName = SkinName,
                 TalentPointsGained = TalentPointsGained,
                 TeamPlayerStats = new PlayerStatsSummaryList(TeamPlayerStats.Clone()),
                 TimeUntilNextFirstWinBonus = TimeUntilNextFirstWinBonus,

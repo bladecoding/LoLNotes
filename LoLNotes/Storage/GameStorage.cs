@@ -101,16 +101,20 @@ namespace LoLNotes.Storage
 		/// <param name="lobby"></param>
 		public void CommitLobby(GameDTO lobby)
 		{
+			bool committed = false;
 			Stopwatch sw;
 			lock (DatabaseLock)
 			{
 				sw = Stopwatch.StartNew();
-
-				if (RecordLobby(lobby))
+				
+				committed = RecordLobby(lobby);
+				if (committed)
 					Database.Commit();
 			}
 			sw.Stop();
-			StaticLogger.Debug(string.Format("Lobby committed in {0}ms", sw.ElapsedMilliseconds));
+
+			if (committed)
+				StaticLogger.Debug(string.Format("Lobby committed in {0}ms", sw.ElapsedMilliseconds));
 		}
 
 		/// <summary>

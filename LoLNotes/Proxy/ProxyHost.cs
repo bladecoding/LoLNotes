@@ -96,6 +96,9 @@ namespace LoLNotes.Proxy
 			ProxyClient client = null;
 			try
 			{
+				if (!IsListening)
+					return;
+
 				client = NewClient(Listener.EndAcceptTcpClient(ar));
 				Listener.BeginAcceptTcpClient(OnAccept, null);
 

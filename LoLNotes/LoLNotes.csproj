@@ -300,12 +300,6 @@
     <None Include="Resources\LolLoader.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ExampleData\ExampleEndOfGameStats.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExampleData\ExampleGameDTO.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\ChampData.txt" />
     <None Include="Resources\StatsData.txt" />
     <None Include="Resources\circle_green.png" />
