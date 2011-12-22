@@ -117,6 +117,7 @@
     <Compile Include="Assets\GameModes.cs" />
     <Compile Include="Assets\GameTypes.cs" />
     <Compile Include="Assets\StatsData.cs" />
+    <Compile Include="Extensions\TableLayoutPanelExt.cs" />
     <Compile Include="Flash\BaseList.cs" />
     <Compile Include="Gui\CertificateHolder.cs" />
     <Compile Include="Gui\Controls\StatsControl.cs">

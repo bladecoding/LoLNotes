@@ -31,6 +31,7 @@ using LoLNotes.Messages.Statistics;
 using LoLNotes.Messages.Summoner;
 using LoLNotes.Storage;
 using System.Linq;
+using LoLNotes.Extensions;
 using NotMissing.Logging;
 
 namespace LoLNotes.Gui.Controls
@@ -148,8 +149,6 @@ namespace LoLNotes.Gui.Controls
 			Player = plr;
 			SetTitle(plr);
 
-			RemoveAll(t => (t.Tag as string) == "Note");
-
 			if (!string.IsNullOrWhiteSpace(plr.Note))
 			{
 				SuspendLayout();
@@ -191,12 +190,8 @@ namespace LoLNotes.Gui.Controls
 				return;
 			}
 
-			RemoveAll(t => (t.Tag as string) == "Stats");
-
 			if (summoner == null || stats == null)
 				return;
-
-			SuspendLayout();
 
 			SetLevel(summoner.SummonerLevel);
 
@@ -214,8 +209,6 @@ namespace LoLNotes.Gui.Controls
 
 				InfoTabs.TabPages.Add(tab);
 			}
-
-			ResumeLayout();
 		}
 
 		static string MinifyStatType(string name)
@@ -240,15 +233,11 @@ namespace LoLNotes.Gui.Controls
 				return;
 			}
 
-			RemoveAll(t => (t.Tag as string) == "Champs");
-
 			if (champs == null)
 				return;
 
 			if (champs.Count < 1)
 				return;
-
-			SuspendLayout();
 
 			var layout = new TableLayoutPanel();
 			layout.Dock = DockStyle.Fill;
@@ -273,8 +262,6 @@ namespace LoLNotes.Gui.Controls
 			};
 			tab.Controls.Add(layout);
 			InfoTabs.TabPages.Add(tab);
-
-			ResumeLayout();
 		}
 		public void SetGames(RecentGames games)
 		{
@@ -284,26 +271,14 @@ namespace LoLNotes.Gui.Controls
 				return;
 			}
 
-			RemoveAll(t => (t.Tag as string) == "Recent");
-
 			if (games.GameStatistics.Count < 1)
 				return;
-
-			SuspendLayout();
 
 			var layout = new TableLayoutPanel();
 			layout.Dock = DockStyle.Fill;
 
-			int rows = Math.Max(1, games.GameStatistics.Count / 2);
-			int cols = 2;
-
-			while (layout.RowStyles.Count < rows)
-				layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-			while (layout.ColumnStyles.Count < cols)
-				layout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-
-			layout.RowCount = rows;
-			layout.ColumnCount = cols;
+			const int rows = 5;
+			const int cols = 2;
 
 			var list = games.GameStatistics.OrderByDescending(p => p.GameId).ToList();
 			for (int x = 0; x < cols; x++)
@@ -338,7 +313,7 @@ namespace LoLNotes.Gui.Controls
 							game.QueueType == "BOT" ? " (B)" : ""
 						)
 					};
-					layout.Controls.Add(lbl, x, y);
+					layout.AddControl(lbl, x, y);
 				}
 			}
 
@@ -349,8 +324,6 @@ namespace LoLNotes.Gui.Controls
 			};
 			tab.Controls.Add(layout);
 			InfoTabs.TabPages.Add(tab);
-
-			ResumeLayout();
 		}
 	}
 }
