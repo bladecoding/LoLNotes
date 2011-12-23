@@ -384,75 +384,8 @@ namespace LoLNotes.Gui
 		void Reader_ObjectRead(object obj)
 		{
 			var lobby = obj as GameDTO;
-			var game = obj as EndOfGameStats;
 			if (lobby != null)
 				UpdateLists(lobby);
-			if (game != null)
-				UpdateLists(game);
-		}
-
-
-
-		public void UpdateLists(EndOfGameStats game)
-		{
-			if (InvokeRequired)
-			{
-				BeginInvoke(new Action<EndOfGameStats>(UpdateLists), game);
-				return;
-			}
-
-			var teams = new List<PlayerStatsSummaryList> { game.TeamPlayerStats, game.OtherTeamPlayerStats };
-			var lists = new List<TeamControl> { teamControl1, teamControl2 };
-
-			for (int i = 0; i < lists.Count; i++)
-			{
-				var list = lists[i];
-				var team = teams[i];
-
-				if (team == null)
-				{
-					list.Visible = false;
-					continue;
-				}
-
-				for (int o = 0; o < list.Players.Count; o++)
-				{
-					if (o < team.Count)
-					{
-						var ply = team[o];
-
-						if (ply != null)
-						{
-							list.Players[o].Visible = true;
-							lock (PlayersCache)
-							{
-								var entry = PlayersCache.Find(p => p.Player.Id == ply.UserId);
-								if (entry == null)
-								{
-									var plycontrol = list.Players[o];
-									plycontrol.SetLoading(true);
-									plycontrol.SetEmpty();
-									plycontrol.SetParticipant(new GameParticipant { Name = ply.SummonerName });
-									Task.Factory.StartNew(() => LoadPlayer(ply.SummonerName, ply.UserId, plycontrol));
-								}
-								else
-								{
-									list.Players[o].SetEmpty();
-									list.Players[o].SetPlayer(entry.Player);
-									list.Players[o].SetStats(entry.Summoner, entry.Stats);
-									list.Players[o].SetChamps(entry.RecentChamps);
-									list.Players[o].SetGames(entry.Games);
-								}
-							}
-						}
-					}
-					else
-					{
-						list.Players[o].Visible = false;
-						list.Players[o].SetEmpty();
-					}
-				}
-			}
 		}
 
 		public void UpdateLists(GameDTO lobby)

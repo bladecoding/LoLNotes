@@ -149,6 +149,8 @@ namespace LoLNotes.Gui.Controls
 			Player = plr;
 			SetTitle(plr);
 
+			RemoveAll(p => (p.Tag as string) == "Note");
+
 			if (!string.IsNullOrWhiteSpace(plr.Note))
 			{
 				SuspendLayout();
