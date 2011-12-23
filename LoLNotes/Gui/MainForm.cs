@@ -178,15 +178,14 @@ namespace LoLNotes.Gui
 		{
 			Text = string.Format(
 					"LoLNotes v{0}{1}{2}",
-					AssemblyAttributes.FileVersion,
-					AssemblyAttributes.Configuration,
+					Version,
 					!string.IsNullOrEmpty(title) ? " - " + title : "");
 		}
 
 		//Allows for FInvoke(delegate {});
 		void FInvoke(MethodInvoker inv)
 		{
-			Invoke(inv);
+			BeginInvoke(inv);
 		}
 
 		void SetDownloadLink(string link)
@@ -1084,8 +1083,6 @@ namespace LoLNotes.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-
-			throw new Exception("test");
 			var cmd = new PlayerCommands(Connection);
 			var gamemap = JsonConvert.DeserializeObject<ASObject>("{\"$type\": \"FluorineFx.ASObject, FluorineFx\",\"description\": \"The oldest and most venerated Field of Justice is known as Summoner's Rift.  This battleground is known for the constant conflicts fought between two opposing groups of Summoners.  Traverse down one of three different paths in order to attack your enemy at their weakest point.  Work with your allies to siege the enemy base and destroy their Headquarters!\",\"mapId\": 1,\"displayName\": \"Summoner's Rift\",\"totalPlayers\": 10,\"name\": \"SummonersRift\",\"minCustomPlayers\": 1,\"dataVersion\": null,\"futureData\": null }");
 			gamemap.TypeName = "com.riotgames.platform.game.map.GameMap";

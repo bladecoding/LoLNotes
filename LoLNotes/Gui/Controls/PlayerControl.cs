@@ -184,14 +184,14 @@ namespace LoLNotes.Gui.Controls
 
 		public void SetStats(PublicSummoner summoner, PlayerLifetimeStats stats)
 		{
+			if (summoner == null || stats == null)
+				return;
+
 			if (InvokeRequired)
 			{
 				Invoke(new Action<PublicSummoner, PlayerLifetimeStats>(SetStats), summoner, stats);
 				return;
 			}
-
-			if (summoner == null || stats == null)
-				return;
 
 			SetLevel(summoner.SummonerLevel);
 
@@ -227,17 +227,14 @@ namespace LoLNotes.Gui.Controls
 
 		public void SetChamps(ChampionStatInfoList champs)
 		{
+			if (champs == null || champs.Count < 1)
+				return;
+
 			if (InvokeRequired)
 			{
 				Invoke(new Action<ChampionStatInfoList>(SetChamps), champs);
 				return;
 			}
-
-			if (champs == null)
-				return;
-
-			if (champs.Count < 1)
-				return;
 
 			var layout = new TableLayoutPanel();
 			layout.Dock = DockStyle.Fill;
@@ -265,14 +262,14 @@ namespace LoLNotes.Gui.Controls
 		}
 		public void SetGames(RecentGames games)
 		{
+			if (games == null || games.GameStatistics.Count < 1)
+				return;
+
 			if (InvokeRequired)
 			{
 				Invoke(new Action<RecentGames>(SetGames), games);
 				return;
 			}
-
-			if (games.GameStatistics.Count < 1)
-				return;
 
 			var layout = new TableLayoutPanel();
 			layout.Dock = DockStyle.Fill;
