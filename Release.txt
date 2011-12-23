@@ -1,5 +1,5 @@
 {
-"ReleaseName": "b",
+"ReleaseName": "c",
 "Version": "1.1",
-"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1b.rar"
+"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1c.rar"
 }

@@ -1,4 +1,11 @@
 {
+	"1.1c":
+	[
+		"Removed LoLLoader. Now uses process injection.",
+		"Fixed resizing",
+		"Fixed exceptions in the main thread not being logged",
+		"Fixed rare null reference when retreiving player stats."
+	],
 	"1.1b":
 	[
 		"Note color now properly refreshes if there is no note.",
