@@ -114,6 +114,20 @@ namespace LoLNotes.Messages.Commands
 				return null;
 			}
 
+			if (RtmpUtil.IsError(result))
+			{
+				var error = RtmpUtil.GetError(result);
+				var errordetail = error != null && error.faultDetail != null ? string.Format(" [{0}]", error.faultDetail) : "";
+				var errorstr = error != null && error.faultString != null ? string.Format(", {0}", error.faultString) : "";
+				StaticLogger.Warning(string.Format(
+					"{0} returned an error{1}{2}",
+					endpoint,
+					errorstr,
+					errordetail
+				));
+				return null;
+			}
+
 			var body = RtmpUtil.GetBodies(result).FirstOrDefault();
 			if (body == null)
 			{
