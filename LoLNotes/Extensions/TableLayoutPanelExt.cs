@@ -57,7 +57,7 @@ namespace LoLNotes.Extensions
 		/// <param name="control"></param>
 		public static void AddControl(this TableLayoutPanel panel, Control control, int x, int y)
 		{
-			panel.EnsureSize(x, y);
+			panel.EnsureSize(x + 1, y + 1);
 			panel.Controls.Add(control, x, y);
 		}
 	}
