@@ -83,6 +83,8 @@ namespace LoLNotes.Gui
 		static GameDTO CurrentGame;
 		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
 
+		ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -141,7 +143,32 @@ namespace LoLNotes.Gui
 			//Add this after otherwise it will save immediately due to RegionList.SelectedIndex
 			Settings.PropertyChanged += Settings_PropertyChanged;
 
+			TrackingQueue.Process += TrackingQueue_Process;
+
 			StaticLogger.Info("Startup Completed");
+		}
+
+		void TrackingQueue_Process(object sender, ProcessQueueEventArgs<string> e)
+		{
+			try
+			{
+				var hr = (HttpWebRequest)WebRequest.Create("http://bit.ly/unCoIY");
+				hr.ServicePoint.Expect100Continue = false;
+				hr.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:8.0) Gecko/20100101 Firefox/8.0";
+				hr.Referer = "http://lolnotesapp.org/" + e.Item;
+				hr.AllowAutoRedirect = false;
+				using (var resp = (HttpWebResponse)hr.GetResponse())
+				{
+				}
+			}
+			catch (WebException we)
+			{
+				StaticLogger.Warning(we);
+			}
+			catch (Exception ex)
+			{
+				StaticLogger.Warning(ex);
+			}
 		}
 
 		void Injector_Injected(object sender, EventArgs e)
@@ -222,29 +249,6 @@ namespace LoLNotes.Gui
 			}
 		}
 
-		void Tracking()
-		{
-			try
-			{
-				var hr = (HttpWebRequest)WebRequest.Create("http://bit.ly/unCoIY");
-				hr.ServicePoint.Expect100Continue = false;
-				hr.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:8.0) Gecko/20100101 Firefox/8.0";
-				hr.Referer = "http://lolnotesapp.org/" + Version;
-				hr.AllowAutoRedirect = false;
-				using (var resp = (HttpWebResponse)hr.GetResponse())
-				{
-				}
-			}
-			catch (WebException we)
-			{
-				StaticLogger.Warning(we);
-			}
-			catch (Exception e)
-			{
-				StaticLogger.Error(e);
-			}
-		}
-
 		void SetChanges(string data)
 		{
 			try
@@ -307,6 +311,9 @@ namespace LoLNotes.Gui
 				string.Format("{0} [{1}]", ex.Message, Parse.ToBase64(ex.ToString())),
 				DateTime.UtcNow
 			));
+
+			//Bypass the queue and log it now.
+			TrackingQueue_Process(this, new ProcessQueueEventArgs<string> { Item = string.Format("error/{0}", Parse.ToBase64(e.ExceptionObject.ToString())) });
 		}
 
 		void Log(Levels level, object obj)
@@ -328,8 +335,13 @@ namespace LoLNotes.Gui
 			if (level == Levels.Debug && !Settings.DebugLog)
 				return;
 
+			if (level == Levels.Error && obj is Exception)
+			{
+				TrackingQueue.Enqueue(string.Format("error/{0}", Parse.ToBase64(obj.ToString())));
+			}
+
 			if (obj is Exception)
-				Log(level, string.Format("{0} [{1}]", ((Exception)obj).Message, Convert.ToBase64String(Encoding.ASCII.GetBytes(obj.ToString()))));
+				Log(level, string.Format("{0} [{1}]", ((Exception)obj).Message, Parse.ToBase64(obj.ToString())));
 			else
 				Log(level, obj);
 		}
@@ -661,7 +673,7 @@ namespace LoLNotes.Gui
 			SetTitle("(Checking)");
 			Task.Factory.StartNew(CheckVersion);
 			Task.Factory.StartNew(GetChanges);
-			Task.Factory.StartNew(Tracking);
+			TrackingQueue.Enqueue("startup/" + Version);
 
 			Settings_Loaded(this, new EventArgs());
 			UpdateIcon();
