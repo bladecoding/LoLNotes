@@ -671,6 +671,36 @@ namespace LoLNotes.Gui
 
 			//Fixes the team controls size on start as they keep getting messed up in the WYSIWYG
 			MainForm_Resize(this, new EventArgs());
+
+
+			try
+			{
+				var filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans", "LoLLoader.dll");
+				if (File.Exists(filename))
+				{
+					StaticLogger.Info("Uninstalling old loader");
+
+					var shortfilename = AppInit.GetShortPath(filename);
+
+					var dlls = AppInit.AppInitDlls32;
+					if (dlls.Contains(shortfilename))
+					{
+						dlls.Remove(AppInit.GetShortPath(shortfilename));
+						AppInit.AppInitDlls32 = dlls;
+					}
+
+					if (File.Exists(filename))
+						File.Delete(filename);
+				}
+			}
+			catch (SecurityException se)
+			{
+				StaticLogger.Warning(se);
+			}
+			catch (Exception ex)
+			{
+				StaticLogger.Error("Failed to uninstall " + ex);
+			}
 		}
 
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
