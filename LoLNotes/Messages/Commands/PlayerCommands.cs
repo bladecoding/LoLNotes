@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 using System;
 using System.Linq;
+using System.Text;
 using FluorineFx;
 using FluorineFx.AMF3;
 using FluorineFx.Messaging.Messages;
@@ -43,7 +44,56 @@ namespace LoLNotes.Messages.Commands
 		{
 			Host = host;
 		}
+		/// <summary>
+		/// Used to invoke a service which you don't know what it returns.
+		/// </summary>
+		/// <param name="service"></param>
+		/// <param name="operation"></param>
+		/// <param name="args"></param>
+		/// <returns>ASObject body</returns>
+		public object InvokeServiceUnknown(string service, string operation, params object[] args)
+		{
+			var msg = new RemotingMessage();
+			msg.operation = operation;
+			msg.destination = service;
+			msg.headers["DSRequestTimeout"] = 60;
+			msg.headers["DSId"] = RtmpUtil.RandomUidString();
+			msg.headers["DSEndpoint"] = "my-rtmps";
+			msg.body = args;
+			msg.messageId = RtmpUtil.RandomUidString();
 
+			string endpoint = service + "." + operation;
+
+			var result = Host.Call(msg);
+			if (result == null)
+			{
+				StaticLogger.Warning(string.Format("Invoking {0} returned null", endpoint));
+				return null;
+			}
+
+			if (RtmpUtil.IsError(result))
+			{
+				var error = RtmpUtil.GetError(result);
+				var errordetail = error != null && error.faultDetail != null ? string.Format(" [{0}]", error.faultDetail) : "";
+				var errorstr = error != null && error.faultString != null ? string.Format(", {0}", error.faultString) : "";
+				StaticLogger.Warning(string.Format(
+					"{0} returned an error{1}{2}", 
+					endpoint,
+					errorstr,
+					errordetail
+				));
+				return null;
+			}
+
+			var body = RtmpUtil.GetBodies(result).FirstOrDefault();
+			if (body == null)
+			{
+				StaticLogger.Debug(endpoint + " RtmpUtil.GetBodies returned null");
+				return null;
+			}
+
+			return body.Item1;
+		}
 		public T InvokeService<T>(string service, string operation, params object[] args) where T : class
 		{
 			var msg = new RemotingMessage();
@@ -76,7 +126,7 @@ namespace LoLNotes.Messages.Commands
 				StaticLogger.Debug(endpoint + " Body.Item1 returned null");
 				return null;
 			}
-			
+
 			object obj = null;
 			if (body.Item1 is ASObject)
 			{
@@ -116,7 +166,7 @@ namespace LoLNotes.Messages.Commands
 		public PublicSummoner GetPlayerByName(string name)
 		{
 			return InvokeService<PublicSummoner>(
-				"summonerService", 
+				"summonerService",
 				"getSummonerByName",
 				name
 			);
