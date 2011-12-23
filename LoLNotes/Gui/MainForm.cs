@@ -1047,7 +1047,7 @@ namespace LoLNotes.Gui
 
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
-			var rect = tabControl1.TabPages[0].ClientRectangle;
+			var rect = GamePanel.ClientRectangle;
 			teamControl1.Location = new Point(0, 0);
 			teamControl1.Width = rect.Width / 2;
 
