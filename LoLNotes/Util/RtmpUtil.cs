@@ -38,7 +38,10 @@ namespace LoLNotes.Util
 		static Random Rand { get { return _rand ?? (_rand = new Random()); }
 		}
 
-
+		public static bool IsError(Notify notify)
+		{
+			return notify.ServiceCall != null &&  notify.ServiceCall.ServiceMethodName == "_error";
+		}
 		public static bool IsResult(Notify notify)
 		{
 			return notify.ServiceCall != null &&
@@ -151,6 +154,21 @@ namespace LoLNotes.Util
 					ret.Add(obj);
 			}
 			return ret;
+		}
+		
+		/// <summary>
+		/// Gets the error message from the notify arguments.
+		/// </summary>
+		/// <param name="notify"></param>
+		/// <returns></returns>
+		public static ErrorMessage GetError(Notify notify)
+		{
+			foreach (var arg in notify.ServiceCall.Arguments)
+			{
+				if (arg is ErrorMessage)
+					return (ErrorMessage)arg;
+			}
+			return null;
 		}
 	}
 }

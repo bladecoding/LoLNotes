@@ -216,6 +216,7 @@
     <Compile Include="Messages\Readers\MessageReader.cs" />
     <Compile Include="Util\AssemblyAttributes.cs" />
     <Compile Include="Util\Compression.cs" />
+    <Compile Include="Util\SuspendLayout.cs" />
     <Compile Include="Util\Parse.cs" />
     <Compile Include="Flash\FlashSerializer.cs" />
     <Compile Include="Messages\GameLobby\TeamParticipants.cs" />

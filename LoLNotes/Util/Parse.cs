@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 using System;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 
@@ -80,5 +81,12 @@ namespace LoLNotes.Util
 
             return ret;
         }
+
+		public static string ToBase64(string str)
+		{
+			if (str == null)
+				return null;
+			return Convert.ToBase64String(Encoding.ASCII.GetBytes(str));
+		}
     }
 }

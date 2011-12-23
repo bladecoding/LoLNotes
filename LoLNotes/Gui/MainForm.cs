@@ -125,7 +125,6 @@ namespace LoLNotes.Gui
 			//Recorder must be initiated after Reader.ObjectRead as
 			//the last event handler is called first
 			Recorder = new GameStorage(Database, Connection);
-			Recorder.PlayerUpdate += Recorder_PlayerUpdate;
 
 			Connection.CallResult += Connection_Call;
 			Connection.Notify += Connection_Notify;
@@ -175,15 +174,6 @@ namespace LoLNotes.Gui
 			return config;
 		}
 
-		void UpdatePlayer(PlayerEntry player)
-		{
-		}
-
-		void Recorder_PlayerUpdate(PlayerEntry player)
-		{
-			Task.Factory.StartNew(() => UpdatePlayer(player));
-		}
-
 		void SetTitle(string title)
 		{
 			Text = string.Format(
@@ -191,6 +181,12 @@ namespace LoLNotes.Gui
 					AssemblyAttributes.FileVersion,
 					AssemblyAttributes.Configuration,
 					!string.IsNullOrEmpty(title) ? " - " + title : "");
+		}
+
+		//Allows for FInvoke(delegate {});
+		void FInvoke(MethodInvoker inv)
+		{
+			Invoke(inv);
 		}
 
 		void SetDownloadLink(string link)
@@ -298,7 +294,13 @@ namespace LoLNotes.Gui
 
 		void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			LogToFile(string.Format("[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})", Levels.Fatal.ToString().ToUpper(), e.ExceptionObject, DateTime.UtcNow));
+			var ex = (Exception)e.ExceptionObject;
+			LogToFile(string.Format(
+				"[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
+				Levels.Fatal.ToString().ToUpper(),
+				string.Format("{0} [{1}]", ex.Message, Parse.ToBase64(ex.ToString())),
+				DateTime.UtcNow
+			));
 		}
 
 		void Log(Levels level, object obj)
@@ -489,58 +491,61 @@ namespace LoLNotes.Gui
 			var teams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
 			var lists = new List<TeamControl> { teamControl1, teamControl2 };
 
-			for (int i = 0; i < lists.Count; i++)
+			using (new SuspendLayout(this))
 			{
-				var list = lists[i];
-				var team = teams[i];
-
-				if (team == null)
+				for (int i = 0; i < lists.Count; i++)
 				{
-					list.Visible = false;
-					continue;
-				}
-				list.Visible = true;
+					var list = lists[i];
+					var team = teams[i];
 
-				for (int o = 0; o < list.Players.Count; o++)
-				{
-					if (o < team.Count)
+					if (team == null)
 					{
-						list.Players[o].Visible = true;
-						var ply = team[o] as PlayerParticipant;
+						list.Visible = false;
+						continue;
+					}
+					list.Visible = true;
 
-						if (ply != null)
+					for (int o = 0; o < list.Players.Count; o++)
+					{
+						if (o < team.Count)
 						{
-							lock (PlayersCache)
+							list.Players[o].Visible = true;
+							var ply = team[o] as PlayerParticipant;
+
+							if (ply != null)
 							{
-								var entry = PlayersCache.Find(p => p.Player.Id == ply.Id);
-								if (entry == null)
+								lock (PlayersCache)
 								{
-									var plycontrol = list.Players[o];
-									plycontrol.SetLoading(true);
-									plycontrol.SetEmpty();
-									plycontrol.SetParticipant(ply);
-									Task.Factory.StartNew(() => LoadPlayer(ply.Name, ply.Id, plycontrol));
+									var entry = PlayersCache.Find(p => p.Player.Id == ply.Id);
+									if (entry == null)
+									{
+										var plycontrol = list.Players[o];
+										plycontrol.SetLoading(true);
+										plycontrol.SetEmpty();
+										plycontrol.SetParticipant(ply);
+										Task.Factory.StartNew(() => LoadPlayer(ply.Name, ply.Id, plycontrol));
+									}
+									else
+									{
+										list.Players[o].SetEmpty();
+										list.Players[o].SetPlayer(entry.Player);
+										list.Players[o].SetStats(entry.Summoner, entry.Stats);
+										list.Players[o].SetChamps(entry.RecentChamps);
+										list.Players[o].SetGames(entry.Games);
+									}
 								}
-								else
-								{
-									list.Players[o].SetEmpty();
-									list.Players[o].SetPlayer(entry.Player);
-									list.Players[o].SetStats(entry.Summoner, entry.Stats);
-									list.Players[o].SetChamps(entry.RecentChamps);
-									list.Players[o].SetGames(entry.Games);
-								}
+							}
+							else
+							{
+								list.Players[o].SetEmpty();
+								list.Players[o].SetParticipant(team[o]);
 							}
 						}
 						else
 						{
+							list.Players[o].Visible = false;
 							list.Players[o].SetEmpty();
-							list.Players[o].SetParticipant(team[o]);
 						}
-					}
-					else
-					{
-						list.Players[o].Visible = false;
-						list.Players[o].SetEmpty();
 					}
 				}
 			}
@@ -577,11 +582,7 @@ namespace LoLNotes.Gui
 				var entry = Recorder.GetPlayer(id);
 				ply.Player = entry ?? ply.Player;
 			}
-			sw.Stop();
-
 			StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
-
-			control.SetPlayer(ply.Player);
 
 			sw = Stopwatch.StartNew();
 			{
@@ -595,17 +596,23 @@ namespace LoLNotes.Gui
 					ply.Games = cmd.GetRecentGames(summoner.AccountId);
 				}
 			}
-			sw.Stop();
+			StaticLogger.Debug(string.Format("Stats query in {0}ms", sw.ElapsedMilliseconds));
 
-			StaticLogger.Trace(string.Format("Stats query in {0}ms", sw.ElapsedMilliseconds));
-
-			control.SetStats(ply.Summoner, ply.Stats);
-			control.SetChamps(ply.RecentChamps);
-			control.SetGames(ply.Games);
-			control.SetLoading(false);
+			FInvoke(delegate
+			{
+				using (new SuspendLayout(this))
+				{
+					control.SetEmpty();
+					control.SetPlayer(ply.Player);
+					control.SetStats(ply.Summoner, ply.Stats);
+					control.SetChamps(ply.RecentChamps);
+					control.SetGames(ply.Games);
+					control.SetLoading(false);
+				}
+			});
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void InstallButton_Click(object sender, EventArgs e)
 		{
 			if (!Wow.IsAdministrator)
 			{
@@ -1073,6 +1080,26 @@ namespace LoLNotes.Gui
 				}
 			}
 			comboBox1.SelectedIndex = -1;
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+
+			throw new Exception("test");
+			var cmd = new PlayerCommands(Connection);
+			var gamemap = JsonConvert.DeserializeObject<ASObject>("{\"$type\": \"FluorineFx.ASObject, FluorineFx\",\"description\": \"The oldest and most venerated Field of Justice is known as Summoner's Rift.  This battleground is known for the constant conflicts fought between two opposing groups of Summoners.  Traverse down one of three different paths in order to attack your enemy at their weakest point.  Work with your allies to siege the enemy base and destroy their Headquarters!\",\"mapId\": 1,\"displayName\": \"Summoner's Rift\",\"totalPlayers\": 10,\"name\": \"SummonersRift\",\"minCustomPlayers\": 1,\"dataVersion\": null,\"futureData\": null }");
+			gamemap.TypeName = "com.riotgames.platform.game.map.GameMap";
+			var obj = cmd.InvokeServiceUnknown(
+				"gameService",
+				"createPracticeGame",
+				"high7s game",
+				"CLASSIC",
+				gamemap,
+				12,
+				1,
+				"",
+				"ALL"
+			);
 		}
 	}
 }

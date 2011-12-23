@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,40 +20,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 using System;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
-using LoLNotes.Gui;
-using LoLNotes.Properties;
-using LoLNotes.Proxy;
 
-namespace LoLNotes
+namespace LoLNotes.Util
 {
-	internal static class Program
+
+	/// <summary>
+	/// Suspends layout on construction, resumes on dispose.
+	/// </summary>
+	public class SuspendLayout : IDisposable
 	{
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		private static void Main()
+		protected readonly Control control;
+		public SuspendLayout(Control cont)
 		{
-			bool created;
-			using (var mutex = new Mutex(true, "LoLNotesApp", out created))
-			{
-				if (created)
-				{
-					Application.EnableVisualStyles();
-					Application.SetCompatibleTextRenderingDefault(false);
-					Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
-					Application.Run(new MainForm());
-				}
-				else
-				{
-					MessageBox.Show("LoLNotes is already running");
-				}
-			}
+			control = cont;
+			control.SuspendLayout();
+		}
+		public void Dispose()
+		{
+			control.ResumeLayout();
 		}
 	}
 }
-
