@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoLNotes", "LoLNotes\LoLNotes.csproj", "{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LolLoader", "LolLoader\LolLoader.vcxproj", "{3A7437B7-79FC-484A-9C29-0056FA061D9D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluorineFx-3.5", "..\..\..\..\..\..\Program Files (x86)\FluorineFx\Source\FluorineFx\FluorineFx-3.5.csproj", "{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}"
 EndProject
 Global
@@ -41,23 +39,6 @@ Global
 		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|Win32.ActiveCfg = Testing|x86
 		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|x86.ActiveCfg = Testing|x86
 		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|x86.Build.0 = Testing|x86
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Debug|Win32.Build.0 = Debug|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Debug|x86.ActiveCfg = Debug|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Release|Any CPU.ActiveCfg = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Release|Win32.ActiveCfg = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Release|Win32.Build.0 = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Release|x86.ActiveCfg = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Testing|Any CPU.ActiveCfg = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Testing|Mixed Platforms.ActiveCfg = Debug|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Testing|Win32.ActiveCfg = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Testing|Win32.Build.0 = Release|Win32
-		{3A7437B7-79FC-484A-9C29-0056FA061D9D}.Testing|x86.ActiveCfg = Release|Win32
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

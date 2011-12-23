@@ -67,9 +67,7 @@ namespace LoLNotes.Gui
 {
 	public partial class MainForm : Form
 	{
-		static readonly string LoaderFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans", "LoLLoader.dll");
 		public static readonly string Version = AssemblyAttributes.FileVersion + AssemblyAttributes.Configuration;
-		const string LoaderVersion = "1.2";
 		const string SettingsFile = "settings.json";
 
 		readonly Dictionary<string, Icon> Icons;
@@ -79,7 +77,8 @@ namespace LoLNotes.Gui
 		IObjectContainer Database;
 		GameStorage Recorder;
 		MainSettings Settings;
-		LoaderInstaller Installer;
+		CertificateInstaller Installer;
+		ProcessInjector Injector;
 
 		static GameDTO CurrentGame;
 		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
@@ -116,10 +115,12 @@ namespace LoLNotes.Gui
 			if (cert == null)
 				cert = Certificates.First().Value;
 
+			Injector = new ProcessInjector("lolclient");
 			Connection = new RtmpsProxyHost(2099, cert.Domain, 2099, cert.Certificate);
 			Reader = new MessageReader(Connection);
 
 			Connection.Connected += Connection_Connected;
+			Injector.Injected += Injector_Injected;
 			Reader.ObjectRead += Reader_ObjectRead;
 
 			//Recorder must be initiated after Reader.ObjectRead as
@@ -135,12 +136,18 @@ namespace LoLNotes.Gui
 			int idx = RegionList.Items.IndexOf(Settings.Region);
 			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
 
-			Installer = new LoaderInstaller(LoaderFile, Resources.LolLoader, LoaderVersion, Certificates.Select(c => c.Value.Certificate).ToArray());
+			Installer = new CertificateInstaller(Certificates.Select(c => c.Value.Certificate).ToArray());
 
 			//Add this after otherwise it will save immediately due to RegionList.SelectedIndex
 			Settings.PropertyChanged += Settings_PropertyChanged;
 
 			StaticLogger.Info("Startup Completed");
+		}
+
+		void Injector_Injected(object sender, EventArgs e)
+		{
+			if (Created)
+				BeginInvoke(new Action(UpdateIcon));
 		}
 
 		void Settings_Loaded(object sender, EventArgs e)
@@ -177,7 +184,7 @@ namespace LoLNotes.Gui
 		void SetTitle(string title)
 		{
 			Text = string.Format(
-					"LoLNotes v{0}{1}{2}",
+					"LoLNotes v{0}{1}",
 					Version,
 					!string.IsNullOrEmpty(title) ? " - " + title : "");
 		}
@@ -360,7 +367,7 @@ namespace LoLNotes.Gui
 
 		void UpdateIcon()
 		{
-			if (!Installer.IsInstalled)
+			if (!Injector.IsInjected)
 				Icon = Icons["Red"];
 			else if (Connection != null && Connection.IsConnected)
 				Icon = Icons["Green"];
@@ -727,6 +734,7 @@ namespace LoLNotes.Gui
 			UpdateIcon();
 			//Start after the form is shown otherwise Invokes will fail
 			Connection.Start();
+			Injector.Start();
 
 			//Fixes the team controls size on start as they keep getting messed up in the WYSIWYG
 			MainForm_Resize(this, new EventArgs());

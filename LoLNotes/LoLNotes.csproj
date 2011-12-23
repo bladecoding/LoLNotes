@@ -45,7 +45,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;TESTING</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -166,7 +166,7 @@
     <Compile Include="Messaging\Messages\DSC.cs" />
     <Compile Include="Messaging\Messages\DSK.cs" />
     <Compile Include="Messaging\IMessageProcessor.cs" />
-    <Compile Include="LoaderInstaller.cs" />
+    <Compile Include="Util\CertificateInstaller.cs" />
     <Compile Include="Proxy\CallResultWait.cs" />
     <Compile Include="Proxy\IProxyHost.cs" />
     <Compile Include="Proxy\ProxyClient.cs" />
@@ -216,6 +216,8 @@
     <Compile Include="Messages\Readers\MessageReader.cs" />
     <Compile Include="Util\AssemblyAttributes.cs" />
     <Compile Include="Util\Compression.cs" />
+    <Compile Include="Util\ProcessInjector.cs" />
+    <Compile Include="Util\ProcessMemory.cs" />
     <Compile Include="Util\SuspendLayout.cs" />
     <Compile Include="Util\Parse.cs" />
     <Compile Include="Flash\FlashSerializer.cs" />

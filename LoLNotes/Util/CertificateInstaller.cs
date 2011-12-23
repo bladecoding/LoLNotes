@@ -19,34 +19,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using LoLNotes.Properties;
-using LoLNotes.Util;
 using NotMissing.Logging;
 
-//TODO: Place this somewhere better
-
-namespace LoLNotes
+namespace LoLNotes.Util
 {
-	public class LoaderInstaller
+	public class CertificateInstaller
 	{
-		public string Filename { get; set; }
-		public string Version { get; set; }
-		public byte[] Data { get; set; }
 		public X509Certificate2[] Certificates { get; set; }
 
-		public LoaderInstaller(string file, byte[] data, string version, X509Certificate2[] certs)
+		public CertificateInstaller(X509Certificate2[] certs)
 		{
-			Filename = file;
-			Version = version;
-			Data = data;
 			Certificates = certs;
 		}
 
@@ -54,21 +40,6 @@ namespace LoLNotes
 		{
 			try
 			{
-				var path = Path.GetDirectoryName(Filename);
-				if (!Directory.Exists(path))
-					Directory.CreateDirectory(path);
-
-				File.WriteAllBytes(Filename, Data);
-
-				var shortfilename = AppInit.GetShortPath(Filename);
-
-				var dlls = AppInit.AppInitDlls32;
-				if (!dlls.Contains(shortfilename))
-				{
-					dlls.Add(shortfilename);
-					AppInit.AppInitDlls32 = dlls;
-				}
-
 				var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
 				store.Open(OpenFlags.MaxAllowed);
 				foreach (var cert in Certificates)
@@ -97,17 +68,15 @@ namespace LoLNotes
 			{
 				try
 				{
-					if (!File.Exists(Filename))
-						return false;
-
-					var version = FileVersionInfo.GetVersionInfo(Filename);
-					if (version.FileVersion == null || version.FileVersion != Version)
-						return false;
-
-					var shortfilename = AppInit.GetShortPath(Filename);
-					var dlls = AppInit.AppInitDlls32;
-
-					return dlls.Contains(shortfilename);
+					var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
+					store.Open(OpenFlags.MaxAllowed);
+					foreach (var cert in Certificates)
+					{
+						if (!store.Certificates.Contains(cert))
+							return false;
+					}
+					store.Close();
+					return true;
 				}
 				catch (SecurityException se)
 				{
@@ -120,18 +89,6 @@ namespace LoLNotes
 		{
 			try
 			{
-				var shortfilename = AppInit.GetShortPath(Filename);
-
-				var dlls = AppInit.AppInitDlls32;
-				if (dlls.Contains(shortfilename))
-				{
-					dlls.Remove(AppInit.GetShortPath(shortfilename));
-					AppInit.AppInitDlls32 = dlls;
-				}
-
-				if (File.Exists(Filename))
-					File.Delete(Filename);
-
 				var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
 				store.Open(OpenFlags.MaxAllowed);
 				foreach (var cert in Certificates)
