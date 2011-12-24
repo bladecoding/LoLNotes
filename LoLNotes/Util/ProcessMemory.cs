@@ -80,6 +80,18 @@ namespace LoLNotes.Util
 			return ret;
 		}
 
+		public bool Is64Bit()
+		{
+			if ((Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1) || Environment.OSVersion.Version.Major > 5)
+			{
+				bool ret;
+				if (!IsWow64Process(Handle, out ret))
+					throw new Win32Exception();
+				return ret;
+			}
+			return false;
+		}
+
 		public void Dispose()
 		{
 			Dispose(true);
@@ -103,11 +115,11 @@ namespace LoLNotes.Util
 
 
 		public const uint PROCESS_ALL_ACCESS = 0x1FFFFF;
-		[DllImport("kernel32.dll")]
+		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern IntPtr OpenProcess(UInt32 dwDesiredAccess, Int32 bInheritHandle, Int32 dwProcessId);
-		[DllImport("kernel32.dll")]
+		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern Int32 CloseHandle(IntPtr hObject);
-		[DllImport("kernel32.dll")]
+		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] buffer, Int32 size, out IntPtr lpNumberOfBytesRead);
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
@@ -141,11 +153,15 @@ namespace LoLNotes.Util
 			WriteCombineModifierflag = 0x400
 		}
 		[DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-		static extern Int32 VirtualAllocEx(IntPtr hProcess, Int32 lpAddress,
-		   Int32 dwSize, AllocationType flAllocationType, MemoryProtection flProtect);
-		[DllImport("kernel32.dll")]
+		static extern Int32 VirtualAllocEx(IntPtr hProcess, Int32 lpAddress, Int32 dwSize, AllocationType flAllocationType, MemoryProtection flProtect);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern Int32 GetProcAddress(Int32 hModule, string procedureName);
-		[DllImport("kernel32.dll", EntryPoint = "LoadLibraryA")]
+
+		[DllImport("kernel32.dll", SetLastError = true, EntryPoint = "LoadLibraryA")]
 		public static extern Int32 LoadLibrary(string dllToLoad);
+
+		[DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
+		public static extern bool IsWow64Process(IntPtr processHandle, out bool wow64Process);
 	}
 }

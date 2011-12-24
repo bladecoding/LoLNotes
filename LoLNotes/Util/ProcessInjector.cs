@@ -111,10 +111,22 @@ namespace LoLNotes.Util
 							Inject();
 							IsInjected = true;
 						}
+						catch (FileNotFoundException fe)
+						{
+							//LoLClient does not have ws2_32 yet. Lets try again in 1 second.
+							StaticLogger.Trace(fe.Message);
+							CurrentProcess = null;
+							Thread.Sleep(1000);
+							continue;
+						}
 						catch (WarningException we)
 						{
 							IsInjected = true;
 							StaticLogger.Info(we.Message);
+						}
+						catch (NotSupportedException nse)
+						{
+							StaticLogger.Warning(nse);
 						}
 						catch (Exception ex)
 						{
@@ -132,6 +144,9 @@ namespace LoLNotes.Util
 			{
 				using (var notemem = new ProcessMemory(Process.GetCurrentProcess().Id))
 				{
+					if (mem.Is64Bit())
+						throw new NotSupportedException("lolclient is running in 64bit mode which is not supported");
+
 					var connect = new byte[connectcc.Length];
 					connectcc.CopyTo(connect, 0);
 					int jmpaddrloc = connect.Length - 4;
@@ -141,6 +156,10 @@ namespace LoLNotes.Util
 					reladdr -= mod.BaseAddress.ToInt32();
 
 					var lolmod = GetModule(CurrentProcess.Modules, "ws2_32.dll");
+					if (lolmod == null)
+					{
+						throw new FileNotFoundException("Lolclient has not yet loaded ws2_32.dll");
+					}
 					Int32 connectaddr = lolmod.BaseAddress.ToInt32() + reladdr;
 
 					var bytes = mem.Read(connectaddr, 5);
@@ -166,6 +185,15 @@ namespace LoLNotes.Util
 			}
 		}
 
+		string GetModules(ProcessModuleCollection mods)
+		{
+			var ret = new StringBuilder(); 
+			foreach (ProcessModule mod in mods)
+			{
+				ret.AppendLine(mod.ModuleName);
+			}
+			return ret.ToString();
+		}
 		ProcessModule GetModule(ProcessModuleCollection mods, string name)
 		{
 			name = name.ToLower();
