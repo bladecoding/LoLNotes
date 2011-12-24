@@ -87,7 +87,9 @@ namespace LoLNotes.Util
 				bool ret;
 				if (!IsWow64Process(Handle, out ret))
 					throw new Win32Exception();
-				return ret;
+				//IsWow64Process only checks if its a 32 bit process on a x64 machine.
+				//Will return false if its a 64 bit process or if its a 32bit on x84.
+				return !Wow.Is64BitOperatingSystem || !ret;
 			}
 			return false;
 		}

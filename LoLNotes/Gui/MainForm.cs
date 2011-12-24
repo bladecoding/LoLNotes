@@ -546,6 +546,10 @@ namespace LoLNotes.Gui
 					ply.RecentChamps = cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
 					ply.Games = cmd.GetRecentGames(summoner.AccountId);
 				}
+				else
+				{
+					StaticLogger.Debug(string.Format("Player {0} not found", name));
+				}
 			}
 			StaticLogger.Debug(string.Format("Stats query in {0}ms", sw.ElapsedMilliseconds));
 
@@ -1075,7 +1079,7 @@ namespace LoLNotes.Gui
 				"high7s game",
 				"CLASSIC",
 				gamemap,
-				12,
+				10,
 				1,
 				"",
 				"ALL"
