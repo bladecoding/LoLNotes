@@ -41,15 +41,18 @@ namespace LoLNotes.Messages.GameLobby.Participants
 
         [InternalName("profileIconId")]
         public int ProfileIconId { get; set; }
-        [InternalName("summonerId")]
-        public int Id { get; set; }
+		[InternalName("summonerId")]
+		public int SummonerId { get; set; }
+		[InternalName("accountId")]
+		public int AccountId { get; set; }
+
 
 		public override bool Equals(object obj)
 		{
 			if (obj == null)
 				return false;
 			if (obj is PlayerParticipant)
-				return Id == ((PlayerParticipant)obj).Id;
+				return SummonerId == ((PlayerParticipant)obj).SummonerId;
 			return base.Equals(obj);
 		}
 
@@ -58,7 +61,7 @@ namespace LoLNotes.Messages.GameLobby.Participants
             return new PlayerParticipant
             {
                 ProfileIconId = ProfileIconId,
-                Id = Id,
+                SummonerId = SummonerId,
                 InternalName = InternalName,
                 IsMe = IsMe,
                 IsGameOwner = IsGameOwner,

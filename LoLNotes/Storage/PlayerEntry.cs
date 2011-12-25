@@ -45,7 +45,7 @@ namespace LoLNotes.Storage
             : this()
         {
             Name = plr.Name;
-            Id = plr.Id;
+            Id = plr.SummonerId;
         }
         public PlayerEntry(PlayerStatsSummary stats)
             : this()

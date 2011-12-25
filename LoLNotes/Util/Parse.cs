@@ -86,7 +86,7 @@ namespace LoLNotes.Util
 		{
 			if (str == null)
 				return null;
-			return Convert.ToBase64String(Encoding.ASCII.GetBytes(str));
+			return Convert.ToBase64String(Encoding.UTF8.GetBytes(str));
 		}
     }
 }

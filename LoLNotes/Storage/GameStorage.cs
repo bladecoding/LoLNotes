@@ -147,7 +147,7 @@ namespace LoLNotes.Storage
 				var entry = new PlayerEntry(plr);
 				lock (_lobbycache)
 				{
-					if (_lobbycache.Find(p => p.Id == plr.Id) != null)
+					if (_lobbycache.Find(p => p.Id == plr.SummonerId) != null)
 						continue;
 
 					_lobbycache.Add(entry);

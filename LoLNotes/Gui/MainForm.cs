@@ -155,7 +155,7 @@ namespace LoLNotes.Gui
 				var hr = (HttpWebRequest)WebRequest.Create("http://bit.ly/unCoIY");
 				hr.ServicePoint.Expect100Continue = false;
 				hr.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:8.0) Gecko/20100101 Firefox/8.0";
-				hr.Referer = "http://lolnotesapp.org/" + e.Item;
+				hr.Referer = "http://lolnotesapp.org/" + Version + "/" + e.Item;
 				hr.AllowAutoRedirect = false;
 				using (var resp = (HttpWebResponse)hr.GetResponse())
 				{
@@ -395,9 +395,18 @@ namespace LoLNotes.Gui
 
 		void Reader_ObjectRead(object obj)
 		{
-			var lobby = obj as GameDTO;
-			if (lobby != null)
-				UpdateLists(lobby);
+			if (obj is GameDTO)
+				UpdateLists((GameDTO)obj);
+			else if (obj is EndOfGameStats)
+				ClearCache(); //clear the player cache after each match.
+		}
+
+		public void ClearCache()
+		{
+			lock (PlayersCache)
+			{
+				PlayersCache.Clear();
+			}
 		}
 
 		public void UpdateLists(GameDTO lobby)
@@ -410,11 +419,7 @@ namespace LoLNotes.Gui
 
 			if (CurrentGame == null || CurrentGame.Id != lobby.Id)
 			{
-				lock (PlayersCache)
-				{
-					PlayersCache.Clear();
-					CurrentGame = lobby;
-				}
+				CurrentGame = lobby;
 			}
 			else
 			{
@@ -463,18 +468,18 @@ namespace LoLNotes.Gui
 							list.Players[o].Visible = true;
 							var ply = team[o] as PlayerParticipant;
 
-							if (ply != null)
+							if (ply != null && ply.SummonerId != 0)
 							{
 								lock (PlayersCache)
 								{
-									var entry = PlayersCache.Find(p => p.Player.Id == ply.Id);
+									var entry = PlayersCache.Find(p => p.Player.Id == ply.SummonerId);
 									if (entry == null)
 									{
 										var plycontrol = list.Players[o];
 										plycontrol.SetLoading(true);
 										plycontrol.SetEmpty();
 										plycontrol.SetParticipant(ply);
-										Task.Factory.StartNew(() => LoadPlayer(ply.Name, ply.Id, plycontrol));
+										Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol));
 									}
 									else
 									{
@@ -505,10 +510,9 @@ namespace LoLNotes.Gui
 		/// <summary>
 		/// Query and cache player data
 		/// </summary>
-		/// <param name="name">Name of the player to load</param>
-		/// <param name="id">Id of the player to load</param>
+		/// <param name="player">Player to load</param>
 		/// <param name="control">Control to update</param>
-		void LoadPlayer(string name, int id, PlayerControl control)
+		void LoadPlayer(PlayerParticipant player, PlayerControl control)
 		{
 			var ply = new PlayerCache();
 			lock (PlayersCache)
@@ -517,20 +521,20 @@ namespace LoLNotes.Gui
 				if (PlayersCache.Count > 1000)
 					PlayersCache.Clear();
 
-				if (PlayersCache.Find(p => p.Player.Id == id) != null)
+				if (PlayersCache.Find(p => p.Player.Id == player.SummonerId) != null)
 				{
 					//Player got cached or is getting cached by another thread.
 					return;
 				}
 				//Temporary player entry so we don't keep PlayersCache locked while querying
-				ply.Player = new PlayerEntry() { Id = id, Name = "Loading..." };
+				ply.Player = new PlayerEntry() { Id = player.SummonerId, Name = "Loading..." };
 				PlayersCache.Add(ply);
 			}
 
 
 			var sw = Stopwatch.StartNew();
 			{
-				var entry = Recorder.GetPlayer(id);
+				var entry = Recorder.GetPlayer(player.SummonerId);
 				ply.Player = entry ?? ply.Player;
 			}
 			StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
@@ -538,7 +542,7 @@ namespace LoLNotes.Gui
 			sw = Stopwatch.StartNew();
 			{
 				var cmd = new PlayerCommands(Connection);
-				var summoner = cmd.GetPlayerByName(name);
+				var summoner = cmd.GetPlayerByName(player.Name);
 				if (summoner != null)
 				{
 					ply.Summoner = summoner;
@@ -548,7 +552,7 @@ namespace LoLNotes.Gui
 				}
 				else
 				{
-					StaticLogger.Debug(string.Format("Player {0} not found", name));
+					StaticLogger.Debug(string.Format("Player {0} not found", player.Name));
 				}
 			}
 			StaticLogger.Debug(string.Format("Stats query in {0}ms", sw.ElapsedMilliseconds));
@@ -677,7 +681,7 @@ namespace LoLNotes.Gui
 			SetTitle("(Checking)");
 			Task.Factory.StartNew(CheckVersion);
 			Task.Factory.StartNew(GetChanges);
-			TrackingQueue.Enqueue("startup/" + Version);
+			TrackingQueue.Enqueue("startup");
 
 			Settings_Loaded(this, new EventArgs());
 			UpdateIcon();
@@ -1071,18 +1075,10 @@ namespace LoLNotes.Gui
 		private void button1_Click(object sender, EventArgs e)
 		{
 			var cmd = new PlayerCommands(Connection);
-			var gamemap = JsonConvert.DeserializeObject<ASObject>("{\"$type\": \"FluorineFx.ASObject, FluorineFx\",\"description\": \"The oldest and most venerated Field of Justice is known as Summoner's Rift.  This battleground is known for the constant conflicts fought between two opposing groups of Summoners.  Traverse down one of three different paths in order to attack your enemy at their weakest point.  Work with your allies to siege the enemy base and destroy their Headquarters!\",\"mapId\": 1,\"displayName\": \"Summoner's Rift\",\"totalPlayers\": 10,\"name\": \"SummonersRift\",\"minCustomPlayers\": 1,\"dataVersion\": null,\"futureData\": null }");
-			gamemap.TypeName = "com.riotgames.platform.game.map.GameMap";
 			var obj = cmd.InvokeServiceUnknown(
-				"gameService",
-				"createPracticeGame",
-				"high7s game",
-				"CLASSIC",
-				gamemap,
-				10,
-				1,
-				"",
-				"ALL"
+				"summonerService",
+				"getSummonerNames",
+				new [] {563338996	 }
 			);
 		}
 	}
