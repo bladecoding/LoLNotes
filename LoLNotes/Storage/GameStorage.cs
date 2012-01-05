@@ -198,6 +198,8 @@ namespace LoLNotes.Storage
 			var match = Database.Query<PlayerEntry>().FirstOrDefault(m => m.Id == entry.Id);
 			if (match == null || overwrite)
 			{
+				if (match != null)
+					Database.Delete(match);
 				Database.Store(entry.CloneT());
 			}
 			else

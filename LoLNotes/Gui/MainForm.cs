@@ -33,6 +33,7 @@ using System.Net;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Db4objects.Db4o;
@@ -42,8 +43,10 @@ using FluorineFx;
 using FluorineFx.AMF3;
 using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
+using LoLNotes.Assets;
 using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
+using LoLNotes.Messages.Champion;
 using LoLNotes.Messages.Commands;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
@@ -84,6 +87,8 @@ namespace LoLNotes.Gui
 		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
 
 		ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
+
+		List<ChampionDTO> Champions;
 
 		public MainForm()
 		{
@@ -399,6 +404,8 @@ namespace LoLNotes.Gui
 				UpdateLists((GameDTO)obj);
 			else if (obj is EndOfGameStats)
 				ClearCache(); //clear the player cache after each match.
+			else if (obj is List<ChampionDTO>)
+				Champions = (List<ChampionDTO>)obj;
 		}
 
 		public void ClearCache()
@@ -1076,10 +1083,31 @@ namespace LoLNotes.Gui
 		{
 			var cmd = new PlayerCommands(Connection);
 			var obj = cmd.InvokeServiceUnknown(
-				"summonerService",
-				"getSummonerNames",
-				new [] {563338996	 }
+				"gameService",
+				"quitGame"
 			);
+
+			//if (Champions == null)
+			//    return;
+
+			//var sorted = Champions.OrderBy(c => ChampNames.Get(c.ChampionId)).ToList();
+
+			//var cmd = new PlayerCommands(Connection);
+			//for (int i = 0; i < sorted.Count; i++)
+			//{
+			//    if (sorted[i].FreeToPlay || sorted[i].Owned)
+			//    {
+			//        var id = sorted[i].ChampionId;
+			//        //ThreadPool.QueueUserWorkItem(delegate
+			//        //{
+			//            var obj = cmd.InvokeServiceUnknown(
+			//                "gameService",
+			//                "selectChampion",
+			//                id
+			//            );
+			//        //});
+			//    }
+			//}
 		}
 	}
 }

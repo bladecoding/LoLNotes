@@ -22,38 +22,48 @@ THE SOFTWARE.
 
 using System;
 using FluorineFx;
+using FluorineFx.AMF3;
 using LoLNotes.Flash;
 using LoLNotes.Messages.Translators;
 using LoLNotes.Messaging;
 
 namespace LoLNotes.Messages.Readers
 {
-    /// <summary>
-    /// Reads objects from a IFlashProcessor
-    /// </summary>
-    public class MessageReader : IObjectReader
-    {
-        public event ObjectReadD ObjectRead;
+	/// <summary>
+	/// Reads objects from a IFlashProcessor
+	/// </summary>
+	public class MessageReader : IObjectReader
+	{
+		public event ObjectReadD ObjectRead;
 		IMessageProcessor Flash;
 
-        public MessageReader(IMessageProcessor flash)
-        {
-            Flash = flash;
-            Flash.ProcessObject += Flash_ProcessObject;
-        }
+		public MessageReader(IMessageProcessor flash)
+		{
+			Flash = flash;
+			Flash.ProcessObject += Flash_ProcessObject;
+		}
 
-        void Flash_ProcessObject(object sender, ASObject flashobj, Int64 timestamp)
-        {
-            if (ObjectRead == null)
-                return;
+		void Flash_ProcessObject(object sender, object flashobj, Int64 timestamp)
+		{
+			if (ObjectRead == null)
+				return;
 
-            var obj = MessageTranslator.Instance.GetObject(flashobj);
+			object obj = null;	
+			if (flashobj is ASObject)
+			{
+				obj = MessageTranslator.Instance.GetObject((ASObject)flashobj);
+			}
+			else if (flashobj is ArrayCollection)
+			{
+				obj = MessageTranslator.Instance.GetArray((ArrayCollection)flashobj);
+			}
 			if (obj != null)
 			{
 				if (obj is MessageObject)
 					((MessageObject)obj).TimeStamp = timestamp;
 				ObjectRead(obj);
 			}
-        }
-    }
+
+		}
+	}
 }

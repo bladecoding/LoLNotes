@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FluorineFx;
@@ -76,6 +77,33 @@ namespace LoLNotes.Messages.Translators
 
 			var type = Types.Where(kv => flashobj.TypeName.Contains(kv.Key)).FirstOrDefault();
 			return type.Value != null ? Activator.CreateInstance(type.Value, flashobj) : null;
+		}
+
+		public virtual object GetArray(ArrayCollection array)
+		{
+			if (array.Count < 1)
+				return array;
+
+			if (!(array[0] is ASObject))
+				return array;
+
+			var first = GetObject((ASObject)array[0]);
+			if (first == null)
+				return null;
+
+			var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(first.GetType()));
+			foreach (var item in array)
+			{
+				if (item is ASObject)
+				{
+					var obj = GetObject((ASObject)item);
+					if (obj == null)
+						continue;
+					list.Add(obj);
+				}
+			}
+
+			return list;
 		}
 
 		public virtual T GetObject<T>(ASObject flashobj) where T : class

@@ -99,7 +99,7 @@ namespace LoLNotes.Proxy
 		{
 			var inv = new FlexInvoke();
 			inv.EventType = (EventType)2;
-			inv.ServiceCall = new PendingCall(null, new [] { msg });
+			inv.ServiceCall = new PendingCall(null, new[] { msg });
 			return CallWithInvoke(inv);
 		}
 		/// <summary>
@@ -120,7 +120,7 @@ namespace LoLNotes.Proxy
 			return client.Call(notify);
 		}
 
-		public virtual void OnProcessObject(object sender, ASObject obj, Int64 timestamp)
+		public virtual void OnProcessObject(object sender, object obj, Int64 timestamp)
 		{
 			if (ProcessObject != null)
 				ProcessObject(sender, obj, timestamp);
@@ -147,8 +147,7 @@ namespace LoLNotes.Proxy
 			var bodies = RtmpUtil.GetBodies(results);
 			foreach (var obj in bodies)
 			{
-				if (obj.Item1 is ASObject)
-					OnProcessObject(this, (ASObject)obj.Item1, obj.Item2);
+				OnProcessObject(this, obj.Item1, obj.Item2);
 			}
 		}
 

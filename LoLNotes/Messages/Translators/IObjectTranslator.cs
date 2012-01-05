@@ -21,12 +21,14 @@ THE SOFTWARE.
 */
 
 using FluorineFx;
+using FluorineFx.AMF3;
 using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.Translators
 {
     public interface IObjectTranslator
     {
-        object GetObject(ASObject flashobj);
+		object GetObject(ASObject flashobj);
+		object GetArray(ArrayCollection array);
     }
 }

@@ -28,7 +28,7 @@ using FluorineFx.Messaging.Rtmp.Event;
 
 namespace LoLNotes.Messaging
 {
-	public delegate void ProcessObjectHandler(object sender, ASObject obj, Int64 timestamp);
+	public delegate void ProcessObjectHandler(object sender, object obj, Int64 timestamp);
 	public delegate void CallHandler(object sender, Notify call, Notify result);
 	public delegate void NotifyHandler(object sender, Notify notify);
 	public interface IMessageProcessor
