@@ -45,16 +45,18 @@ namespace LoLNotes.Storage
 		{
 			var serializer = new JsonSerializer();
 			serializer.TypeNameHandling = TypeNameHandling.Auto;
-			var json = new JsonTextReader(new StreamReader(stream));
-			var export = serializer.Deserialize<JsonExportHolder>(json);
+			using (var json = new JsonTextReader(new StreamReader(stream)))
+			{
+				var export = serializer.Deserialize<JsonExportHolder>(json);
 
-			foreach (var ply in export.Players)
-				storage.RecordPlayer(ply, true);
+				foreach (var ply in export.Players)
+					storage.RecordPlayer(ply, true);
 
-			foreach (var end in export.EndStats)
-				storage.RecordGame(end);
+				foreach (var end in export.EndStats)
+					storage.RecordGame(end);
 
-			storage.Commit();
+				storage.Commit();
+			}
 		}
 		public static void Export(string version, IObjectContainer db, Stream stream)
 		{
@@ -69,16 +71,18 @@ namespace LoLNotes.Storage
 
 			var serializer = new JsonSerializer();
 			serializer.TypeNameHandling = TypeNameHandling.Auto;
-			var json = new JsonTextWriter(new StreamWriter(stream));
-			json.Formatting = Formatting.Indented;
-			serializer.Serialize(json, export);
+			using (var json = new JsonTextWriter(new StreamWriter(stream)))
+			{
+				json.Formatting = Formatting.Indented;
+				serializer.Serialize(json, export);
+			}
 		}
 	}
 
-	class JsonExportHolder
+	public class JsonExportHolder
 	{
-		public string Version;
-		public List<EndOfGameStats> EndStats;
-		public List<PlayerEntry> Players;
+		public string Version { get; set; }
+		public List<EndOfGameStats> EndStats { get; set; }
+		public List<PlayerEntry> Players { get; set; }
 	}
 }
