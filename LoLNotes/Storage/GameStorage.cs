@@ -145,13 +145,6 @@ namespace LoLNotes.Storage
 			foreach (PlayerParticipant plr in lobby.TeamOne.Union(lobby.TeamTwo).Where(p => p is PlayerParticipant).ToList())
 			{
 				var entry = new PlayerEntry(plr);
-				lock (_lobbycache)
-				{
-					if (_lobbycache.Find(p => p.Id == plr.SummonerId) != null)
-						continue;
-
-					_lobbycache.Add(entry);
-				}
 				if (RecordPlayer(entry, false))
 				{
 					commit = true;
@@ -195,12 +188,34 @@ namespace LoLNotes.Storage
 			if (entry == null)
 				throw new ArgumentNullException("entry");
 
+			lock (_lobbycache)
+			{
+				//Return if the player has been cached and we are not overwriting.
+				if (_lobbycache.Find(p => p.Id == entry.Id) != null && !overwrite)
+					return false;
+			}
+
 			var match = Database.Query<PlayerEntry>().FirstOrDefault(m => m.Id == entry.Id);
 			if (match == null || overwrite)
 			{
+				entry = entry.CloneT();
+
 				if (match != null)
 					Database.Delete(match);
-				Database.Store(entry.CloneT());
+				Database.Store(entry);
+
+				lock (_lobbycache)
+				{
+					var idx = _lobbycache.FindIndex(p => p.Id == entry.Id);
+					if (idx != -1)
+					{
+						_lobbycache[idx] = entry;
+					}
+					else
+					{
+						_lobbycache.Add(entry);
+					}
+				}
 			}
 			else
 			{
