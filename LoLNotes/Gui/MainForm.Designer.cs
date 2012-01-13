@@ -94,6 +94,8 @@ namespace LoLNotes.Gui
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.CallTree = new System.Windows.Forms.TreeView();
+			this.NewsTab = new System.Windows.Forms.TabPage();
+			this.NewsBrowser = new System.Windows.Forms.WebBrowser();
 			this.tabControl1.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.GamePanel.SuspendLayout();
@@ -109,10 +111,12 @@ namespace LoLNotes.Gui
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.CallEditStrip.SuspendLayout();
+			this.NewsTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
 			// 
+			this.tabControl1.Controls.Add(this.NewsTab);
 			this.tabControl1.Controls.Add(this.GameTab);
 			this.tabControl1.Controls.Add(this.SettingsTab);
 			this.tabControl1.Controls.Add(this.LogTab);
@@ -462,6 +466,26 @@ namespace LoLNotes.Gui
 			this.CallTree.Size = new System.Drawing.Size(1014, 568);
 			this.CallTree.TabIndex = 0;
 			// 
+			// NewsTab
+			// 
+			this.NewsTab.Controls.Add(this.NewsBrowser);
+			this.NewsTab.Location = new System.Drawing.Point(4, 22);
+			this.NewsTab.Name = "NewsTab";
+			this.NewsTab.Padding = new System.Windows.Forms.Padding(3);
+			this.NewsTab.Size = new System.Drawing.Size(1014, 842);
+			this.NewsTab.TabIndex = 6;
+			this.NewsTab.Text = "News";
+			this.NewsTab.UseVisualStyleBackColor = true;
+			// 
+			// NewsBrowser
+			// 
+			this.NewsBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.NewsBrowser.Location = new System.Drawing.Point(3, 3);
+			this.NewsBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+			this.NewsBrowser.Name = "NewsBrowser";
+			this.NewsBrowser.Size = new System.Drawing.Size(1008, 836);
+			this.NewsBrowser.TabIndex = 0;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -492,6 +516,7 @@ namespace LoLNotes.Gui
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.CallEditStrip.ResumeLayout(false);
+			this.NewsTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
         }
@@ -533,6 +558,8 @@ namespace LoLNotes.Gui
 		private System.Windows.Forms.ComboBox comboBox1;
 		private System.Windows.Forms.Panel GamePanel;
 		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.TabPage NewsTab;
+		private System.Windows.Forms.WebBrowser NewsBrowser;
 
     }
 }

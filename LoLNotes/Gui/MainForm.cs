@@ -232,7 +232,7 @@ namespace LoLNotes.Gui
 			DownloadLink.Text = link;
 		}
 
-		void CheckVersion()
+		void GetVersion()
 		{
 			try
 			{
@@ -686,8 +686,9 @@ namespace LoLNotes.Gui
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			SetTitle("(Checking)");
-			Task.Factory.StartNew(CheckVersion);
+			Task.Factory.StartNew(GetVersion);
 			Task.Factory.StartNew(GetChanges);
+			NewsBrowser.Navigate("https://raw.github.com/high6/LoLNotes/master/News.html");
 			TrackingQueue.Enqueue("startup");
 
 			Settings_Loaded(this, new EventArgs());
@@ -877,9 +878,6 @@ namespace LoLNotes.Gui
 		{
 			if (arg is ASObject)
 			{
-				if (string.IsNullOrEmpty(name))
-					name = "ASObject";
-
 				var ao = (ASObject)arg;
 				var children = new List<TreeNode>();
 				foreach (var kv in ao)
@@ -889,7 +887,13 @@ namespace LoLNotes.Gui
 						node = new TreeNode(kv.Key + " = " + (kv.Value ?? "null"));
 					children.Add(node);
 				}
-				return new TreeNode(ao.TypeName ?? name, children.ToArray());
+
+				string text = name;
+				if (!string.IsNullOrEmpty(text))
+					text += " ";
+				text += (ao.TypeName != null ? "(" + ao.TypeName + ")" : "null");
+
+				return new TreeNode(text, children.ToArray());
 			}
 			if (arg is Dictionary<string, object>)
 			{
@@ -909,37 +913,33 @@ namespace LoLNotes.Gui
 			}
 			if (arg is ArrayCollection)
 			{
-				if (string.IsNullOrEmpty(name))
-					name = "ArrayCollection";
-
 				var list = (ArrayCollection)arg;
 				var children = new List<TreeNode>();
 				foreach (var item in list)
 				{
-					var node = GetNode(item, name);
+					var node = GetNode(item);
 					if (node == null)
 						node = new TreeNode(item.ToString());
 					children.Add(node);
 				}
-
-				return new TreeNode(children.Count != 0 ? name : name + " = { }", children.ToArray());
+				if (!string.IsNullOrEmpty(name))
+					name += " ";
+				return new TreeNode(name + "(Array) = { }", children.ToArray());
 			}
 			if (arg is object[])
 			{
-				if (string.IsNullOrEmpty(name))
-					name = "Array";
-
 				var list = (object[])arg;
 				var children = new List<TreeNode>();
 				foreach (var item in list)
 				{
-					var node = GetNode(item, name);
+					var node = GetNode(item);
 					if (node == null)
 						node = new TreeNode(item.ToString());
 					children.Add(node);
 				}
-
-				return new TreeNode(children.Count != 0 ? name : name + " = { }", children.ToArray());
+				if (!string.IsNullOrEmpty(name))
+					name = " ";
+				return new TreeNode(name + "(Array) = { }", children.ToArray());
 			}
 			return null;
 		}
@@ -1081,33 +1081,33 @@ namespace LoLNotes.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			var cmd = new PlayerCommands(Connection);
-			var obj = cmd.InvokeServiceUnknown(
-				"gameService",
-				"quitGame"
-			);
-
-			//if (Champions == null)
-			//    return;
-
-			//var sorted = Champions.OrderBy(c => ChampNames.Get(c.ChampionId)).ToList();
-
 			//var cmd = new PlayerCommands(Connection);
-			//for (int i = 0; i < sorted.Count; i++)
-			//{
-			//    if (sorted[i].FreeToPlay || sorted[i].Owned)
-			//    {
-			//        var id = sorted[i].ChampionId;
-			//        //ThreadPool.QueueUserWorkItem(delegate
-			//        //{
-			//            var obj = cmd.InvokeServiceUnknown(
-			//                "gameService",
-			//                "selectChampion",
-			//                id
-			//            );
-			//        //});
-			//    }
-			//}
+			//var obj = cmd.InvokeServiceUnknown(
+			//    "gameService",
+			//    "quitGame"
+			//);
+
+			if (Champions == null)
+				return;
+
+			var sorted = Champions.OrderBy(c => ChampNames.Get(c.ChampionId)).ToList();
+
+			var cmd = new PlayerCommands(Connection);
+			for (int i = 0; i < sorted.Count; i++)
+			{
+				if (sorted[i].FreeToPlay || sorted[i].Owned)
+				{
+					var id = sorted[i].ChampionId;
+					//ThreadPool.QueueUserWorkItem(delegate
+					//{
+					var obj = cmd.InvokeServiceUnknown(
+						"gameService",
+						"selectChampion",
+						id
+					);
+					//});
+				}
+			}
 		}
 	}
 }
