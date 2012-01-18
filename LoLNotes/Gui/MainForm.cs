@@ -888,10 +888,14 @@ namespace LoLNotes.Gui
 					children.Add(node);
 				}
 
+				string typename = ao.TypeName;
+				if (typename == null && children.Count > 1)
+					typename = "ASObject";
+
 				string text = name;
 				if (!string.IsNullOrEmpty(text))
 					text += " ";
-				text += (ao.TypeName != null ? "(" + ao.TypeName + ")" : "null");
+				text += (typename != null ? "(" + typename + ")" : "null");
 
 				return new TreeNode(text, children.ToArray());
 			}
@@ -915,31 +919,41 @@ namespace LoLNotes.Gui
 			{
 				var list = (ArrayCollection)arg;
 				var children = new List<TreeNode>();
-				foreach (var item in list)
+				for(int i =0; i < list.Count; i++)
 				{
-					var node = GetNode(item);
+					var node = GetNode(list[i], "[" + i + "]");
 					if (node == null)
-						node = new TreeNode(item.ToString());
+						node = new TreeNode(list[i].ToString());
 					children.Add(node);
 				}
 				if (!string.IsNullOrEmpty(name))
 					name += " ";
-				return new TreeNode(name + "(Array) = { }", children.ToArray());
+				name += "(Array)";
+				if (children.Count < 1)
+				{
+					name += " = { }";
+				}
+				return new TreeNode(name, children.ToArray());
 			}
 			if (arg is object[])
 			{
 				var list = (object[])arg;
 				var children = new List<TreeNode>();
-				foreach (var item in list)
+				for (int i = 0; i < list.Length; i++)
 				{
-					var node = GetNode(item);
+					var node = GetNode(list[i], "[" + i + "]");
 					if (node == null)
-						node = new TreeNode(item.ToString());
+						node = new TreeNode(list[i].ToString());
 					children.Add(node);
 				}
 				if (!string.IsNullOrEmpty(name))
-					name = " ";
-				return new TreeNode(name + "(Array) = { }", children.ToArray());
+					name = " "; 
+				name += "(Array)";
+				if (children.Count < 1)
+				{
+					name += " = { }";
+				}
+				return new TreeNode(name, children.ToArray());
 			}
 			return null;
 		}
@@ -1081,33 +1095,42 @@ namespace LoLNotes.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			var spell = new SpellBookPage();
+			spell.SummonerId = 28758093;
+			spell.PageId = 24185065;
+
+			var cmd = new PlayerCommands(Connection);
+			var obj = cmd.SelectDefaultSpellBookPage(spell);
+			return;
+
+
 			//var cmd = new PlayerCommands(Connection);
 			//var obj = cmd.InvokeServiceUnknown(
 			//    "gameService",
 			//    "quitGame"
 			//);
 
-			if (Champions == null)
-				return;
+			//if (Champions == null)
+			//    return;
 
-			var sorted = Champions.OrderBy(c => ChampNames.Get(c.ChampionId)).ToList();
+			//var sorted = Champions.OrderBy(c => ChampNames.Get(c.ChampionId)).ToList();
 
-			var cmd = new PlayerCommands(Connection);
-			for (int i = 0; i < sorted.Count; i++)
-			{
-				if (sorted[i].FreeToPlay || sorted[i].Owned)
-				{
-					var id = sorted[i].ChampionId;
-					//ThreadPool.QueueUserWorkItem(delegate
-					//{
-					var obj = cmd.InvokeServiceUnknown(
-						"gameService",
-						"selectChampion",
-						id
-					);
-					//});
-				}
-			}
+			//var cmd = new PlayerCommands(Connection);
+			//for (int i = 0; i < sorted.Count; i++)
+			//{
+			//    if (sorted[i].FreeToPlay || sorted[i].Owned)
+			//    {
+			//        var id = sorted[i].ChampionId;
+			//        //ThreadPool.QueueUserWorkItem(delegate
+			//        //{
+			//        var obj = cmd.InvokeServiceUnknown(
+			//            "gameService",
+			//            "selectChampion",
+			//            id
+			//        );
+			//        //});
+			//    }
+			//}
 		}
 	}
 }

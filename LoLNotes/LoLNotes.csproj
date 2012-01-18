@@ -128,8 +128,11 @@
     </Compile>
     <Compile Include="Gui\MainSettings.cs" />
     <Compile Include="Gui\PlayerCache.cs" />
+    <Compile Include="Messages\Broadcast\BroadcastMessage.cs" />
     <Compile Include="Messages\Champion\ChampionDTO.cs" />
     <Compile Include="Messages\Commands\PlayerCommands.cs" />
+    <Compile Include="Messages\Game\GameMapEnabledDTO.cs" />
+    <Compile Include="Messages\Game\QueueThrottleDTO.cs" />
     <Compile Include="Messages\Statistics\AggregatedStat.cs" />
     <Compile Include="Messages\Statistics\AggregatedStatList.cs" />
     <Compile Include="Messages\Statistics\ChampionStatInfo.cs" />
@@ -144,6 +147,9 @@
     <Compile Include="Messages\Statistics\RawStatList.cs" />
     <Compile Include="Messages\Statistics\RecentGames.cs" />
     <Compile Include="Messages\Summoner\PublicSummoner.cs" />
+    <Compile Include="Messages\Summoner\SlotEntry.cs" />
+    <Compile Include="Messages\Summoner\SlotEntryList.cs" />
+    <Compile Include="Messages\Summoner\SpellBookPage.cs" />
     <Compile Include="Messaging\Messages\AbstractMessage.cs" />
     <Compile Include="Messaging\Messages\AcknowledgeMessage.cs" />
     <Compile Include="Gui\Controls\TeamControl.cs">
@@ -162,6 +168,8 @@
     <Compile Include="Messages\GameStats\EndOfGameStats.cs" />
     <Compile Include="Messages\GameStats\GameItems.cs" />
     <Compile Include="Messaging\Messages\AsyncMessage.cs" />
+    <Compile Include="Messaging\Messages\BroadcastNotification.cs" />
+    <Compile Include="Messaging\Messages\ClientSystemStatesNotification.cs" />
     <Compile Include="Messaging\Messages\CommandMessage.cs" />
     <Compile Include="Messaging\Messages\DSA.cs" />
     <Compile Include="Messaging\Messages\DSC.cs" />

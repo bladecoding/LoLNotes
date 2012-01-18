@@ -62,6 +62,8 @@ namespace LoLNotes.Gui
         {
 			this.components = new System.ComponentModel.Container();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.NewsTab = new System.Windows.Forms.TabPage();
+			this.NewsBrowser = new System.Windows.Forms.WebBrowser();
 			this.GameTab = new System.Windows.Forms.TabPage();
 			this.GamePanel = new System.Windows.Forms.Panel();
 			this.button1 = new System.Windows.Forms.Button();
@@ -94,9 +96,8 @@ namespace LoLNotes.Gui
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.CallTree = new System.Windows.Forms.TreeView();
-			this.NewsTab = new System.Windows.Forms.TabPage();
-			this.NewsBrowser = new System.Windows.Forms.WebBrowser();
 			this.tabControl1.SuspendLayout();
+			this.NewsTab.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.GamePanel.SuspendLayout();
 			this.PlayerEditStrip.SuspendLayout();
@@ -111,7 +112,6 @@ namespace LoLNotes.Gui
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.CallEditStrip.SuspendLayout();
-			this.NewsTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -129,6 +129,27 @@ namespace LoLNotes.Gui
 			this.tabControl1.Size = new System.Drawing.Size(1022, 868);
 			this.tabControl1.TabIndex = 0;
 			this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
+			// 
+			// NewsTab
+			// 
+			this.NewsTab.Controls.Add(this.NewsBrowser);
+			this.NewsTab.Location = new System.Drawing.Point(4, 22);
+			this.NewsTab.Name = "NewsTab";
+			this.NewsTab.Padding = new System.Windows.Forms.Padding(3);
+			this.NewsTab.Size = new System.Drawing.Size(1014, 842);
+			this.NewsTab.TabIndex = 6;
+			this.NewsTab.Text = "News";
+			this.NewsTab.UseVisualStyleBackColor = true;
+			// 
+			// NewsBrowser
+			// 
+			this.NewsBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.NewsBrowser.Location = new System.Drawing.Point(3, 3);
+			this.NewsBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+			this.NewsBrowser.Name = "NewsBrowser";
+			this.NewsBrowser.ScriptErrorsSuppressed = true;
+			this.NewsBrowser.Size = new System.Drawing.Size(1008, 836);
+			this.NewsBrowser.TabIndex = 0;
 			// 
 			// GameTab
 			// 
@@ -466,26 +487,6 @@ namespace LoLNotes.Gui
 			this.CallTree.Size = new System.Drawing.Size(1014, 568);
 			this.CallTree.TabIndex = 0;
 			// 
-			// NewsTab
-			// 
-			this.NewsTab.Controls.Add(this.NewsBrowser);
-			this.NewsTab.Location = new System.Drawing.Point(4, 22);
-			this.NewsTab.Name = "NewsTab";
-			this.NewsTab.Padding = new System.Windows.Forms.Padding(3);
-			this.NewsTab.Size = new System.Drawing.Size(1014, 842);
-			this.NewsTab.TabIndex = 6;
-			this.NewsTab.Text = "News";
-			this.NewsTab.UseVisualStyleBackColor = true;
-			// 
-			// NewsBrowser
-			// 
-			this.NewsBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.NewsBrowser.Location = new System.Drawing.Point(3, 3);
-			this.NewsBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-			this.NewsBrowser.Name = "NewsBrowser";
-			this.NewsBrowser.Size = new System.Drawing.Size(1008, 836);
-			this.NewsBrowser.TabIndex = 0;
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -500,6 +501,7 @@ namespace LoLNotes.Gui
 			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.tabControl1.ResumeLayout(false);
+			this.NewsTab.ResumeLayout(false);
 			this.GameTab.ResumeLayout(false);
 			this.GamePanel.ResumeLayout(false);
 			this.PlayerEditStrip.ResumeLayout(false);
@@ -516,7 +518,6 @@ namespace LoLNotes.Gui
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.CallEditStrip.ResumeLayout(false);
-			this.NewsTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
         }

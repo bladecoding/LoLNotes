@@ -21,22 +21,24 @@ THE SOFTWARE.
 */
 
 using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 using FluorineFx;
 using FluorineFx.AMF3;
+using LoLNotes.Messages;
 using LoLNotes.Util;
 using NotMissing.Logging;
 
 namespace LoLNotes.Flash
 {
-    public class BaseObject
-    {
-        protected readonly ASObject Base;
+	public class BaseObject
+	{
+		protected readonly ASObject Base;
 		public BaseObject(ASObject obj)
-        {
-            Base = obj;
-        }
+		{
+			Base = obj;
+		}
 
 		/// <summary>
 		/// Helper method which sets all the properties in the class to their respected FlashObject field.
@@ -55,7 +57,7 @@ namespace LoLNotes.Flash
 				var intern = prop.GetCustomAttributes(typeof(InternalNameAttribute), false).FirstOrDefault() as InternalNameAttribute;
 				if (intern == null)
 					continue;
-				
+
 				var type = prop.PropertyType;
 				object value;
 
@@ -86,6 +88,10 @@ namespace LoLNotes.Flash
 					else if (type == typeof(bool))
 					{
 						value = Convert.ToBoolean(flash[intern.Name]);
+					}
+					else if (type == typeof(DateTime))
+					{
+						value = Convert.ToDateTime(flash[intern.Name]);
 					}
 					else if (type == typeof(ASObject))
 					{
@@ -120,5 +126,5 @@ namespace LoLNotes.Flash
 				}
 			}
 		}
-    }
+	}
 }

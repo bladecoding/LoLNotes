@@ -214,5 +214,14 @@ namespace LoLNotes.Messages.Commands
 				gamemode
 			);
 		}
+
+		public SpellBookPage SelectDefaultSpellBookPage(SpellBookPage page)
+		{
+			return InvokeService<SpellBookPage>(
+				"spellBookService",
+				"selectDefaultSpellBookPage",
+				page
+			);
+		}
 	}
 }

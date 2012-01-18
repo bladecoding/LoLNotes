@@ -29,10 +29,16 @@ namespace LoLNotes.Messages
     /// </summary>
     public class MessageAttribute : Attribute
     {
-        public string Name { get; set; }
+    	public string Name { get; set; }
+		public string FullName { get; set; }
         public MessageAttribute(string name)
         {
             Name = name;
         }
+		public MessageAttribute(string fullName, string name)
+		{
+			FullName = fullName;
+			Name = name;
+		}
     }
 }
