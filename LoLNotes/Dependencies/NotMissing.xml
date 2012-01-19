@@ -686,6 +686,14 @@
             Allow Json.NET to use a non-public default constructor.
             </summary>
         </member>
+        <member name="M:NotMissing.HandlerList`1.Register(System.EventHandler{`0},NotMissing.HandlerPriority,System.Boolean)">
+            <summary>
+            Register a handler
+            </summary>
+            <param name="handler">Delegate to be called</param>
+            <param name="priority">Priority of the delegate</param>
+            <param name="gethandled">Should the handler receive a call even if it has been handled</param>
+        </member>
         <member name="M:Newtonsoft.Json.Utilities.ReflectionUtils.GetCollectionItemType(System.Type)">
             <summary>
             Gets the type of the typed collection's items.

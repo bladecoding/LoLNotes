@@ -1,5 +1,5 @@
 /*
-copyright (C) 2011 by high828@gmail.com
+copyright (C) 2011-2012 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
 using System;
 using System.Collections;
 using System.Linq;
@@ -28,6 +27,7 @@ using FluorineFx;
 using FluorineFx.AMF3;
 using LoLNotes.Messages;
 using LoLNotes.Util;
+using NotMissing;
 using NotMissing.Logging;
 
 namespace LoLNotes.Flash
@@ -54,7 +54,7 @@ namespace LoLNotes.Flash
 
 			foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
 			{
-				var intern = prop.GetCustomAttributes(typeof(InternalNameAttribute), false).FirstOrDefault() as InternalNameAttribute;
+				var intern = prop.GetAttribute<InternalNameAttribute>();
 				if (intern == null)
 					continue;
 
@@ -125,6 +125,19 @@ namespace LoLNotes.Flash
 					StaticLogger.Error(e);
 				}
 			}
+		}
+
+		public static object GetObject(object obj)
+		{
+			if (obj == null)
+				return null;
+
+			if (obj is BaseObject)
+			{
+				var bo = (BaseObject)obj;
+				
+			}
+			throw new NotImplementedException();
 		}
 	}
 }
