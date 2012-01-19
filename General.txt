@@ -1,0 +1,70 @@
+{
+	"News":
+	{
+		"html": "<b>Nothing Yet</b>"
+	},
+	"Release":	
+	{
+		"ReleaseName": "d",
+		"Version": "1.1",
+		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1d.rar"
+	},
+	"Changes":	
+	{
+		"1.1d":
+		[
+			"Added News tab to grab attention about new things.",
+			"Fixed lolnotes not working with the latest patch.",
+			"Fixed note saving issue."
+		],
+		"1.1c":
+		[
+			"Removed LoLLoader. Now uses process injection.",
+			"Fixed resizing.",
+			"Fixed exceptions in the main thread not being logged.",
+			"Fixed rare null reference when retreiving player stats."
+		],
+		"1.1b":
+		[
+			"Note color now properly refreshes if there is no note.",
+			"When lolnotes is made smaller vertically there will be a scrollbar.",
+			"Fixed null reference in OnAccept."
+		],
+		"1.1a":
+		[
+			"Added database import/export",
+			"Added player stats lookup (Includes recent matches, rankings, top champions)",
+			"Made UI bigger to allow for more information. Can be made a bitsmaller horizontally.",
+			"Install/Uninstall now takes care of the certificates for you",
+			"Added Dev tab which logs packets for developers.",
+			"Disabled lobby logging and player stats logging. Became obsolete with the stats lookup. Improved performance removing them.",
+			"Added dropdown for quickly changing all tabs to the selected."
+		],
+		"1.1":
+		[
+			"Now works after log files were broken.",
+		],
+		"1.0f": 
+		[
+			"Fixed LoLLoader depending on msvcrt (crashing origin)",
+			"Fixed crashing when editing a player twice in a row",
+		],
+		"1.0e": 
+		[
+			"Added displaying end of game stats",
+			"Fixed not updating stale stats when in a lobby that is newer than the stats",
+			"Fixed player control flickering when rotating stats",
+			"Fixed crashing when lacking permissions to read appinit key",
+			"Fixed null reference in SetStats",
+		],
+		"1.0d": 
+		[
+			"Fixed crashing if the AppInit key does not exist",
+			"Added Changes tab which displays the changes",
+		],
+		"1.0c": 
+		[
+			"Fixed LoLNotes eating up cpu when idling",
+		]
+	}
+}
