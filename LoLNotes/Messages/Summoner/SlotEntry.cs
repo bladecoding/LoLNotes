@@ -31,6 +31,10 @@ namespace LoLNotes.Messages.Summoner
 	[Message(".SlotEntry", "com.riotgames.platform.summoner.spellbook.SlotEntry")]
 	public class SlotEntry : MessageObject
 	{
+		public SlotEntry()
+			: base(null)
+		{
+		}
 		public SlotEntry(ASObject obj)
 			: base(obj)
 		{

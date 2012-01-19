@@ -28,7 +28,7 @@ using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.Summoner
 {
-	[Message(".SpellBookPage")]
+	[Message(".SpellBookPage", "com.riotgames.platform.summoner.spellbook.SpellBookPage")]
 	public class SpellBookPage : MessageObject
 	{
 		public SpellBookPage()
@@ -58,6 +58,6 @@ namespace LoLNotes.Messages.Summoner
 		public SlotEntryList SlotEntries { get; set; }
 
 		[InternalName("createDate")]
-		public SlotEntryList CreateDate { get; set; }
+		public DateTime CreateDate { get; set; }
 	}
 }

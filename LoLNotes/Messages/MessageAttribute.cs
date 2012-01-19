@@ -34,7 +34,7 @@ namespace LoLNotes.Messages
         {
             Name = name;
         }
-		public MessageAttribute(string fullName, string name)
+		public MessageAttribute(string name, string fullName)
 		{
 			FullName = fullName;
 			Name = name;

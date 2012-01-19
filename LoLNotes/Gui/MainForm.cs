@@ -26,13 +26,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
 using System.Net;
 using System.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Db4objects.Db4o;
@@ -42,27 +38,20 @@ using FluorineFx;
 using FluorineFx.AMF3;
 using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
-using LoLNotes.Assets;
-using LoLNotes.Flash;
 using LoLNotes.Gui.Controls;
 using LoLNotes.Messages.Champion;
 using LoLNotes.Messages.Commands;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
-using LoLNotes.Messages.GameStats.PlayerStats;
 using LoLNotes.Messages.Readers;
-using LoLNotes.Messages.Statistics;
 using LoLNotes.Messages.Summoner;
-using LoLNotes.Messages.Translators;
-using LoLNotes.Messaging.Messages;
 using LoLNotes.Properties;
 using LoLNotes.Proxy;
 using LoLNotes.Storage;
 using LoLNotes.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NotMissing;
 using NotMissing.Logging;
 
 namespace LoLNotes.Gui
@@ -226,43 +215,24 @@ namespace LoLNotes.Gui
 			BeginInvoke(inv);
 		}
 
-		void SetDownloadLink(string link)
+
+		void SetRelease(JObject data)
 		{
-			DownloadLink.Text = link;
+			if (data == null)
+				return;
+			SetTitle(string.Format("v{0}{1}", data.Value<string>("Version"), data.Value<string>("ReleaseName")));
+			DownloadLink.Text = data.Value<string>("Link");
 		}
 
-		void GetVersion()
+		void SetChanges(JObject data)
 		{
+			if (data == null)
+				return;
 			try
 			{
-				using (var wc = new WebClient())
-				{
-					string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/Release.txt");
-					var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(raw);
-					BeginInvoke(new Action<string>(SetTitle), string.Format("v{0}{1}", dict["Version"], dict["ReleaseName"]));
-					BeginInvoke(new Action<string>(SetDownloadLink), dict["Link"]);
-				}
-			}
-			catch (WebException we)
-			{
-				StaticLogger.Warning(we);
-			}
-			catch (Exception e)
-			{
-				StaticLogger.Error(e);
-			}
-		}
-
-		void SetChanges(string data)
-		{
-			try
-			{
-				var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
-
 				ChangesText.Text = "";
 
-
-				foreach (var kv in dict)
+				foreach (var kv in data)
 				{
 					ChangesText.SelectionFont = new Font(ChangesText.Font.FontFamily, ChangesText.Font.SizeInPoints, FontStyle.Bold);
 					ChangesText.AppendText(kv.Key);
@@ -290,15 +260,35 @@ namespace LoLNotes.Gui
 			}
 		}
 
-		void GetChanges()
+		void SetNews(JObject data)
+		{
+			if (data == null)
+				return;
+			NewsBrowser.Navigate("about:blank");
+			if (NewsBrowser.Document != null)
+				NewsBrowser.Document.Write(string.Empty);
+			NewsBrowser.DocumentText = data.Value<string>("html");
+		}
+
+		void GetGeneral()
 		{
 			try
 			{
 				using (var wc = new WebClient())
 				{
-					string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/Changes.txt");
-					ChangesText.BeginInvoke(new Action<string>(SetChanges), raw);
+					string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/General.txt");
+					var json = JsonConvert.DeserializeObject<JObject>(raw);
+					FInvoke(delegate
+					{
+						SetChanges(json["Changes"] as JObject);
+						SetRelease(json["Release"] as JObject);
+						SetNews(json["News"] as JObject);
+					});
 				}
+			}
+			catch (JsonReaderException jre)
+			{
+				StaticLogger.Warning(jre);
 			}
 			catch (WebException we)
 			{
@@ -685,9 +675,7 @@ namespace LoLNotes.Gui
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			SetTitle("(Checking)");
-			Task.Factory.StartNew(GetVersion);
-			Task.Factory.StartNew(GetChanges);
-			NewsBrowser.Navigate("https://raw.github.com/high6/LoLNotes/master/News.html");
+			Task.Factory.StartNew(GetGeneral);
 			TrackingQueue.Enqueue("startup");
 
 			Settings_Loaded(this, new EventArgs());
@@ -805,11 +793,9 @@ namespace LoLNotes.Gui
 				if (ao != null)
 					return ao.TypeName;
 			}
-			if (arg is FluorineFx.Messaging.Messages.CommandMessage)
+			if (arg is CommandMessage)
 			{
-				return FluorineFx.Messaging.Messages.CommandMessage.OperationToString(
-					((FluorineFx.Messaging.Messages.CommandMessage)arg).operation
-				);
+				return CommandMessage.OperationToString(((CommandMessage)arg).operation);
 			}
 			return arg.ToString();
 		}
@@ -918,7 +904,7 @@ namespace LoLNotes.Gui
 			{
 				var list = (ArrayCollection)arg;
 				var children = new List<TreeNode>();
-				for(int i =0; i < list.Count; i++)
+				for (int i = 0; i < list.Count; i++)
 				{
 					var node = GetNode(list[i], "[" + i + "]");
 					if (node == null)
@@ -946,7 +932,7 @@ namespace LoLNotes.Gui
 					children.Add(node);
 				}
 				if (!string.IsNullOrEmpty(name))
-					name = " "; 
+					name = " ";
 				name += "(Array)";
 				if (children.Count < 1)
 				{
@@ -1097,6 +1083,7 @@ namespace LoLNotes.Gui
 			var spell = new SpellBookPage();
 			spell.SummonerId = 28758093;
 			spell.PageId = 24185065;
+			spell.SlotEntries.Add(new SlotEntry { });
 
 			var cmd = new PlayerCommands(Connection);
 			var obj = cmd.SelectDefaultSpellBookPage(spell);

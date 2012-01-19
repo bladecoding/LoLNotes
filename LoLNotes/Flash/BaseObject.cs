@@ -132,12 +132,29 @@ namespace LoLNotes.Flash
 			if (obj == null)
 				return null;
 
-			if (obj is BaseObject)
+			var type = obj.GetType();
+			if (type == typeof(BaseObject))
 			{
-				var bo = (BaseObject)obj;
-				
+				var msgattr = type.GetAttribute<MessageAttribute>();
+				if (msgattr.FullName == null)
+					throw new NotSupportedException(string.Format("Serialization for type {0} not supported", type.FullName));
+
+				var ret = new ASObject(msgattr.FullName);
+				foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+				{
+					var intern = prop.GetAttribute<InternalNameAttribute>();
+					if (intern == null)
+						continue;
+
+					ret[intern.Name] = prop.GetValue(obj, null);
+				}
+				return ret;
 			}
-			throw new NotImplementedException();
+			if (type == typeof(BaseList<>))
+			{
+				return new ArrayCollection((IList)obj);
+			}
+			return obj;
 		}
 	}
 }
