@@ -138,6 +138,11 @@ namespace LoLNotes.Gui
 
 			TrackingQueue.Process += TrackingQueue_Process;
 
+
+#if DEBUG
+			button1.Visible = true;
+#endif
+
 			StaticLogger.Info("Startup Completed");
 		}
 
@@ -317,7 +322,6 @@ namespace LoLNotes.Gui
 					level.ToString().ToUpper(),
 					obj,
 					DateTime.UtcNow);
-			Debug.WriteLine(log);
 			Task.Factory.StartNew(LogToFile, log);
 			Task.Factory.StartNew(AddLogToList, log);
 		}

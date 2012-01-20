@@ -63,7 +63,7 @@ namespace LoLNotes.Flash
 
 				if (!flash.TryGetValue(intern.Name, out value))
 				{
-					StaticLogger.Warning(string.Format("Missing ASObject property {0}", intern.Name));
+					StaticLogger.Warning(string.Format("{0} missing ASObject property {1}", typeof(T).FullName, intern.Name));
 					continue;
 				}
 

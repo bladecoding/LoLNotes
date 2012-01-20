@@ -85,12 +85,6 @@ namespace LoLNotes.Messages.GameLobby
             get;
             set;
         }
-        [InternalName("creationTime")]
-        public string CreationTime
-        {
-            get;
-            set;
-        }
         [InternalName("teamOne")]
         public TeamParticipants TeamOne
         {
@@ -115,7 +109,6 @@ namespace LoLNotes.Messages.GameLobby
                 GameMode = GameMode,
                 GameState = GameState,
                 GameType = GameType,
-                CreationTime = CreationTime,
                 TeamOne = new TeamParticipants(TeamOne.Clone()),
                 TeamTwo = new TeamParticipants(TeamTwo.Clone()),
                 TimeStamp = TimeStamp,
