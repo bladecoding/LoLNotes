@@ -136,6 +136,7 @@ namespace LoLNotes.Gui.Controls
 			}
 			Player = null;
 			InfoTabs.TabPages.Clear();
+			Invalidate(); //Force the border to redraw.
 		}
 
 		public void SetPlayer(PlayerEntry plr)
@@ -302,14 +303,14 @@ namespace LoLNotes.Gui.Controls
 						Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold),
 						AutoSize = true,
 						Text = string.Format(
-							"[{0}] {1} ({2}/{3}/{4}){5}",
-							won ? "W" : "L",
+							"{0} ({1}/{2}/{3}){4}",
 							champ,
 							kills,
 							deaths,
 							assists,
 							game.QueueType == "BOT" ? " (B)" : ""
-						)
+						),
+						ForeColor = won ? Color.Green : Color.DarkRed
 					};
 					layout.AddControl(lbl, x, y);
 				}

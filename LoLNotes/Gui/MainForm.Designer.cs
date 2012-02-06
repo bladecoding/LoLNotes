@@ -74,6 +74,7 @@ namespace LoLNotes.Gui
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.CallTree = new System.Windows.Forms.TreeView();
+			this.LeaveCheck = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.NewsTab.SuspendLayout();
 			this.GameTab.SuspendLayout();
@@ -225,6 +226,7 @@ namespace LoLNotes.Gui
 			// 
 			// SettingsTab
 			// 
+			this.SettingsTab.Controls.Add(this.LeaveCheck);
 			this.SettingsTab.Controls.Add(this.DevCheck);
 			this.SettingsTab.Controls.Add(this.LogGroupBox);
 			this.SettingsTab.Controls.Add(this.groupBox1);
@@ -466,6 +468,16 @@ namespace LoLNotes.Gui
 			this.CallTree.Size = new System.Drawing.Size(1014, 568);
 			this.CallTree.TabIndex = 0;
 			// 
+			// LeaveCheck
+			// 
+			this.LeaveCheck.AutoSize = true;
+			this.LeaveCheck.Location = new System.Drawing.Point(16, 270);
+			this.LeaveCheck.Name = "LeaveCheck";
+			this.LeaveCheck.Size = new System.Drawing.Size(120, 17);
+			this.LeaveCheck.TabIndex = 7;
+			this.LeaveCheck.Text = "Delete LeaveBuster";
+			this.LeaveCheck.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -540,6 +552,7 @@ namespace LoLNotes.Gui
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.TabPage NewsTab;
 		private System.Windows.Forms.WebBrowser NewsBrowser;
+		private System.Windows.Forms.CheckBox LeaveCheck;
 
     }
 }

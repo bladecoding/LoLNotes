@@ -36,6 +36,7 @@ using Db4objects.Db4o.Config;
 using Db4objects.Db4o.TA;
 using FluorineFx;
 using FluorineFx.AMF3;
+using FluorineFx.IO;
 using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
 using LoLNotes.Gui.Controls;
@@ -74,9 +75,11 @@ namespace LoLNotes.Gui
 		static GameDTO CurrentGame;
 		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
 
-		ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
+		readonly ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
 
 		List<ChampionDTO> Champions;
+
+		ProcessMonitor launcher = new ProcessMonitor(new[] { "LoLLauncher" });
 
 		public MainForm()
 		{
@@ -137,13 +140,104 @@ namespace LoLNotes.Gui
 			Settings.PropertyChanged += Settings_PropertyChanged;
 
 			TrackingQueue.Process += TrackingQueue_Process;
-
+			launcher.ProcessFound += launcher_ProcessFound;
 
 #if DEBUG
 			button1.Visible = true;
 #endif
 
 			StaticLogger.Info("Startup Completed");
+		}
+
+		void launcher_ProcessFound(object sender, ProcessMonitor.ProcessEventArgs e)
+		{
+			try
+			{
+				if (!Settings.DeleteLeaveBuster)
+					return;
+
+				var dir = Path.GetDirectoryName(e.Process.MainModule.FileName);
+				if (dir == null)
+				{
+					StaticLogger.Warning("Launcher module not found");
+					return;
+				}
+
+				var needle = "\\RADS\\";
+				var i = dir.LastIndexOf(needle, StringComparison.InvariantCulture);
+				if (i == -1)
+				{
+					StaticLogger.Warning("Launcher Rads not found");
+					return;
+				}
+
+				dir = dir.Remove(i + needle.Length);
+				dir = Path.Combine(dir, "projects\\lol_air_client\\releases");
+
+				if (!Directory.Exists(dir))
+				{
+					StaticLogger.Warning("lol_air_client directory not found");
+					return;
+				}
+
+				foreach (var ver in new DirectoryInfo(dir).GetDirectories())
+				{
+					var filename = Path.Combine(ver.FullName, "deploy\\preferences\\global\\global.properties");
+					if (!File.Exists(filename))
+					{
+						StaticLogger.Warning(filename + " not found");
+						continue;
+					}
+
+					ASObject obj = null;
+					using (var amf = new AMFReader(File.OpenRead(filename)))
+					{
+						try
+						{
+							obj = amf.ReadAMF3Data() as ASObject;
+							if (obj == null)
+							{
+								StaticLogger.Warning("Failed to read " + filename);
+								continue;
+							}
+						}
+						catch (Exception ex)
+						{
+							StaticLogger.Warning(ex);
+							continue;
+						}
+					}
+					object leaver;
+					object locale;
+					if ((obj.TryGetValue("leaverData", out leaver) && leaver != null) ||
+						(obj.TryGetValue("localeData", out locale) && locale != null))
+					{
+						obj["leaverData"] = null;
+						obj["localeData"] = null;
+						using (var amf = new AMFWriter(File.Open(filename, FileMode.Create, FileAccess.Write)))
+						{
+							try
+							{
+								amf.WriteAMF3Data(obj);
+								StaticLogger.Info("Removed leaverData/localeData from global.properties");
+							}
+							catch (Exception ex)
+							{
+								StaticLogger.Warning(ex);
+								continue;
+							}
+						}
+					}
+					else
+					{
+						StaticLogger.Info("leaverData/localeData already removed from global.properties");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				StaticLogger.Error(ex);
+			}
 		}
 
 		void TrackingQueue_Process(object sender, ProcessQueueEventArgs<string> e)
@@ -180,6 +274,7 @@ namespace LoLNotes.Gui
 			TraceCheck.Checked = Settings.TraceLog;
 			DebugCheck.Checked = Settings.DebugLog;
 			DevCheck.Checked = Settings.DevMode;
+			LeaveCheck.Checked = Settings.DeleteLeaveBuster;
 		}
 
 		readonly object settingslock = new object();
@@ -687,6 +782,7 @@ namespace LoLNotes.Gui
 			//Start after the form is shown otherwise Invokes will fail
 			Connection.Start();
 			Injector.Start();
+			launcher.Start();
 
 			//Fixes the team controls size on start as they keep getting messed up in the WYSIWYG
 			MainForm_Resize(this, new EventArgs());

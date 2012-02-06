@@ -88,5 +88,7 @@
 	"104":"Graves",
 	"105":"Fizz",
 	"106":"Volibear",
-	"112":"Viktor"
+	"112":"Viktor",
+	"113":"Sejuani",
+	"115":"Ziggs"
 }

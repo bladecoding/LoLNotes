@@ -87,6 +87,19 @@ namespace LoLNotes.Gui
 				OnPropertyChanged("DevMode");
 			}
 		}
+		bool _deleteleavebuster;
+		public bool DeleteLeaveBuster
+		{
+			get
+			{
+				return _deleteleavebuster;
+			}
+			set
+			{
+				_deleteleavebuster = value;
+				OnPropertyChanged("DeleteLeaveBuster");
+			}
+		}
 
 		public MainSettings()
 		{
@@ -94,6 +107,7 @@ namespace LoLNotes.Gui
 			_tracelog = false;
 			_debuglog = true;
 			_devmode = false;
+			_deleteleavebuster = true;
 		}
 
 		public bool Save(string file)
@@ -139,6 +153,7 @@ namespace LoLNotes.Gui
 			_debuglog = src._debuglog;
 			_tracelog = src._tracelog;
 			_devmode = src._devmode;
+			_deleteleavebuster = src._deleteleavebuster;
 		}
 
 		protected void OnLoad()
