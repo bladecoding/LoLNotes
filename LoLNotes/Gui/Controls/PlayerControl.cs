@@ -37,6 +37,7 @@ namespace LoLNotes.Gui.Controls
 {
 	public partial class PlayerControl : UserControl
 	{
+		public TeamControl Parent { get; set; }
 		public PlayerEntry Player { get; set; }
 
 		public PlayerControl()
@@ -50,6 +51,11 @@ namespace LoLNotes.Gui.Controls
 
 			LoadingPicture.Visible = false;
 			LevelLabel.Text = "Level: ";
+		}
+		public PlayerControl(TeamControl parent)
+			: this()
+		{
+			Parent = parent;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -136,6 +142,8 @@ namespace LoLNotes.Gui.Controls
 			}
 			Player = null;
 			InfoTabs.TabPages.Clear();
+			SetLevel(30);
+			SetTeam(0);
 			Invalidate(); //Force the border to redraw.
 		}
 
@@ -196,6 +204,7 @@ namespace LoLNotes.Gui.Controls
 			}
 
 			SetLevel(summoner.SummonerLevel);
+			RemoveAll(p => (p.Tag as string) == "Stats");
 
 			foreach (var stat in stats.PlayerStatSummaries.PlayerStatSummarySet)
 			{
@@ -238,6 +247,8 @@ namespace LoLNotes.Gui.Controls
 				return;
 			}
 
+			RemoveAll(p => (p.Tag as string) == "Champs");
+
 			var layout = new TableLayoutPanel();
 			layout.Dock = DockStyle.Fill;
 			foreach (var champ in champs)
@@ -272,6 +283,8 @@ namespace LoLNotes.Gui.Controls
 				Invoke(new Action<RecentGames>(SetGames), games);
 				return;
 			}
+
+			RemoveAll(p => (p.Tag as string) == "Recent");
 
 			var layout = new TableLayoutPanel();
 			layout.Dock = DockStyle.Fill;
@@ -323,6 +336,25 @@ namespace LoLNotes.Gui.Controls
 			};
 			tab.Controls.Add(layout);
 			InfoTabs.TabPages.Add(tab);
+		}
+
+		public void SetTeam(int num)
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<int>(SetTeam), num);
+				return;
+			}
+
+			if (num == 0)
+			{
+				TeamLabel.Text = "Solo";
+			}
+			else
+			{
+
+				TeamLabel.Text = string.Format("Team {0}", num);
+			}
 		}
 	}
 }

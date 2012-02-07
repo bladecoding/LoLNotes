@@ -49,7 +49,6 @@ namespace LoLNotes.Gui.Controls
 			this.Controls.Add(this.NameLabel);
 			this.Name = "TeamControl";
 			this.Size = new System.Drawing.Size(500, 890);
-			this.Load += new System.EventHandler(this.TeamControl_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -79,7 +79,7 @@ namespace LoLNotes.Gui
 
 		List<ChampionDTO> Champions;
 
-		ProcessMonitor launcher = new ProcessMonitor(new[] { "LoLLauncher" });
+		readonly ProcessMonitor launcher = new ProcessMonitor(new[] { "LoLLauncher" });
 
 		public MainForm()
 		{
@@ -539,6 +539,7 @@ namespace LoLNotes.Gui
 				CurrentGame = lobby;
 			}
 
+			var teamids = new List<Int64>();
 			var teams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
 			var lists = new List<TeamControl> { teamControl1, teamControl2 };
 
@@ -560,7 +561,8 @@ namespace LoLNotes.Gui
 					{
 						if (o < team.Count)
 						{
-							list.Players[o].Visible = true;
+							var plycontrol = list.Players[o];
+							plycontrol.Visible = true;
 							var ply = team[o] as PlayerParticipant;
 
 							if (ply != null && ply.SummonerId != 0)
@@ -570,7 +572,6 @@ namespace LoLNotes.Gui
 									var entry = PlayersCache.Find(p => p.Player.Id == ply.SummonerId);
 									if (entry == null)
 									{
-										var plycontrol = list.Players[o];
 										plycontrol.SetLoading(true);
 										plycontrol.SetEmpty();
 										plycontrol.SetParticipant(ply);
@@ -578,18 +579,32 @@ namespace LoLNotes.Gui
 									}
 									else
 									{
-										list.Players[o].SetEmpty();
-										list.Players[o].SetPlayer(entry.Player);
-										list.Players[o].SetStats(entry.Summoner, entry.Stats);
-										list.Players[o].SetChamps(entry.RecentChamps);
-										list.Players[o].SetGames(entry.Games);
+										plycontrol.SetEmpty();
+										plycontrol.SetPlayer(entry.Player);
+										plycontrol.SetStats(entry.Summoner, entry.Stats);
+										plycontrol.SetChamps(entry.RecentChamps);
+										plycontrol.SetGames(entry.Games);
 									}
 								}
 							}
 							else
 							{
-								list.Players[o].SetEmpty();
-								list.Players[o].SetParticipant(team[o]);
+								plycontrol.SetEmpty();
+								plycontrol.SetParticipant(team[o]);
+							}
+
+							if (ply != null)
+							{
+								if (ply.TeamParticipantId != 0)
+								{
+									var idx = teamids.FindIndex(t => t == ply.TeamParticipantId);
+									if (idx == -1)
+									{
+										idx = teamids.Count;
+										teamids.Add(ply.TeamParticipantId);
+									}
+									plycontrol.SetTeam(idx + 1);
+								}
 							}
 						}
 						else
@@ -656,7 +671,6 @@ namespace LoLNotes.Gui
 			{
 				using (new SuspendLayout(this))
 				{
-					control.SetEmpty();
 					control.SetPlayer(ply.Player);
 					control.SetStats(ply.Summoner, ply.Stats);
 					control.SetChamps(ply.RecentChamps);

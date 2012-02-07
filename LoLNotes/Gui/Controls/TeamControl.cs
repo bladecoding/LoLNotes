@@ -54,7 +54,7 @@ namespace LoLNotes.Gui.Controls
 
                 for (int i = 0; i < value; i++)
                 {
-                    var control = new PlayerControl();
+                    var control = new PlayerControl(this);
                     control.Location = new Point(0, PlayersStartY + (BasePlayer.Height + PlayersYSpacing) * i);
                     control.ContextMenuStrip = PlayerContextMenuStrip;
 					control.Width = this.Width;
@@ -67,6 +67,11 @@ namespace LoLNotes.Gui.Controls
 				Height = PlayersStartY + ((BasePlayer.Height + PlayersYSpacing) * teamsize);
             }
         }
+
+		public PlayerControl this[int idx]
+		{
+			get { return Players[idx]; }
+		}
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
@@ -94,7 +99,6 @@ namespace LoLNotes.Gui.Controls
             }
         }
 
-
         protected ContextMenuStrip playercontextmenustrip;
         [EditorBrowsable(EditorBrowsableState.Always)]
         [Browsable(true)]
@@ -114,7 +118,6 @@ namespace LoLNotes.Gui.Controls
             }
         }
 
-
         public TeamControl()
         {
             Players = new List<PlayerControl>();
@@ -122,10 +125,5 @@ namespace LoLNotes.Gui.Controls
             TeamSize = 5;
             InitializeComponent();
         }
-
-		private void TeamControl_Load(object sender, System.EventArgs e)
-		{
-
-		}
     }
 }

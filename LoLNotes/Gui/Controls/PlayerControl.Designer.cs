@@ -32,11 +32,10 @@ namespace LoLNotes.Gui.Controls
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerControl));
 			this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.NameLabel = new System.Windows.Forms.Label();
-			this.IconPicture = new System.Windows.Forms.PictureBox();
 			this.LevelLabel = new System.Windows.Forms.Label();
 			this.LoadingPicture = new System.Windows.Forms.PictureBox();
 			this.InfoTabs = new System.Windows.Forms.TabControl();
-			((System.ComponentModel.ISupportInitialize)(this.IconPicture)).BeginInit();
+			this.TeamLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.LoadingPicture)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -49,15 +48,6 @@ namespace LoLNotes.Gui.Controls
 			this.NameLabel.Size = new System.Drawing.Size(116, 13);
 			this.NameLabel.TabIndex = 0;
 			this.NameLabel.Text = "Nameeeeeeeeeeee";
-			// 
-			// IconPicture
-			// 
-			this.IconPicture.BackColor = System.Drawing.Color.Transparent;
-			this.IconPicture.Location = new System.Drawing.Point(10, 40);
-			this.IconPicture.Name = "IconPicture";
-			this.IconPicture.Size = new System.Drawing.Size(64, 64);
-			this.IconPicture.TabIndex = 1;
-			this.IconPicture.TabStop = false;
 			// 
 			// LevelLabel
 			// 
@@ -90,18 +80,27 @@ namespace LoLNotes.Gui.Controls
 			this.InfoTabs.Size = new System.Drawing.Size(410, 114);
 			this.InfoTabs.TabIndex = 3;
 			// 
+			// TeamLabel
+			// 
+			this.TeamLabel.AutoSize = true;
+			this.TeamLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.TeamLabel.Location = new System.Drawing.Point(10, 95);
+			this.TeamLabel.Name = "TeamLabel";
+			this.TeamLabel.Size = new System.Drawing.Size(32, 13);
+			this.TeamLabel.TabIndex = 4;
+			this.TeamLabel.Text = "Solo";
+			// 
 			// PlayerControl
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.White;
+			this.Controls.Add(this.TeamLabel);
 			this.Controls.Add(this.NameLabel);
 			this.Controls.Add(this.InfoTabs);
 			this.Controls.Add(this.LoadingPicture);
 			this.Controls.Add(this.LevelLabel);
-			this.Controls.Add(this.IconPicture);
 			this.Name = "PlayerControl";
 			this.Size = new System.Drawing.Size(500, 150);
-			((System.ComponentModel.ISupportInitialize)(this.IconPicture)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.LoadingPicture)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -112,9 +111,9 @@ namespace LoLNotes.Gui.Controls
 
 		private System.Windows.Forms.ToolTip ToolTip;
 		private System.Windows.Forms.Label NameLabel;
-		private System.Windows.Forms.PictureBox IconPicture;
 		private System.Windows.Forms.Label LevelLabel;
 		private System.Windows.Forms.PictureBox LoadingPicture;
 		public System.Windows.Forms.TabControl InfoTabs;
+		private System.Windows.Forms.Label TeamLabel;
     }
 }
