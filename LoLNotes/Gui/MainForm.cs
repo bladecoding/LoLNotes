@@ -676,6 +676,12 @@ namespace LoLNotes.Gui
 					control.SetChamps(ply.RecentChamps);
 					control.SetGames(ply.Games);
 					control.SetLoading(false);
+
+					foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
+					{
+						if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
+							comboBox1.Items.Add(stat.PlayerStatSummaryType);
+					}
 				}
 			});
 		}
@@ -1173,7 +1179,7 @@ namespace LoLNotes.Gui
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			var str = comboBox1.SelectedItem as string;
+			var str = PlayerControl.MinifyStatType(comboBox1.SelectedItem as string);
 			var teams = new List<TeamControl> { teamControl1, teamControl2 };
 			foreach (var team in teams)
 			{
@@ -1181,7 +1187,7 @@ namespace LoLNotes.Gui
 				{
 					for (int i = 0; i < ply.InfoTabs.TabPages.Count; i++)
 					{
-						if ((ply.InfoTabs.TabPages[i].Tag as string) == str)
+						if (ply.InfoTabs.TabPages[i].Text == str)
 						{
 							ply.InfoTabs.SelectedIndex = i;
 							break;

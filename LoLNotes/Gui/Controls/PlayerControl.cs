@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using LoLNotes.Assets;
@@ -222,8 +223,11 @@ namespace LoLNotes.Gui.Controls
 			}
 		}
 
-		static string MinifyStatType(string name)
+		public static string MinifyStatType(string name)
 		{
+			if (name == null)
+				return null;
+
 			var replacements = new Dictionary<string, string>
 			{
 				{"Ranked", "R"},
@@ -295,7 +299,7 @@ namespace LoLNotes.Gui.Controls
 			var list = games.GameStatistics.OrderByDescending(p => p.GameId).ToList();
 			for (int x = 0; x < cols; x++)
 			{
-				for (int y = 0; y < rows;  y++)
+				for (int y = 0; y < rows; y++)
 				{
 					int idx = y + (x * rows);
 					if (idx >= list.Count)
@@ -310,22 +314,30 @@ namespace LoLNotes.Gui.Controls
 					var kills = game.Statistics.GetInt(RawStat.CHAMPION_KILLS);
 					var deaths = game.Statistics.GetInt(RawStat.DEATHS);
 					var assists = game.Statistics.GetInt(RawStat.ASSISTS);
+					var botgame = game.QueueType == "BOT";
 
-					var lbl = new Label
+					var champlbl = new Label
 					{
-						Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold),
-						AutoSize = true,
+						Text = string.Format("{0}", champ),
+						ForeColor = won ? Color.Green : Color.Red
+					};
+					var kdrlbl = new Label
+					{
 						Text = string.Format(
-							"{0} ({1}/{2}/{3}){4}",
-							champ,
+							"({0}/{1}/{2})",
 							kills,
 							deaths,
-							assists,
-							game.QueueType == "BOT" ? " (B)" : ""
+							assists
 						),
-						ForeColor = won ? Color.Green : Color.DarkRed
+						ForeColor = GetKdrColor(kills, deaths)
 					};
-					layout.AddControl(lbl, x, y);
+					champlbl.Font = kdrlbl.Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold);
+					champlbl.AutoSize = kdrlbl.AutoSize = true;
+					if (botgame)
+						champlbl.ForeColor = kdrlbl.ForeColor = Color.Black;
+
+					layout.AddControl(champlbl, x * 2, y);
+					layout.AddControl(kdrlbl, (x * 2) + 1, y);
 				}
 			}
 
@@ -336,6 +348,60 @@ namespace LoLNotes.Gui.Controls
 			};
 			tab.Controls.Add(layout);
 			InfoTabs.TabPages.Add(tab);
+		}
+
+		static Color GetKdrColor(int kills, int deaths)
+		{
+			if (deaths == 0)
+				deaths = 1;
+
+			double ratio = (double)kills / deaths;
+			ratio = Math.Min(ratio, 1);
+
+			var orange = Color.Orange;
+			var red = Color.Red;
+			var green = Color.Green;
+
+			Color top;
+			Color bot;
+			if (ratio < 0.5d)
+			{
+				top = red;
+				bot = orange;
+				ratio *= 2;
+			}
+			else
+			{
+				top = orange;
+				bot = green;
+				ratio -= 0.5d;
+				ratio *= 2;
+			}
+			return Interpolate(top, bot, ratio);
+		}
+
+		static byte Interpolate(byte from, byte to, double step)
+		{
+			return (byte)(from + (to - from) * step);
+
+		}
+		static Color Interpolate(Color from, Color to, double step)
+		{
+			return Color.FromArgb(
+				Interpolate(from.A, to.A, step),
+				Interpolate(from.R, to.R, step),
+				Interpolate(from.G, to.G, step),
+				Interpolate(from.B, to.B, step)
+			);
+		}
+
+		static void kdrtest()
+		{
+			for (var i = 0; i < 10; i++)
+			{
+				var color = GetKdrColor(i, 10);
+				Debug.WriteLine(string.Format("Color.FromArgb({0}, {1}, {2}, {3})", color.A, color.R, color.G, color.B));
+			}
 		}
 
 		public void SetTeam(int num)

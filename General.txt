@@ -5,12 +5,21 @@
 	},
 	"Release":	
 	{
-		"ReleaseName": "d",
+		"ReleaseName": "e",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1d.rar"
+		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1e.rar"
 	},
 	"Changes":	
 	{
+		"1.1e":
+		[
+			"(K/D/A) is colored from red to green based on the K/D ratio.",
+			"[W] and [L] have been replaced with colors (win = green, loss = red, bot game = black).",
+			"Added Delete LeaveBuster which prevents you from playing while ingame on another account.",
+			"Dropdown now includes all the tabs.",
+			"Fixed note colors dropdown.",
+			"64bit read/writeprocessmemory issue fixed"
+		],
 		"1.1d":
 		[
 			"Added News tab to grab attention about new things.",

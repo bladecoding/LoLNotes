@@ -90,7 +90,7 @@
     <Reference Include="Db4objects.Db4o.Linq">
       <HintPath>Dependencies\db4o\Db4objects.Db4o.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="FluorineFx">
+    <Reference Include="FluorineFx, Version=1.0.0.17, Culture=neutral, processorArchitecture=x86">
       <HintPath>Dependencies\FluorineFx.dll</HintPath>
     </Reference>
     <Reference Include="log4net">

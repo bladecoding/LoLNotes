@@ -46,12 +46,11 @@ namespace LoLNotes.Gui
 			this.GamePanel = new System.Windows.Forms.Panel();
 			this.button1 = new System.Windows.Forms.Button();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
+			this.LeaveCheck = new System.Windows.Forms.CheckBox();
 			this.DevCheck = new System.Windows.Forms.CheckBox();
 			this.LogGroupBox = new System.Windows.Forms.GroupBox();
 			this.DebugCheck = new System.Windows.Forms.CheckBox();
@@ -74,7 +73,8 @@ namespace LoLNotes.Gui
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.CallTree = new System.Windows.Forms.TreeView();
-			this.LeaveCheck = new System.Windows.Forms.CheckBox();
+			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
+			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.tabControl1.SuspendLayout();
 			this.NewsTab.SuspendLayout();
 			this.GameTab.SuspendLayout();
@@ -168,6 +168,7 @@ namespace LoLNotes.Gui
 			// 
 			// comboBox1
 			// 
+			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox1.FormattingEnabled = true;
 			this.comboBox1.Items.AddRange(new object[] {
             "Champs",
@@ -175,20 +176,9 @@ namespace LoLNotes.Gui
 			this.comboBox1.Location = new System.Drawing.Point(94, 7);
 			this.comboBox1.Name = "comboBox1";
 			this.comboBox1.Size = new System.Drawing.Size(121, 21);
+			this.comboBox1.Sorted = true;
 			this.comboBox1.TabIndex = 2;
 			this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-			// 
-			// teamControl1
-			// 
-			this.teamControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.teamControl1.BackColor = System.Drawing.Color.Transparent;
-			this.teamControl1.Location = new System.Drawing.Point(12, 0);
-			this.teamControl1.Name = "teamControl1";
-			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(361, 836);
-			this.teamControl1.TabIndex = 0;
-			this.teamControl1.TeamSize = 5;
-			this.teamControl1.Text = "Team 1";
 			// 
 			// PlayerEditStrip
 			// 
@@ -212,18 +202,6 @@ namespace LoLNotes.Gui
 			this.clearToolStripMenuItem.Text = "Clear";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
 			// 
-			// teamControl2
-			// 
-			this.teamControl2.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.teamControl2.BackColor = System.Drawing.Color.Transparent;
-			this.teamControl2.Location = new System.Drawing.Point(552, 0);
-			this.teamControl2.Name = "teamControl2";
-			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(237, 836);
-			this.teamControl2.TabIndex = 1;
-			this.teamControl2.TeamSize = 5;
-			this.teamControl2.Text = "Team 2";
-			// 
 			// SettingsTab
 			// 
 			this.SettingsTab.Controls.Add(this.LeaveCheck);
@@ -239,6 +217,16 @@ namespace LoLNotes.Gui
 			this.SettingsTab.TabIndex = 2;
 			this.SettingsTab.Text = "Settings";
 			this.SettingsTab.UseVisualStyleBackColor = true;
+			// 
+			// LeaveCheck
+			// 
+			this.LeaveCheck.AutoSize = true;
+			this.LeaveCheck.Location = new System.Drawing.Point(16, 270);
+			this.LeaveCheck.Name = "LeaveCheck";
+			this.LeaveCheck.Size = new System.Drawing.Size(120, 17);
+			this.LeaveCheck.TabIndex = 7;
+			this.LeaveCheck.Text = "Delete LeaveBuster";
+			this.LeaveCheck.UseVisualStyleBackColor = true;
 			// 
 			// DevCheck
 			// 
@@ -468,15 +456,29 @@ namespace LoLNotes.Gui
 			this.CallTree.Size = new System.Drawing.Size(1014, 568);
 			this.CallTree.TabIndex = 0;
 			// 
-			// LeaveCheck
+			// teamControl1
 			// 
-			this.LeaveCheck.AutoSize = true;
-			this.LeaveCheck.Location = new System.Drawing.Point(16, 270);
-			this.LeaveCheck.Name = "LeaveCheck";
-			this.LeaveCheck.Size = new System.Drawing.Size(120, 17);
-			this.LeaveCheck.TabIndex = 7;
-			this.LeaveCheck.Text = "Delete LeaveBuster";
-			this.LeaveCheck.UseVisualStyleBackColor = true;
+			this.teamControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.teamControl1.BackColor = System.Drawing.Color.Transparent;
+			this.teamControl1.Location = new System.Drawing.Point(12, 0);
+			this.teamControl1.Name = "teamControl1";
+			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl1.Size = new System.Drawing.Size(361, 836);
+			this.teamControl1.TabIndex = 0;
+			this.teamControl1.TeamSize = 5;
+			this.teamControl1.Text = "Team 1";
+			// 
+			// teamControl2
+			// 
+			this.teamControl2.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.teamControl2.BackColor = System.Drawing.Color.Transparent;
+			this.teamControl2.Location = new System.Drawing.Point(552, 0);
+			this.teamControl2.Name = "teamControl2";
+			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl2.Size = new System.Drawing.Size(237, 836);
+			this.teamControl2.TabIndex = 1;
+			this.teamControl2.TeamSize = 5;
+			this.teamControl2.Text = "Team 2";
 			// 
 			// MainForm
 			// 
