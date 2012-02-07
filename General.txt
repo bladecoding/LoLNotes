@@ -13,6 +13,7 @@
 	{
 		"1.1e":
 		[
+			"Queue group is now displayed above the players level.",
 			"(K/D/A) is colored from red to green based on the K/D ratio.",
 			"[W] and [L] have been replaced with colors (win = green, loss = red, bot game = black).",
 			"Added Delete LeaveBuster which prevents you from playing while ingame on another account.",
