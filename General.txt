@@ -1,7 +1,7 @@
 {
 	"News":
 	{
-		"html": "<b>Nothing Yet</b>"
+		"html": "<b>1.1f should be out tomorrow which will include.<br/>-A fix for some systems not being able to inject.<br/>-Add a hotlink for player which will open a search on http://www.lolking.net and/or http://leagueofstats.com</b>"
 	},
 	"Release":	
 	{
