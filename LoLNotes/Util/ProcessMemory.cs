@@ -20,22 +20,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using Microsoft.Win32.SafeHandles;
 
 namespace LoLNotes.Util
 {
 	public class ProcessMemory : IDisposable
 	{
+		public int ProcessId { get; protected set; }
 		public IntPtr Handle { get; protected set; }
 
 
 		public ProcessMemory(int id)
 		{
+			ProcessId = id;
 			Handle = OpenProcess(PROCESS_ALL_ACCESS, 0, id);
 			if (Handle == IntPtr.Zero)
 				throw new Win32Exception();
@@ -79,6 +86,10 @@ namespace LoLNotes.Util
 				throw new Win32Exception();
 			return ret;
 		}
+		public Int32 GetAddress(string modname, string name)
+		{
+			return GetAddress(GetModule(modname), name);
+		}
 
 		public bool Is64Bit()
 		{
@@ -108,28 +119,27 @@ namespace LoLNotes.Util
 		}
 		protected virtual void Dispose(bool dispose)
 		{
-			if (dispose)
+			if (Handle != IntPtr.Zero)
 			{
-				if (Handle != IntPtr.Zero)
-				{
-					CloseHandle(Handle);
-					Handle = IntPtr.Zero;
-				}
+				CloseHandle(Handle);
+				Handle = IntPtr.Zero;
 			}
 		}
 
 
-		public const uint PROCESS_ALL_ACCESS = 0x1FFFFF;
+		const uint PROCESS_ALL_ACCESS = 0x1FFFFF;
 		[DllImport("kernel32.dll", SetLastError = true)]
-		public static extern IntPtr OpenProcess(UInt32 dwDesiredAccess, Int32 bInheritHandle, Int32 dwProcessId);
+		static extern IntPtr OpenProcess(UInt32 dwDesiredAccess, Int32 bInheritHandle, Int32 dwProcessId);
 		[DllImport("kernel32.dll", SetLastError = true)]
-		public static extern Int32 CloseHandle(IntPtr hObject);
+		static extern bool CloseHandle(IntPtr hObject);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+		static extern bool CloseHandle(HandleRef handle);
 		[DllImport("kernel32.dll", SetLastError = true)]
-		public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] buffer, Int32 size, out IntPtr lpNumberOfBytesRead);
+		static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] buffer, Int32 size, out IntPtr lpNumberOfBytesRead);
 		[DllImport("kernel32.dll", SetLastError = true)]
-		public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
+		static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
 		[Flags]
-		public enum AllocationType
+		enum AllocationType
 		{
 			Commit = 0x1000,
 			Reserve = 0x2000,
@@ -143,7 +153,7 @@ namespace LoLNotes.Util
 		}
 
 		[Flags]
-		public enum MemoryProtection
+		enum MemoryProtection
 		{
 			Execute = 0x10,
 			ExecuteRead = 0x20,
@@ -161,12 +171,161 @@ namespace LoLNotes.Util
 		static extern Int32 VirtualAllocEx(IntPtr hProcess, Int32 lpAddress, Int32 dwSize, AllocationType flAllocationType, MemoryProtection flProtect);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
-		public static extern Int32 GetProcAddress(Int32 hModule, string procedureName);
+		static extern Int32 GetProcAddress(Int32 hModule, string procedureName);
 
 		[DllImport("kernel32.dll", SetLastError = true, EntryPoint = "LoadLibraryA")]
-		public static extern Int32 LoadLibrary(string dllToLoad);
+		static extern Int32 LoadLibrary(string dllToLoad);
 
 		[DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-		public static extern bool IsWow64Process(IntPtr processHandle, out bool wow64Process);
+		static extern bool IsWow64Process(IntPtr processHandle, out bool wow64Process);
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		extern static IntPtr GetCurrentProcess();
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		extern static bool DuplicateHandle([In] IntPtr hSourceProcessHandle, [In] IntPtr hSourceHandle, [In] IntPtr hTargetProcessHandle, [In, Out] ref IntPtr lpTargetHandle, [In] uint dwDesiredAccess, [In] bool bInheritHandle, [In] uint dwOptions);
+
+		[DllImport("kernel32.dll")]
+		static extern Int32 GetModuleHandle(string lpModuleName);
+
+		public static Int32 GetModule(string modname)
+		{
+			var ret = GetModuleHandle(modname);
+			if (ret == 0)
+				throw new Win32Exception();
+			return ret;
+		}
+
+		public void DuplicateMutex(Mutex mutex)
+		{
+			var targethandle = IntPtr.Zero;
+			if (!DuplicateHandle(GetCurrentProcess(), mutex.SafeWaitHandle.DangerousGetHandle(), Handle, ref targethandle, 0, false, 2))
+				throw new Win32Exception();
+		}
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		static extern ToolHelpHandle CreateToolhelp32Snapshot(int flags, int processId);
+
+		[StructLayoutAttribute(LayoutKind.Sequential)]
+		public struct MODULEENTRY32
+		{
+			public uint dwSize;
+			public uint th32ModuleID;
+			public uint th32ProcessID;
+			public uint GlblcntUsage;
+			public uint ProccntUsage;
+			public IntPtr modBaseAddr;
+			public uint modBaseSize;
+			public IntPtr hModule;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+			public string szModule;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+			public string szExePath;
+		};
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		static extern bool Module32First(ToolHelpHandle hSnapshot, ref MODULEENTRY32 lpme);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		static extern bool Module32Next(ToolHelpHandle hSnapshot, ref MODULEENTRY32 lpme);
+
+		public class ModuleInfo
+		{
+			public string baseName;
+			public IntPtr baseOfDll;
+			public IntPtr entryPoint;
+			public string fileName;
+			public int Id;
+			public int sizeOfImage;
+		}
+		public class ToolHelpHandle : SafeHandleZeroOrMinusOneIsInvalid
+		{
+			private ToolHelpHandle()
+				: base(true)
+			{
+			}
+
+			[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
+			protected override bool ReleaseHandle()
+			{
+				return CloseHandle(handle);
+			}
+		}
+
+		public IEnumerable<ModuleInfo> GetModuleInfos()
+		{
+			ToolHelpHandle ptr = null;
+			var list = new List<ModuleInfo>();
+			try
+			{
+				ptr = CreateToolhelp32Snapshot(0x8, ProcessId);
+				if (ptr.IsInvalid)
+				{
+					throw new Win32Exception();
+				}
+				var me32 = new MODULEENTRY32();
+				me32.dwSize = (uint)Marshal.SizeOf(me32);
+
+				if (Module32First(ptr, ref me32))
+				{
+					do
+					{
+						ModuleInfo info = new ModuleInfo
+						{
+							baseName = me32.szModule,
+							fileName = me32.szExePath,
+							baseOfDll = me32.modBaseAddr,
+							sizeOfImage = (int)me32.modBaseSize,
+							Id = (int)me32.th32ModuleID
+						};
+						list.Add(info);
+						me32.dwSize = (uint)Marshal.SizeOf(me32);
+					}
+					while (Module32Next(ptr, ref me32));
+				}
+				if (Marshal.GetLastWin32Error() != 18) //ERROR_NO_MORE_FILES
+					throw new Win32Exception();
+			}
+			finally
+			{
+				if (ptr != null && !ptr.IsInvalid)
+				{
+					ptr.Close();
+				}
+			}
+			return list;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MEMORY_BASIC_INFORMATION
+		{
+			public IntPtr BaseAddress;
+			public IntPtr AllocationBase;
+			public uint AllocationProtect;
+			public UIntPtr RegionSize;
+			public uint State;
+			public uint Protect;
+			public uint Type;
+		}
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		static extern Int32 VirtualQueryEx(IntPtr handle, Int32 address, ref MEMORY_BASIC_INFORMATION buffer, Int32 sizeOfBuffer);
+
+		public MEMORY_BASIC_INFORMATION VirtualQuery(Int32 address)
+		{
+			var info = new MEMORY_BASIC_INFORMATION();
+			var ret = VirtualQueryEx(Handle, address, ref info, Marshal.SizeOf(typeof(MEMORY_BASIC_INFORMATION)));
+			if (ret == 0)
+				throw new Win32Exception();
+			return info;
+		}
+
+		public static class MemoryState
+		{
+			public static uint Commit = 0x1000;
+			public static uint Free = 0x10000;
+			public static uint Reserve = 0x2000;
+		}
+
 	}
 }

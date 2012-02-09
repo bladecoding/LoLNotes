@@ -21,9 +21,11 @@ THE SOFTWARE.
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Threading;
 using Microsoft.Win32;
 
 namespace LoLNotes.Util

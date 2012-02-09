@@ -33,7 +33,7 @@ namespace LoLNotes.Util
 {
 	public class ProcessInjector : IDisposable
 	{
-		byte[] connectcc = new byte[]
+		readonly byte[] connectcc = new byte[]
 		{
 			0x55,										//PUSH EBP
 			0x8B, 0xEC,									//MOV EBP, ESP
@@ -49,7 +49,7 @@ namespace LoLNotes.Util
 			0xE9, 0x00, 0x00, 0x00, 0x00				//JMP LONG <X>	
 		};
 
-		byte[] safecheck = new byte[]
+		readonly byte[] safecheck = new byte[]
 		{
 			0x8B, 0xFF,									//MOVE EDI, EDI
 			0x55,										//PUSH EBP
@@ -80,20 +80,27 @@ namespace LoLNotes.Util
 			}
 		}
 
-		public ProcessInjector()
-		{
-		}
+		GetModuleFrom From { get; set; }
 
 		public ProcessInjector(string process)
 		{
 			ProcessName = process;
 			CheckThread = new Thread(CheckLoop) { IsBackground = true };
+			From = GetModuleFrom.Toolhelp32Snapshot;
 		}
 
 		public void Start()
 		{
 			if (!CheckThread.IsAlive)
 				CheckThread.Start();
+		}
+
+		/// <summary>
+		/// Clears the current process. Used for refreshing if changing 'this.From'.
+		/// </summary>
+		public void Clear()
+		{
+			CurrentProcess = null;
 		}
 
 		protected void CheckLoop()
@@ -130,7 +137,7 @@ namespace LoLNotes.Util
 						}
 						catch (Exception ex)
 						{
-							StaticLogger.Error(ex);
+							StaticLogger.Error(new Exception(string.Format("{0} [{1}]", ex.Message, From), ex));
 						}
 					}
 				}
@@ -151,16 +158,16 @@ namespace LoLNotes.Util
 					connectcc.CopyTo(connect, 0);
 					int jmpaddrloc = connect.Length - 4;
 
-					var mod = GetModule(Process.GetCurrentProcess().Modules, "ws2_32.dll");
-					Int32 reladdr = notemem.GetAddress(mod.BaseAddress.ToInt32(), "connect");
-					reladdr -= mod.BaseAddress.ToInt32();
+					var mod = ProcessMemory.GetModule("ws2_32.dll");
+					Int32 reladdr = notemem.GetAddress(mod, "connect");
+					reladdr -= mod;
 
-					var lolmod = GetModule(CurrentProcess.Modules, "ws2_32.dll");
-					if (lolmod == null)
+					var lolmod = GetModuleAddress(CurrentProcess, mem, "ws2_32.dll");
+					if (lolmod == 0)
 					{
 						throw new FileNotFoundException("Lolclient has not yet loaded ws2_32.dll");
 					}
-					Int32 connectaddr = lolmod.BaseAddress.ToInt32() + reladdr;
+					Int32 connectaddr = lolmod + reladdr;
 
 					var bytes = mem.Read(connectaddr, 5);
 					if (bytes[0] == 0xe9)
@@ -170,7 +177,7 @@ namespace LoLNotes.Util
 					if (!bytes.SequenceEqual(safecheck))
 					{
 						bytes = mem.Read(connectaddr, 20);
-						throw new AccessViolationException(string.Format("Connect has unknown bytes [{0}]", Convert.ToBase64String(bytes)));
+						throw new AccessViolationException(string.Format("Connect has unknown bytes [{0},{1}]", Convert.ToBase64String(bytes), From));
 					}
 
 					Int32 addr = mem.Alloc(connectcc.Length);
@@ -185,15 +192,32 @@ namespace LoLNotes.Util
 			}
 		}
 
-		string GetModules(ProcessModuleCollection mods)
+		Int32 GetModuleAddress(Process curproc, ProcessMemory curmem, string name)
 		{
-			var ret = new StringBuilder(); 
-			foreach (ProcessModule mod in mods)
+			if (From == GetModuleFrom.ProcessClass)
 			{
-				ret.AppendLine(mod.ModuleName);
+				var mod = GetModule(curproc.Modules, name);
+				if (mod == null)
+					return 0;
+				return mod.BaseAddress.ToInt32();
 			}
-			return ret.ToString();
+			if (From == GetModuleFrom.Mirroring)
+			{
+				var mod = ProcessMemory.GetModule("ws2_32.dll");
+				var info = curmem.VirtualQuery(mod);
+				return info.State != ProcessMemory.MemoryState.Free ? mod : 0;
+			}
+			if (From == GetModuleFrom.Toolhelp32Snapshot)
+			{
+				var mods = curmem.GetModuleInfos();
+				var mod = mods.FirstOrDefault(mi => mi.baseName.ToLowerInvariant() == name);
+				if (mod == null)
+					return 0;
+				return mod.baseOfDll.ToInt32();
+			}
+			return -1;
 		}
+
 		ProcessModule GetModule(ProcessModuleCollection mods, string name)
 		{
 			name = name.ToLower();
@@ -214,7 +238,6 @@ namespace LoLNotes.Util
 		{
 			Dispose(false);
 		}
-
 		protected virtual void Dispose(bool dispose)
 		{
 			if (dispose)
@@ -223,6 +246,11 @@ namespace LoLNotes.Util
 			}
 		}
 
-
+		public enum GetModuleFrom
+		{
+			Toolhelp32Snapshot,
+			ProcessClass,
+			Mirroring
+		}
 	}
 }
