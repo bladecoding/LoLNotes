@@ -121,8 +121,7 @@ namespace LoLNotes.Flash
 				}
 				catch (Exception e)
 				{
-					StaticLogger.Error(string.Format("Error parsing {0}#{1}", typeof(T).FullName, prop.Name));
-					StaticLogger.Error(e);
+					StaticLogger.Error(new Exception(string.Format("Error parsing {0}#{1}", typeof(T).FullName, prop.Name), e));
 				}
 			}
 		}
