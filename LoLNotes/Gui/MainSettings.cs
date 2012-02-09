@@ -100,6 +100,19 @@ namespace LoLNotes.Gui
 				OnPropertyChanged("DeleteLeaveBuster");
 			}
 		}
+		string _moduleresolver;
+		public string ModuleResolver
+		{
+			get
+			{
+				return _moduleresolver;
+			}
+			set
+			{
+				_moduleresolver = value;
+				OnPropertyChanged("ModuleResolver");
+			}
+		}
 
 		public MainSettings()
 		{
@@ -108,6 +121,7 @@ namespace LoLNotes.Gui
 			_debuglog = true;
 			_devmode = false;
 			_deleteleavebuster = true;
+			_moduleresolver = "";
 		}
 
 		public bool Save(string file)
@@ -136,7 +150,7 @@ namespace LoLNotes.Gui
 
 				using (var sr = new StreamReader(File.Open(file, FileMode.Open, FileAccess.Read)))
 				{
-					CopyFrom(JsonConvert.DeserializeObject<MainSettings>(sr.ReadToEnd()));
+					JsonConvert.PopulateObject(sr.ReadToEnd(), this);
 				}
 
 				OnLoad();
@@ -145,15 +159,6 @@ namespace LoLNotes.Gui
 			{
 				StaticLogger.Debug(io);
 			}
-		}
-
-		protected void CopyFrom(MainSettings src)
-		{
-			_region = src._region;
-			_debuglog = src._debuglog;
-			_tracelog = src._tracelog;
-			_devmode = src._devmode;
-			_deleteleavebuster = src._deleteleavebuster;
 		}
 
 		protected void OnLoad()

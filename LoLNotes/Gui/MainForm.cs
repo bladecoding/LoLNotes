@@ -64,6 +64,10 @@ namespace LoLNotes.Gui
 
 		readonly Dictionary<string, Icon> Icons;
 		readonly Dictionary<string, CertificateHolder> Certificates;
+		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
+		readonly ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
+		readonly Dictionary<ProcessInjector.GetModuleFrom, RadioButton> ModuleResolvers;
+
 		RtmpsProxyHost Connection;
 		MessageReader Reader;
 		IObjectContainer Database;
@@ -73,9 +77,7 @@ namespace LoLNotes.Gui
 		ProcessInjector Injector;
 
 		static GameDTO CurrentGame;
-		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
 
-		readonly ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
 
 		List<ChampionDTO> Champions;
 
@@ -105,9 +107,18 @@ namespace LoLNotes.Gui
 				{"EUN", new CertificateHolder("prod.eun1.lol.riotgames.com", Resources.prod_eun1_lol_riotgames_com)},
 				{"GARENA", new CertificateHolder("prod.lol.garenanow.com", Resources.prod_lol_garenanow_com)},
  			};
+			ModuleResolvers = new Dictionary<ProcessInjector.GetModuleFrom, RadioButton>
+			{	 
+				{ProcessInjector.GetModuleFrom.Toolhelp32Snapshot, ToolHelpRadio},
+				{ProcessInjector.GetModuleFrom.ProcessClass, ProcessRadio},
+				{ProcessInjector.GetModuleFrom.Mirroring, MirrorRadio}
+			};
+			foreach (var kv in ModuleResolvers)
+			{
+				kv.Value.Click += moduleresolvers_Click;
+			}
 
 			Database = Db4oEmbedded.OpenFile(CreateConfig(), "db.yap");
-
 
 			var cert = Certificates.FirstOrDefault(kv => kv.Key == Settings.Region).Value;
 			if (cert == null)
@@ -136,9 +147,6 @@ namespace LoLNotes.Gui
 
 			Installer = new CertificateInstaller(Certificates.Select(c => c.Value.Certificate).ToArray());
 
-			//Add this after otherwise it will save immediately due to RegionList.SelectedIndex
-			Settings.PropertyChanged += Settings_PropertyChanged;
-
 			TrackingQueue.Process += TrackingQueue_Process;
 			launcher.ProcessFound += launcher_ProcessFound;
 
@@ -147,6 +155,13 @@ namespace LoLNotes.Gui
 #endif
 
 			StaticLogger.Info("Startup Completed");
+		}
+
+		void moduleresolvers_Click(object sender, EventArgs e)
+		{
+			var check = ModuleResolvers.FirstOrDefault(kv => kv.Value.Checked);
+			Settings.ModuleResolver = check.Key.ToString();
+			Injector.Clear();
 		}
 
 		void launcher_ProcessFound(object sender, ProcessMonitor.ProcessEventArgs e)
@@ -275,6 +290,10 @@ namespace LoLNotes.Gui
 			DebugCheck.Checked = Settings.DebugLog;
 			DevCheck.Checked = Settings.DevMode;
 			LeaveCheck.Checked = Settings.DeleteLeaveBuster;
+			var mod = ModuleResolvers.FirstOrDefault(kv => kv.Key.ToString() == Settings.ModuleResolver);
+			if (mod.Value == null)
+				mod = ModuleResolvers.First();
+			mod.Value.Checked = true;
 		}
 
 		readonly object settingslock = new object();
@@ -799,6 +818,10 @@ namespace LoLNotes.Gui
 
 			Settings_Loaded(this, new EventArgs());
 			UpdateIcon();
+
+			//Add this after otherwise it will save immediately due to RegionList.SelectedIndex
+			Settings.PropertyChanged += Settings_PropertyChanged;
+
 			//Start after the form is shown otherwise Invokes will fail
 			Connection.Start();
 			Injector.Start();
@@ -806,7 +829,6 @@ namespace LoLNotes.Gui
 
 			//Fixes the team controls size on start as they keep getting messed up in the WYSIWYG
 			MainForm_Resize(this, new EventArgs());
-
 
 			try
 			{

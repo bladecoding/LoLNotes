@@ -55,7 +55,7 @@ namespace LoLNotes.Gui
 			this.LogGroupBox = new System.Windows.Forms.GroupBox();
 			this.DebugCheck = new System.Windows.Forms.CheckBox();
 			this.TraceCheck = new System.Windows.Forms.CheckBox();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.DatabaseGroupBox = new System.Windows.Forms.GroupBox();
 			this.ExportButton = new System.Windows.Forms.Button();
 			this.ImportButton = new System.Windows.Forms.Button();
 			this.RegionList = new System.Windows.Forms.ComboBox();
@@ -75,6 +75,10 @@ namespace LoLNotes.Gui
 			this.CallTree = new System.Windows.Forms.TreeView();
 			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
+			this.ModuleGroupBox = new System.Windows.Forms.GroupBox();
+			this.ProcessRadio = new System.Windows.Forms.RadioButton();
+			this.ToolHelpRadio = new System.Windows.Forms.RadioButton();
+			this.MirrorRadio = new System.Windows.Forms.RadioButton();
 			this.tabControl1.SuspendLayout();
 			this.NewsTab.SuspendLayout();
 			this.GameTab.SuspendLayout();
@@ -82,7 +86,7 @@ namespace LoLNotes.Gui
 			this.PlayerEditStrip.SuspendLayout();
 			this.SettingsTab.SuspendLayout();
 			this.LogGroupBox.SuspendLayout();
-			this.groupBox1.SuspendLayout();
+			this.DatabaseGroupBox.SuspendLayout();
 			this.LogTab.SuspendLayout();
 			this.ChangesTab.SuspendLayout();
 			this.DevTab.SuspendLayout();
@@ -91,6 +95,7 @@ namespace LoLNotes.Gui
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.CallEditStrip.SuspendLayout();
+			this.ModuleGroupBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -204,10 +209,11 @@ namespace LoLNotes.Gui
 			// 
 			// SettingsTab
 			// 
+			this.SettingsTab.Controls.Add(this.ModuleGroupBox);
 			this.SettingsTab.Controls.Add(this.LeaveCheck);
 			this.SettingsTab.Controls.Add(this.DevCheck);
 			this.SettingsTab.Controls.Add(this.LogGroupBox);
-			this.SettingsTab.Controls.Add(this.groupBox1);
+			this.SettingsTab.Controls.Add(this.DatabaseGroupBox);
 			this.SettingsTab.Controls.Add(this.RegionList);
 			this.SettingsTab.Controls.Add(this.DownloadLink);
 			this.SettingsTab.Controls.Add(this.InstallButton);
@@ -272,16 +278,16 @@ namespace LoLNotes.Gui
 			this.TraceCheck.UseVisualStyleBackColor = true;
 			this.TraceCheck.Click += new System.EventHandler(this.TraceCheck_Click);
 			// 
-			// groupBox1
+			// DatabaseGroupBox
 			// 
-			this.groupBox1.Controls.Add(this.ExportButton);
-			this.groupBox1.Controls.Add(this.ImportButton);
-			this.groupBox1.Location = new System.Drawing.Point(11, 84);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(90, 82);
-			this.groupBox1.TabIndex = 4;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Database";
+			this.DatabaseGroupBox.Controls.Add(this.ExportButton);
+			this.DatabaseGroupBox.Controls.Add(this.ImportButton);
+			this.DatabaseGroupBox.Location = new System.Drawing.Point(11, 84);
+			this.DatabaseGroupBox.Name = "DatabaseGroupBox";
+			this.DatabaseGroupBox.Size = new System.Drawing.Size(90, 82);
+			this.DatabaseGroupBox.TabIndex = 4;
+			this.DatabaseGroupBox.TabStop = false;
+			this.DatabaseGroupBox.Text = "Database";
 			// 
 			// ExportButton
 			// 
@@ -480,6 +486,50 @@ namespace LoLNotes.Gui
 			this.teamControl2.TeamSize = 5;
 			this.teamControl2.Text = "Team 2";
 			// 
+			// ModuleGroupBox
+			// 
+			this.ModuleGroupBox.Controls.Add(this.MirrorRadio);
+			this.ModuleGroupBox.Controls.Add(this.ToolHelpRadio);
+			this.ModuleGroupBox.Controls.Add(this.ProcessRadio);
+			this.ModuleGroupBox.Location = new System.Drawing.Point(107, 84);
+			this.ModuleGroupBox.Name = "ModuleGroupBox";
+			this.ModuleGroupBox.Size = new System.Drawing.Size(125, 95);
+			this.ModuleGroupBox.TabIndex = 8;
+			this.ModuleGroupBox.TabStop = false;
+			this.ModuleGroupBox.Text = "Module Resolver";
+			// 
+			// ProcessRadio
+			// 
+			this.ProcessRadio.AutoSize = true;
+			this.ProcessRadio.Checked = true;
+			this.ProcessRadio.Location = new System.Drawing.Point(6, 19);
+			this.ProcessRadio.Name = "ProcessRadio";
+			this.ProcessRadio.Size = new System.Drawing.Size(88, 17);
+			this.ProcessRadio.TabIndex = 0;
+			this.ProcessRadio.TabStop = true;
+			this.ProcessRadio.Text = "ProcessClass";
+			this.ProcessRadio.UseVisualStyleBackColor = true;
+			// 
+			// ToolHelpRadio
+			// 
+			this.ToolHelpRadio.AutoSize = true;
+			this.ToolHelpRadio.Location = new System.Drawing.Point(6, 42);
+			this.ToolHelpRadio.Name = "ToolHelpRadio";
+			this.ToolHelpRadio.Size = new System.Drawing.Size(78, 17);
+			this.ToolHelpRadio.TabIndex = 1;
+			this.ToolHelpRadio.Text = "Toolhelp32";
+			this.ToolHelpRadio.UseVisualStyleBackColor = true;
+			// 
+			// MirrorRadio
+			// 
+			this.MirrorRadio.AutoSize = true;
+			this.MirrorRadio.Location = new System.Drawing.Point(6, 65);
+			this.MirrorRadio.Name = "MirrorRadio";
+			this.MirrorRadio.Size = new System.Drawing.Size(51, 17);
+			this.MirrorRadio.TabIndex = 2;
+			this.MirrorRadio.Text = "Mirror";
+			this.MirrorRadio.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -502,7 +552,7 @@ namespace LoLNotes.Gui
 			this.SettingsTab.PerformLayout();
 			this.LogGroupBox.ResumeLayout(false);
 			this.LogGroupBox.PerformLayout();
-			this.groupBox1.ResumeLayout(false);
+			this.DatabaseGroupBox.ResumeLayout(false);
 			this.LogTab.ResumeLayout(false);
 			this.ChangesTab.ResumeLayout(false);
 			this.DevTab.ResumeLayout(false);
@@ -511,6 +561,8 @@ namespace LoLNotes.Gui
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.CallEditStrip.ResumeLayout(false);
+			this.ModuleGroupBox.ResumeLayout(false);
+			this.ModuleGroupBox.PerformLayout();
 			this.ResumeLayout(false);
 
         }
@@ -535,7 +587,7 @@ namespace LoLNotes.Gui
         private System.Windows.Forms.RichTextBox ChangesText;
 		private System.Windows.Forms.ComboBox RegionList;
 		private System.Windows.Forms.TabPage DevTab;
-		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.GroupBox DatabaseGroupBox;
 		private System.Windows.Forms.Button ExportButton;
 		private System.Windows.Forms.Button ImportButton;
 		private System.Windows.Forms.GroupBox LogGroupBox;
@@ -555,6 +607,10 @@ namespace LoLNotes.Gui
 		private System.Windows.Forms.TabPage NewsTab;
 		private System.Windows.Forms.WebBrowser NewsBrowser;
 		private System.Windows.Forms.CheckBox LeaveCheck;
+		private System.Windows.Forms.GroupBox ModuleGroupBox;
+		private System.Windows.Forms.RadioButton MirrorRadio;
+		private System.Windows.Forms.RadioButton ToolHelpRadio;
+		private System.Windows.Forms.RadioButton ProcessRadio;
 
     }
 }
