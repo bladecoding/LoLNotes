@@ -84,7 +84,7 @@ namespace LoLNotes.Gui.Controls
 			// 
 			this.NameLabel.AutoSize = true;
 			this.NameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.NameLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+			this.NameLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
 			this.NameLabel.Location = new System.Drawing.Point(10, 10);
 			this.NameLabel.Name = "NameLabel";
 			this.NameLabel.Size = new System.Drawing.Size(116, 13);

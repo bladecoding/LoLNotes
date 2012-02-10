@@ -82,6 +82,7 @@ namespace LoLNotes.Gui.Controls
 
 		void SetName(string str)
 		{
+			NameLabel.Links.Clear();
 			NameLabel.Text = str;
 		}
 
@@ -102,7 +103,6 @@ namespace LoLNotes.Gui.Controls
 		void SetTitle(PlayerEntry ply)
 		{
 			SetName(ply.Name);
-			NameLabel.Links.Clear();
 			NameLabel.Links.Add(0, ply.Name.Length, ply.Id);
 		}
 		void SetTitle(Participant part)
@@ -434,7 +434,9 @@ namespace LoLNotes.Gui.Controls
 
 		private void NameLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			var id = (int)e.Link.LinkData;
+			if (e.Link.LinkData == null)
+				return;
+			var id = Convert.ToInt32(e.Link.LinkData);
 			string region;
 			if (!LeagueRegions.TryGetValue(MainSettings.Instance.Region, out region))
 			{
@@ -443,6 +445,7 @@ namespace LoLNotes.Gui.Controls
 			}
 
 			Process.Start(string.Format("http://www.lolking.net/summoner/{0}/{1}", region, id));
+			e.Link.Visited = true;
 		}
 	}
 }
