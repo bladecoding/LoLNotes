@@ -1,16 +1,21 @@
 {
 	"News":
 	{
-		"html": "<b>1.1f should be out tomorrow which will include.<br/>-A fix for some systems not being able to inject. (Done)<br/>-Add a hotlink for players which will open a search on http://www.lolking.net and/or http://leagueofstats.com</b>"
+		"html": "<b>People upgrading to 1.1f will need to reselect their region.<br/>Decided to go with only lolking.net as leagueofstats was having issues. If you really think both should be added let me know.</b>"
 	},
 	"Release":	
 	{
-		"ReleaseName": "e",
+		"ReleaseName": "f",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1e.rar"
+		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1f.rar"
 	},
 	"Changes":	
 	{
+		"1.1f":
+		[
+			"Issue of injections failing on some platforms should be fixed.",
+			"You can now click on a players name to open a link to their lolking.net page.",
+		],
 		"1.1e":
 		[
 			"Queue group is now displayed above the players level.",
