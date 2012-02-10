@@ -32,11 +32,20 @@ namespace LoLNotes.Gui
 {
 	public class MainSettings
 	{
+		protected static MainSettings _instance;
+		public static MainSettings Instance
+		{
+			get
+			{
+				return _instance ?? (_instance = new MainSettings());
+			}
+		}
+	
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler Loaded;
 
-		string _region;
-		public string Region
+		LeagueRegion _region;
+		public LeagueRegion Region
 		{
 			get
 			{
@@ -116,7 +125,7 @@ namespace LoLNotes.Gui
 
 		public MainSettings()
 		{
-			_region = "NA";
+			_region = LeagueRegion.NA;
 			_tracelog = false;
 			_debuglog = true;
 			_devmode = false;

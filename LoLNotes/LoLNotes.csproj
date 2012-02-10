@@ -128,6 +128,7 @@
     </Compile>
     <Compile Include="Gui\MainSettings.cs" />
     <Compile Include="Gui\PlayerCache.cs" />
+    <Compile Include="Gui\LeagueRegion.cs" />
     <Compile Include="Messages\Broadcast\BroadcastMessage.cs" />
     <Compile Include="Messages\Champion\ChampionDTO.cs" />
     <Compile Include="Messages\Commands\PlayerCommands.cs" />

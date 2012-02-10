@@ -41,6 +41,13 @@ namespace LoLNotes.Gui.Controls
 		public TeamControl Parent { get; set; }
 		public PlayerEntry Player { get; set; }
 
+		static protected Dictionary<LeagueRegion, string> LeagueRegions = new Dictionary<LeagueRegion, string>
+		{
+			{LeagueRegion.NA, "na"},
+			{LeagueRegion.EUW, "euw"},
+			{LeagueRegion.EUN, "eune"}
+		};
+
 		public PlayerControl()
 		{
 			SetStyle(ControlStyles.ResizeRedraw, true);
@@ -95,6 +102,8 @@ namespace LoLNotes.Gui.Controls
 		void SetTitle(PlayerEntry ply)
 		{
 			SetName(ply.Name);
+			NameLabel.Links.Clear();
+			NameLabel.Links.Add(0, ply.Name.Length, ply.Id);
 		}
 		void SetTitle(Participant part)
 		{
@@ -421,6 +430,19 @@ namespace LoLNotes.Gui.Controls
 
 				TeamLabel.Text = string.Format("Team {0}", num);
 			}
+		}
+
+		private void NameLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			var id = (int)e.Link.LinkData;
+			string region;
+			if (!LeagueRegions.TryGetValue(MainSettings.Instance.Region, out region))
+			{
+				StaticLogger.Info("Region " + MainSettings.Instance.Region + " is not supported");
+				return;
+			}
+
+			Process.Start(string.Format("http://www.lolking.net/summoner/{0}/{1}", region, id));
 		}
 	}
 }

@@ -31,23 +31,13 @@ namespace LoLNotes.Gui.Controls
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerControl));
 			this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.NameLabel = new System.Windows.Forms.Label();
 			this.LevelLabel = new System.Windows.Forms.Label();
 			this.LoadingPicture = new System.Windows.Forms.PictureBox();
 			this.InfoTabs = new System.Windows.Forms.TabControl();
 			this.TeamLabel = new System.Windows.Forms.Label();
+			this.NameLabel = new System.Windows.Forms.LinkLabel();
 			((System.ComponentModel.ISupportInitialize)(this.LoadingPicture)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// NameLabel
-			// 
-			this.NameLabel.AutoSize = true;
-			this.NameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.NameLabel.Location = new System.Drawing.Point(10, 10);
-			this.NameLabel.Name = "NameLabel";
-			this.NameLabel.Size = new System.Drawing.Size(116, 13);
-			this.NameLabel.TabIndex = 0;
-			this.NameLabel.Text = "Nameeeeeeeeeeee";
 			// 
 			// LevelLabel
 			// 
@@ -90,12 +80,25 @@ namespace LoLNotes.Gui.Controls
 			this.TeamLabel.TabIndex = 4;
 			this.TeamLabel.Text = "Solo";
 			// 
+			// NameLabel
+			// 
+			this.NameLabel.AutoSize = true;
+			this.NameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.NameLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+			this.NameLabel.Location = new System.Drawing.Point(10, 10);
+			this.NameLabel.Name = "NameLabel";
+			this.NameLabel.Size = new System.Drawing.Size(116, 13);
+			this.NameLabel.TabIndex = 5;
+			this.NameLabel.TabStop = true;
+			this.NameLabel.Text = "Nameeeeeeeeeeee";
+			this.NameLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NameLabel_LinkClicked);
+			// 
 			// PlayerControl
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.White;
-			this.Controls.Add(this.TeamLabel);
 			this.Controls.Add(this.NameLabel);
+			this.Controls.Add(this.TeamLabel);
 			this.Controls.Add(this.InfoTabs);
 			this.Controls.Add(this.LoadingPicture);
 			this.Controls.Add(this.LevelLabel);
@@ -110,10 +113,10 @@ namespace LoLNotes.Gui.Controls
         #endregion
 
 		private System.Windows.Forms.ToolTip ToolTip;
-		private System.Windows.Forms.Label NameLabel;
 		private System.Windows.Forms.Label LevelLabel;
 		private System.Windows.Forms.PictureBox LoadingPicture;
 		public System.Windows.Forms.TabControl InfoTabs;
 		private System.Windows.Forms.Label TeamLabel;
+		private System.Windows.Forms.LinkLabel NameLabel;
     }
 }

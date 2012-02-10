@@ -63,25 +63,22 @@ namespace LoLNotes.Gui
 		const string SettingsFile = "settings.json";
 
 		readonly Dictionary<string, Icon> Icons;
-		readonly Dictionary<string, CertificateHolder> Certificates;
+		readonly Dictionary<LeagueRegion, CertificateHolder> Certificates;
+		readonly Dictionary<ProcessInjector.GetModuleFrom, RadioButton> ModuleResolvers;
 		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
 		readonly ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
-		readonly Dictionary<ProcessInjector.GetModuleFrom, RadioButton> ModuleResolvers;
+		readonly ProcessMonitor launcher = new ProcessMonitor(new[] { "LoLLauncher" });
 
 		RtmpsProxyHost Connection;
 		MessageReader Reader;
 		IObjectContainer Database;
 		GameStorage Recorder;
-		MainSettings Settings;
 		CertificateInstaller Installer;
 		ProcessInjector Injector;
-
-		static GameDTO CurrentGame;
-
-
+		GameDTO CurrentGame;
 		List<ChampionDTO> Champions;
 
-		readonly ProcessMonitor launcher = new ProcessMonitor(new[] { "LoLLauncher" });
+		MainSettings Settings { get { return MainSettings.Instance; } }
 
 		public MainForm()
 		{
@@ -91,7 +88,6 @@ namespace LoLNotes.Gui
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			StaticLogger.Info(string.Format("Version {0}", Version));
 
-			Settings = new MainSettings();
 			Settings.Load(SettingsFile);
 
 			Icons = new Dictionary<string, Icon>
@@ -100,12 +96,12 @@ namespace LoLNotes.Gui
                 {"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
                 {"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
             };
-			Certificates = new Dictionary<string, CertificateHolder>
+			Certificates = new Dictionary<LeagueRegion, CertificateHolder>
 			{
-				{"NA", new CertificateHolder("prod.na1.lol.riotgames.com", Resources.prod_na1_lol_riotgames_com)},
-				{"EU", new CertificateHolder("prod.eu.lol.riotgames.com", Resources.prod_eu_lol_riotgames_com)},
-				{"EUN", new CertificateHolder("prod.eun1.lol.riotgames.com", Resources.prod_eun1_lol_riotgames_com)},
-				{"GARENA", new CertificateHolder("prod.lol.garenanow.com", Resources.prod_lol_garenanow_com)},
+				{LeagueRegion.NA, new CertificateHolder("prod.na1.lol.riotgames.com", Resources.prod_na1_lol_riotgames_com)},
+				{LeagueRegion.EUW, new CertificateHolder("prod.eu.lol.riotgames.com", Resources.prod_eu_lol_riotgames_com)},
+				{LeagueRegion.EUN, new CertificateHolder("prod.eun1.lol.riotgames.com", Resources.prod_eun1_lol_riotgames_com)},
+				{LeagueRegion.GARENA, new CertificateHolder("prod.lol.garenanow.com", Resources.prod_lol_garenanow_com)},
  			};
 			ModuleResolvers = new Dictionary<ProcessInjector.GetModuleFrom, RadioButton>
 			{	 
@@ -862,7 +858,14 @@ namespace LoLNotes.Gui
 
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			Settings.Region = RegionList.SelectedItem.ToString();
+			LeagueRegion region;
+			if (!LeagueRegion.TryParse(RegionList.SelectedItem.ToString(), out region))
+			{
+				StaticLogger.Warning("Unknown enum " + RegionList.SelectedItem);
+				return;
+			}
+
+			Settings.Region = region;
 
 			var cert = Certificates.FirstOrDefault(kv => kv.Key == Settings.Region).Value;
 			if (cert == null)
