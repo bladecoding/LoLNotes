@@ -1,16 +1,23 @@
 {
 	"News":
 	{
-		"html": "<b>People upgrading to 1.1f will need to reselect their region.<br/>Decided to go with only lolking.net as leagueofstats was having issues. If you really think both should be added let me know.</b>"
+		"html": "<b>The [L] for leaver will most likely be replaced with an icon in the next version.</b>"
 	},
 	"Release":	
 	{
-		"ReleaseName": "f",
+		"ReleaseName": "g",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1f.rar"
+		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1g.rar"
 	},
 	"Changes":	
 	{
+		"1.1g":
+		[
+			"Recent games now has a new layout. Now uses champion icons instead of names.",
+			"Added Spell icons to recent games. Shows which spells they used that game.",
+			"Added [L] to show if they left that game.",
+			"Fixed crash when clicking on a player who has not finished loading.",
+		],
 		"1.1f":
 		[
 			"Issue of injections failing on some platforms should be fixed.",

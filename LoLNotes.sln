@@ -15,10 +15,6 @@ Global
 		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|Win32 = Release|Win32
 		Release|x86 = Release|x86
-		Testing|Any CPU = Testing|Any CPU
-		Testing|Mixed Platforms = Testing|Mixed Platforms
-		Testing|Win32 = Testing|Win32
-		Testing|x86 = Testing|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Debug|Any CPU.ActiveCfg = Debug|x86
@@ -33,12 +29,6 @@ Global
 		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Release|Win32.ActiveCfg = Release|x86
 		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Release|x86.ActiveCfg = Release|x86
 		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Release|x86.Build.0 = Release|x86
-		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|Any CPU.ActiveCfg = Testing|x86
-		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|Mixed Platforms.ActiveCfg = Testing|x86
-		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|Mixed Platforms.Build.0 = Testing|x86
-		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|Win32.ActiveCfg = Testing|x86
-		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|x86.ActiveCfg = Testing|x86
-		{E5AB8F67-7BBC-48DF-9A1D-8D0D3DE685DD}.Testing|x86.Build.0 = Testing|x86
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -51,12 +41,6 @@ Global
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Release|Win32.ActiveCfg = Release|Any CPU
 		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Release|x86.ActiveCfg = Release|Any CPU
-		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Testing|Any CPU.ActiveCfg = Release|Any CPU
-		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Testing|Any CPU.Build.0 = Release|Any CPU
-		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Testing|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Testing|Mixed Platforms.Build.0 = Release|Any CPU
-		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Testing|Win32.ActiveCfg = Release|Any CPU
-		{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}.Testing|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

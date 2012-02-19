@@ -70,7 +70,7 @@ namespace LoLNotes.Assets
 			}
 			catch (Exception e)
 			{
-				StaticLogger.Trace(e);
+				StaticLogger.Debug(e);
 				return null;
 			}
 		}
@@ -79,15 +79,24 @@ namespace LoLNotes.Assets
 		{
 			var name = ChampNames.GetOrDefault(key);
 			if (name == null)
+			{
+				StaticLogger.Debug("Unknown champid " + key);
 				return _unknown;
+			}
 
 			var bmp = FindCached(key);
 			if (bmp != null)
 				return bmp;
 
 			bmp = SafeBitmap(string.Format("{0}{1}_Square_0.png", ChampPath, name));
+			if (bmp == null)
+			{
+				StaticLogger.Debug("Unknown champ icon " + name);
+				return _unknown;
+			}
+
 			AddCached(key, bmp);
-			return bmp ?? _unknown;
+			return bmp;
 		}
 	}
 }

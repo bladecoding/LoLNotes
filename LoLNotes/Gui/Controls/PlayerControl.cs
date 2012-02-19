@@ -103,12 +103,13 @@ namespace LoLNotes.Gui.Controls
 		void SetTitle(PlayerEntry ply)
 		{
 			SetName(ply.Name);
-			NameLabel.Links.Add(0, ply.Name.Length, ply.Id);
+			NameLabel.Links.Add(0, ply.Name.Length, Tuple.Create(ply.Id, ply.Name));
 		}
 		void SetTitle(Participant part)
 		{
 			var opart = part as ObfuscatedParticipant;
 			var gpart = part as GameParticipant;
+			var ppart = part as PlayerParticipant;
 			if (gpart != null)
 			{
 				SetName(gpart.Name);
@@ -120,6 +121,11 @@ namespace LoLNotes.Gui.Controls
 			else
 			{
 				SetName("Unknown");
+			}
+
+			if (ppart != null)
+			{
+				NameLabel.Links.Add(0, ppart.Name.Length, Tuple.Create(ppart.SummonerId, ppart.Name));
 			}
 		}
 
@@ -321,7 +327,6 @@ namespace LoLNotes.Gui.Controls
 					if (game.ChampionId == 0)
 						continue;
 
-					var champ = ChampNames.Get(game.ChampionId);
 					var won = game.Statistics.GetInt(RawStat.WIN) != 0;
 					var kills = game.Statistics.GetInt(RawStat.CHAMPION_KILLS);
 					var deaths = game.Statistics.GetInt(RawStat.DEATHS);
@@ -477,7 +482,7 @@ namespace LoLNotes.Gui.Controls
 		{
 			if (e.Link.LinkData == null)
 				return;
-			var id = Convert.ToInt32(e.Link.LinkData);
+			var plr = (Tuple<int, string>)e.Link.LinkData;
 			string region;
 			if (!LeagueRegions.TryGetValue(MainSettings.Instance.Region, out region))
 			{
@@ -485,8 +490,21 @@ namespace LoLNotes.Gui.Controls
 				return;
 			}
 
-			Process.Start(string.Format("http://www.lolking.net/summoner/{0}/{1}", region, id));
-			e.Link.Visited = true;
+			string url = null;
+			if (e.Button == MouseButtons.Left)
+			{
+				url = string.Format("http://www.lolking.net/summoner/{0}/{1}", region, plr.Item1);
+			}
+			else if (e.Button == MouseButtons.Middle)
+			{
+				url = string.Format("http://bladecoding.com/lolnotes/leagueofstats.php?name={0}", plr.Item2);
+			}
+
+			if (url != null)
+			{
+				Process.Start(url);
+				e.Link.Visited = true;
+			}
 		}
 	}
 }
