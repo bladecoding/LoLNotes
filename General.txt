@@ -16,6 +16,8 @@
 			"Recent games now has a new layout. Now uses champion icons instead of names.",
 			"Added Spell icons to recent games. Shows which spells they used that game.",
 			"Added [L] to show if they left that game.",
+			"Middle clicking a player's name now will now open a search on leagueofstats.",
+			"Added Nautilus",
 			"Fixed crash when clicking on a player who has not finished loading.",
 		],
 		"1.1f":
