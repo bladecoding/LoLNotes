@@ -168,13 +168,6 @@ namespace LoLNotes.Properties {
             }
         }
         
-        internal static byte[] LolLoader {
-            get {
-                object obj = ResourceManager.GetObject("LolLoader", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
         internal static byte[] prod_eu_lol_riotgames_com {
             get {
                 object obj = ResourceManager.GetObject("prod_eu_lol_riotgames_com", resourceCulture);

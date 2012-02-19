@@ -79,6 +79,9 @@
   <PropertyGroup>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="antlr.runtime">
       <HintPath>Dependencies\antlr.runtime.dll</HintPath>
@@ -112,10 +115,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ChampIcons.cs" />
     <Compile Include="Assets\ChampNames.cs" />
     <Compile Include="Assets\DescriptionEnumTypeConverter.cs" />
     <Compile Include="Assets\GameModes.cs" />
     <Compile Include="Assets\GameTypes.cs" />
+    <Compile Include="Assets\SpellIcons.cs" />
     <Compile Include="Assets\StatsData.cs" />
     <Compile Include="Extensions\TableLayoutPanelExt.cs" />
     <Compile Include="Flash\BaseList.cs" />
@@ -309,9 +314,100 @@
     <None Include="Resources\ItemData.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\LolLoader.dll" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Content\Images\ChampIcons\Ahri_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Akali_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Alistar_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Amumu_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Anivia_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Annie_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Ashe_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Blitzcrank_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Brand_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Caitlyn_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Cassiopeia_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Chogath_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Corki_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\DrMundo_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Evelynn_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Ezreal_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Fiddlesticks_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Fizz_square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Galio_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Gangplank_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Garen_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Gragas_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Graves_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Heimerdinger_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Irelia_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Janna_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\JarvanIV_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Jax_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Karma_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Karthus_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Kassadin_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Katarina_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Kayle_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Kennen_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\KogMaw_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Leblanc_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\LeeSin_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Leona_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Lux_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Malphite_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Malzahar_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Maokai_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\MasterYi_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\MissFortune_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\MonkeyKing_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Mordekaiser_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Morgana_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Nasus_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Nautilus_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Nidalee_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Nocturne_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Nunu_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Olaf_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Orianna_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Pantheon_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Poppy_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Rammus_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Renekton_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Riven_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Rumble_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Ryze_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Sejuani_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Shaco_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Shen_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Shyvana_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Singed_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Sion_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Sivir_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Skarner_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Sona_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Soraka_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Swain_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Talon_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Taric_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Teemo_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Tristana_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Trundle_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Tryndamere_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\TwistedFate_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Twitch_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Udyr_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Urgot_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Vayne_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Veigar_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Viktor_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Vladimir_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Volibear_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Warwick_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Xerath_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\XinZhao_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Yorick_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Ziggs_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Zilean_Square_0.png" />
+    <Content Include="Content\Images\unknown.png" />
     <Content Include="Resources\ChampData.txt" />
     <None Include="Resources\StatsData.txt" />
     <None Include="Resources\circle_green.png" />
@@ -325,13 +421,15 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call "$(ProjectDir)db4otool\Db4oTool.exe" -debug -tp -nq "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>call "$(ProjectDir)db4otool\Db4oTool.exe" -debug -tp -nq "$(TargetPath)"
+XCOPY "$(ProjectDir)\Content" "$(TargetDir)Content\" /E /I /F /Y /D</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
+<Target Name="AfterBuild">
+</Target>
+
   -->
 </Project>

@@ -63,11 +63,12 @@ namespace LoLNotes.Gui.Controls
 			// 
 			this.InfoTabs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.InfoTabs.Location = new System.Drawing.Point(80, 26);
+			this.InfoTabs.ItemSize = new System.Drawing.Size(0, 15);
+			this.InfoTabs.Location = new System.Drawing.Point(160, 6);
 			this.InfoTabs.Multiline = true;
 			this.InfoTabs.Name = "InfoTabs";
 			this.InfoTabs.SelectedIndex = 0;
-			this.InfoTabs.Size = new System.Drawing.Size(410, 114);
+			this.InfoTabs.Size = new System.Drawing.Size(334, 138);
 			this.InfoTabs.TabIndex = 3;
 			// 
 			// TeamLabel
@@ -87,10 +88,10 @@ namespace LoLNotes.Gui.Controls
 			this.NameLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
 			this.NameLabel.Location = new System.Drawing.Point(10, 10);
 			this.NameLabel.Name = "NameLabel";
-			this.NameLabel.Size = new System.Drawing.Size(116, 13);
+			this.NameLabel.Size = new System.Drawing.Size(130, 13);
 			this.NameLabel.TabIndex = 5;
 			this.NameLabel.TabStop = true;
-			this.NameLabel.Text = "Nameeeeeeeeeeee";
+			this.NameLabel.Text = "NAMEEEEEEEEEEEE";
 			this.NameLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NameLabel_LinkClicked);
 			// 
 			// PlayerControl

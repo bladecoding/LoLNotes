@@ -50,6 +50,10 @@ namespace LoLNotes.Gui
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
+			this.ModuleGroupBox = new System.Windows.Forms.GroupBox();
+			this.MirrorRadio = new System.Windows.Forms.RadioButton();
+			this.ToolHelpRadio = new System.Windows.Forms.RadioButton();
+			this.ProcessRadio = new System.Windows.Forms.RadioButton();
 			this.LeaveCheck = new System.Windows.Forms.CheckBox();
 			this.DevCheck = new System.Windows.Forms.CheckBox();
 			this.LogGroupBox = new System.Windows.Forms.GroupBox();
@@ -75,16 +79,13 @@ namespace LoLNotes.Gui
 			this.CallTree = new System.Windows.Forms.TreeView();
 			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
-			this.ModuleGroupBox = new System.Windows.Forms.GroupBox();
-			this.ProcessRadio = new System.Windows.Forms.RadioButton();
-			this.ToolHelpRadio = new System.Windows.Forms.RadioButton();
-			this.MirrorRadio = new System.Windows.Forms.RadioButton();
 			this.tabControl1.SuspendLayout();
 			this.NewsTab.SuspendLayout();
 			this.GameTab.SuspendLayout();
 			this.GamePanel.SuspendLayout();
 			this.PlayerEditStrip.SuspendLayout();
 			this.SettingsTab.SuspendLayout();
+			this.ModuleGroupBox.SuspendLayout();
 			this.LogGroupBox.SuspendLayout();
 			this.DatabaseGroupBox.SuspendLayout();
 			this.LogTab.SuspendLayout();
@@ -95,7 +96,6 @@ namespace LoLNotes.Gui
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.CallEditStrip.SuspendLayout();
-			this.ModuleGroupBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -110,7 +110,7 @@ namespace LoLNotes.Gui
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(1022, 868);
+			this.tabControl1.Size = new System.Drawing.Size(1164, 868);
 			this.tabControl1.TabIndex = 0;
 			this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
 			// 
@@ -142,7 +142,7 @@ namespace LoLNotes.Gui
 			this.GameTab.Location = new System.Drawing.Point(4, 22);
 			this.GameTab.Name = "GameTab";
 			this.GameTab.Padding = new System.Windows.Forms.Padding(3);
-			this.GameTab.Size = new System.Drawing.Size(1014, 842);
+			this.GameTab.Size = new System.Drawing.Size(1156, 842);
 			this.GameTab.TabIndex = 0;
 			this.GameTab.Text = "Game";
 			this.GameTab.UseVisualStyleBackColor = true;
@@ -157,7 +157,7 @@ namespace LoLNotes.Gui
 			this.GamePanel.Controls.Add(this.teamControl2);
 			this.GamePanel.Location = new System.Drawing.Point(3, 3);
 			this.GamePanel.Name = "GamePanel";
-			this.GamePanel.Size = new System.Drawing.Size(1008, 836);
+			this.GamePanel.Size = new System.Drawing.Size(1150, 836);
 			this.GamePanel.TabIndex = 3;
 			// 
 			// button1
@@ -223,6 +223,50 @@ namespace LoLNotes.Gui
 			this.SettingsTab.TabIndex = 2;
 			this.SettingsTab.Text = "Settings";
 			this.SettingsTab.UseVisualStyleBackColor = true;
+			// 
+			// ModuleGroupBox
+			// 
+			this.ModuleGroupBox.Controls.Add(this.MirrorRadio);
+			this.ModuleGroupBox.Controls.Add(this.ToolHelpRadio);
+			this.ModuleGroupBox.Controls.Add(this.ProcessRadio);
+			this.ModuleGroupBox.Location = new System.Drawing.Point(107, 84);
+			this.ModuleGroupBox.Name = "ModuleGroupBox";
+			this.ModuleGroupBox.Size = new System.Drawing.Size(125, 95);
+			this.ModuleGroupBox.TabIndex = 8;
+			this.ModuleGroupBox.TabStop = false;
+			this.ModuleGroupBox.Text = "Module Resolver";
+			// 
+			// MirrorRadio
+			// 
+			this.MirrorRadio.AutoSize = true;
+			this.MirrorRadio.Location = new System.Drawing.Point(6, 65);
+			this.MirrorRadio.Name = "MirrorRadio";
+			this.MirrorRadio.Size = new System.Drawing.Size(51, 17);
+			this.MirrorRadio.TabIndex = 2;
+			this.MirrorRadio.Text = "Mirror";
+			this.MirrorRadio.UseVisualStyleBackColor = true;
+			// 
+			// ToolHelpRadio
+			// 
+			this.ToolHelpRadio.AutoSize = true;
+			this.ToolHelpRadio.Location = new System.Drawing.Point(6, 42);
+			this.ToolHelpRadio.Name = "ToolHelpRadio";
+			this.ToolHelpRadio.Size = new System.Drawing.Size(78, 17);
+			this.ToolHelpRadio.TabIndex = 1;
+			this.ToolHelpRadio.Text = "Toolhelp32";
+			this.ToolHelpRadio.UseVisualStyleBackColor = true;
+			// 
+			// ProcessRadio
+			// 
+			this.ProcessRadio.AutoSize = true;
+			this.ProcessRadio.Checked = true;
+			this.ProcessRadio.Location = new System.Drawing.Point(6, 19);
+			this.ProcessRadio.Name = "ProcessRadio";
+			this.ProcessRadio.Size = new System.Drawing.Size(88, 17);
+			this.ProcessRadio.TabIndex = 0;
+			this.ProcessRadio.TabStop = true;
+			this.ProcessRadio.Text = "ProcessClass";
+			this.ProcessRadio.UseVisualStyleBackColor = true;
 			// 
 			// LeaveCheck
 			// 
@@ -466,7 +510,7 @@ namespace LoLNotes.Gui
 			// 
 			this.teamControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.teamControl1.BackColor = System.Drawing.Color.Transparent;
-			this.teamControl1.Location = new System.Drawing.Point(12, 0);
+			this.teamControl1.Location = new System.Drawing.Point(83, 0);
 			this.teamControl1.Name = "teamControl1";
 			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
 			this.teamControl1.Size = new System.Drawing.Size(361, 836);
@@ -478,7 +522,7 @@ namespace LoLNotes.Gui
 			// 
 			this.teamControl2.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.teamControl2.BackColor = System.Drawing.Color.Transparent;
-			this.teamControl2.Location = new System.Drawing.Point(552, 0);
+			this.teamControl2.Location = new System.Drawing.Point(623, 0);
 			this.teamControl2.Name = "teamControl2";
 			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
 			this.teamControl2.Size = new System.Drawing.Size(237, 836);
@@ -486,55 +530,11 @@ namespace LoLNotes.Gui
 			this.teamControl2.TeamSize = 5;
 			this.teamControl2.Text = "Team 2";
 			// 
-			// ModuleGroupBox
-			// 
-			this.ModuleGroupBox.Controls.Add(this.MirrorRadio);
-			this.ModuleGroupBox.Controls.Add(this.ToolHelpRadio);
-			this.ModuleGroupBox.Controls.Add(this.ProcessRadio);
-			this.ModuleGroupBox.Location = new System.Drawing.Point(107, 84);
-			this.ModuleGroupBox.Name = "ModuleGroupBox";
-			this.ModuleGroupBox.Size = new System.Drawing.Size(125, 95);
-			this.ModuleGroupBox.TabIndex = 8;
-			this.ModuleGroupBox.TabStop = false;
-			this.ModuleGroupBox.Text = "Module Resolver";
-			// 
-			// ProcessRadio
-			// 
-			this.ProcessRadio.AutoSize = true;
-			this.ProcessRadio.Checked = true;
-			this.ProcessRadio.Location = new System.Drawing.Point(6, 19);
-			this.ProcessRadio.Name = "ProcessRadio";
-			this.ProcessRadio.Size = new System.Drawing.Size(88, 17);
-			this.ProcessRadio.TabIndex = 0;
-			this.ProcessRadio.TabStop = true;
-			this.ProcessRadio.Text = "ProcessClass";
-			this.ProcessRadio.UseVisualStyleBackColor = true;
-			// 
-			// ToolHelpRadio
-			// 
-			this.ToolHelpRadio.AutoSize = true;
-			this.ToolHelpRadio.Location = new System.Drawing.Point(6, 42);
-			this.ToolHelpRadio.Name = "ToolHelpRadio";
-			this.ToolHelpRadio.Size = new System.Drawing.Size(78, 17);
-			this.ToolHelpRadio.TabIndex = 1;
-			this.ToolHelpRadio.Text = "Toolhelp32";
-			this.ToolHelpRadio.UseVisualStyleBackColor = true;
-			// 
-			// MirrorRadio
-			// 
-			this.MirrorRadio.AutoSize = true;
-			this.MirrorRadio.Location = new System.Drawing.Point(6, 65);
-			this.MirrorRadio.Name = "MirrorRadio";
-			this.MirrorRadio.Size = new System.Drawing.Size(51, 17);
-			this.MirrorRadio.TabIndex = 2;
-			this.MirrorRadio.Text = "Mirror";
-			this.MirrorRadio.UseVisualStyleBackColor = true;
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1022, 868);
+			this.ClientSize = new System.Drawing.Size(1164, 868);
 			this.Controls.Add(this.tabControl1);
 			this.MinimumSize = new System.Drawing.Size(800, 38);
 			this.Name = "MainForm";
@@ -550,6 +550,8 @@ namespace LoLNotes.Gui
 			this.PlayerEditStrip.ResumeLayout(false);
 			this.SettingsTab.ResumeLayout(false);
 			this.SettingsTab.PerformLayout();
+			this.ModuleGroupBox.ResumeLayout(false);
+			this.ModuleGroupBox.PerformLayout();
 			this.LogGroupBox.ResumeLayout(false);
 			this.LogGroupBox.PerformLayout();
 			this.DatabaseGroupBox.ResumeLayout(false);
@@ -561,8 +563,6 @@ namespace LoLNotes.Gui
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.CallEditStrip.ResumeLayout(false);
-			this.ModuleGroupBox.ResumeLayout(false);
-			this.ModuleGroupBox.PerformLayout();
 			this.ResumeLayout(false);
 
         }

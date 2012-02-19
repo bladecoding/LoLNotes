@@ -299,8 +299,11 @@ namespace LoLNotes.Gui.Controls
 
 			RemoveAll(p => (p.Tag as string) == "Recent");
 
-			var layout = new TableLayoutPanel();
-			layout.Dock = DockStyle.Fill;
+			var layout = new TableLayoutPanel
+			{
+				Dock = DockStyle.Fill,
+				Margin = Padding.Empty,
+			};
 
 			const int rows = 5;
 			const int cols = 2;
@@ -323,30 +326,42 @@ namespace LoLNotes.Gui.Controls
 					var kills = game.Statistics.GetInt(RawStat.CHAMPION_KILLS);
 					var deaths = game.Statistics.GetInt(RawStat.DEATHS);
 					var assists = game.Statistics.GetInt(RawStat.ASSISTS);
+					var left = game.Leaver;
 					var botgame = game.QueueType == "BOT";
 
-					var champlbl = new Label
-					{
-						Text = string.Format("{0}", champ),
-						ForeColor = won ? Color.Green : Color.Red
-					};
-					var kdrlbl = new Label
-					{
-						Text = string.Format(
-							"({0}/{1}/{2})",
-							kills,
-							deaths,
-							assists
-						),
-						ForeColor = GetKdrColor(kills, deaths)
-					};
-					champlbl.Font = kdrlbl.Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold);
-					champlbl.AutoSize = kdrlbl.AutoSize = true;
-					if (botgame)
-						champlbl.ForeColor = kdrlbl.ForeColor = Color.Black;
+					var wonlabel = CreateLabel(string.Format("{0}{1}", left ? "[L] " : "", won ? "Won" : "Lost"));
+					wonlabel.ForeColor = won ? Color.Green : Color.Red;
 
-					layout.AddControl(champlbl, x * 2, y);
-					layout.AddControl(kdrlbl, (x * 2) + 1, y);
+					var kdrlbl = CreateLabel(string.Format("({0}/{1}/{2})", kills, deaths, assists));
+					kdrlbl.ForeColor = GetKdrColor(kills, deaths);
+
+					var champicon = new PictureBox
+					{
+						Image = ChampIcons.Get(game.ChampionId),
+						Margin = Padding.Empty,
+						SizeMode = PictureBoxSizeMode.StretchImage,
+						Size = new Size(20, 20)
+					};
+
+					if (botgame)
+						wonlabel.ForeColor = kdrlbl.ForeColor = Color.Black;
+
+
+					var controls = new List<Control>
+					{
+						champicon,
+						wonlabel,
+						kdrlbl,
+						CreateSpellPicture(game.Spell1),
+						CreateSpellPicture(game.Spell2)
+					};
+					//Add a space between the last column in each set.
+					controls[controls.Count - 1].Margin = new Padding(0, 0, 5, 0);
+
+					for (int i = 0; i < controls.Count; i++)
+					{
+						layout.AddControl(controls[i], i + x * controls.Count, y);
+					}
 				}
 			}
 
@@ -357,6 +372,32 @@ namespace LoLNotes.Gui.Controls
 			};
 			tab.Controls.Add(layout);
 			InfoTabs.TabPages.Add(tab);
+		}
+
+		static Label CreateLabel(string text)
+		{
+			var label = new Label
+			{
+				Font = new Font("Bitstream Vera Sans Mono", 8.25F, FontStyle.Bold),
+				Text = text,
+				TextAlign = ContentAlignment.MiddleLeft,
+				Margin = Padding.Empty,
+				AutoSize = false
+			};
+			label.Width = label.PreferredWidth;
+			label.Height = 20;
+			return label;
+		}
+
+		static PictureBox CreateSpellPicture(int id)
+		{
+			return new PictureBox
+			{
+				Image = SpellIcons.Get(id),
+				Margin = Padding.Empty,
+				SizeMode = PictureBoxSizeMode.StretchImage,
+				Size = new Size(20, 20)
+			};
 		}
 
 		static Color GetKdrColor(int kills, int deaths)

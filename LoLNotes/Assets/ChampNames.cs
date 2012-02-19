@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using LoLNotes.Properties;
@@ -40,8 +41,12 @@ namespace LoLNotes.Assets
 
 		public static string Get(int key)
 		{
+			return GetOrDefault(key) ?? key.ToString(CultureInfo.InvariantCulture);
+		}
+		public static string GetOrDefault(int key)
+		{
 			string ret;
-			return _instance.TryGetValue(key, out ret) ? ret : key.ToString();
+			return _instance.TryGetValue(key, out ret) ? ret : default(string);
 		}
 	}
 }
