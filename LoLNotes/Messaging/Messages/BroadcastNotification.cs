@@ -30,19 +30,22 @@ using Newtonsoft.Json;
 namespace com.riotgames.platform.broadcast
 {
 	public class BroadcastNotification : IExternalizable
-	{
-		public List<BroadcastMessage> broadcastMessages { get; set; } 
+	{				
+		//Removed implementation until actually needed.
+		//That way we don't break things for no reason.
+
+		//public List<BroadcastMessage> broadcastMessages { get; set; } 
+		public string Json { get; set; }
 
 		public void ReadExternal(IDataInput input)
 		{
-			var str = input.ReadUTF();
-			if (str != null)
-				JsonConvert.PopulateObject(str, this);
+			Json = input.ReadUTFBytes(input.ReadUnsignedInt());
 		}
 
 		public void WriteExternal(IDataOutput output)
 		{
-			output.WriteUTF(JsonConvert.SerializeObject(this));
+			output.WriteInt(Json.Length);
+			output.WriteUTFBytes(Json);
 		}
 	}
 }
