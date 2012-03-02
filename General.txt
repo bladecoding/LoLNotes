@@ -1,16 +1,20 @@
 {
 	"News":
 	{
-		"html": "<b>The [L] for leaver will most likely be replaced with an icon in the next version.</b>"
+		"html": "<b>Been busy, fixed the 'crash' at least.</b>"
 	},
 	"Release":	
 	{
-		"ReleaseName": "g",
+		"ReleaseName": "h",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1g.rar"
+		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1h.rar"
 	},
 	"Changes":	
 	{
+		"1.1h":
+		[
+			"Fixed decode issue which caused the connection to be aborted.",
+		],
 		"1.1g":
 		[
 			"Recent games now has a new layout. Now uses champion icons instead of names.",
