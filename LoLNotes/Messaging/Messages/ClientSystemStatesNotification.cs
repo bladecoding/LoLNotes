@@ -33,46 +33,50 @@ namespace com.riotgames.platform.systemstate
 {
 	public class ClientSystemStatesNotification : IExternalizable
 	{
-		public bool practiceGameEnabled { get; set; }
-		public bool advancedTutorialEnabled { get; set; }
-		public Int32 minNumPlayersForPracticeGame { get; set; }
-		public bool archivedStatsEnabled { get; set; }
-		public bool storeCustomerEnabled { get; set; }
-		public bool socialIntegrationEnabled { get; set; }
-		public bool runeUniquePerSpellBook { get; set; }
-		public bool tribunalEnabled { get; set; }
-		public bool mucServiceEnabled { get; set; }
-		public bool observerModeEnabled { get; set; }
-		public Int32 spectatorSlotLimit { get; set; }
-		public Int32 clientHeartBeatRateSeconds { get; set; }
-		public String observableCustomGameModes { get; set; }
-		public bool teamServiceEnabled { get; set; }
-		public bool modularGameModeEnabled { get; set; }
-		public QueueThrottleDTO queueThrottleDTO { get; set; }
-		public List<int> practiceGameTypeConfigIdList { get; set; }
-		public List<int> freeToPlayChampionIdList { get; set; }
-		public List<int> enabledQueueIdsList { get; set; }
-		public List<int> obtainableChampionSkinIDList { get; set; }
-		public List<int> unobtainableChampionSkinIDList { get; set; }
-		public List<int> inactiveChampionIdList { get; set; }
-		public List<int> inactiveSpellIdList { get; set; }
-		public List<int> inactiveTutorialSpellIdList { get; set; }
-		public List<int> inactiveClassicSpellIdList { get; set; }
-		public List<int> inactiveOdinSpellIdList { get; set; }
-		public List<string> observableGameModes { get; set; }
-		public List<GameMapEnabledDTO> gameMapEnabledDTOList { get; set; }
+		//Removed implementation until actually needed.
+		//That way we don't break things for no reason.
+
+		//public bool practiceGameEnabled { get; set; }
+		//public bool advancedTutorialEnabled { get; set; }
+		//public Int32 minNumPlayersForPracticeGame { get; set; }
+		//public bool archivedStatsEnabled { get; set; }
+		//public bool storeCustomerEnabled { get; set; }
+		//public bool socialIntegrationEnabled { get; set; }
+		//public bool runeUniquePerSpellBook { get; set; }
+		//public bool tribunalEnabled { get; set; }
+		//public bool mucServiceEnabled { get; set; }
+		//public bool observerModeEnabled { get; set; }
+		//public Int32 spectatorSlotLimit { get; set; }
+		//public Int32 clientHeartBeatRateSeconds { get; set; }
+		//public String observableCustomGameModes { get; set; }
+		//public bool teamServiceEnabled { get; set; }
+		//public bool modularGameModeEnabled { get; set; }
+		//public QueueThrottleDTO queueThrottleDTO { get; set; }
+		//public List<int> practiceGameTypeConfigIdList { get; set; }
+		//public List<int> freeToPlayChampionIdList { get; set; }
+		//public List<int> enabledQueueIdsList { get; set; }
+		//public List<int> obtainableChampionSkinIDList { get; set; }
+		//public List<int> unobtainableChampionSkinIDList { get; set; }
+		//public List<int> inactiveChampionIdList { get; set; }
+		//public List<int> inactiveSpellIdList { get; set; }
+		//public List<int> inactiveTutorialSpellIdList { get; set; }
+		//public List<int> inactiveClassicSpellIdList { get; set; }
+		//public List<int> inactiveOdinSpellIdList { get; set; }
+		//public List<string> observableGameModes { get; set; }
+		//public List<GameMapEnabledDTO> gameMapEnabledDTOList { get; set; }
+
+		public string Json { get; set; }
 
 
 		public void ReadExternal(IDataInput input)
 		{
-			var str = input.ReadUTF();
-			if (str != null)
-				JsonConvert.PopulateObject(str, this);
+			Json = input.ReadUTFBytes(input.ReadUnsignedInt());
 		}
 
 		public void WriteExternal(IDataOutput output)
 		{
-			output.WriteUTF(JsonConvert.SerializeObject(this));
+			output.WriteInt(Json.Length);
+			output.WriteUTFBytes(Json);
 		}
 	}
 }
