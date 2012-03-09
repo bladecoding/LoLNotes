@@ -1,0 +1,5 @@
+{
+  "GitPath": "C:\\Program Files (x86)\\Git\\bin\\git.exe",
+  "TemplateFile": "Properties\\CommitInfo.cs.template",
+  "ExportFile": "Properties\\CommitInfo.cs",
+}

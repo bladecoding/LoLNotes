@@ -181,6 +181,8 @@
     <Compile Include="Messaging\Messages\DSC.cs" />
     <Compile Include="Messaging\Messages\DSK.cs" />
     <Compile Include="Messaging\IMessageProcessor.cs" />
+    <Compile Include="Properties\CommitBase.cs" />
+    <Compile Include="Properties\CommitInfo.cs" />
     <Compile Include="Util\CertificateInstaller.cs" />
     <Compile Include="Proxy\CallResultWait.cs" />
     <Compile Include="Proxy\IProxyHost.cs" />
@@ -423,6 +425,9 @@
   <PropertyGroup>
     <PostBuildEvent>call "$(ProjectDir)db4otool\Db4oTool.exe" -debug -tp -nq "$(TargetPath)"
 XCOPY "$(ProjectDir)\Content" "$(TargetDir)Content\" /E /I /F /Y /D</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>"$(ProjectDir)\Properties\GitExport.exe" "$(SolutionDir)\" "$(ProjectDir)\"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
