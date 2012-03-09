@@ -692,10 +692,13 @@ namespace LoLNotes.Gui
 					control.SetGames(ply.Games);
 					control.SetLoading(false);
 
-					foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
+					if (ply.Stats != null)
 					{
-						if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
-							comboBox1.Items.Add(stat.PlayerStatSummaryType);
+						foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
+						{
+							if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
+								comboBox1.Items.Add(stat.PlayerStatSummaryType);
+						}
 					}
 				}
 			});
