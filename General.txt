@@ -1,16 +1,20 @@
 {
 	"News":
 	{
-		"html": "<b>Been busy, fixed the 'crash' at least.</b>"
+		"html": "<b>Added the missing champion icons.</b><br/>Side note: since when did seeing enemies in ranked work again?"
 	},
 	"Release":	
 	{
-		"ReleaseName": "h",
+		"ReleaseName": "i",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1h.rar"
+		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1i.rar"
 	},
 	"Changes":	
 	{
+		"1.1i":
+		[
+			"Added the 3 missing champion icons. (Fiora/Hecarim/Lulu)",
+		],
 		"1.1h":
 		[
 			"Fixed decode issue which caused the connection to be aborted.",
