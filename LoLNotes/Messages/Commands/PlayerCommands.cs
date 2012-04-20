@@ -27,6 +27,7 @@ using FluorineFx.AMF3;
 using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
 using LoLNotes.Flash;
+using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.Statistics;
 using LoLNotes.Messages.Summoner;
 using LoLNotes.Messages.Translators;
@@ -220,6 +221,14 @@ namespace LoLNotes.Messages.Commands
 				"spellBookService",
 				"selectDefaultSpellBookPage",
 				page
+			);
+		}
+		public GameDTO GetGame(int num)
+		{
+			return InvokeService<GameDTO>(
+				"gameService",
+				"getGame",
+				num
 			);
 		}
 	}
