@@ -53,9 +53,6 @@ namespace LoLNotes.Messages.Summoner
 		[InternalName("profileIconId")]
 		public Int32 ProfileIconId { get; set; }
 
-		[InternalName("summonerAssociatedTalents")]
-		public ArrayCollection SummonerAssociatedTalents { get; set; }
-
 		[InternalName("summonerLevel")]
 		public Int32 SummonerLevel { get; set; }
 

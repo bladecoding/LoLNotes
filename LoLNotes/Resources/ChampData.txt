@@ -88,9 +88,11 @@
 	"104":"Graves",
 	"105":"Fizz",
 	"106":"Volibear",
+	"110":"Varus",
 	"111":"Nautilus",
 	"112":"Viktor",
 	"113":"Sejuani",
+	"114":"Fiora",
 	"115":"Ziggs",
 	"117":"Lulu",
 	"120":"Hecarim"
