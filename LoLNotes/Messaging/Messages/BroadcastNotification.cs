@@ -27,7 +27,7 @@ using FluorineFx.AMF3;
 using LoLNotes.Messages.Broadcast;
 using Newtonsoft.Json;
 
-namespace com.riotgames.platform.gameclient.domain.broadcast
+namespace com.riotgames.platform.broadcast
 {
 	public class BroadcastNotification : IExternalizable
 	{				
