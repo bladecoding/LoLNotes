@@ -74,7 +74,7 @@ namespace LoLNotes.Messages.Translators
 			if (flashobj == null)
 				return null;
 
-			var type = Types.Where(kv => flashobj.TypeName.Contains(kv.Key)).FirstOrDefault();
+			var type = Types.FirstOrDefault(kv => flashobj.TypeName.EndsWith(kv.Key));
 			return type.Value != null ? Activator.CreateInstance(type.Value, flashobj) : null;
 		}
 
