@@ -135,7 +135,10 @@
     <Compile Include="Gui\PlayerCache.cs" />
     <Compile Include="Gui\LeagueRegion.cs" />
     <Compile Include="Messages\Account\AccountSummary.cs" />
+    <Compile Include="Messages\Account\AllSummonerData.cs" />
+    <Compile Include="Messages\Account\LoginDataPacket.cs" />
     <Compile Include="Messages\Account\Session.cs" />
+    <Compile Include="Messages\Account\SummonerData.cs" />
     <Compile Include="Messages\Broadcast\BroadcastMessage.cs" />
     <Compile Include="Messages\Champion\ChampionDTO.cs" />
     <Compile Include="Messages\Commands\PlayerCommands.cs" />
