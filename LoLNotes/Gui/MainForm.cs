@@ -391,7 +391,7 @@ namespace LoLNotes.Gui
 			{
 				using (var wc = new WebClient())
 				{
-					string raw = wc.DownloadString("https://raw.github.com/high6/LoLNotes/master/General.txt");
+					string raw = wc.DownloadString("https://raw.github.com/bladecoding/LoLNotes/master/General.txt");
 					var json = JsonConvert.DeserializeObject<JObject>(raw);
 					FInvoke(delegate
 					{
