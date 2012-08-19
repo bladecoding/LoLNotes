@@ -50,7 +50,7 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
         public int EloChange { get; set; }
 
         [InternalName("gameId")]
-        public int GameId { get; set; }
+        public Int64 GameId { get; set; }
 
         public GameItems Items { get; set; }
 
@@ -85,10 +85,10 @@ namespace LoLNotes.Messages.GameStats.PlayerStats
         public string SummonerName { get; set; }
 
         [InternalName("teamId")]
-        public int TeamId { get; set; }
+        public Int64 TeamId { get; set; }
 
         [InternalName("userId")]
-        public int UserId { get; set; }
+        public Int64 UserId { get; set; }
 
         [InternalName("wins")]
         public int Wins { get; set; }

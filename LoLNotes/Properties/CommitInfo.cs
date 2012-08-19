@@ -1,3 +1,3 @@
-[assembly: AssemblyCommit("commit 3106fff7b6f556c2442ff9b6b1f1a868eae620d0\nAuthor: high <high828@gmail.com>\nDate:   Thu Mar 8 19:22:56 2012 -0500\n\n    Fixed crash when stats are not received.\n", "3106fff7b6f556c2442ff9b6b1f1a868eae620d0", "high", "  Thu Mar 8 19:22:56 2012 -0500", "Fixed crash when stats are not received.", "high828@gmail.com")]
+[assembly: AssemblyCommit("commit 9471ae5aa9f9fc38b9e4ce46389895230e873771\nAuthor: Will <will@bladecoding.com>\nDate:   Sun Aug 19 01:04:24 2012 -0400\n\n    Changed GameIds/AccountIds/SummonerIds should be Int64s to prevent overflowing.\n", "9471ae5aa9f9fc38b9e4ce46389895230e873771", "Will", "  Sun Aug 19 01:04:24 2012 -0400", "Changed GameIds/AccountIds/SummonerIds should be Int64s to prevent overflowing.", "will@bladecoding.com")]
 
 								

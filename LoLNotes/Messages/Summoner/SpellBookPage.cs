@@ -43,7 +43,7 @@ namespace LoLNotes.Messages.Summoner
 		}
 
 		[InternalName("summonerId")]
-		public int SummonerId { get; set; }
+		public Int64 SummonerId { get; set; }
 
 		[InternalName("pageId")]
 		public int PageId { get; set; }

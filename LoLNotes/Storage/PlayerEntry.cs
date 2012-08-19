@@ -57,7 +57,7 @@ namespace LoLNotes.Storage
         public Color NoteColor { get; set; }
         public string Name { get; set; }
         public string InternalName { get; set; }
-        public int Id { get; set; }
+        public Int64 Id { get; set; }
 
         public object Clone()
         {

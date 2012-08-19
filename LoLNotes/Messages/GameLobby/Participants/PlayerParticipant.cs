@@ -43,9 +43,9 @@ namespace LoLNotes.Messages.GameLobby.Participants
         [InternalName("profileIconId")]
         public int ProfileIconId { get; set; }
 		[InternalName("summonerId")]
-		public int SummonerId { get; set; }
+		public Int64 SummonerId { get; set; }
 		[InternalName("accountId")]
-		public int AccountId { get; set; }
+		public Int64 AccountId { get; set; }
 		[InternalName("teamParticipantId")]
 		public Int64 TeamParticipantId { get; set; }
 

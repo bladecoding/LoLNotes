@@ -41,6 +41,6 @@ namespace LoLNotes.Messages.Account
 		public string Username { get; set; }
 
 		[InternalName("accountId")]
-		public int AccountId { get; set; }
+		public Int64 AccountId { get; set; }
 	}
 }

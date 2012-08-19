@@ -186,7 +186,7 @@ namespace LoLNotes.Messages.Commands
 			);
 		}
 
-		public PlayerLifetimeStats RetrievePlayerStatsByAccountId(int acctid)
+		public PlayerLifetimeStats RetrievePlayerStatsByAccountId(Int64 acctid)
 		{
 			return InvokeService<PlayerLifetimeStats>(
 				"playerStatsService",
@@ -196,7 +196,7 @@ namespace LoLNotes.Messages.Commands
 			);
 		}
 
-		public RecentGames GetRecentGames(int acctid)
+		public RecentGames GetRecentGames(Int64 acctid)
 		{
 			return InvokeService<RecentGames>(
 				"playerStatsService",
@@ -205,7 +205,7 @@ namespace LoLNotes.Messages.Commands
 			);
 		}
 
-		public ChampionStatInfoList RetrieveTopPlayedChampions(int acctid, string gamemode)
+		public ChampionStatInfoList RetrieveTopPlayedChampions(Int64 acctid, string gamemode)
 		{
 			return InvokeService<ChampionStatInfoList>(
 				"playerStatsService",

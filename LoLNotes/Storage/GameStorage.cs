@@ -152,7 +152,7 @@ namespace LoLNotes.Storage
 
 			return commit;
 		}
-		protected int _currentlobby = 0;
+		protected Int64 _currentlobby = 0;
 		protected readonly List<PlayerEntry> _lobbycache = new List<PlayerEntry>();
 
 
@@ -224,7 +224,7 @@ namespace LoLNotes.Storage
 			return true;
 		}
 
-		public PlayerEntry GetPlayer(int id)
+		public PlayerEntry GetPlayer(Int64 id)
 		{
 			lock (_lobbycache)
 			{

@@ -95,7 +95,7 @@ namespace LoLNotes.Messages.GameStats
             get; set;
         }
         [InternalName("gameId")]
-        public int GameId
+        public Int64 GameId
         {
             get; set;
         }
@@ -219,7 +219,7 @@ namespace LoLNotes.Messages.GameStats
             get; set;
         }
         [InternalName("userId")]
-        public int UserId
+        public Int64 UserId
         {
             get; set;
         }
