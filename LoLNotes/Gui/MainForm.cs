@@ -258,7 +258,7 @@ namespace LoLNotes.Gui
 				var hr = (HttpWebRequest)WebRequest.Create("http://bit.ly/unCoIY");
 				hr.ServicePoint.Expect100Continue = false;
 				hr.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:8.0) Gecko/20100101 Firefox/8.0";
-				hr.Referer = "http://lolnotesapp.org/" + Version + "/" + e.Item;
+				hr.Referer = string.Format("http://lolnotes-{0}-app.org/{1}", Version , e.Item);
 				hr.AllowAutoRedirect = false;
 				using (var resp = (HttpWebResponse)hr.GetResponse())
 				{
