@@ -160,6 +160,7 @@ namespace LoLNotes.Gui.Controls
 			InfoTabs.TabPages.Clear();
 			SetLevel(30);
 			SetTeam(0);
+			SetSeen(0);
 			Invalidate(); //Force the border to redraw.
 		}
 
@@ -292,6 +293,19 @@ namespace LoLNotes.Gui.Controls
 			tab.Controls.Add(layout);
 			InfoTabs.TabPages.Add(tab);
 		}
+
+		public void SetSeen(int times)
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<int>(SetSeen), times);
+				return;
+			}
+
+			SeenCountLabel.Visible = times > 0;
+			SeenCountLabel.Text = "Seen: " + times;
+		}
+
 		public void SetGames(RecentGames games)
 		{
 			if (games == null || games.GameStatistics.Count < 1)
@@ -482,7 +496,7 @@ namespace LoLNotes.Gui.Controls
 		{
 			if (e.Link.LinkData == null)
 				return;
-			var plr = (Tuple<int, string>)e.Link.LinkData;
+			var plr = (Tuple<Int64, string>)e.Link.LinkData;
 			string region;
 			if (!LeagueRegions.TryGetValue(MainSettings.Instance.Region, out region))
 			{

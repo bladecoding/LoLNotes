@@ -36,6 +36,7 @@ namespace LoLNotes.Gui.Controls
 			this.InfoTabs = new System.Windows.Forms.TabControl();
 			this.TeamLabel = new System.Windows.Forms.Label();
 			this.NameLabel = new System.Windows.Forms.LinkLabel();
+			this.SeenCountLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.LoadingPicture)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -43,7 +44,7 @@ namespace LoLNotes.Gui.Controls
 			// 
 			this.LevelLabel.AutoSize = true;
 			this.LevelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.LevelLabel.Location = new System.Drawing.Point(10, 110);
+			this.LevelLabel.Location = new System.Drawing.Point(10, 89);
 			this.LevelLabel.Name = "LevelLabel";
 			this.LevelLabel.Size = new System.Drawing.Size(46, 13);
 			this.LevelLabel.TabIndex = 2;
@@ -75,7 +76,7 @@ namespace LoLNotes.Gui.Controls
 			// 
 			this.TeamLabel.AutoSize = true;
 			this.TeamLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TeamLabel.Location = new System.Drawing.Point(10, 95);
+			this.TeamLabel.Location = new System.Drawing.Point(10, 74);
 			this.TeamLabel.Name = "TeamLabel";
 			this.TeamLabel.Size = new System.Drawing.Size(32, 13);
 			this.TeamLabel.TabIndex = 4;
@@ -94,10 +95,21 @@ namespace LoLNotes.Gui.Controls
 			this.NameLabel.Text = "NAMEEEEEEEEEEEE";
 			this.NameLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NameLabel_LinkClicked);
 			// 
+			// SeenCountLabel
+			// 
+			this.SeenCountLabel.AutoSize = true;
+			this.SeenCountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SeenCountLabel.Location = new System.Drawing.Point(10, 104);
+			this.SeenCountLabel.Name = "SeenCountLabel";
+			this.SeenCountLabel.Size = new System.Drawing.Size(44, 13);
+			this.SeenCountLabel.TabIndex = 6;
+			this.SeenCountLabel.Text = "Seen: ";
+			// 
 			// PlayerControl
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.White;
+			this.Controls.Add(this.SeenCountLabel);
 			this.Controls.Add(this.NameLabel);
 			this.Controls.Add(this.TeamLabel);
 			this.Controls.Add(this.InfoTabs);
@@ -119,5 +131,6 @@ namespace LoLNotes.Gui.Controls
 		public System.Windows.Forms.TabControl InfoTabs;
 		private System.Windows.Forms.Label TeamLabel;
 		private System.Windows.Forms.LinkLabel NameLabel;
+		private System.Windows.Forms.Label SeenCountLabel;
     }
 }

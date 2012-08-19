@@ -148,6 +148,8 @@
     <Compile Include="Messages\Statistics\AggregatedStatList.cs" />
     <Compile Include="Messages\Statistics\ChampionStatInfo.cs" />
     <Compile Include="Messages\Statistics\ChampionStatInfoList.cs" />
+    <Compile Include="Messages\Statistics\FellowPlayerInfo.cs" />
+    <Compile Include="Messages\Statistics\FellowPlayerInfoList.cs" />
     <Compile Include="Messages\Statistics\PlayerGameStatsList.cs" />
     <Compile Include="Messages\Statistics\PlayerGameStats.cs" />
     <Compile Include="Messages\Statistics\PlayerLifetimeStats.cs" />

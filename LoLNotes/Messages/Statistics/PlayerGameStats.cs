@@ -44,7 +44,7 @@ namespace LoLNotes.Messages.Statistics
 		public Int32 SkinIndex { get; set; }
 
 		[InternalName("fellowPlayers")]
-		public ArrayCollection FellowPlayers { get; set; }
+		public FellowPlayerInfoList FellowPlayers { get; set; }
 
 		[InternalName("gameType")]
 		public string GameType { get; set; }

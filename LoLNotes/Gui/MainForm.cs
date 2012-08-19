@@ -29,6 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Db4objects.Db4o;
@@ -40,12 +41,14 @@ using FluorineFx.IO;
 using FluorineFx.Messaging.Messages;
 using FluorineFx.Messaging.Rtmp.Event;
 using LoLNotes.Gui.Controls;
+using LoLNotes.Messages.Account;
 using LoLNotes.Messages.Champion;
 using LoLNotes.Messages.Commands;
 using LoLNotes.Messages.GameLobby;
 using LoLNotes.Messages.GameLobby.Participants;
 using LoLNotes.Messages.GameStats;
 using LoLNotes.Messages.Readers;
+using LoLNotes.Messages.Statistics;
 using LoLNotes.Messages.Summoner;
 using LoLNotes.Properties;
 using LoLNotes.Proxy;
@@ -77,6 +80,7 @@ namespace LoLNotes.Gui
 		ProcessInjector Injector;
 		GameDTO CurrentGame;
 		List<ChampionDTO> Champions;
+		SummonerData SelfSummoner;
 
 		MainSettings Settings { get { return MainSettings.Instance; } }
 
@@ -86,6 +90,7 @@ namespace LoLNotes.Gui
 
 			Logger.Instance.Register(new DefaultListener(Levels.All, OnLog));
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+			Application.ThreadException += Application_ThreadException;
 			StaticLogger.Info(string.Format("Version {0}", Version));
 
 			Settings.Load(SettingsFile);
@@ -411,18 +416,30 @@ namespace LoLNotes.Gui
 			}
 		}
 
+		void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+		{
+			LogException(e.Exception, true);
+		}
+
 		void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			var ex = (Exception)e.ExceptionObject;
-			LogToFile(string.Format(
-				"[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
-				Levels.Fatal.ToString().ToUpper(),
-				string.Format("{0} [{1}]", ex.Message, Parse.ToBase64(ex.ToString())),
-				DateTime.UtcNow
-			));
+			LogException((Exception)e.ExceptionObject, !e.IsTerminating);
+			//Bypass the queue and log it now if we are terminating.
+			if (e.IsTerminating)
+				TrackingQueue_Process(this, new ProcessQueueEventArgs<string> { Item = string.Format("error/{0}", Parse.ToBase64(e.ExceptionObject.ToString())) });
+		}
 
-			//Bypass the queue and log it now.
-			TrackingQueue_Process(this, new ProcessQueueEventArgs<string> { Item = string.Format("error/{0}", Parse.ToBase64(e.ExceptionObject.ToString())) });
+		void LogException(Exception ex, bool track)
+		{
+			LogToFile(string.Format(
+			   "[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
+			   Levels.Fatal.ToString().ToUpper(),
+			   string.Format("{0} [{1}]", ex.Message, Parse.ToBase64(ex.ToString())),
+			   DateTime.UtcNow
+				));
+
+			if (track)
+				TrackingQueue.Enqueue(string.Format("error/{0}", Parse.ToBase64(ex.ToString())));
 		}
 
 		void Log(Levels level, object obj)
@@ -509,6 +526,8 @@ namespace LoLNotes.Gui
 				ClearCache(); //clear the player cache after each match.
 			else if (obj is List<ChampionDTO>)
 				Champions = (List<ChampionDTO>)obj;
+			else if (obj is LoginDataPacket)
+				SelfSummoner = ((LoginDataPacket)obj).AllSummonerData.Summoner;
 		}
 
 		public void ClearCache()
@@ -599,6 +618,7 @@ namespace LoLNotes.Gui
 										plycontrol.SetStats(entry.Summoner, entry.Stats);
 										plycontrol.SetChamps(entry.RecentChamps);
 										plycontrol.SetGames(entry.Games);
+										plycontrol.SetSeen(entry.SeenCount);
 									}
 								}
 							}
@@ -639,69 +659,82 @@ namespace LoLNotes.Gui
 		/// <param name="control">Control to update</param>
 		void LoadPlayer(PlayerParticipant player, PlayerControl control)
 		{
-			var ply = new PlayerCache();
-			lock (PlayersCache)
+			try
 			{
-				//Clear the cache every 1000 players to prevent crashing afk lobbies.
-				if (PlayersCache.Count > 1000)
-					PlayersCache.Clear();
 
-				if (PlayersCache.Find(p => p.Player.Id == player.SummonerId) != null)
+				var ply = new PlayerCache();
+				lock (PlayersCache)
 				{
-					//Player got cached or is getting cached by another thread.
-					return;
-				}
-				//Temporary player entry so we don't keep PlayersCache locked while querying
-				ply.Player = new PlayerEntry() { Id = player.SummonerId, Name = "Loading..." };
-				PlayersCache.Add(ply);
-			}
+					//Clear the cache every 1000 players to prevent crashing afk lobbies.
+					if (PlayersCache.Count > 1000)
+						PlayersCache.Clear();
 
-
-			var sw = Stopwatch.StartNew();
-			{
-				var entry = Recorder.GetPlayer(player.SummonerId);
-				ply.Player = entry ?? ply.Player;
-			}
-			StaticLogger.Trace(string.Format("Player query in {0}ms", sw.ElapsedMilliseconds));
-
-			sw = Stopwatch.StartNew();
-			{
-				var cmd = new PlayerCommands(Connection);
-				var summoner = cmd.GetPlayerByName(player.Name);
-				if (summoner != null)
-				{
-					ply.Summoner = summoner;
-					ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
-					ply.RecentChamps = cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
-					ply.Games = cmd.GetRecentGames(summoner.AccountId);
-				}
-				else
-				{
-					StaticLogger.Debug(string.Format("Player {0} not found", player.Name));
-				}
-			}
-			StaticLogger.Debug(string.Format("Stats query in {0}ms", sw.ElapsedMilliseconds));
-
-			FInvoke(delegate
-			{
-				using (new SuspendLayout(this))
-				{
-					control.SetPlayer(ply.Player);
-					control.SetStats(ply.Summoner, ply.Stats);
-					control.SetChamps(ply.RecentChamps);
-					control.SetGames(ply.Games);
-					control.SetLoading(false);
-
-					if (ply.Stats != null)
+					if (PlayersCache.Find(p => p.Player.Id == player.SummonerId) != null)
 					{
-						foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
-						{
-							if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
-								comboBox1.Items.Add(stat.PlayerStatSummaryType);
-						}
+						//Player got cached or is getting cached by another thread.
+						return;
+					}
+					//Temporary player entry so we don't keep PlayersCache locked while querying
+					ply.Player = new PlayerEntry() { Id = player.SummonerId, Name = "Loading..." };
+					PlayersCache.Add(ply);
+				}
+
+
+				using (SimpleLogTimer.Start("Player query"))
+				{
+					var entry = Recorder.GetPlayer(player.SummonerId);
+					ply.Player = entry ?? ply.Player;
+				}
+
+				using (SimpleLogTimer.Start("Stats query"))
+				{
+					var cmd = new PlayerCommands(Connection);
+					var summoner = cmd.GetPlayerByName(player.Name);
+					if (summoner != null)
+					{
+						ply.Summoner = summoner;
+						ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
+						ply.RecentChamps = cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
+						ply.Games = cmd.GetRecentGames(summoner.AccountId);
+					}
+					else
+					{
+						StaticLogger.Debug(string.Format("Player {0} not found", player.Name));
 					}
 				}
-			});
+
+				using (SimpleLogTimer.Start("Seen query"))
+				{
+					if (SelfSummoner != null && SelfSummoner.SummonerId == ply.Summoner.SummonerId && ply.Games != null)
+						ply.SeenCount = ply.Games.GameStatistics.Count(pgs => pgs.FellowPlayers.Any(fp => fp.SummonerId == SelfSummoner.SummonerId));
+				}
+
+				FInvoke(delegate
+				{
+					using (new SuspendLayout(this))
+					{
+						control.SetPlayer(ply.Player);
+						control.SetStats(ply.Summoner, ply.Stats);
+						control.SetChamps(ply.RecentChamps);
+						control.SetGames(ply.Games);
+						control.SetSeen(ply.SeenCount);
+						control.SetLoading(false);
+
+						if (ply.Stats != null)
+						{
+							foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
+							{
+								if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
+									comboBox1.Items.Add(stat.PlayerStatSummaryType);
+							}
+						}
+					}
+				});
+			}
+			catch (Exception ex)
+			{
+				StaticLogger.Warning(ex);
+			}
 		}
 
 		private void InstallButton_Click(object sender, EventArgs e)
@@ -1228,6 +1261,8 @@ namespace LoLNotes.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			throw new Exception("test");
+
 			var spell = new SpellBookPage();
 			spell.SummonerId = 28758093;
 			spell.PageId = 24185065;

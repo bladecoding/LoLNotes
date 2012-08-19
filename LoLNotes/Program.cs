@@ -46,7 +46,7 @@ namespace LoLNotes
 				{
 					Application.EnableVisualStyles();
 					Application.SetCompatibleTextRenderingDefault(false);
-					Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+					Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 					Application.Run(new MainForm());
 				}
 				else
