@@ -1,16 +1,22 @@
 {
 	"News":
 	{
-		"html": "<b>Added the missing champion icons.</b><br/>Side note: since when did seeing enemies in ranked work again?"
+		"html": "<b>Added the missing champion icons.</b><br/>"
 	},
 	"Release":	
 	{
-		"ReleaseName": "i",
+		"ReleaseName": "j",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1i.rar"
+		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1j.zip"
 	},
 	"Changes":	
 	{
+		"1.1j":
+		[
+			"Added the 7 missing champion icons.",
+			"Fixed a bug due to gameids exceeding 4 billion",
+			"Fixed exceptions in the UI thread will no longer kill lolnotes",
+		],
 		"1.1i":
 		[
 			"Added the 3 missing champion icons. (Fiora/Hecarim/Lulu)",
