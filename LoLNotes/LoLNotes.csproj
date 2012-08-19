@@ -241,6 +241,7 @@
     <Compile Include="Util\ProcessInjector.cs" />
     <Compile Include="Util\ProcessMemory.cs" />
     <Compile Include="Util\ProcessMonitor.cs" />
+    <Compile Include="Util\SimpleLogTimer.cs" />
     <Compile Include="Util\SuspendLayout.cs" />
     <Compile Include="Util\Parse.cs" />
     <Compile Include="Flash\FlashSerializer.cs" />
