@@ -51,7 +51,7 @@ namespace LoLNotes.Messages.GameLobby.Participants
             set;
         }
         [InternalName("teamId")]
-        public string TeamId
+        public Int64 TeamId
         {
             get;
             set;

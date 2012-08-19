@@ -68,10 +68,10 @@ namespace LoLNotes.Messages.Statistics
 		public string GameTypeEnum { get; set; }
 
 		[InternalName("teamId")]
-		public Int32 TeamId { get; set; }
+		public Int64 TeamId { get; set; }
 
 		[InternalName("summonerId")]
-		public Int32 SummonerId { get; set; }
+		public Int64 SummonerId { get; set; }
 
 		[InternalName("statistics")]
 		public RawStatList Statistics { get; set; }
@@ -95,7 +95,7 @@ namespace LoLNotes.Messages.Statistics
 		public Int32 BoostIpEarned { get; set; }
 
 		[InternalName("gameId")]
-		public Int32 GameId { get; set; }
+		public Int64 GameId { get; set; }
 
 		[InternalName("timeInQueue")]
 		public Int32 TimeInQueue { get; set; }

@@ -62,7 +62,7 @@ namespace LoLNotes.Messages.GameLobby
         }
 
         [InternalName("id")]
-        public int Id
+        public Int64 Id
         {
             get;
             set;

@@ -45,7 +45,7 @@ namespace LoLNotes.Messages.Summoner
 		public Int32 DataVersion { get; set; }
 
 		[InternalName("acctId")]
-		public Int32 AccountId { get; set; }
+		public Int64 AccountId { get; set; }
 
 		[InternalName("name")]
 		public string Name { get; set; }
@@ -57,7 +57,7 @@ namespace LoLNotes.Messages.Summoner
 		public Int32 SummonerLevel { get; set; }
 
 		[InternalName("summonerId")]
-		public Int32 SummonerId { get; set; }
+		public Int64 SummonerId { get; set; }
 
 	}
 }
