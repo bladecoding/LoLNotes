@@ -987,7 +987,7 @@ namespace FluorineFx.IO
             if (!string.IsNullOrEmpty(classDefinition.ClassName))
                 instance = ObjectFactory.CreateInstance(classDefinition.ClassName);
             else
-                instance = new ASObject();
+				instance = new ASObject() { Definition = classDefinition };
             if (instance == null)
             {
 #if !SILVERLIGHT
@@ -1007,7 +1007,7 @@ namespace FluorineFx.IO
                 }
                 else
                 {
-                    string msg = __Res.GetString(__Res.Externalizable_CastFail, instance.GetType().FullName);
+                    string msg = __Res.GetString(__Res.Externalizable_CastFail, instance.GetType().FullName, classDefinition.ClassName);
                     throw new FluorineException(msg);
                 }
             }

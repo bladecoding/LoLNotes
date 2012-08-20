@@ -52,7 +52,7 @@ namespace FluorineFx.Messaging.Rtmp
         /// </summary>
 		bool _timerRelative = true;
 
-        internal RtmpHeader()
+        public RtmpHeader()
 		{
 		}
         /// <summary>

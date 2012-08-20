@@ -30,24 +30,24 @@ namespace FluorineFx.Messaging.Rtmp.Event
     [CLSCompliant(false)]
     public class Invoke : Notify
 	{
-        internal Invoke()
+        public Invoke()
 		{
 			_dataType = Constants.TypeInvoke;
 		}
 
-        internal Invoke(ByteBuffer data)
+		public Invoke(ByteBuffer data)
             : base(data)
 		{
 			_dataType = Constants.TypeInvoke;
 		}
 
-        internal Invoke(byte[] data)
+		public Invoke(byte[] data)
             : base(data)
         {
             _dataType = Constants.TypeInvoke;
         }
 
-        internal Invoke(IServiceCall serviceCall)
+		public Invoke(IServiceCall serviceCall)
             : base(serviceCall)
 		{
             _dataType = Constants.TypeInvoke;

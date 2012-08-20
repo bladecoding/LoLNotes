@@ -520,7 +520,7 @@ namespace FluorineFx.Messaging
 				CommandMessage commandMessage = message as CommandMessage;
 				if( commandMessage != null )
 				{
-					if( commandMessage.messageRefType != null )
+					/*if( commandMessage.messageRefType != null )
 					{
 						foreach(DictionaryEntry entry in _services)
 						{
@@ -531,7 +531,7 @@ namespace FluorineFx.Messaging
 								break;
 							}
 						}
-					}
+					}*/
 				}
 			}
 			return service;

@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using FluorineFx.AMF3;
 using FluorineFx.Util;
 using FluorineFx.Exceptions;
 
@@ -88,6 +89,11 @@ namespace FluorineFx
             get { return !string.IsNullOrEmpty(_typeName); }
         }
 
+		/// <summary>
+		/// ASObject's class definition. Used for anonymous types
+		/// </summary>
+		public ClassDefinition Definition { get { return _definition; } set { _definition = value; } }
+		ClassDefinition _definition;
         /// <summary>
         /// Returns a string that represents the current ASObject object.
         /// </summary>

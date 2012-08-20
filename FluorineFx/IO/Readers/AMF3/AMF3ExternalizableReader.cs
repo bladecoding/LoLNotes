@@ -58,7 +58,7 @@ namespace FluorineFx.IO.Readers
             }
             else
             {
-                string msg = __Res.GetString(__Res.Externalizable_CastFail, instance.GetType().FullName);
+                string msg = __Res.GetString(__Res.Externalizable_CastFail, instance.GetType().FullName, classDefinition.ClassName);
                 throw new FluorineException(msg);
             }
         }

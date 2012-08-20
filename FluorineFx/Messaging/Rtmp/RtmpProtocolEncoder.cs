@@ -35,7 +35,7 @@ namespace FluorineFx.Messaging.Rtmp
 	/// <summary>
 	/// This type supports the Fluorine infrastructure and is not intended to be used directly from your code.
 	/// </summary>
-	sealed class RtmpProtocolEncoder
+	public sealed class RtmpProtocolEncoder
 	{
 #if !SILVERLIGHT
         static private ILog _log = LogManager.GetLogger(typeof(RtmpProtocolEncoder));

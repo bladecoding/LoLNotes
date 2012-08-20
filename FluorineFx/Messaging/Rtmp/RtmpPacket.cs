@@ -34,13 +34,13 @@ namespace FluorineFx.Messaging.Rtmp
 		IRtmpEvent		_message;
 		ByteBuffer		_data;
 
-        internal RtmpPacket(RtmpHeader header)
+        public RtmpPacket(RtmpHeader header)
 		{
 			_header = header;
 			_data = ByteBuffer.Allocate(header.Size + (header.Timer == 0xffffff ? 4 : 0));
 		}
 
-        internal RtmpPacket(RtmpHeader header, IRtmpEvent message)
+		public RtmpPacket(RtmpHeader header, IRtmpEvent message)
 		{
 			_header = header;
 			_message = message;

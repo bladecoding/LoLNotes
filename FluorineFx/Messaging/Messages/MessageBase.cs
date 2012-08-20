@@ -118,6 +118,55 @@ namespace FluorineFx.Messaging.Messages
 
 		#region IMessage Members
 
+		/// <summary>
+		/// Gets or sets the time stamp for the message.
+		/// </summary>
+		/// <remarks>The time stamp is the date and time that the message was sent.</remarks>
+		public long timestamp
+		{
+			get { return _timestamp; }
+			set { _timestamp = value; }
+		}
+		/// <summary>
+		/// Gets or sets the identity of the message.
+		/// </summary>
+		/// <remarks>This field is unique and can be used to correlate a response to the original request message.</remarks>
+		public string messageId
+		{
+			get { return _messageId; }
+			set { _messageId = value; }
+		}    
+		/// <summary>
+		/// Gets or sets the body of the message.
+		/// </summary>
+		/// <remarks>The body is the data that is delivered to the remote destination.</remarks>
+		public object body
+		{
+			get { return _body; }
+			set { _body = value; }
+		}
+		/// <summary>
+		/// Gets or sets the message destination.
+		/// </summary>
+		public string destination
+		{
+			get { return _destination; }
+			set { _destination = value; }
+		}   
+		/// <summary>
+		/// Gets or sets the headers of the message.
+		/// </summary>
+		/// <remarks>
+		/// The headers of a message are an associative array where the key is the header name and the value is the header value.
+		/// This property provides access to the specialized meta information for the specific message instance. 
+		/// Flex core header names begin with a 'DS' prefix. Custom header names should start with a unique prefix to avoid name collisions.
+		/// </remarks>
+		public Dictionary<string, object> headers
+		{
+			get { return _headers; }
+			set { _headers = value; }
+		}
+   
         /// <summary>
         /// Gets or sets the client identity indicating which client sent the message.
         /// </summary>
@@ -125,33 +174,9 @@ namespace FluorineFx.Messaging.Messages
 		{
 			get{ return _clientId; }
 			set{ _clientId = value; }
-		}
-		/// <summary>
-		/// Gets or sets the message destination.
-		/// </summary>
-		public string destination
-		{
-			get{ return _destination; }
-			set{ _destination = value; }
-		}
-        /// <summary>
-        /// Gets or sets the identity of the message.
-        /// </summary>
-        /// <remarks>This field is unique and can be used to correlate a response to the original request message.</remarks>
-        public string messageId
-		{
-			get{ return _messageId; }
-			set{ _messageId = value; }
-		}
-        /// <summary>
-        /// Gets or sets the time stamp for the message.
-        /// </summary>
-        /// <remarks>The time stamp is the date and time that the message was sent.</remarks>
-        public long timestamp
-		{
-			get{ return _timestamp; }
-			set{ _timestamp = value; }
-		}
+		}  
+
+
         /// <summary>
         /// Gets or sets the validity for the message.
         /// </summary>
@@ -161,36 +186,9 @@ namespace FluorineFx.Messaging.Messages
 			get{ return _timeToLive; }
 			set{ _timeToLive = value; }
 		}
-        /// <summary>
-        /// Gets or sets the body of the message.
-        /// </summary>
-        /// <remarks>The body is the data that is delivered to the remote destination.</remarks>
-        public object body
-		{
-			get{ return _body; }
-			set{ _body = value; }
-		}
-        /// <summary>
-        /// Gets or sets the headers of the message.
-        /// </summary>
-		/// <remarks>
-		/// The headers of a message are an associative array where the key is the header name and the value is the header value.
-		/// This property provides access to the specialized meta information for the specific message instance. 
-        /// Flex core header names begin with a 'DS' prefix. Custom header names should start with a unique prefix to avoid name collisions.
-		/// </remarks>
-#if !(NET_1_1)
-        public Dictionary<string, object> headers
-        {
-            get { return _headers; }
-            set { _headers = value; }
-        }
-#else
-        public Hashtable headers
-		{
-			get{ return _headers; }
-			set{ _headers = value; }
-		}
-#endif
+
+ 
+
         /// <summary>
         /// Retrieves the specified header value.
         /// </summary>

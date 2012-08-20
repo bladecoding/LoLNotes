@@ -206,7 +206,7 @@ namespace FluorineFx.AMF3
         /// <summary>
         /// Gets the MemoryStream from which this ByteArray was created.
         /// </summary>
-		internal MemoryStream MemoryStream{ get{ return _memoryStream; } }
+		public MemoryStream MemoryStream{ get{ return _memoryStream; } }
 
 		#region IDataInput Members
 

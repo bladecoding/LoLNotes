@@ -52,25 +52,25 @@ namespace FluorineFx.Messaging.Rtmp.Event
         /// </summary>
 		IDictionary					_connectionParameters;
 
-        internal Notify()
+		public Notify()
             : base(EventType.SERVICE_CALL)
 		{
 			_dataType = Constants.TypeNotify;
 		}
 
-        internal Notify(ByteBuffer data)
+		public Notify(ByteBuffer data)
             : this()
 		{
 			_data = data;
 		}
 
-        internal Notify(byte[] data)
+		public Notify(byte[] data)
             : this()
         {
             _data = ByteBuffer.Wrap(data);
         }
 
-        internal Notify(IServiceCall serviceCall)
+		public Notify(IServiceCall serviceCall)
             : this()
 		{
 			_serviceCall = serviceCall;

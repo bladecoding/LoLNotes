@@ -214,7 +214,7 @@
     <value>Could not bind request to endpoint {0}, contextPath {1}</value>
   </data>
   <data name="Externalizable_CastFail" xml:space="preserve">
-    <value>Object of type {0} does not implement IExternalizable</value>
+    <value>Object of type {0} does not implement IExternalizable for {1}</value>
   </data>
   <data name="Fluorine_Start" xml:space="preserve">
     <value>Starting FluorineFx Gateway</value>

@@ -37,6 +37,15 @@ namespace FluorineFx.Messaging.Messages
 		public RemotingMessage()
 		{
 		}
+
+		/// <summary>
+		/// Gets or sets the name of the remote method/operation that should be called.
+		/// </summary>
+		public string operation
+		{
+			get { return _operation; }
+			set { _operation = value; }
+		}
 		/// <summary>
 		/// Gets or sets the underlying source of a RemoteObject destination.
 		/// </summary>
@@ -51,14 +60,7 @@ namespace FluorineFx.Messaging.Messages
 			get{ return _source; }
 			set{ _source = value; }
 		}
-		/// <summary>
-		/// Gets or sets the name of the remote method/operation that should be called.
-		/// </summary>
-		public string operation
-		{
-			get{ return _operation; }
-			set{ _operation = value; }
-		}
+
 
         protected override MessageBase CopyImpl(MessageBase clone)
         {

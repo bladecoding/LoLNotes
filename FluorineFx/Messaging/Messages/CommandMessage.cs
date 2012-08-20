@@ -100,7 +100,6 @@ namespace FluorineFx.Messaging.Messages
         internal static string FluorineSuppressPollWaitHeader = "FluorineSuppressPollWait";
 
 
-		string _messageRefType;
 		int _operation;
 
 
@@ -125,14 +124,6 @@ namespace FluorineFx.Messaging.Messages
 			_operation = operation;
 		}
 		/// <summary>
-		/// Gets or sets the message reference type for the CommandMessage.
-		/// </summary>
-		public string messageRefType
-		{
-			get{ return _messageRefType; }
-			set{ _messageRefType = value; }
-		}
-		/// <summary>
 		/// Gets or sets the operation for this CommandMessage.
 		/// </summary>
 		public int operation
@@ -148,7 +139,7 @@ namespace FluorineFx.Messaging.Messages
             // Allow base type(s) to copy their state into the new clone.
             base.CopyImpl(clone);
             // Copy our state into the clone.
-            ((CommandMessage)clone)._messageRefType = _messageRefType;
+            //((CommandMessage)clone)._messageRefType = _messageRefType;
             ((CommandMessage)clone)._operation = _operation;
             return clone;
         }

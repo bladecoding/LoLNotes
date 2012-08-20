@@ -43,7 +43,7 @@ namespace FluorineFx.Messaging.Rtmp.Event
 		//object[] _parameters;
 		//object	_response;
 
-        internal FlexInvoke():base()
+        public FlexInvoke():base()
 		{
 			_dataType = Constants.TypeFlexInvoke;
             //SetResponseSuccess();

@@ -254,11 +254,12 @@ namespace FluorineFx.Messaging.Rtmp
                         if (log.IsDebugEnabled)
                             log.Debug("Handshake 1st phase");
 #endif
-                        stream.Get();// skip the header byte
-                        byte[] handshake = RtmpHandshake.GetHandshakeResponse(stream);
-                        context.SetHandshake(handshake);
-                        context.State = RtmpState.Handshake;
-                        return handshake;
+
+						ByteBuffer hs = ByteBuffer.Allocate(HandshakeSize + 1);
+						ByteBuffer.Put(hs, stream, HandshakeSize + 1);
+						hs.Flip();
+						context.State = RtmpState.Handshake;
+						return hs;
                     }
 				}
 				if(context.State == RtmpState.Handshake)
@@ -277,21 +278,11 @@ namespace FluorineFx.Messaging.Rtmp
 					}				 
 					else 
 					{
-					    // Skip first 8 bytes when comparing the handshake, they seem to be changed when connecting from a Mac client.
-                        if (!context.ValidateHandshakeReply(stream, 8, HandshakeSize - 8))
-                        {
-#if !SILVERLIGHT
-                            if (log.IsDebugEnabled)
-                                log.Debug("Handshake reply validation failed, disconnecting client.");
-#endif
-                            stream.Skip(HandshakeSize);
-                            context.State = RtmpState.Error;
-                            throw new HandshakeFailedException("Handshake validation failed");
-                        }
-						stream.Skip(HandshakeSize);
+						ByteBuffer hs = ByteBuffer.Allocate(HandshakeSize);
+						ByteBuffer.Put(hs, stream, HandshakeSize);
+						hs.Flip();
 						context.State = RtmpState.Connected;
-						context.ContinueDecoding();
-						return null;
+						return hs;
 					}
 				}
 			}
@@ -315,7 +306,7 @@ namespace FluorineFx.Messaging.Rtmp
 						ByteBuffer hs = ByteBuffer.Allocate(size);
 						ByteBuffer.Put(hs, stream, size);
 						hs.Flip();
-						context.State = RtmpState.Handshake;
+						context.State = RtmpState.Connected;
 						return hs;
 					}
 				}
@@ -697,6 +688,12 @@ namespace FluorineFx.Messaging.Rtmp
 		static Invoke DecodeInvoke(ByteBuffer stream)
 		{
 			return DecodeNotifyOrInvoke(new Invoke(), stream, null) as Invoke;
+		}
+
+		public static void test()
+		{
+			var data = File.ReadAllBytes("C:\\Users\\Admin\\Desktop\\packet.dmp");
+			DecodeFlexInvoke(ByteBuffer.Wrap(data));
 		}
 
 		static FlexInvoke DecodeFlexInvoke(ByteBuffer stream)

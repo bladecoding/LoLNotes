@@ -62,13 +62,13 @@ namespace FluorineFx.Messaging.Rtmp.Event
         /// </summary>
 		protected IEventListener _source;
 
-        internal BaseEvent(EventType eventType)
+		public BaseEvent(EventType eventType)
 		{
 			_eventType = eventType;
 			_object = null;
 		}
 
-        internal BaseEvent(EventType eventType, byte dataType, IEventListener source) 
+		public BaseEvent(EventType eventType, byte dataType, IEventListener source) 
 		{
 			_dataType = dataType;
 			_eventType = eventType;

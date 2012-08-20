@@ -35,7 +35,7 @@ namespace FluorineFx.IO.Writers
 
 		public void WriteData(AMFWriter writer, object data)
 		{
-			int value = Convert.ToInt32(data);
+			Int64 value = Convert.ToInt64(data);
 			writer.WriteAMF3Int(value);
 		}
 

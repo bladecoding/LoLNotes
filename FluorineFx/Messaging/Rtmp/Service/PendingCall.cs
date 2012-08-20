@@ -28,7 +28,7 @@ namespace FluorineFx.Messaging.Rtmp.Service
 	/// <summary>
 	/// This type supports the Fluorine infrastructure and is not intended to be used directly from your code.
 	/// </summary>
-    class PendingCall : Call, IPendingServiceCall
+    public class PendingCall : Call, IPendingServiceCall
 	{
 		object		_result;
 #if !(NET_1_1)
