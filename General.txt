@@ -1,13 +1,13 @@
 {
 	"News":
 	{
-		"html": "<b>Added the missing champion icons.</b><br/>"
+		"html": "<b>Added the missing champion icons.</b><br/>Fixed the update link."
 	},
 	"Release":	
 	{
 		"ReleaseName": "j",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/high6/LoLNotes/LoLNotes_1.1j.zip"
+		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1j.zip"
 	},
 	"Changes":	
 	{
