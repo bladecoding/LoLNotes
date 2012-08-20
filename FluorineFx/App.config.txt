@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <sectionGroup name="fluorinefx">
+	  <section name="settings" type="FluorineFx.Configuration.XmlConfigurator, FluorineFx" />
+    </sectionGroup>
+  </configSections>
+
+<fluorinefx>
+	<settings>
+		<!-- Runtime settings for asynchronous request handling and threadpool configuration -->
+		<runtime asyncHandler="true|false" minWorkerThreads="0" maxWorkerThreads="25"/>
+		<!--  <debug mode="On|Off" dumpPath="~"/> -->
+		<!--  When mode is set to "On" for unexpected AMF deserialization errors dump files are created. -->
+		<debug mode="Off" dumpPath=""/>
+		<!--  Reflection optimizer provider="codedom|il" debug="true|false" -->
+		<optimizer provider="codedom" debug="true"/>
+		<wsdlGenerateProxyClasses>true</wsdlGenerateProxyClasses>
+		<wsdlProxyNamespace>FluorineFx.Proxy</wsdlProxyNamespace>
+		<!--  Time Zone Compensation ="none|auto|server|ignore" -->
+		<timezoneCompensation>none</timezoneCompensation>
+		<!--  Any value-type that is not explicitly initialized with a value will contain the default value for that object type -->
+		<acceptNullValueTypes>false</acceptNullValueTypes>
+		<!-- value="browse|access" -->
+		<remotingServiceAttribute>browse</remotingServiceAttribute>
+		<!-- <customErrors mode="On|Off" stackTrace="false|true"/> -->
+		<!--  When mode is set to "Off" .NET exception details are provided to the client. -->
+		<customErrors mode="On" stackTrace="false"/>
+		<classMappings>
+			<classMapping>
+				<type>SampleClassNet</type>
+				<customClass>SampleClassAS</customClass>
+			</classMapping>
+		</classMappings>
+		<services>
+			<service>
+				<name>ServiceName</name>
+				<service-location>.NET Full type name</service-location>
+				<methods>
+					<remote-method>
+						<name>MethodName</name>
+						<method>.NET Method name</method>
+					</remote-method>
+				</methods>
+			</service>
+		</services>
+		<security>
+			<login-command class="FluorineFx.Messaging.Security.GenericLoginCommand" server="asp.net"/>
+		</security>
+		<cache>
+			<cachedService timeout="30" slidingExpiration="false" type=".NET Full type name"/>
+		</cache>
+		<importNamespaces>
+			<add namespace="Namespace name to import" assembly=""/>
+		</importNamespaces>
+		<nullable>
+			<type name="System.Int32" value="MinValue"/>
+			<type name="System.Double" value="MinValue"/>
+			<type name="System.DateTime" value="MinValue"/>
+			<type name="System.Guid" value="Empty"/>
+		</nullable>
+		<!-- <httpCompress preferredAlgorithm="deflate|gzip" compressionLevel="high|normal|low" handleRequest="all|amf|none" /> -->
+		<httpCompress preferredAlgorithm="gzip" compressionLevel="high" handleRequest="all">
+		<!-- compress responses larger then threshold bytes-->
+			<threshold>10240</threshold>
+			<excludedMimeTypes>
+				<add type="image/jpeg"/>
+				<add type="image/png"/>
+				<add type="image/gif" />
+				<add type="application/zip" />
+				<add type="application/x-zip-compressed" />
+				<add type="application/x-gzip-compressed" />
+				<add type="application/x-compressed" />
+				<add type="application/octet-stream" />
+				<add type="application/pdf" />
+			</excludedMimeTypes>
+			<excludedPaths>
+				<!--Fluorine service browser scripts and resources -->
+				<add path="FluorineWebResource.axd"/>
+				<add path="FluorineCodeGenerator.aspx"/>
+				<!--standard .NET validating scripts and postback script -->
+				<add path="WebResource.axd"/>
+				<!--MS AJAX and has it's own compression module that will take care of the AJAX scripts -->
+				<add path="ScriptResource.axd"/>
+			</excludedPaths>
+		</httpCompress>
+		<rtmpServer>
+			<!-- Ping clients every "pingInterval" ms. Set to 0 to disable ghost detection code. -->
+			<!-- Disconnect client after "maxInactivity" ms of not responding. -->
+			<!-- Max. time in milliseconds to wait for a valid handshake. -->
+			<rtmpConnection pingInterval="5000" maxInactivity="60000" maxHandshakeTimeout="5000"/>
+			<rtmptConnection pingInterval="5000" maxInactivity="60000" maxHandshakeTimeout="5000"/>
+			<rtmpTransport receiveBufferSize="4096" sendBufferSize="4096" tcpNoDelay="true"/>
+		</rtmpServer>
+		<!-- Check for buffer underruns every X ms and generate NetStream.Play.InsufficientBW accordingly.
+		     Set to 0 to disable. Be careful not to set this value too small to avoid network congestion.
+		     A NetStream.Play.InsufficientBW message is generated if more than X messages are queued for sending on the connection.
+		     This value will also control the maximum pending messages on the server. To use a smaller value on slow connections
+		     to get smaller delay for downstream server commands.
+		  -->		
+		<playlistSubscriberStream underrunTrigger="10" bufferCheckInterval="5000"/>
+		<!-- Simple bandwidth control -->
+		<!-- <bwControlService type="FluorineFx.Messaging.Rtmp.Stream.SimpleBWControlService" interval="100" defaultCapacity="104857600"/> -->
+		<bwControlService type="FluorineFx.Messaging.Rtmp.Stream.DummyBWControlService"/>
+		<json>
+			<jsonRpcGenerators>
+				<add name="mygenerator" type=".NET Full type name" />
+			</jsonRpcGenerators>
+		</json>
+		<silverlight>
+			<!-- Starts policy server for Silverlight clients policyServer="true|false" -->
+			<policyServer enable="false" policyFile="clientaccesspolicy.xml"/>
+		</silverlight>
+	</settings>
+</fluorinefx>
+</configuration>

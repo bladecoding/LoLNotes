@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Interface Name="FluorineFx.Messaging.Api.SO.ISharedObject">
+    <Position X="6" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\SO\ISharedObject.cs</FileName>
+      <HashCode>oAAQCAIAIEAAgAAAACAAAAAAAAIAABAAAAAAAADAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Interface>
+  <Interface Name="FluorineFx.Messaging.Api.IBasicScope" Collapsed="true">
+    <Position X="6" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\IBasicScope.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAIAAAACQAQAAAAAAAAgAQAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FluorineFx.Messaging.Api.ICoreObject" Collapsed="true">
+    <Position X="4.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\ICoreObject.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FluorineFx.Messaging.Api.Event.IEventObservable" Collapsed="true">
+    <Position X="6.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\Event\IEventObservable.cs</FileName>
+      <HashCode>AAAABAAACAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FluorineFx.Messaging.Api.Persistence.IPersistable" Collapsed="true">
+    <Position X="8.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\Persistence\IPersistable.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAQCACBAAAAAAAAAAQAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FluorineFx.Messaging.Api.IAttributeStore">
+    <Position X="4" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\IAttributeStore.cs</FileName>
+      <HashCode>AAAAAAAAACAAABAAAAQAAAAAAACAAQMAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FluorineFx.Messaging.Api.Event.IEventDispatcher" Collapsed="true">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\Event\IEventDispatcher.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FluorineFx.Messaging.Api.Event.IEventHandler" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\Event\IEventHandler.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FluorineFx.Messaging.Api.Event.IEventListener" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Messaging\Api\Event\IEventListener.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>

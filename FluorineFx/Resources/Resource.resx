@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Amf_Begin" xml:space="preserve">
+    <value>Begin AMF request</value>
+  </data>
+  <data name="Amf_End" xml:space="preserve">
+    <value>End AMF request</value>
+  </data>
+  <data name="Amf_Fatal" xml:space="preserve">
+    <value>Amf message was not handled. Check your log file for further information</value>
+  </data>
+  <data name="Amf_Fatal404" xml:space="preserve">
+    <value>404 Failed to handle AMF message. Check your log file for further information</value>
+  </data>
+  <data name="Amf_ReadBodyFail" xml:space="preserve">
+    <value>ReadBody failed</value>
+  </data>
+  <data name="Amf_ResponseFail" xml:space="preserve">
+    <value>Could not send an error response</value>
+  </data>
+  <data name="Amf_SerializationFail" xml:space="preserve">
+    <value>Amf message serializer failed</value>
+  </data>
+  <data name="AppAdapter_AppConnect" xml:space="preserve">
+    <value>AppConnect: {0}</value>
+  </data>
+  <data name="AppAdapter_AppDisconnect" xml:space="preserve">
+    <value>AppDisconnect: {0}</value>
+  </data>
+  <data name="AppAdapter_AppJoin" xml:space="preserve">
+    <value>AppJoin: {0} &gt;&gt; {1}</value>
+  </data>
+  <data name="AppAdapter_AppLeave" xml:space="preserve">
+    <value>AppLeave: {0} &lt;&lt; {1}</value>
+  </data>
+  <data name="AppAdapter_AppStart" xml:space="preserve">
+    <value>AppStart: {0}</value>
+  </data>
+  <data name="AppAdapter_AppStop" xml:space="preserve">
+    <value>AppStop: {0}</value>
+  </data>
+  <data name="AppAdapter_RoomConnect" xml:space="preserve">
+    <value>RoomConnect: {0}</value>
+  </data>
+  <data name="AppAdapter_RoomDisconnect" xml:space="preserve">
+    <value>RoomDisconnect: {0}</value>
+  </data>
+  <data name="AppAdapter_RoomJoin" xml:space="preserve">
+    <value>RoomJoin: {0} &gt;&gt; {1}</value>
+  </data>
+  <data name="AppAdapter_RoomLeave" xml:space="preserve">
+    <value>RoomLeave: {0} &lt;&lt; {1}</value>
+  </data>
+  <data name="AppAdapter_RoomStart" xml:space="preserve">
+    <value>RoomStart: {0}</value>
+  </data>
+  <data name="AppAdapter_RoomStop" xml:space="preserve">
+    <value>RoomStop: {0}</value>
+  </data>
+  <data name="Arg_Mismatch" xml:space="preserve">
+    <value>At least one of the passed arguments does not meet the parameter specification of the called method. {0} parameters for method {1}, expecting {2}</value>
+  </data>
+  <data name="Cache_Hit" xml:space="preserve">
+    <value>Response to the request {0} retrieved from cache</value>
+  </data>
+  <data name="Cache_HitKey" xml:space="preserve">
+    <value>Response to the request {0} retrieved from cache with key {1} </value>
+  </data>
+  <data name="Channel_NotFound" xml:space="preserve">
+    <value>Rtmp channel not found</value>
+  </data>
+  <data name="ClassDefinition_Loaded" xml:space="preserve">
+    <value>Class definition {0} loaded</value>
+  </data>
+  <data name="ClassDefinition_LoadedUntyped" xml:space="preserve">
+    <value>Class definition (untyped) loaded</value>
+  </data>
+  <data name="Compiler_Error" xml:space="preserve">
+    <value>Line:{0}, Column:{1} Message:{2}</value>
+  </data>
+  <data name="Compress_Info" xml:space="preserve">
+    <value>Output compressed {0}, compression ratio: {1}%</value>
+  </data>
+  <data name="DataDestination_RemoveSubscriber" xml:space="preserve">
+    <value>DataDestination removing subscriber {0}</value>
+  </data>
+  <data name="DataService_Unknown" xml:space="preserve">
+    <value>Message was not handled by DotNetAdapter, operation = {0}</value>
+  </data>
+  <data name="Destination_NotFound" xml:space="preserve">
+    <value>The requested destination '{0}' is not accessible</value>
+  </data>
+  <data name="Endpoint_Bind" xml:space="preserve">
+    <value>Query endpoint endpointPath {0} contextPath {1}</value>
+  </data>
+  <data name="Endpoint_BindFail" xml:space="preserve">
+    <value>Could not bind request to endpoint {0}, contextPath {1}</value>
+  </data>
+  <data name="Externalizable_CastFail" xml:space="preserve">
+    <value>Object of type {0} does not implement IExternalizable</value>
+  </data>
+  <data name="Fluorine_Start" xml:space="preserve">
+    <value>Starting FluorineFx Gateway</value>
+  </data>
+  <data name="Fluorine_Version" xml:space="preserve">
+    <value>FluorineFx version {0}</value>
+  </data>
+  <data name="Identity_Failed" xml:space="preserve">
+    <value>Get identity failed, member {0}</value>
+  </data>
+  <data name="Invalid_Destination" xml:space="preserve">
+    <value>Invalid Destination '{0}'</value>
+  </data>
+  <data name="Invocation_Ambiguity" xml:space="preserve">
+    <value>Method ambiguity, could not select the method with name {0}</value>
+  </data>
+  <data name="Invocation_NoSuitableMethod" xml:space="preserve">
+    <value>Could not find a suitable method with name {0}</value>
+  </data>
+  <data name="Invocation_ParameterType" xml:space="preserve">
+    <value>Parameter {0}  received {1}</value>
+  </data>
+  <data name="Invoke_Method" xml:space="preserve">
+    <value>Invoking method {0}</value>
+  </data>
+  <data name="MessageBroker_NotAvailable" xml:space="preserve">
+    <value>Message Broker is not accessible</value>
+  </data>
+  <data name="MessageBroker_RegisterError" xml:space="preserve">
+    <value>Error registering MessageBroker {0}</value>
+  </data>
+  <data name="MessageBroker_RoutingError" xml:space="preserve">
+    <value>MessageBroker routing message</value>
+  </data>
+  <data name="MessageClient_Disconnect" xml:space="preserve">
+    <value>Disconnect MessageClient {0}</value>
+  </data>
+  <data name="MessageClient_Timeout" xml:space="preserve">
+    <value>Timeout MessageClient {0}</value>
+  </data>
+  <data name="MessageClient_Unsubscribe" xml:space="preserve">
+    <value>Unsubscribe MessageClient {0}</value>
+  </data>
+  <data name="MessageDestination_RemoveSubscriber" xml:space="preserve">
+    <value>MessageDestination removing subscriber {0}</value>
+  </data>
+  <data name="MessageServer_AccessFail" xml:space="preserve">
+    <value>Failed to access the Message Server</value>
+  </data>
+  <data name="MessageServer_Create" xml:space="preserve">
+    <value>Creating Message Server</value>
+  </data>
+  <data name="MessageServer_TryingServiceConfig" xml:space="preserve">
+    <value>Trying to load services configuration file from {0}</value>
+  </data>
+  <data name="MessageServer_LoadingConfigDefault" xml:space="preserve">
+    <value>Could not find a services configuration file, using default settings</value>
+  </data>
+  <data name="MessageServer_LoadingServiceConfig" xml:space="preserve">
+    <value>Loading services configuration file from {0}</value>
+  </data>
+  <data name="MessageServer_Start" xml:space="preserve">
+    <value>Starting Message Broker</value>
+  </data>
+  <data name="MessageServer_Started" xml:space="preserve">
+    <value>Message Server started</value>
+  </data>
+  <data name="MessageServer_StartError" xml:space="preserve">
+    <value>Failed to start Message Broker</value>
+  </data>
+  <data name="MessageServer_Stop" xml:space="preserve">
+    <value>Stopping Message Broker</value>
+  </data>
+  <data name="MessageServicePush" xml:space="preserve">
+    <value>Push message {0} to client {1}</value>
+  </data>
+  <data name="MessageServicePushBinary" xml:space="preserve">
+    <value>Push binary message {0} to client {1}</value>
+  </data>
+  <data name="MessageServiceRoute" xml:space="preserve">
+    <value>MessageService adapter servicing message for destination '{0}' from client {1}</value>
+  </data>
+  <data name="MessageServiceSubscribe" xml:space="preserve">
+    <value>MessageService servicing subscribe command for destination '{0}', new message client {1}</value>
+  </data>
+  <data name="MessageServiceUnknown" xml:space="preserve">
+    <value>MessageService servicing unknown command ({0}) for destination '{1}'</value>
+  </data>
+  <data name="MessageServiceUnsubscribe" xml:space="preserve">
+    <value>MessageService servicing unsubscribe command for destination '{0}', client {1}</value>
+  </data>
+  <data name="Msmq_Enable" xml:space="preserve">
+    <value>MsmqAdapter change enabled state ({0})</value>
+  </data>
+  <data name="Msmq_Fail" xml:space="preserve">
+    <value>MsmqAdapter failed</value>
+  </data>
+  <data name="Msmq_InitFormatter" xml:space="preserve">
+    <value>MsmqAdapter init formatter {0}</value>
+  </data>
+  <data name="Msmq_Poison" xml:space="preserve">
+    <value>MsmqAdapter could not process message. Possible poison message</value>
+  </data>
+  <data name="Msmq_Receive" xml:space="preserve">
+    <value>MsmqAdapter received message, label = {0}, id = {1}</value>
+  </data>
+  <data name="Msmq_Send" xml:space="preserve">
+    <value>MsmqAdapter sending message for client {0}</value>
+  </data>
+  <data name="Msmq_StartQueue" xml:space="preserve">
+    <value>MsmqAdapter starting queue {0}</value>
+  </data>
+  <data name="Reflection_FieldSetFail" xml:space="preserve">
+    <value>Field {0} set failed. {1}</value>
+  </data>
+  <data name="Reflection_MemberNotFound" xml:space="preserve">
+    <value>Member {0} not found</value>
+  </data>
+  <data name="Reflection_PropertyIndexFail" xml:space="preserve">
+    <value>Index parameters are required for the property {0}. Use the [Transient] attribute to identify a property that should be omitted from data that is sent to the client</value>
+  </data>
+  <data name="Reflection_PropertyReadOnly" xml:space="preserve">
+    <value>Cannot write property {0}</value>
+  </data>
+  <data name="Reflection_PropertySetFail" xml:space="preserve">
+    <value>Property {0} set failed. {1}</value>
+  </data>
+  <data name="Rtmp_ChunkSmall" xml:space="preserve">
+    <value>Chunk too small, buffering ({0},{1})</value>
+  </data>
+  <data name="Rtmp_ConnectionClose" xml:space="preserve">
+    <value>{0} Closing connection</value>
+  </data>
+  <data name="Rtmp_DecodeHeader" xml:space="preserve">
+    <value>Decode header {0}</value>
+  </data>
+  <data name="Rtmp_HeaderBuffering" xml:space="preserve">
+    <value>Header too small, buffering. Remaining: {0}</value>
+  </data>
+  <data name="Rtmp_HSInitBuffering" xml:space="preserve">
+    <value>Handshake init too small, buffering. Remaining: {0}</value>
+  </data>
+  <data name="Rtmp_HSReplyBuffering" xml:space="preserve">
+    <value>Handshake reply too small, buffering. Remaining: {0}</value>
+  </data>
+  <data name="Rtmp_ServerAddMapping" xml:space="preserve">
+    <value>Add mapping {0} =&gt; {1}</value>
+  </data>
+  <data name="Rtmp_ServerRemoveMapping" xml:space="preserve">
+    <value>Remove mapping {0}</value>
+  </data>
+  <data name="Rtmp_SocketBeginRead" xml:space="preserve">
+    <value>{0} Socket begin read callback</value>
+  </data>
+  <data name="Rtmp_SocketBeginReceive" xml:space="preserve">
+    <value>{0} Socket begin receive iocp = {1}</value>
+  </data>
+  <data name="Rtmp_SocketBeginSend" xml:space="preserve">
+    <value>{0} Socket begin send iocp = {1}</value>
+  </data>
+  <data name="Rtmp_SocketConnectionReset" xml:space="preserve">
+    <value>{0} Connection reset by peer ({1})</value>
+  </data>
+  <data name="Rtmp_SocketDisconnectProcessing" xml:space="preserve">
+    <value>{0} Socket disconnect</value>
+  </data>
+  <data name="Rtmp_SocketListenerAccept" xml:space="preserve">
+    <value>{0} SocketListener accept</value>
+  </data>
+  <data name="Rtmp_SocketReadProcessing" xml:space="preserve">
+    <value>{0} Socket read processing</value>
+  </data>
+  <data name="Rtmp_SocketReceiveProcessing" xml:space="preserve">
+    <value>{0} Socket receive processing</value>
+  </data>
+  <data name="Rtmp_SocketSendProcessing" xml:space="preserve">
+    <value>{0} Socket send processing</value>
+  </data>
+  <data name="RtmpEndpoint_Error" xml:space="preserve">
+    <value>RtmpEndpoint error</value>
+  </data>
+  <data name="RtmpEndpoint_Failed" xml:space="preserve">
+    <value>RtmpEndpoint failed</value>
+  </data>
+  <data name="RtmpEndpoint_Start" xml:space="preserve">
+    <value>Starting RtmpEndpoint</value>
+  </data>
+  <data name="RtmpEndpoint_Started" xml:space="preserve">
+    <value>Started RtmpEndpoint</value>
+  </data>
+  <data name="RtmpEndpoint_Starting" xml:space="preserve">
+    <value>Starting server, listening on port {0}</value>
+  </data>
+  <data name="RtmpEndpoint_Stopped" xml:space="preserve">
+    <value>Stopped RtmpEndpoint</value>
+  </data>
+  <data name="RtmpEndpoint_Stopping" xml:space="preserve">
+    <value>Stopping RtmpEndpoint</value>
+  </data>
+  <data name="Scope_Check" xml:space="preserve">
+    <value>Check {0}</value>
+  </data>
+  <data name="Scope_CheckDefaultHostPath" xml:space="preserve">
+    <value>Check default host, default path {0}</value>
+  </data>
+  <data name="Scope_CheckHostNoPath" xml:space="preserve">
+    <value>Check host with no path {0}</value>
+  </data>
+  <data name="Scope_CheckHostPath" xml:space="preserve">
+    <value>Check host and path {0}</value>
+  </data>
+  <data name="Scope_CheckWildcardHostPath" xml:space="preserve">
+    <value>Check wildcard host with path {0}</value>
+  </data>
+  <data name="Scope_ChildNotFound" xml:space="preserve">
+    <value>Scope {0} not found in {1}</value>
+  </data>
+  <data name="Scope_Connect" xml:space="preserve">
+    <value>Connecting to scope {0}</value>
+  </data>
+  <data name="Scope_DisconnectError" xml:space="preserve">
+    <value>Error while disconnecting from scope {0}</value>
+  </data>
+  <data name="Scope_NotFound" xml:space="preserve">
+    <value>Connect failed, scope not found. Path was {0}</value>
+  </data>
+  <data name="Scope_UnregisterError" xml:space="preserve">
+    <value>Error while unregistering basic scopes</value>
+  </data>
+  <data name="Security_AccessNotAllowed" xml:space="preserve">
+    <value>Requested access is not allowed</value>
+  </data>
+  <data name="Security_AuthenticationFailed" xml:space="preserve">
+    <value>Authenticate method must return a valid Principal object</value>
+  </data>
+  <data name="Security_ConstraintRefNotFound" xml:space="preserve">
+    <value>SecurityConstraint reference \"{0}\" not found. Check services-config.xml. Security information for the current request was not available</value>
+  </data>
+  <data name="Security_ConstraintSectionNotFound" xml:space="preserve">
+    <value>&lt;security&gt; or &lt;security-constraint&gt; section not found. Check services-config.xml. Security information for the current request was not available</value>
+  </data>
+  <data name="Security_LoginMissing" xml:space="preserve">
+    <value>LoginCommand required. Please check your security configuration</value>
+  </data>
+  <data name="Selector_InvalidResult" xml:space="preserve">
+    <value>Selector expression should evaluate to a boolean value</value>
+  </data>
+  <data name="Sequence_AddSubscriber" xml:space="preserve">
+    <value>Adding subscriber {0} to sequence {1}</value>
+  </data>
+  <data name="Sequence_RemoveSubscriber" xml:space="preserve">
+    <value>Removing subscriber {0} from sequence {1}</value>
+  </data>
+  <data name="SequenceManager_CreateSeq" xml:space="preserve">
+    <value>Created sequence {0} client {1}</value>
+  </data>
+  <data name="SequenceManager_ReleaseCollection" xml:space="preserve">
+    <value>ReleaseCollection sequence {0} client {1}</value>
+  </data>
+  <data name="SequenceManager_Remove" xml:space="preserve">
+    <value>Removing sequence {0}</value>
+  </data>
+  <data name="SequenceManager_RemoveEmptySeq" xml:space="preserve">
+    <value>Removing sequence {0} all clients disconnected</value>
+  </data>
+  <data name="SequenceManager_RemoveStatus" xml:space="preserve">
+    <value>DataDestination '{0}' {1} sequences left</value>
+  </data>
+  <data name="SequenceManager_RemoveSubscriber" xml:space="preserve">
+    <value>SequenceManager removing subscriber {0}</value>
+  </data>
+  <data name="SequenceManager_RemoveSubscriberSeq" xml:space="preserve">
+    <value>SequenceManager removing subscriber {0} from sequence {1}</value>
+  </data>
+  <data name="SequenceManager_Unknown" xml:space="preserve">
+    <value>ManageSequence: message was not handled. Operation = {0}</value>
+  </data>
+  <data name="Service_Mapping" xml:space="preserve">
+    <value>Mapping service name {0} to {1}</value>
+  </data>
+  <data name="Service_NotFound" xml:space="preserve">
+    <value>Service {0} not found</value>
+  </data>
+  <data name="ServiceAdapter_MissingSettings" xml:space="preserve">
+    <value>Could not find settings for service adapter</value>
+  </data>
+  <data name="ServiceAdapter_Stop" xml:space="preserve">
+    <value>Stopping service adapter</value>
+  </data>
+  <data name="ServiceBrowser_Aquire" xml:space="preserve">
+    <value>Aquire ServiceBrowser renderer</value>
+  </data>
+  <data name="ServiceBrowser_Aquired" xml:space="preserve">
+    <value>Aquired ServiceBrowser renderer</value>
+  </data>
+  <data name="ServiceBrowser_AquireFail" xml:space="preserve">
+    <value>Failed to aquire ServiceBrowser renderer</value>
+  </data>
+  <data name="SharedObject_Delete" xml:space="preserve">
+    <value>Deleting shared object {0} all clients disconnected</value>
+  </data>
+  <data name="SharedObject_DeleteError" xml:space="preserve">
+    <value>Could not remove shared object</value>
+  </data>
+  <data name="SharedObject_StoreError" xml:space="preserve">
+    <value>Could not store shared object</value>
+  </data>
+  <data name="SharedObject_Sync" xml:space="preserve">
+    <value>Send shared object sync message to {0}</value>
+  </data>
+  <data name="SharedObject_SyncConnError" xml:space="preserve">
+    <value>Can't send sync message to unknown connection</value>
+  </data>
+  <data name="SharedObjectService_CreateStore" xml:space="preserve">
+    <value>Created persistence store {0} for shared objects</value>
+  </data>
+  <data name="SharedObjectService_CreateStoreError" xml:space="preserve">
+    <value>Could not create persistence store for shared objects, falling back to memory persistence</value>
+  </data>
+  <data name="SocketServer_Failed" xml:space="preserve">
+    <value>SocketServer Failed</value>
+  </data>
+  <data name="SocketServer_ListenerFail" xml:space="preserve">
+    <value>Socket listener failed</value>
+  </data>
+  <data name="SocketServer_SocketOptionFail" xml:space="preserve">
+    <value>SetSocketOption {0} failed</value>
+  </data>
+  <data name="SocketServer_Start" xml:space="preserve">
+    <value>Starting SocketServer</value>
+  </data>
+  <data name="SocketServer_Started" xml:space="preserve">
+    <value>Started SocketServer</value>
+  </data>
+  <data name="SocketServer_Stopped" xml:space="preserve">
+    <value>Stopped SocketServer</value>
+  </data>
+  <data name="SocketServer_Stopping" xml:space="preserve">
+    <value>Stopping SocketServer</value>
+  </data>
+  <data name="SubscriptionManager_CacheExpired" xml:space="preserve">
+    <value>SubscriptionManager cache expired, subscriber with id {0}</value>
+  </data>
+  <data name="SubscriptionManager_Remove" xml:space="preserve">
+    <value>SubscriptionManager removing subscriber with id {0}</value>
+  </data>
+  <data name="Subtopic_Invalid" xml:space="preserve">
+    <value>Invalid subtopic {0}</value>
+  </data>
+  <data name="Swx_Begin" xml:space="preserve">
+    <value>Begin SWX request</value>
+  </data>
+  <data name="Swx_End" xml:space="preserve">
+    <value>End SWX request</value>
+  </data>
+  <data name="Swx_Fatal" xml:space="preserve">
+    <value>Swx request was not handled. Check your log file for further information</value>
+  </data>
+  <data name="Swx_Fatal404" xml:space="preserve">
+    <value>404 Failed to handle SWX request</value>
+  </data>
+  <data name="Swx_InvalidCrossDomainUrl" xml:space="preserve">
+    <value>Url is not valid. Cross-domain access will not work. {0}</value>
+  </data>
+  <data name="Json_Begin" xml:space="preserve">
+    <value>Begin JSON request</value>
+  </data>
+  <data name="Json_End" xml:space="preserve">
+    <value>End JSON request</value>
+  </data>
+  <data name="Json_Fatal" xml:space="preserve">
+    <value>JSON request was not handled. Check your log file for further information</value>
+  </data>
+  <data name="Json_Fatal404" xml:space="preserve">
+    <value>404 Failed to handle JSON request</value>
+  </data>
+  <data name="Type_InitError" xml:space="preserve">
+    <value>Failed to locate the requested  type {0}</value>
+  </data>
+  <data name="Type_Mismatch" xml:space="preserve">
+    <value>The received RPC source does not meet the destination source specification.</value>
+  </data>
+  <data name="Type_MismatchMissingSource" xml:space="preserve">
+    <value>The received RPC source {0} does not meet the destination source specification {1}. A Destination with asterisk(*) requires that the source be set properly by the Flex client.</value>
+  </data>
+  <data name="TypeHelper_LoadDllFail" xml:space="preserve">
+    <value>Failed to load dynamic link library {0} from LAC</value>
+  </data>
+  <data name="TypeHelper_Probing" xml:space="preserve">
+    <value>TypeHelper probing assembly {0} for type '{1}'</value>
+  </data>
+  <data name="TypeIdentifier_Loaded" xml:space="preserve">
+    <value>Type identifier {0} loaded</value>
+  </data>
+  <data name="TypeLoad_ASO" xml:space="preserve">
+    <value>Type {0} could not be loaded. Using ActionScript typed object (ASObject)</value>
+  </data>
+  <data name="TypeMapping_Write" xml:space="preserve">
+    <value>Write custom object {0} mapping to {1}</value>
+  </data>
+  <data name="TypeSerializer_NotFound" xml:space="preserve">
+    <value>Could not find serializer for type {0}</value>
+  </data>
+  <data name="Wsdl_ProxyGen" xml:space="preserve">
+    <value>Generating a proxy assembly for the web service {0}</value>
+  </data>
+  <data name="Wsdl_ProxyGenFail" xml:space="preserve">
+    <value>Proxy generation failed</value>
+  </data>
+  <data name="Rtmpt_Begin" xml:space="preserve">
+    <value>Begin RTMPT request</value>
+  </data>
+  <data name="Rtmpt_End" xml:space="preserve">
+    <value>End RTMPT request</value>
+  </data>
+  <data name="Rtmpt_Fatal" xml:space="preserve">
+    <value>RTMPT message was not handled. Check your log file for further information</value>
+  </data>
+  <data name="Rtmpt_Fatal404" xml:space="preserve">
+    <value>404 Failed to handle RTMPT. Check your log file for further information</value>
+  </data>
+  <data name="Fluorine_InitModule" xml:space="preserve">
+    <value>Initialize http module</value>
+  </data>
+  <data name="Rtmp_CouldNotProcessMessage" xml:space="preserve">
+    <value>Could not process message</value>
+  </data>
+  <data name="Rtmpt_CommandBadRequest" xml:space="preserve">
+    <value>Bad request, only RTMPT supported</value>
+  </data>
+  <data name="Rtmpt_CommandClose" xml:space="preserve">
+    <value>Processing close command {0}</value>
+  </data>
+  <data name="Rtmpt_CommandIdle" xml:space="preserve">
+    <value>Processing idle command {0}</value>
+  </data>
+  <data name="Rtmpt_CommandNotSupported" xml:space="preserve">
+    <value>RTMPT command {0} is not supported</value>
+  </data>
+  <data name="Rtmpt_CommandOpen" xml:space="preserve">
+    <value>Processing open command {0}</value>
+  </data>
+  <data name="Rtmpt_CommandSend" xml:space="preserve">
+    <value>Processing send command {0}</value>
+  </data>
+  <data name="Rtmpt_NotifyError" xml:space="preserve">
+    <value>Could not notify stream subsystem about sent message</value>
+  </data>
+  <data name="Rtmpt_ReturningMessages" xml:space="preserve">
+    <value>Returning {0} pending messages to client</value>
+  </data>
+  <data name="Rtmpt_UnknownClient" xml:space="preserve">
+    <value>Unknown client {0}</value>
+  </data>
+  <data name="TypeHelper_ConversionFail" xml:space="preserve">
+    <value>Type conversion failed</value>
+  </data>
+  <data name="Silverlight_PSError" xml:space="preserve">
+    <value>Silverlight policy server error</value>
+  </data>
+  <data name="Silverlight_StartPS" xml:space="preserve">
+    <value>Starting Silverlight policy server, policy file: {0}</value>
+  </data>
+  <data name="Rtmp_SocketConnectionAborted" xml:space="preserve">
+    <value>{0} An established connection was aborted ({1})</value>
+  </data>
+  <data name="Client_Invalidated" xml:space="preserve">
+    <value>Client with id {0} has been invalidated</value>
+  </data>
+  <data name="ClientManager_CacheExpired" xml:space="preserve">
+    <value>ClientManager cache expired, client with id {0}</value>
+  </data>
+  <data name="ClientManager_Remove" xml:space="preserve">
+    <value>ClientManager removing client with id {0}</value>
+  </data>
+  <data name="PushNotSupported" xml:space="preserve">
+    <value>Push not supported</value>
+  </data>
+  <data name="Session_Invalidated" xml:space="preserve">
+    <value>Session with id {0} has been invalidated</value>
+  </data>
+  <data name="SessionManager_CacheExpired" xml:space="preserve">
+    <value>SessionManager cache expired, session with id {0}</value>
+  </data>
+  <data name="SessionManager_Remove" xml:space="preserve">
+    <value>SessionManager removing session with id {0}</value>
+  </data>
+  <data name="Client_Create" xml:space="preserve">
+    <value>Creating new client with id {0}</value>
+  </data>
+  <data name="Client_Lease" xml:space="preserve">
+    <value>Client with id {0} changing lease time from {1} to {2}</value>
+  </data>
+  <data name="Session_Create" xml:space="preserve">
+    <value>Creating new session with id {0}</value>
+  </data>
+  <data name="Session_Lease" xml:space="preserve">
+    <value>Session with id {0} changing lease time from {1} to {2}</value>
+  </data>
+  <data name="Rtmp_DataBuffering" xml:space="preserve">
+    <value>Insufficient data, remaining {0} buffering {1}</value>
+  </data>
+  <data name="Rtmp_BeginDisconnect" xml:space="preserve">
+    <value>{0} Begin disconnect</value>
+  </data>
+  <data name="Rtmp_BeginHandlePacket" xml:space="preserve">
+    <value>{0} Start processing RTMP packet</value>
+  </data>
+  <data name="Rtmp_EndHandlePacket" xml:space="preserve">
+    <value>{0} End processing RTMP packet</value>
+  </data>
+  <data name="Rtmp_SocketSend" xml:space="preserve">
+    <value>{0} Socket send</value>
+  </data>
+  <data name="Rtmp_WritePacket" xml:space="preserve">
+    <value>{0} Write {1}</value>
+  </data>
+  <data name="MessageBroker_RoutingMessage" xml:space="preserve">
+    <value>Routing message {0} </value>
+  </data>
+  <data name="Fluorine_Fatal" xml:space="preserve">
+    <value>Fatal problem detected {0}</value>
+  </data>
+  <data name="Invocation_Failed" xml:space="preserve">
+    <value>Exception has been thrown by the invoked method {0}: {1}</value>
+  </data>
+  <data name="Optimizer_Fatal" xml:space="preserve">
+    <value>Fatal reflection optimizer problem detected. Please turn off the reflection optimizer in the configuration file and check your log file for further information</value>
+  </data>
+  <data name="Optimizer_FileLocation" xml:space="preserve">
+    <value>Custom AMF deserializer source code for {0} located at {1}</value>
+  </data>
+  <data name="Optimizer_Warning" xml:space="preserve">
+    <value>Reflection optimizer problem detected. Please turn off the reflection optimizer in the configuration file and check your log file for further information</value>
+  </data>
+  <data name="Error_ContextDump" xml:space="preserve">
+    <value>Error context dump</value>
+  </data>
+  <data name="Rtmp_HandlerError" xml:space="preserve">
+    <value>RTMP handler runtime error</value>
+  </data>
+  <data name="ServiceInvoker_Resolve" xml:space="preserve">
+    <value>Requested service {0} found {1} in scope {2}</value>
+  </data>
+  <data name="ServiceInvoker_ResolveFail" xml:space="preserve">
+    <value>Requested service {0} was not found  in scope {1}</value>
+  </data>
+  <data name="Destination_Reinit" xml:space="preserve">
+    <value>Destination '{0}'({1}) already initialized</value>
+  </data>
+  <data name="MessageServer_MissingAdapter" xml:space="preserve">
+    <value>Destination '{0}'({1}) initialized with invalid adapter</value>
+  </data>
+  <data name="Context_Initialized" xml:space="preserve">
+    <value>Execution context initialized for connection {0} client {1} session {2}</value>
+  </data>
+  <data name="Context_MissingError" xml:space="preserve">
+    <value>Execution context is missing</value>
+  </data>
+  <data name="Rtmp_SocketConnectionTimeout" xml:space="preserve">
+    <value>A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond ({1})</value>
+  </data>
+  <data name="MessageBroker_Response" xml:space="preserve">
+    <value>Routing response {0}</value>
+  </data>
+  <data name="Endpoint_HandleMessage" xml:space="preserve">
+    <value>{0} endpoint handling message {1}</value>
+  </data>
+  <data name="Endpoint_Response" xml:space="preserve">
+    <value>{0} endpoint routing response {1}</value>
+  </data>
+  <data name="ServiceHandler_InvocationFailed" xml:space="preserve">
+    <value>Error while invoking method '{0}' on service handler object '{1}'</value>
+  </data>
+  <data name="ServiceAdapter_ManageFail" xml:space="preserve">
+    <value>Service '{0}' failed routing message for destination '{1}', the message was: {2}</value>
+  </data>
+</root>
