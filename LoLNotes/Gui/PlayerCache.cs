@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using LoLNotes.Messages.Statistics;
 using LoLNotes.Messages.Summoner;
 using LoLNotes.Storage;
@@ -37,5 +38,16 @@ namespace LoLNotes.Gui
 		public RecentGames Games { get; set; }
 		public ChampionStatInfoList RecentChamps { get; set; }
 		public int SeenCount { get; set; }
+
+		readonly ManualResetEvent m_LoadWait;
+		public ManualResetEvent LoadWait
+		{
+			get { return m_LoadWait; }
+		}
+
+		public PlayerCache()
+		{
+			m_LoadWait = new ManualResetEvent(false);
+		}
 	}
 }

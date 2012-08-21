@@ -593,6 +593,7 @@ namespace LoLNotes.Gui
 
 					for (int o = 0; o < list.Players.Count; o++)
 					{
+						list.Players[o].Tag = null;
 						if (o < team.Count)
 						{
 							var plycontrol = list.Players[o];
@@ -606,6 +607,10 @@ namespace LoLNotes.Gui
 									var entry = PlayersCache.Find(p => p.Player.Id == ply.SummonerId);
 									if (entry == null)
 									{
+										//Used for synchronization.
+										//Ensures that when the loaded data comes back to the UI thread that its what we wanted.
+										plycontrol.Tag = ply; 
+
 										plycontrol.SetLoading(true);
 										plycontrol.SetEmpty();
 										plycontrol.SetParticipant(ply);
@@ -652,6 +657,36 @@ namespace LoLNotes.Gui
 			}
 		}
 
+		void LoadPlayerUIFinish(PlayerCache ply, PlayerControl control)
+		{
+			FInvoke(delegate
+			{
+				//Now that we are back on the UI thread.
+				//Lets check to make sure the control still wants this specific data.
+				if (control.Tag == null || ((PlayerParticipant)control.Tag).SummonerId != ply.Summoner.SummonerId)
+					return;
+
+				using (new SuspendLayout(this))
+				{
+					control.SetPlayer(ply.Player);
+					control.SetStats(ply.Summoner, ply.Stats);
+					control.SetChamps(ply.RecentChamps);
+					control.SetGames(ply.Games);
+					control.SetSeen(ply.SeenCount);
+					control.SetLoading(false);
+
+					if (ply.Stats != null)
+					{
+						foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
+						{
+							if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
+								comboBox1.Items.Add(stat.PlayerStatSummaryType);
+						}
+					}
+				}
+			});
+		}
+
 		/// <summary>
 		/// Query and cache player data
 		/// </summary>
@@ -659,24 +694,32 @@ namespace LoLNotes.Gui
 		/// <param name="control">Control to update</param>
 		void LoadPlayer(PlayerParticipant player, PlayerControl control)
 		{
+			PlayerCache existing;
+			var ply = new PlayerCache();
 			try
 			{
 
-				var ply = new PlayerCache();
 				lock (PlayersCache)
 				{
 					//Clear the cache every 1000 players to prevent crashing afk lobbies.
 					if (PlayersCache.Count > 1000)
 						PlayersCache.Clear();
 
-					if (PlayersCache.Find(p => p.Player.Id == player.SummonerId) != null)
+					//Does the player already exist in the cache?
+					if ((existing = PlayersCache.Find(p => p.Player.Id == player.SummonerId)) == null)
 					{
-						//Player got cached or is getting cached by another thread.
-						return;
+						//Temporary player entry so we don't keep PlayersCache locked while querying
+						ply.Player = new PlayerEntry() { Id = player.SummonerId, Name = "Loading..." };
+						PlayersCache.Add(ply);
 					}
-					//Temporary player entry so we don't keep PlayersCache locked while querying
-					ply.Player = new PlayerEntry() { Id = player.SummonerId, Name = "Loading..." };
-					PlayersCache.Add(ply);
+				}
+
+				//If another thread is loading the player data, lets wait for it to finish and use its data.
+				if (existing != null)
+				{
+					existing.LoadWait.WaitOne();
+					LoadPlayerUIFinish(existing, control);
+					return;
 				}
 
 
@@ -709,30 +752,12 @@ namespace LoLNotes.Gui
 						ply.SeenCount = ply.Games.GameStatistics.Count(pgs => pgs.FellowPlayers.Any(fp => fp.SummonerId == SelfSummoner.SummonerId));
 				}
 
-				FInvoke(delegate
-				{
-					using (new SuspendLayout(this))
-					{
-						control.SetPlayer(ply.Player);
-						control.SetStats(ply.Summoner, ply.Stats);
-						control.SetChamps(ply.RecentChamps);
-						control.SetGames(ply.Games);
-						control.SetSeen(ply.SeenCount);
-						control.SetLoading(false);
-
-						if (ply.Stats != null)
-						{
-							foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
-							{
-								if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
-									comboBox1.Items.Add(stat.PlayerStatSummaryType);
-							}
-						}
-					}
-				});
+				ply.LoadWait.Set();
+				LoadPlayerUIFinish(ply, control);
 			}
 			catch (Exception ex)
 			{
+				ply.LoadWait.Set(); //
 				StaticLogger.Warning(ex);
 			}
 		}
