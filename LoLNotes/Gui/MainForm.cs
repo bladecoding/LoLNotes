@@ -708,8 +708,6 @@ namespace LoLNotes.Gui
 					//Does the player already exist in the cache?
 					if ((existing = PlayersCache.Find(p => p.Player.Id == player.SummonerId)) == null)
 					{
-						//Temporary player entry so we don't keep PlayersCache locked while querying
-						ply.Player = new PlayerEntry() { Id = player.SummonerId, Name = "Loading..." };
 						PlayersCache.Add(ply);
 					}
 				}
