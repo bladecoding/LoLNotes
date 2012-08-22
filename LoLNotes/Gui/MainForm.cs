@@ -602,30 +602,14 @@ namespace LoLNotes.Gui
 
 							if (ply != null && ply.SummonerId != 0)
 							{
-								lock (PlayersCache)
-								{
-									var entry = PlayersCache.Find(p => p.Player.Id == ply.SummonerId);
-									if (entry == null)
-									{
-										//Used for synchronization.
-										//Ensures that when the loaded data comes back to the UI thread that its what we wanted.
-										plycontrol.Tag = ply; 
+								//Used for synchronization.
+								//Ensures that when the loaded data comes back to the UI thread that its what we wanted.
+								plycontrol.Tag = ply; 
 
-										plycontrol.SetLoading(true);
-										plycontrol.SetEmpty();
-										plycontrol.SetParticipant(ply);
-										Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol));
-									}
-									else
-									{
-										plycontrol.SetEmpty();
-										plycontrol.SetPlayer(entry.Player);
-										plycontrol.SetStats(entry.Summoner, entry.Stats);
-										plycontrol.SetChamps(entry.RecentChamps);
-										plycontrol.SetGames(entry.Games);
-										plycontrol.SetSeen(entry.SeenCount);
-									}
-								}
+								plycontrol.SetLoading(true);
+								plycontrol.SetEmpty();
+								plycontrol.SetParticipant(ply);
+								Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol));
 							}
 							else
 							{
@@ -706,7 +690,7 @@ namespace LoLNotes.Gui
 						PlayersCache.Clear();
 
 					//Does the player already exist in the cache?
-					if ((existing = PlayersCache.Find(p => p.Player.Id == player.SummonerId)) == null)
+					if ((existing = PlayersCache.Find(p => p.Player != null && p.Player.Id == player.SummonerId)) == null)
 					{
 						PlayersCache.Add(ply);
 					}
@@ -741,6 +725,8 @@ namespace LoLNotes.Gui
 					else
 					{
 						StaticLogger.Debug(string.Format("Player {0} not found", player.Name));
+						ply.LoadWait.Set();
+						return;
 					}
 				}
 
@@ -1284,16 +1270,14 @@ namespace LoLNotes.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			throw new Exception("test");
-
-			var spell = new SpellBookPage();
-			spell.SummonerId = 28758093;
-			spell.PageId = 24185065;
-			spell.SlotEntries.Add(new SlotEntry { });
-
 			var cmd = new PlayerCommands(Connection);
-			var obj = cmd.SelectDefaultSpellBookPage(spell);
-			return;
+			var summoner = cmd.GetPlayerByName(SelfSummoner.Username);
+			if (summoner != null)
+			{
+				cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
+				cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
+				cmd.GetRecentGames(summoner.AccountId);
+			}
 
 
 			//var cmd = new PlayerCommands(Connection);
