@@ -263,7 +263,7 @@ namespace LoLNotes.Gui
 				var hr = (HttpWebRequest)WebRequest.Create("http://bit.ly/unCoIY");
 				hr.ServicePoint.Expect100Continue = false;
 				hr.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:8.0) Gecko/20100101 Firefox/8.0";
-				hr.Referer = string.Format("http://lolnotes-{0}-app.org/{1}", Version , e.Item);
+				hr.Referer = string.Format("http://lolnotes-{0}-app.org/{1}", Version, e.Item);
 				hr.AllowAutoRedirect = false;
 				using (var resp = (HttpWebResponse)hr.GetResponse())
 				{
@@ -577,65 +577,62 @@ namespace LoLNotes.Gui
 			var teams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
 			var lists = new List<TeamControl> { teamControl1, teamControl2 };
 
-			using (new SuspendLayout(this))
+			for (int i = 0; i < lists.Count; i++)
 			{
-				for (int i = 0; i < lists.Count; i++)
+				var list = lists[i];
+				var team = teams[i];
+
+				if (team == null)
 				{
-					var list = lists[i];
-					var team = teams[i];
+					list.Visible = false;
+					continue;
+				}
+				list.Visible = true;
 
-					if (team == null)
+				for (int o = 0; o < list.Players.Count; o++)
+				{
+					list.Players[o].Tag = null;
+					if (o < team.Count)
 					{
-						list.Visible = false;
-						continue;
-					}
-					list.Visible = true;
+						var plycontrol = list.Players[o];
+						plycontrol.Visible = true;
+						var ply = team[o] as PlayerParticipant;
 
-					for (int o = 0; o < list.Players.Count; o++)
-					{
-						list.Players[o].Tag = null;
-						if (o < team.Count)
+						if (ply != null && ply.SummonerId != 0)
 						{
-							var plycontrol = list.Players[o];
-							plycontrol.Visible = true;
-							var ply = team[o] as PlayerParticipant;
+							//Used for synchronization.
+							//Ensures that when the loaded data comes back to the UI thread that its what we wanted.
+							plycontrol.Tag = ply;
 
-							if (ply != null && ply.SummonerId != 0)
-							{
-								//Used for synchronization.
-								//Ensures that when the loaded data comes back to the UI thread that its what we wanted.
-								plycontrol.Tag = ply; 
-
-								plycontrol.SetLoading(true);
-								plycontrol.SetEmpty();
-								plycontrol.SetParticipant(ply);
-								Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol));
-							}
-							else
-							{
-								plycontrol.SetEmpty();
-								plycontrol.SetParticipant(team[o]);
-							}
-
-							if (ply != null)
-							{
-								if (ply.TeamParticipantId != 0)
-								{
-									var idx = teamids.FindIndex(t => t == ply.TeamParticipantId);
-									if (idx == -1)
-									{
-										idx = teamids.Count;
-										teamids.Add(ply.TeamParticipantId);
-									}
-									plycontrol.SetTeam(idx + 1);
-								}
-							}
+							plycontrol.SetLoading(true);
+							plycontrol.SetEmpty();
+							plycontrol.SetParticipant(ply);
+							Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol));
 						}
 						else
 						{
-							list.Players[o].Visible = false;
-							list.Players[o].SetEmpty();
+							plycontrol.SetEmpty();
+							plycontrol.SetParticipant(team[o]);
 						}
+
+						if (ply != null)
+						{
+							if (ply.TeamParticipantId != 0)
+							{
+								var idx = teamids.FindIndex(t => t == ply.TeamParticipantId);
+								if (idx == -1)
+								{
+									idx = teamids.Count;
+									teamids.Add(ply.TeamParticipantId);
+								}
+								plycontrol.SetTeam(idx + 1);
+							}
+						}
+					}
+					else
+					{
+						list.Players[o].Visible = false;
+						list.Players[o].SetEmpty();
 					}
 				}
 			}
@@ -650,22 +647,20 @@ namespace LoLNotes.Gui
 				if (control.Tag == null || ((PlayerParticipant)control.Tag).SummonerId != ply.Summoner.SummonerId)
 					return;
 
-				using (new SuspendLayout(this))
-				{
-					control.SetPlayer(ply.Player);
-					control.SetStats(ply.Summoner, ply.Stats);
-					control.SetChamps(ply.RecentChamps);
-					control.SetGames(ply.Games);
-					control.SetSeen(ply.SeenCount);
-					control.SetLoading(false);
 
-					if (ply.Stats != null)
+				control.SetPlayer(ply.Player);
+				control.SetStats(ply.Summoner, ply.Stats);
+				control.SetChamps(ply.RecentChamps);
+				control.SetGames(ply.Games);
+				control.SetSeen(ply.SeenCount);
+				control.SetLoading(false);
+
+				if (ply.Stats != null)
+				{
+					foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
 					{
-						foreach (var stat in ply.Stats.PlayerStatSummaries.PlayerStatSummarySet)
-						{
-							if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
-								comboBox1.Items.Add(stat.PlayerStatSummaryType);
-						}
+						if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
+							comboBox1.Items.Add(stat.PlayerStatSummaryType);
 					}
 				}
 			});
@@ -732,7 +727,7 @@ namespace LoLNotes.Gui
 
 				using (SimpleLogTimer.Start("Seen query"))
 				{
-					if (SelfSummoner != null && SelfSummoner.SummonerId == ply.Summoner.SummonerId && ply.Games != null)
+					if (SelfSummoner != null && SelfSummoner.SummonerId != ply.Summoner.SummonerId && ply.Games != null)
 						ply.SeenCount = ply.Games.GameStatistics.Count(pgs => pgs.FellowPlayers.Any(fp => fp.SummonerId == SelfSummoner.SummonerId));
 				}
 
