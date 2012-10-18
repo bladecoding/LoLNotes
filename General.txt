@@ -1,16 +1,20 @@
 {
 	"News":
 	{
-		"html": "<b>Added the missing champion icons.</b><br/>Fixed the update link."
+		"html": "<b>Brazil is now supported.</b>"
 	},
 	"Release":	
 	{
-		"ReleaseName": "j",
+		"ReleaseName": "k",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1j.zip"
+		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1k.zip"
 	},
 	"Changes":	
 	{
+		"1.1k":
+		[
+			"Added support for Brazil.",
+		],
 		"1.1j":
 		[
 			"Added the 7 missing champion icons.",
