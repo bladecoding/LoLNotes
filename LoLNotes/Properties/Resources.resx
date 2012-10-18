@@ -148,4 +148,7 @@
   <data name="prod_lol_garenanow_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\prod.lol.garenanow.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="prod_br_lol_riotgames_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\prod.br.lol.riotgames.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

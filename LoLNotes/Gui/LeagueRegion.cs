@@ -31,6 +31,7 @@ namespace LoLNotes.Gui
 		NA,
 		EUW,
 		EUN,
-		GARENA
+		GARENA,
+		BR
 	}
 }

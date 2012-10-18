@@ -96,18 +96,19 @@ namespace LoLNotes.Gui
 			Settings.Load(SettingsFile);
 
 			Icons = new Dictionary<string, Icon>
-            {
-                {"Red",  Icon.FromHandle(Resources.circle_red.GetHicon())},
-                {"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
-                {"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
-            };
+			{
+				{"Red",  Icon.FromHandle(Resources.circle_red.GetHicon())},
+				{"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
+				{"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
+			};
 			Certificates = new Dictionary<LeagueRegion, CertificateHolder>
 			{
 				{LeagueRegion.NA, new CertificateHolder("prod.na1.lol.riotgames.com", Resources.prod_na1_lol_riotgames_com)},
 				{LeagueRegion.EUW, new CertificateHolder("prod.eu.lol.riotgames.com", Resources.prod_eu_lol_riotgames_com)},
 				{LeagueRegion.EUN, new CertificateHolder("prod.eun1.lol.riotgames.com", Resources.prod_eun1_lol_riotgames_com)},
 				{LeagueRegion.GARENA, new CertificateHolder("prod.lol.garenanow.com", Resources.prod_lol_garenanow_com)},
- 			};
+				{LeagueRegion.BR, new CertificateHolder("prod.br.lol.riotgames.com", Resources.prod_br_lol_riotgames_com)},
+			};
 			ModuleResolvers = new Dictionary<ProcessInjector.GetModuleFrom, RadioButton>
 			{	 
 				{ProcessInjector.GetModuleFrom.Toolhelp32Snapshot, ToolHelpRadio},
