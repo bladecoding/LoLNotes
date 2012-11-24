@@ -239,7 +239,7 @@ namespace LoLNotes.Gui
 						}
 						catch (Exception ex)
 						{
-							StaticLogger.Warning(ex);
+                            StaticLogger.Warning("LeaverBuster: Unable to read global.properties '" + filename + "'");
 							continue;
 						}
 					}
@@ -259,7 +259,7 @@ namespace LoLNotes.Gui
 							}
 							catch (Exception ex)
 							{
-								StaticLogger.Warning(ex);
+                                StaticLogger.Warning("LeaverBuster: Unable to write global.properties '" + filename + "'");
 								continue;
 							}
 						}
