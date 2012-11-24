@@ -130,25 +130,10 @@
   <data name="ItemData" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ItemData.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="prod_na1_lol_riotgames_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\prod.na1.lol.riotgames.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="prod_eun1_lol_riotgames_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\prod.eun1.lol.riotgames.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="prod_eu_lol_riotgames_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\prod.eu.lol.riotgames.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="StatsData" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\StatsData.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="ChampData" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ChampData.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="prod_lol_garenanow_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\prod.lol.garenanow.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="prod_br_lol_riotgames_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\prod.br.lol.riotgames.com.p12;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

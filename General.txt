@@ -1,16 +1,21 @@
 {
 	"News":
 	{
-		"html": "<b>Brazil is now supported.</b>"
+		"html": "<b>Thai/Taiwan garena are now supported.<br/>Fixed the expired certificates. Simply go to the Settings tab and uninstall/install them again.<br/>These expired certificates reminded me. LolNotes is now 1 year old.</b>"
 	},
 	"Release":	
 	{
-		"ReleaseName": "k",
+		"ReleaseName": "l",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1k.zip"
+		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1l.zip"
 	},
 	"Changes":	
 	{
+		"1.1l":
+		[
+			"Fixed expired certificates.",
+			"Added certificates are now stored on the disk. This allows for easy adding of new servers without recompiling lolnotes.",
+		],
 		"1.1k":
 		[
 			"Added support for Brazil.",

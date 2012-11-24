@@ -275,6 +275,25 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Content\Certificates\BR_prod.br.lol.riotgames.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Certificates\EUN_prod.eun1.lol.riotgames.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Certificates\EUW_prod.eu.lol.riotgames.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Certificates\NA_prod.na1.lol.riotgames.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Certificates\SINGAPORE GARENA_prod.lol.garenanow.com.p12" />
+    <None Include="Content\Certificates\TAIWAN GARENA_prodtw.lol.garenanow.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Certificates\THAI GARENA_prodth.lol.garenanow.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="LoLNotes.licenseheader" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -285,11 +304,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Resources\prod.br.lol.riotgames.com.p12" />
-    <None Include="Resources\prod.eu.lol.riotgames.com.p12" />
-    <None Include="Resources\prod.eun1.lol.riotgames.com.p12" />
-    <None Include="Resources\prod.lol.garenanow.com.p12" />
-    <None Include="Resources\prod.na1.lol.riotgames.com.p12" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

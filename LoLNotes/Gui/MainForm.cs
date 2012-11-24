@@ -66,7 +66,7 @@ namespace LoLNotes.Gui
 		const string SettingsFile = "settings.json";
 
 		readonly Dictionary<string, Icon> Icons;
-		readonly Dictionary<LeagueRegion, CertificateHolder> Certificates;
+        readonly Dictionary<string, CertificateHolder> Certificates;
 		readonly Dictionary<ProcessInjector.GetModuleFrom, RadioButton> ModuleResolvers;
 		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
 		readonly ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
@@ -101,14 +101,15 @@ namespace LoLNotes.Gui
 				{"Yellow",  Icon.FromHandle(Resources.circle_yellow.GetHicon())},
 				{"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
 			};
-			Certificates = new Dictionary<LeagueRegion, CertificateHolder>
-			{
-				{LeagueRegion.NA, new CertificateHolder("prod.na1.lol.riotgames.com", Resources.prod_na1_lol_riotgames_com)},
-				{LeagueRegion.EUW, new CertificateHolder("prod.eu.lol.riotgames.com", Resources.prod_eu_lol_riotgames_com)},
-				{LeagueRegion.EUN, new CertificateHolder("prod.eun1.lol.riotgames.com", Resources.prod_eun1_lol_riotgames_com)},
-				{LeagueRegion.GARENA, new CertificateHolder("prod.lol.garenanow.com", Resources.prod_lol_garenanow_com)},
-				{LeagueRegion.BR, new CertificateHolder("prod.br.lol.riotgames.com", Resources.prod_br_lol_riotgames_com)},
-			};
+
+            Certificates = LoadCertificates(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Content/Certificates"));
+            if (Certificates.Count < 1)
+            {
+                MessageBox.Show("Unable to load any certificates");
+                Application.Exit();
+                return;
+            }
+
 			ModuleResolvers = new Dictionary<ProcessInjector.GetModuleFrom, RadioButton>
 			{	 
 				{ProcessInjector.GetModuleFrom.Toolhelp32Snapshot, ToolHelpRadio},
@@ -158,6 +159,24 @@ namespace LoLNotes.Gui
 
 			StaticLogger.Info("Startup Completed");
 		}
+
+        Dictionary<string, CertificateHolder> LoadCertificates(string path)
+        {
+            var ret = new Dictionary<string, CertificateHolder>();
+            if (!Directory.Exists(path))
+                return ret;
+
+            foreach (var file in new DirectoryInfo(path).GetFiles("*.p12"))
+            {
+                var nameNoExt = Path.GetFileNameWithoutExtension(file.Name);
+                var idx = nameNoExt.IndexOf('_');
+                var name = idx != -1 ? nameNoExt.Substring(0, idx) : nameNoExt;
+                var host = idx != -1 ? nameNoExt.Substring(idx + 1) : nameNoExt;
+                ret[name] = new CertificateHolder(host, File.ReadAllBytes(file.FullName));
+            }
+
+            return ret;
+        }
 
 		void moduleresolvers_Click(object sender, EventArgs e)
 		{
@@ -899,14 +918,7 @@ namespace LoLNotes.Gui
 
 		private void RegionList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			LeagueRegion region;
-			if (!LeagueRegion.TryParse(RegionList.SelectedItem.ToString(), out region))
-			{
-				StaticLogger.Warning("Unknown enum " + RegionList.SelectedItem);
-				return;
-			}
-
-			Settings.Region = region;
+			Settings.Region = RegionList.SelectedItem.ToString();
 
 			var cert = Certificates.FirstOrDefault(kv => kv.Key == Settings.Region).Value;
 			if (cert == null)

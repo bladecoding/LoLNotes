@@ -44,8 +44,8 @@ namespace LoLNotes.Gui
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler Loaded;
 
-		LeagueRegion _region;
-		public LeagueRegion Region
+        string _region;
+        public string Region
 		{
 			get
 			{
@@ -125,7 +125,7 @@ namespace LoLNotes.Gui
 
 		public MainSettings()
 		{
-			_region = LeagueRegion.NA;
+			_region = "NA";
 			_tracelog = false;
 			_debuglog = true;
 			_devmode = false;

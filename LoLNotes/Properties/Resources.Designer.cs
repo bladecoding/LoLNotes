@@ -170,41 +170,6 @@ namespace LoLNotes.Properties {
             }
         }
         
-        internal static byte[] prod_br_lol_riotgames_com {
-            get {
-                object obj = ResourceManager.GetObject("prod_br_lol_riotgames_com", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        internal static byte[] prod_eu_lol_riotgames_com {
-            get {
-                object obj = ResourceManager.GetObject("prod_eu_lol_riotgames_com", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        internal static byte[] prod_eun1_lol_riotgames_com {
-            get {
-                object obj = ResourceManager.GetObject("prod_eun1_lol_riotgames_com", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        internal static byte[] prod_lol_garenanow_com {
-            get {
-                object obj = ResourceManager.GetObject("prod_lol_garenanow_com", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        internal static byte[] prod_na1_lol_riotgames_com {
-            get {
-                object obj = ResourceManager.GetObject("prod_na1_lol_riotgames_com", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
         /// <summary>
         ///   Looks up a localized string similar to {
         ///	&quot;WIN&quot;:&quot;Victories&quot;,

@@ -41,11 +41,11 @@ namespace LoLNotes.Gui.Controls
 		public TeamControl Parent { get; set; }
 		public PlayerEntry Player { get; set; }
 
-		static protected Dictionary<LeagueRegion, string> LeagueRegions = new Dictionary<LeagueRegion, string>
+        static protected Dictionary<string, string> LeagueRegions = new Dictionary<string, string>
 		{
-			{LeagueRegion.NA, "na"},
-			{LeagueRegion.EUW, "euw"},
-			{LeagueRegion.EUN, "eune"}
+			{"NA", "na"},
+			{"EUW", "euw"},
+			{"EUN", "eune"}
 		};
 
 		public PlayerControl()
