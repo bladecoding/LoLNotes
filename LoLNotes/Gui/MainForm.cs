@@ -776,7 +776,8 @@ namespace LoLNotes.Gui
 					Installer.Uninstall();
 				}
 				else
-				{
+                {
+                    Installer.Uninstall();
 					Installer.Install();
 				}
 			}
