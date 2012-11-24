@@ -55,9 +55,9 @@ namespace LoLNotes.Gui.Controls
                 for (int i = 0; i < value; i++)
                 {
                     var control = new PlayerControl(this);
-                    control.Location = new Point(0, PlayersStartY + (BasePlayer.Height + PlayersYSpacing) * i);
+                    control.Location = new Point(1, PlayersStartY + (BasePlayer.Height + PlayersYSpacing) * i);
                     control.ContextMenuStrip = PlayerContextMenuStrip;
-					control.Width = this.Width;
+					control.Width = this.Width-2;
                     control.Visible = false;
 					control.Anchor = AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left;
                     Players.Add(control);
@@ -118,8 +118,20 @@ namespace LoLNotes.Gui.Controls
             }
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            e.Graphics.Clear(BackColor);
+            base.OnPaint(e);
+            e.Graphics.DrawRectangle(Pens.Black, new Rectangle(0,0,Width-1,Height-1));
+        }
+
         public TeamControl()
         {
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.DoubleBuffer, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+
             Players = new List<PlayerControl>();
             BasePlayer = new PlayerControl();
             TeamSize = 5;

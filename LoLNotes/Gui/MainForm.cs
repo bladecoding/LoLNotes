@@ -884,9 +884,6 @@ namespace LoLNotes.Gui
 			Injector.Start();
 			launcher.Start();
 
-			//Fixes the team controls size on start as they keep getting messed up in the WYSIWYG
-			MainForm_Resize(this, new EventArgs());
-
 			try
 			{
 				var filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "lolbans", "LoLLoader.dll");
@@ -1233,18 +1230,6 @@ namespace LoLNotes.Gui
 			}
 		}
 
-		private void MainForm_Resize(object sender, EventArgs e)
-		{
-			var rect = GamePanel.ClientRectangle;
-			teamControl1.Location = new Point(0, 0);
-			teamControl1.Width = rect.Width / 2;
-
-			teamControl2.Location = new Point((rect.Width / 2), 0);
-			teamControl2.Width = rect.Width / 2;
-
-			GamePanel.Height = teamControl1.Height;
-		}
-
 		private void MainForm_ResizeBegin(object sender, EventArgs e)
 		{
 			SuspendLayout();
@@ -1253,7 +1238,6 @@ namespace LoLNotes.Gui
 		private void MainForm_ResizeEnd(object sender, EventArgs e)
 		{
 			ResumeLayout();
-			MainForm_Resize(sender, e); //Force one last adjustment
 		}
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
