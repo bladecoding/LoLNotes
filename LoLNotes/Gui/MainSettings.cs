@@ -109,19 +109,33 @@ namespace LoLNotes.Gui
 				OnPropertyChanged("DeleteLeaveBuster");
 			}
 		}
-		string _moduleresolver;
-		public string ModuleResolver
-		{
-			get
-			{
-				return _moduleresolver;
-			}
-			set
-			{
-				_moduleresolver = value;
-				OnPropertyChanged("ModuleResolver");
-			}
-		}
+        string _moduleresolver;
+        public string ModuleResolver
+        {
+            get
+            {
+                return _moduleresolver;
+            }
+            set
+            {
+                _moduleresolver = value;
+                OnPropertyChanged("ModuleResolver");
+            }
+        }
+
+        string _defaultgametab;
+        public string DefaultGameTab
+        {
+            get
+            {
+                return _defaultgametab;
+            }
+            set
+            {
+                _defaultgametab = value;
+                OnPropertyChanged("DefaultGameTab");
+            }
+        }
 
 		public MainSettings()
 		{
@@ -131,6 +145,7 @@ namespace LoLNotes.Gui
 			_devmode = false;
 			_deleteleavebuster = true;
 			_moduleresolver = "";
+            _defaultgametab = "Recent";
 		}
 
 		public bool Save(string file)

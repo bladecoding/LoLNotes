@@ -148,6 +148,8 @@ namespace LoLNotes.Gui
 			int idx = RegionList.Items.IndexOf(Settings.Region);
 			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
 
+            DefaultGameTab.Text = Settings.DefaultGameTab;
+
 			Installer = new CertificateInstaller(Certificates.Select(c => c.Value.Certificate).ToArray());
 
 			TrackingQueue.Process += TrackingQueue_Process;
@@ -668,6 +670,7 @@ namespace LoLNotes.Gui
 					return;
 
 
+                control.DefaultGameTab = Settings.DefaultGameTab;
 				control.SetPlayer(ply.Player);
 				control.SetStats(ply.Summoner, ply.Stats);
 				control.SetChamps(ply.RecentChamps);
@@ -681,6 +684,8 @@ namespace LoLNotes.Gui
 					{
 						if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
 							comboBox1.Items.Add(stat.PlayerStatSummaryType);
+                        if (!DefaultGameTab.Items.Contains(stat.PlayerStatSummaryType))
+                            DefaultGameTab.Items.Add(stat.PlayerStatSummaryType);
 					}
 				}
 			});
@@ -924,6 +929,11 @@ namespace LoLNotes.Gui
 
 			Connection.ChangeRemote(cert.Domain, cert.Certificate);
 		}
+
+        private void DefaultGameTab_TextChanged(object sender, EventArgs e)
+        {
+            Settings.DefaultGameTab = DefaultGameTab.Text;
+        }
 
 		private void ImportButton_Click(object sender, EventArgs e)
 		{

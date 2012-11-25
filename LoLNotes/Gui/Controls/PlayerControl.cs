@@ -41,6 +41,8 @@ namespace LoLNotes.Gui.Controls
 		public TeamControl Parent { get; set; }
 		public PlayerEntry Player { get; set; }
 
+        public string DefaultGameTab { get; set; }
+
         static protected Dictionary<string, string> LeagueRegions = new Dictionary<string, string>
 		{
 			{"NA", "na"},
@@ -165,6 +167,13 @@ namespace LoLNotes.Gui.Controls
 			Invalidate(); //Force the border to redraw.
 		}
 
+        public void AddTab(TabPage page)
+        {
+            InfoTabs.TabPages.Add(page);
+            if (page.Text == DefaultGameTab)
+                InfoTabs.SelectTab(page);
+        }
+
 		public void SetPlayer(PlayerEntry plr)
 		{
 			if (InvokeRequired)
@@ -192,7 +201,7 @@ namespace LoLNotes.Gui.Controls
 					Text = plr.Note
 				};
 				tab.Controls.Add(lbl);
-				InfoTabs.TabPages.Add(tab);
+                AddTab(tab);
 
 				ResumeLayout();
 			}
@@ -235,8 +244,7 @@ namespace LoLNotes.Gui.Controls
 					Tag = "Stats"
 				};
 				tab.Controls.Add(sc);
-
-				InfoTabs.TabPages.Add(tab);
+                AddTab(tab);
 			}
 		}
 
@@ -292,7 +300,7 @@ namespace LoLNotes.Gui.Controls
 				Tag = "Champs"
 			};
 			tab.Controls.Add(layout);
-			InfoTabs.TabPages.Add(tab);
+            AddTab(tab);
 		}
 
 		public void SetSeen(int times)
@@ -391,7 +399,7 @@ namespace LoLNotes.Gui.Controls
 				Tag = "Recent"
 			};
 			tab.Controls.Add(layout);
-			InfoTabs.TabPages.Add(tab);
+            AddTab(tab);
 		}
 
 		static Label CreateLabel(string text)
