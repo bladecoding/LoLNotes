@@ -275,25 +275,25 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Content\Certificates\BR_prod.br.lol.riotgames.com.p12">
+    <Content Include="Content\Certificates\BR_prod.br.lol.riotgames.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Certificates\EUN_prod.eun1.lol.riotgames.com.p12">
+    </Content>
+    <Content Include="Content\Certificates\EUN_prod.eun1.lol.riotgames.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Certificates\EUW_prod.eu.lol.riotgames.com.p12">
+    </Content>
+    <Content Include="Content\Certificates\EUW_prod.eu.lol.riotgames.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Certificates\NA_prod.na1.lol.riotgames.com.p12">
+    </Content>
+    <Content Include="Content\Certificates\NA_prod.na1.lol.riotgames.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Certificates\SINGAPORE GARENA_prod.lol.garenanow.com.p12" />
-    <None Include="Content\Certificates\TAIWAN GARENA_prodtw.lol.garenanow.com.p12">
+    </Content>
+    <Content Include="Content\Certificates\SINGAPORE GARENA_prod.lol.garenanow.com.p12" />
+    <Content Include="Content\Certificates\TAIWAN GARENA_prodtw.lol.garenanow.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Certificates\THAI GARENA_prodth.lol.garenanow.com.p12">
+    </Content>
+    <Content Include="Content\Certificates\THAI GARENA_prodth.lol.garenanow.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="LoLNotes.licenseheader" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -328,9 +328,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ItemData.txt" />
+    <None Include="Content\Data\ItemData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Data\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\ChampIcons\Ahri_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Akali_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Alistar_Square_0.png" />
@@ -434,6 +439,9 @@
     <Content Include="Content\Images\ChampIcons\Ziggs_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Zilean_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Zyra_Square_0.png" />
+    <Content Include="Content\Images\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\SpellIcons\1.png" />
     <Content Include="Content\Images\SpellIcons\10.png" />
     <Content Include="Content\Images\SpellIcons\11.png" />
@@ -451,8 +459,12 @@
     <Content Include="Content\Images\SpellIcons\7.png" />
     <Content Include="Content\Images\SpellIcons\9.png" />
     <Content Include="Content\Images\unknown.png" />
-    <Content Include="Resources\ChampData.txt" />
-    <None Include="Resources\StatsData.txt" />
+    <None Include="Content\Data\ChampData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Data\StatsData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\circle_green.png" />
     <None Include="Resources\circle_yellow.png" />
     <None Include="Resources\circle_red.png" />

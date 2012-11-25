@@ -21,8 +21,10 @@ THE SOFTWARE.
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using LoLNotes.Properties;
 using Newtonsoft.Json;
 
@@ -35,7 +37,7 @@ namespace LoLNotes.Assets
 
 		static StatsData()
 		{
-			_instance = JsonConvert.DeserializeObject<StatsData>(Resources.StatsData);
+            _instance = JsonConvert.DeserializeObject<StatsData>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Content/Data/StatsData.json")));
 		}
 
 		public static string Get(string key)

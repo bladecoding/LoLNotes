@@ -22,8 +22,10 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using LoLNotes.Properties;
 using Newtonsoft.Json;
 
@@ -36,7 +38,7 @@ namespace LoLNotes.Assets
 
 		static ChampNames()
 		{
-			_instance = JsonConvert.DeserializeObject<ChampNames>(Resources.ChampData);
+            _instance = JsonConvert.DeserializeObject<ChampNames>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Content/Data/ChampData.json")));
 		}
 
 		public static string Get(int key)

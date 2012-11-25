@@ -127,13 +127,4 @@
   <data name="circle_yellow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\circle_yellow.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ItemData" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ItemData.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="StatsData" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\StatsData.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="ChampData" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChampData.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
 </root>
