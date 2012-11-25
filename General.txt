@@ -5,12 +5,21 @@
 	},
 	"Release":	
 	{
-		"ReleaseName": "l",
+		"ReleaseName": "m",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1l.zip"
+		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1m.zip"
 	},
 	"Changes":	
 	{
+		"1.1m":
+		[
+			"Added A Default Game Tab setting which allows you to change what tab should be displayed when a player's stats are loaded.",
+			"Changed ChampData is now stored in the Content folder instead of in the application's resources",
+			"Added The 4 newest champions(zed,khazix,elise,syndra)",
+			"Changed The team controls are now docked in a split container instead of being resized manually. This fixes an anchoring bug that some people run into which causes the controls to not resize correctly.",
+			"Changed Made the leaverbuster exceptions more descriptive instead of 'error in application'.",
+			"Fixed Certificates are now intalled/uninstalled by common name. This fixes the user ending up with duplicate certificates.",
+		],
 		"1.1l":
 		[
 			"Fixed expired certificates.",
