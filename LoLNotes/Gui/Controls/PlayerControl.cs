@@ -96,10 +96,15 @@ namespace LoLNotes.Gui.Controls
 				BeginInvoke(new Action<bool>(SetLoading), loading);
 				return;
 			}
-			if (loading)
-			{
-				InfoTabs.TabPages.Clear();
-			}
+            if (loading)
+            {
+                InfoTabs.TabPages.Clear();
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(DefaultGameTab))
+                    InfoTabs.SelectTab(DefaultGameTab);
+            }
 			LoadingPicture.Visible = loading;
 		}
 
@@ -170,8 +175,6 @@ namespace LoLNotes.Gui.Controls
         public void AddTab(TabPage page)
         {
             InfoTabs.TabPages.Add(page);
-            if (page.Text == DefaultGameTab)
-                InfoTabs.SelectTab(page);
         }
 
 		public void SetPlayer(PlayerEntry plr)
