@@ -366,7 +366,7 @@ namespace LoLNotes.Gui
 			if (data == null)
 				return;
 			SetTitle(string.Format("v{0}{1}", data.Value<string>("Version"), data.Value<string>("ReleaseName")));
-            DownloadLink.Links.Add(0, DownloadLink.Text.Length, data.Value<string>("Link"));
+            DownloadLink.Links.Add(0, DownloadLink.Text.Length + 1, data.Value<string>("Link"));
 		}
 
 		void SetChanges(JObject data)
