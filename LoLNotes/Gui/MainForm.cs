@@ -317,6 +317,9 @@ namespace LoLNotes.Gui
 			if (mod.Value == null)
 				mod = ModuleResolvers.First();
 			mod.Value.Checked = true;
+            TopChampsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.TopChamps) != 0;
+            StatsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.Stats) != 0;
+            RecentGamesBox.Checked = (Settings.LoadWhatData & LoadDataEnum.RecentGames) != 0;
 		}
 
 		readonly object settingslock = new object();
@@ -363,7 +366,7 @@ namespace LoLNotes.Gui
 			if (data == null)
 				return;
 			SetTitle(string.Format("v{0}{1}", data.Value<string>("Version"), data.Value<string>("ReleaseName")));
-			DownloadLink.Text = data.Value<string>("Link");
+            DownloadLink.Links.Add(0, DownloadLink.Text.Length, data.Value<string>("Link"));
 		}
 
 		void SetChanges(JObject data)
@@ -453,12 +456,13 @@ namespace LoLNotes.Gui
 
 		void LogException(Exception ex, bool track)
 		{
-			LogToFile(string.Format(
-			   "[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
-			   Levels.Fatal.ToString().ToUpper(),
-			   string.Format("{0} [{1}]", ex.Message, Parse.ToBase64(ex.ToString())),
-			   DateTime.UtcNow
-				));
+            var log = string.Format(
+               "[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
+               Levels.Fatal.ToString().ToUpper(),
+               string.Format("{0} [{1}]", ex.Message, Parse.ToBase64(ex.ToString())),
+               DateTime.UtcNow);
+            LogToFile(log);
+            AddLogToList(log);
 
 			if (track)
 				TrackingQueue.Enqueue(string.Format("error/{0}", Parse.ToBase64(ex.ToString())));
@@ -466,13 +470,13 @@ namespace LoLNotes.Gui
 
 		void Log(Levels level, object obj)
 		{
-			object log = string.Format(
+			var log = string.Format(
 					"[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
 					level.ToString().ToUpper(),
 					obj,
 					DateTime.UtcNow);
             Task.Factory.StartNew(LogToFile, log, TaskCreationOptions.LongRunning);
-            Task.Factory.StartNew(AddLogToList, log, TaskCreationOptions.LongRunning);
+            AddLogToList(log);
 		}
 
 		void OnLog(Levels level, object obj)
@@ -493,16 +497,16 @@ namespace LoLNotes.Gui
 				Log(level, obj);
 		}
 
-		void AddLogToList(object obj)
+		void AddLogToList(string log)
 		{
 			if (InvokeRequired)
 			{
-				BeginInvoke(new Action<object>(AddLogToList), obj);
+                BeginInvoke(new Action<string>(AddLogToList), log);
 				return;
 			}
 			if (LogList.Items.Count > 1000)
 				LogList.Items.RemoveAt(0);
-			LogList.Items.Add(obj.ToString());
+            LogList.Items.Add(log);
 			LogList.SelectedIndex = LogList.Items.Count - 1;
 			LogList.SelectedIndex = -1;
 		}
@@ -599,6 +603,14 @@ namespace LoLNotes.Gui
 			var teams = new List<TeamParticipants> { lobby.TeamOne, lobby.TeamTwo };
 			var lists = new List<TeamControl> { teamControl1, teamControl2 };
 
+
+            //Load the opposite team first. Not currently useful with the way things are loaded.
+            if (SelfSummoner != null && lobby.TeamOne.Find(p => p is PlayerParticipant && ((PlayerParticipant)p).SummonerId == SelfSummoner.SummonerId) != null)
+            {
+                teams.Reverse();
+                lists.Reverse();
+            }
+
 			for (int i = 0; i < lists.Count; i++)
 			{
 				var list = lists[i];
@@ -672,9 +684,12 @@ namespace LoLNotes.Gui
 
                 control.DefaultGameTab = Settings.DefaultGameTab;
 				control.SetPlayer(ply.Player);
-				control.SetStats(ply.Summoner, ply.Stats);
-				control.SetChamps(ply.RecentChamps);
-				control.SetGames(ply.Games);
+                if (ply.Stats != null)
+				    control.SetStats(ply.Summoner, ply.Stats);
+                if (ply.RecentChamps != null)
+				    control.SetChamps(ply.RecentChamps);
+                if (ply.Games != null)
+				    control.SetGames(ply.Games);
 				control.SetSeen(ply.SeenCount);
 				control.SetLoading(false);
 
@@ -738,9 +753,12 @@ namespace LoLNotes.Gui
 					if (summoner != null)
 					{
 						ply.Summoner = summoner;
-						ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
-						ply.RecentChamps = cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
-						ply.Games = cmd.GetRecentGames(summoner.AccountId);
+                        if ((Settings.LoadWhatData & LoadDataEnum.Stats) != 0)
+						    ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
+                        if ((Settings.LoadWhatData & LoadDataEnum.TopChamps) != 0)
+                            ply.RecentChamps = cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
+                        if ((Settings.LoadWhatData & LoadDataEnum.RecentGames) != 0) 
+                            ply.Games = cmd.GetRecentGames(summoner.AccountId);
 					}
 					else
 					{
@@ -869,7 +887,7 @@ namespace LoLNotes.Gui
 
 		private void DownloadLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			Process.Start(DownloadLink.Text);
+			Process.Start((string)e.Link.LinkData);
 		}
 
 		private void MainForm_Shown(object sender, EventArgs e)
@@ -1310,6 +1328,30 @@ namespace LoLNotes.Gui
 			//        //});
 			//    }
 			//}
-		}
+        }
+
+        private void RecentGamesBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RecentGamesBox.Checked)
+                Settings.LoadWhatData |= LoadDataEnum.RecentGames;
+            else
+                Settings.LoadWhatData &= ~LoadDataEnum.RecentGames;
+        }
+
+        private void StatsBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (StatsBox.Checked)
+                Settings.LoadWhatData |= LoadDataEnum.Stats;
+            else
+                Settings.LoadWhatData &= ~LoadDataEnum.Stats;
+        }
+
+        private void TopChampsBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TopChampsBox.Checked)
+                Settings.LoadWhatData |= LoadDataEnum.TopChamps;
+            else
+                Settings.LoadWhatData &= ~LoadDataEnum.TopChamps;
+        }
 	}
 }

@@ -102,7 +102,7 @@ namespace LoLNotes.Gui.Controls
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(DefaultGameTab))
+                if (!string.IsNullOrWhiteSpace(DefaultGameTab) && InfoTabs.TabPages[DefaultGameTab] != null)
                     InfoTabs.SelectTab(DefaultGameTab);
             }
 			LoadingPicture.Visible = loading;
@@ -145,7 +145,7 @@ namespace LoLNotes.Gui.Controls
 				return;
 			}
 
-			LevelLabel.Text = "Level: " + level;
+			LevelLabel.Text = "Level: " + (level != 0 ? Convert.ToString(level) : "?");
 		}
 
 		void RemoveAll(Predicate<TabPage> find)
@@ -166,7 +166,7 @@ namespace LoLNotes.Gui.Controls
 			}
 			Player = null;
 			InfoTabs.TabPages.Clear();
-			SetLevel(30);
+			SetLevel(0);
 			SetTeam(0);
 			SetSeen(0);
 			Invalidate(); //Force the border to redraw.

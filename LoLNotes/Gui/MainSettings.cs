@@ -137,6 +137,21 @@ namespace LoLNotes.Gui
             }
         }
 
+
+        LoadDataEnum _loadwhatdata;
+        public LoadDataEnum LoadWhatData
+        {
+            get
+            {
+                return _loadwhatdata;
+            }
+            set
+            {
+                _loadwhatdata = value;
+                OnPropertyChanged("LoadWhatData");
+            }
+        }
+
 		public MainSettings()
 		{
 			_region = "NA";
@@ -146,7 +161,8 @@ namespace LoLNotes.Gui
 			_deleteleavebuster = true;
 			_moduleresolver = "";
             _defaultgametab = "Recent";
-		}
+            _loadwhatdata = LoadDataEnum.All;
+		}                 
 
 		public bool Save(string file)
 		{

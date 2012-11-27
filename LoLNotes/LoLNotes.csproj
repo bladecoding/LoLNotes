@@ -123,9 +123,9 @@
     <Compile Include="Gui\Controls\StatsControl.Designer.cs">
       <DependentUpon>StatsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\LoadDataEnum.cs" />
     <Compile Include="Gui\MainSettings.cs" />
     <Compile Include="Gui\PlayerCache.cs" />
-    <Compile Include="Gui\LeagueRegion.cs" />
     <Compile Include="Messages\Account\AccountSummary.cs" />
     <Compile Include="Messages\Account\AllSummonerData.cs" />
     <Compile Include="Messages\Account\LoginDataPacket.cs" />

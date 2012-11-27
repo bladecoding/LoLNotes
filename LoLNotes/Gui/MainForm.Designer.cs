@@ -43,10 +43,21 @@ namespace LoLNotes.Gui
             this.NewsTab = new System.Windows.Forms.TabPage();
             this.NewsBrowser = new System.Windows.Forms.WebBrowser();
             this.GameTab = new System.Windows.Forms.TabPage();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsTab = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.DefaultGameTab = new System.Windows.Forms.ComboBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.DownloadLink = new System.Windows.Forms.LinkLabel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RegionList = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.InstallButton = new System.Windows.Forms.Button();
             this.ModuleGroupBox = new System.Windows.Forms.GroupBox();
             this.MirrorRadio = new System.Windows.Forms.RadioButton();
             this.ToolHelpRadio = new System.Windows.Forms.RadioButton();
@@ -59,9 +70,6 @@ namespace LoLNotes.Gui
             this.DatabaseGroupBox = new System.Windows.Forms.GroupBox();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.RegionList = new System.Windows.Forms.ComboBox();
-            this.DownloadLink = new System.Windows.Forms.LinkLabel();
-            this.InstallButton = new System.Windows.Forms.Button();
             this.LogTab = new System.Windows.Forms.TabPage();
             this.LogList = new System.Windows.Forms.ListBox();
             this.ChangesTab = new System.Windows.Forms.TabPage();
@@ -74,21 +82,25 @@ namespace LoLNotes.Gui
             this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.CallTree = new System.Windows.Forms.TreeView();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.DefaultGameTab = new System.Windows.Forms.ComboBox();
             this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
             this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.RecentGamesBox = new System.Windows.Forms.CheckBox();
+            this.StatsBox = new System.Windows.Forms.CheckBox();
+            this.TopChampsBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.NewsTab.SuspendLayout();
             this.GameTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.PlayerEditStrip.SuspendLayout();
             this.SettingsTab.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.ModuleGroupBox.SuspendLayout();
             this.LogGroupBox.SuspendLayout();
             this.DatabaseGroupBox.SuspendLayout();
@@ -100,14 +112,7 @@ namespace LoLNotes.Gui
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.CallEditStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -159,6 +164,56 @@ namespace LoLNotes.Gui
             this.GameTab.Text = "Game";
             this.GameTab.UseVisualStyleBackColor = true;
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.IsSplitterFixed = true;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.AutoScroll = true;
+            this.splitContainer2.Panel1.AutoScrollMinSize = new System.Drawing.Size(500, 836);
+            this.splitContainer2.Panel1.Controls.Add(this.comboBox1);
+            this.splitContainer2.Panel1.Controls.Add(this.button1);
+            this.splitContainer2.Panel1.Controls.Add(this.teamControl1);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.AutoScroll = true;
+            this.splitContainer2.Panel2.AutoScrollMinSize = new System.Drawing.Size(500, 836);
+            this.splitContainer2.Panel2.Controls.Add(this.teamControl2);
+            this.splitContainer2.Size = new System.Drawing.Size(1151, 836);
+            this.splitContainer2.SplitterDistance = 575;
+            this.splitContainer2.SplitterWidth = 1;
+            this.splitContainer2.TabIndex = 4;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Champs",
+            "Recent"});
+            this.comboBox1.Location = new System.Drawing.Point(94, 4);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.Sorted = true;
+            this.comboBox1.TabIndex = 2;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(221, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // PlayerEditStrip
             // 
             this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -183,6 +238,7 @@ namespace LoLNotes.Gui
             // 
             // SettingsTab
             // 
+            this.SettingsTab.Controls.Add(this.groupBox5);
             this.SettingsTab.Controls.Add(this.groupBox4);
             this.SettingsTab.Controls.Add(this.groupBox3);
             this.SettingsTab.Controls.Add(this.groupBox2);
@@ -198,6 +254,90 @@ namespace LoLNotes.Gui
             this.SettingsTab.TabIndex = 2;
             this.SettingsTab.Text = "Settings";
             this.SettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.DefaultGameTab);
+            this.groupBox4.Location = new System.Drawing.Point(103, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(155, 50);
+            this.groupBox4.TabIndex = 12;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Default Game Tab";
+            // 
+            // DefaultGameTab
+            // 
+            this.DefaultGameTab.FormattingEnabled = true;
+            this.DefaultGameTab.Items.AddRange(new object[] {
+            "Champs",
+            "Recent"});
+            this.DefaultGameTab.Location = new System.Drawing.Point(6, 19);
+            this.DefaultGameTab.Name = "DefaultGameTab";
+            this.DefaultGameTab.Size = new System.Drawing.Size(143, 21);
+            this.DefaultGameTab.TabIndex = 0;
+            this.DefaultGameTab.Text = "Recent";
+            this.DefaultGameTab.TextChanged += new System.EventHandler(this.DefaultGameTab_TextChanged);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.DownloadLink);
+            this.groupBox3.Location = new System.Drawing.Point(11, 114);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(81, 39);
+            this.groupBox3.TabIndex = 11;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Update Link";
+            // 
+            // DownloadLink
+            // 
+            this.DownloadLink.AutoSize = true;
+            this.DownloadLink.Location = new System.Drawing.Point(6, 16);
+            this.DownloadLink.Name = "DownloadLink";
+            this.DownloadLink.Size = new System.Drawing.Size(55, 13);
+            this.DownloadLink.TabIndex = 2;
+            this.DownloadLink.TabStop = true;
+            this.DownloadLink.Text = "Download";
+            this.DownloadLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DownloadLink_LinkClicked);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.RegionList);
+            this.groupBox2.Location = new System.Drawing.Point(11, 59);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(155, 49);
+            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "League Of Legends Region";
+            // 
+            // RegionList
+            // 
+            this.RegionList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.RegionList.FormattingEnabled = true;
+            this.RegionList.Location = new System.Drawing.Point(6, 19);
+            this.RegionList.Name = "RegionList";
+            this.RegionList.Size = new System.Drawing.Size(121, 21);
+            this.RegionList.TabIndex = 3;
+            this.RegionList.SelectedIndexChanged += new System.EventHandler(this.RegionList_SelectedIndexChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.InstallButton);
+            this.groupBox1.Location = new System.Drawing.Point(11, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(86, 50);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Certificates";
+            // 
+            // InstallButton
+            // 
+            this.InstallButton.Location = new System.Drawing.Point(6, 19);
+            this.InstallButton.Name = "InstallButton";
+            this.InstallButton.Size = new System.Drawing.Size(75, 23);
+            this.InstallButton.TabIndex = 0;
+            this.InstallButton.Text = "Install";
+            this.InstallButton.UseVisualStyleBackColor = true;
+            this.InstallButton.Click += new System.EventHandler(this.InstallButton_Click);
             // 
             // ModuleGroupBox
             // 
@@ -328,37 +468,6 @@ namespace LoLNotes.Gui
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // RegionList
-            // 
-            this.RegionList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.RegionList.FormattingEnabled = true;
-            this.RegionList.Location = new System.Drawing.Point(6, 19);
-            this.RegionList.Name = "RegionList";
-            this.RegionList.Size = new System.Drawing.Size(121, 21);
-            this.RegionList.TabIndex = 3;
-            this.RegionList.SelectedIndexChanged += new System.EventHandler(this.RegionList_SelectedIndexChanged);
-            // 
-            // DownloadLink
-            // 
-            this.DownloadLink.AutoSize = true;
-            this.DownloadLink.Location = new System.Drawing.Point(6, 16);
-            this.DownloadLink.Name = "DownloadLink";
-            this.DownloadLink.Size = new System.Drawing.Size(177, 13);
-            this.DownloadLink.TabIndex = 2;
-            this.DownloadLink.TabStop = true;
-            this.DownloadLink.Text = "https://github.com/high6/LoLNotes";
-            this.DownloadLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DownloadLink_LinkClicked);
-            // 
-            // InstallButton
-            // 
-            this.InstallButton.Location = new System.Drawing.Point(6, 19);
-            this.InstallButton.Name = "InstallButton";
-            this.InstallButton.Size = new System.Drawing.Size(75, 23);
-            this.InstallButton.TabIndex = 0;
-            this.InstallButton.Text = "Install";
-            this.InstallButton.UseVisualStyleBackColor = true;
-            this.InstallButton.Click += new System.EventHandler(this.InstallButton_Click);
-            // 
             // LogTab
             // 
             this.LogTab.Controls.Add(this.LogList);
@@ -481,109 +590,6 @@ namespace LoLNotes.Gui
             this.CallTree.Size = new System.Drawing.Size(1157, 568);
             this.CallTree.TabIndex = 0;
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.IsSplitterFixed = true;
-            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.AutoScroll = true;
-            this.splitContainer2.Panel1.AutoScrollMinSize = new System.Drawing.Size(500, 836);
-            this.splitContainer2.Panel1.Controls.Add(this.comboBox1);
-            this.splitContainer2.Panel1.Controls.Add(this.button1);
-            this.splitContainer2.Panel1.Controls.Add(this.teamControl1);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.AutoScroll = true;
-            this.splitContainer2.Panel2.AutoScrollMinSize = new System.Drawing.Size(500, 836);
-            this.splitContainer2.Panel2.Controls.Add(this.teamControl2);
-            this.splitContainer2.Size = new System.Drawing.Size(1151, 836);
-            this.splitContainer2.SplitterDistance = 575;
-            this.splitContainer2.SplitterWidth = 1;
-            this.splitContainer2.TabIndex = 4;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Champs",
-            "Recent"});
-            this.comboBox1.Location = new System.Drawing.Point(94, 4);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.Sorted = true;
-            this.comboBox1.TabIndex = 2;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(221, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.InstallButton);
-            this.groupBox1.Location = new System.Drawing.Point(11, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(86, 50);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Certificates";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.RegionList);
-            this.groupBox2.Location = new System.Drawing.Point(11, 59);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(155, 49);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "League Of Legends Region";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.DownloadLink);
-            this.groupBox3.Location = new System.Drawing.Point(11, 114);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(352, 39);
-            this.groupBox3.TabIndex = 11;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Update Link";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.DefaultGameTab);
-            this.groupBox4.Location = new System.Drawing.Point(172, 59);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(155, 49);
-            this.groupBox4.TabIndex = 12;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Default Game Tab";
-            // 
-            // DefaultGameTab
-            // 
-            this.DefaultGameTab.FormattingEnabled = true;
-            this.DefaultGameTab.Items.AddRange(new object[] {
-            "Champs",
-            "Recent"});
-            this.DefaultGameTab.Location = new System.Drawing.Point(6, 19);
-            this.DefaultGameTab.Name = "DefaultGameTab";
-            this.DefaultGameTab.Size = new System.Drawing.Size(143, 21);
-            this.DefaultGameTab.TabIndex = 0;
-            this.DefaultGameTab.Text = "Recent";
-            this.DefaultGameTab.TextChanged += new System.EventHandler(this.DefaultGameTab_TextChanged);
-            // 
             // teamControl1
             // 
             this.teamControl1.BackColor = System.Drawing.Color.White;
@@ -610,6 +616,57 @@ namespace LoLNotes.Gui
             this.teamControl2.TeamSize = 5;
             this.teamControl2.Text = "Team 2";
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.TopChampsBox);
+            this.groupBox5.Controls.Add(this.StatsBox);
+            this.groupBox5.Controls.Add(this.RecentGamesBox);
+            this.groupBox5.Location = new System.Drawing.Point(172, 59);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(125, 94);
+            this.groupBox5.TabIndex = 13;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Load What Stats";
+            // 
+            // RecentGamesBox
+            // 
+            this.RecentGamesBox.AutoSize = true;
+            this.RecentGamesBox.Checked = true;
+            this.RecentGamesBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RecentGamesBox.Location = new System.Drawing.Point(6, 19);
+            this.RecentGamesBox.Name = "RecentGamesBox";
+            this.RecentGamesBox.Size = new System.Drawing.Size(97, 17);
+            this.RecentGamesBox.TabIndex = 0;
+            this.RecentGamesBox.Text = "Recent Games";
+            this.RecentGamesBox.UseVisualStyleBackColor = true;
+            this.RecentGamesBox.CheckedChanged += new System.EventHandler(this.RecentGamesBox_CheckedChanged);
+            // 
+            // StatsBox
+            // 
+            this.StatsBox.AutoSize = true;
+            this.StatsBox.Checked = true;
+            this.StatsBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.StatsBox.Location = new System.Drawing.Point(6, 42);
+            this.StatsBox.Name = "StatsBox";
+            this.StatsBox.Size = new System.Drawing.Size(50, 17);
+            this.StatsBox.TabIndex = 1;
+            this.StatsBox.Text = "Stats";
+            this.StatsBox.UseVisualStyleBackColor = true;
+            this.StatsBox.CheckedChanged += new System.EventHandler(this.StatsBox_CheckedChanged);
+            // 
+            // TopChampsBox
+            // 
+            this.TopChampsBox.AutoSize = true;
+            this.TopChampsBox.Checked = true;
+            this.TopChampsBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.TopChampsBox.Location = new System.Drawing.Point(6, 65);
+            this.TopChampsBox.Name = "TopChampsBox";
+            this.TopChampsBox.Size = new System.Drawing.Size(86, 17);
+            this.TopChampsBox.TabIndex = 2;
+            this.TopChampsBox.Text = "Top Champs";
+            this.TopChampsBox.UseVisualStyleBackColor = true;
+            this.TopChampsBox.CheckedChanged += new System.EventHandler(this.TopChampsBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -625,9 +682,18 @@ namespace LoLNotes.Gui
             this.tabControl1.ResumeLayout(false);
             this.NewsTab.ResumeLayout(false);
             this.GameTab.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.PlayerEditStrip.ResumeLayout(false);
             this.SettingsTab.ResumeLayout(false);
             this.SettingsTab.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ModuleGroupBox.ResumeLayout(false);
             this.ModuleGroupBox.PerformLayout();
             this.LogGroupBox.ResumeLayout(false);
@@ -641,15 +707,8 @@ namespace LoLNotes.Gui
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.CallEditStrip.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -703,6 +762,10 @@ namespace LoLNotes.Gui
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox TopChampsBox;
+        private System.Windows.Forms.CheckBox StatsBox;
+        private System.Windows.Forms.CheckBox RecentGamesBox;
 
     }
 }

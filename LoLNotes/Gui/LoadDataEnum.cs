@@ -25,13 +25,14 @@ using System.Linq;
 using System.Text;
 
 namespace LoLNotes.Gui
-{
-	public enum LeagueRegion
-	{	  
-		NA,
-		EUW,
-		EUN,
-		GARENA,
-		BR
-	}
+{        
+    [Flags]
+    public enum LoadDataEnum : uint
+    {
+        None = 0,
+        RecentGames = 1,
+        Stats = 2,
+        TopChamps = 4,
+        All = TopChamps | Stats | RecentGames,
+    }
 }
