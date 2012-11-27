@@ -71,11 +71,11 @@ namespace LoLNotes.Storage
 
 		void LobbyRead(GameDTO lobby)
 		{
-			Task.Factory.StartNew(() => CommitLobby(lobby));
+			Task.Factory.StartNew(() => CommitLobby(lobby), TaskCreationOptions.LongRunning);
 		}
 		void StatsRead(EndOfGameStats game)
 		{
-			Task.Factory.StartNew(() => CommitGame(game));
+            Task.Factory.StartNew(() => CommitGame(game), TaskCreationOptions.LongRunning);
 		}
 
 		/// <summary>

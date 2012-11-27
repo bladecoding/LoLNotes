@@ -471,8 +471,8 @@ namespace LoLNotes.Gui
 					level.ToString().ToUpper(),
 					obj,
 					DateTime.UtcNow);
-			Task.Factory.StartNew(LogToFile, log);
-			Task.Factory.StartNew(AddLogToList, log);
+            Task.Factory.StartNew(LogToFile, log, TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(AddLogToList, log, TaskCreationOptions.LongRunning);
 		}
 
 		void OnLog(Levels level, object obj)
@@ -629,7 +629,7 @@ namespace LoLNotes.Gui
 							plycontrol.SetLoading(true);
 							plycontrol.SetEmpty();
 							plycontrol.SetParticipant(ply);
-							Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol));
+                            Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol), TaskCreationOptions.LongRunning);
 						}
 						else
 						{
@@ -705,8 +705,8 @@ namespace LoLNotes.Gui
 
 				lock (PlayersCache)
 				{
-					//Clear the cache every 1000 players to prevent crashing afk lobbies.
-					if (PlayersCache.Count > 1000)
+					//Clear the cache every 50000 players to prevent crashing afk lobbies.
+					if (PlayersCache.Count > 50000)
 						PlayersCache.Clear();
 
 					//Does the player already exist in the cache?
@@ -840,7 +840,7 @@ namespace LoLNotes.Gui
 				plrcontrol.Player.NoteColor = Color.FromName(form.ColorBox.Items[form.ColorBox.SelectedIndex].ToString());
 			plrcontrol.SetPlayer(plrcontrol.Player); //Forces the notes/color to update
 
-			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player));
+            Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player), TaskCreationOptions.LongRunning);
 		}
 
 		private void clearToolStripMenuItem_Click(object sender, EventArgs e)
@@ -864,7 +864,7 @@ namespace LoLNotes.Gui
 			plrcontrol.Player.NoteColor = default(Color);
 			plrcontrol.SetPlayer(plrcontrol.Player); //Forces the notes/color to update
 
-			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player));
+            Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player), TaskCreationOptions.LongRunning);
 		}
 
 		private void DownloadLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -875,7 +875,7 @@ namespace LoLNotes.Gui
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			SetTitle("(Checking)");
-			Task.Factory.StartNew(GetGeneral);
+            Task.Factory.StartNew(GetGeneral, TaskCreationOptions.LongRunning);
 			TrackingQueue.Enqueue("startup");
 
 			Settings_Loaded(this, new EventArgs());
