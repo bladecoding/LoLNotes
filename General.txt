@@ -5,12 +5,17 @@
 	},
 	"Release":	
 	{
-		"ReleaseName": "m",
+		"ReleaseName": "n",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1m.zip"
+		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1n.zip"
 	},
 	"Changes":	
 	{
+		"1.1n":
+		[
+			"Fixed Default Game Tab was not working correctly.",
+			"Added Option to disable loading some player stats.",			
+		],
 		"1.1m":
 		[
 			"Added A Default Game Tab setting which allows you to change what tab should be displayed when a player's stats are loaded.",
