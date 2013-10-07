@@ -342,6 +342,7 @@
     <Content Include="Content\Data\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\ChampIcons\Aatrox_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Ahri_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Akali_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Alistar_Square_0.png" />
@@ -359,6 +360,7 @@
     <Content Include="Content\Images\ChampIcons\Diana_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Draven_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\DrMundo_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Elise_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Evelynn_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Ezreal_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Fiddlesticks_Square_0.png" />
@@ -382,10 +384,13 @@
     <Content Include="Content\Images\ChampIcons\Katarina_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Kayle_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Kennen_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Khazix_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\KogMaw_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Leblanc_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\LeeSin_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Leona_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Lissandra_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Lucian_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Lulu_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Lux_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Malphite_Square_0.png" />
@@ -396,6 +401,7 @@
     <Content Include="Content\Images\ChampIcons\MonkeyKing_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Mordekaiser_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Morgana_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Nami_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Nasus_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Nautilus_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Nidalee_Square_0.png" />
@@ -405,6 +411,7 @@
     <Content Include="Content\Images\ChampIcons\Orianna_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Pantheon_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Poppy_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Quinn_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Rammus_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Renekton_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Rengar_Square_0.png" />
@@ -422,9 +429,11 @@
     <Content Include="Content\Images\ChampIcons\Sona_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Soraka_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Swain_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Syndra_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Talon_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Taric_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Teemo_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Thresh_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Tristana_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Trundle_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Tryndamere_Square_0.png" />
@@ -436,12 +445,15 @@
     <Content Include="Content\Images\ChampIcons\Vayne_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Veigar_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Viktor_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Vi_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Vladimir_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Volibear_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Warwick_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Xerath_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\XinZhao_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Yorick_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Zac_Square_0.png" />
+    <Content Include="Content\Images\ChampIcons\Zed_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Ziggs_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Zilean_Square_0.png" />
     <Content Include="Content\Images\ChampIcons\Zyra_Square_0.png" />
