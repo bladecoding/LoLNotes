@@ -294,7 +294,12 @@
     <Content Include="Content\Certificates\THAI GARENA_prodth.lol.garenanow.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Content\Certificates\GarenaVN_prodph.lol.garenanow.com.p12" />
+    <None Include="Content\Certificates\GarenaVN_prodph.lol.garenanow.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Certificates\Turkey_prod.tr.lol.riotgames.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="LoLNotes.licenseheader" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
