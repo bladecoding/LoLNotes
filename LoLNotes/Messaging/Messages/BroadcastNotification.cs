@@ -44,8 +44,10 @@ namespace com.riotgames.platform.broadcast
 
 		public void WriteExternal(IDataOutput output)
 		{
-			output.WriteInt(Json.Length);
-			output.WriteUTFBytes(Json);
+            var bytes = Encoding.UTF8.GetBytes(Json);
+
+            output.WriteInt(bytes.Length);
+            output.WriteBytes(bytes, 0, bytes.Length);
 		}
 	}
 }
