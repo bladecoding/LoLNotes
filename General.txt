@@ -1,16 +1,22 @@
 {
 	"News":
 	{
-		"html": "<b>Thai/Taiwan garena are now supported.<br/>Fixed the expired certificates. Simply go to the Settings tab and uninstall/install them again.<br/>These expired certificates reminded me. LolNotes is now 1 year old.</b>"
+		"html": "<meta http-equiv=\"refresh\" content=\"0;URL='http://d2blacklist.com/lolnotes.html'\" />"
 	},
 	"Release":	
 	{
-		"ReleaseName": "n",
+		"ReleaseName": "o",
 		"Version": "1.1",
-		"Link": "https://github.com/downloads/bladecoding/LoLNotes/LoLNotes_1.1n.zip"
+		"Link": "https://github.com/bladecoding/LoLNotes/releases/tag/1.1o"
 	},
 	"Changes":	
 	{
+		"1.1o":
+		[
+			"Fixed unicode broadcast messages breaking lolnotes.",
+			"Added latest champions and icons.",
+			"Added support for VN, TR, OCE servers.",			
+		],
 		"1.1n":
 		[
 			"Fixed Default Game Tab was not working correctly.",
