@@ -297,6 +297,12 @@
     <None Include="Content\Certificates\GarenaVN_prodph.lol.garenanow.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Certificates\Latin America North_prod.la1.lol.riotgames.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Certificates\Latin America South_prod.la2.lol.riotgames.com.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Certificates\Oceanic_prod.oc1.lol.riotgames.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
