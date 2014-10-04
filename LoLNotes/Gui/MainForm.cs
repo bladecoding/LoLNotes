@@ -1,3 +1,26 @@
+using Db4objects.Db4o;
+using Db4objects.Db4o.Config;
+using Db4objects.Db4o.TA;
+using FluorineFx;
+using FluorineFx.AMF3;
+using FluorineFx.IO;
+using FluorineFx.Messaging.Messages;
+using FluorineFx.Messaging.Rtmp.Event;
+using LoLNotes.Gui.Controls;
+using LoLNotes.Messages.Account;
+using LoLNotes.Messages.Champion;
+using LoLNotes.Messages.Commands;
+using LoLNotes.Messages.GameLobby;
+using LoLNotes.Messages.GameLobby.Participants;
+using LoLNotes.Messages.GameStats;
+using LoLNotes.Messages.Readers;
+using LoLNotes.Properties;
+using LoLNotes.Proxy;
+using LoLNotes.Storage;
+using LoLNotes.Util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NotMissing.Logging;
 /*
 copyright (C) 2011-2012 by high828@gmail.com
 
@@ -32,31 +55,6 @@ using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Db4objects.Db4o;
-using Db4objects.Db4o.Config;
-using Db4objects.Db4o.TA;
-using FluorineFx;
-using FluorineFx.AMF3;
-using FluorineFx.IO;
-using FluorineFx.Messaging.Messages;
-using FluorineFx.Messaging.Rtmp.Event;
-using LoLNotes.Gui.Controls;
-using LoLNotes.Messages.Account;
-using LoLNotes.Messages.Champion;
-using LoLNotes.Messages.Commands;
-using LoLNotes.Messages.GameLobby;
-using LoLNotes.Messages.GameLobby.Participants;
-using LoLNotes.Messages.GameStats;
-using LoLNotes.Messages.Readers;
-using LoLNotes.Messages.Statistics;
-using LoLNotes.Messages.Summoner;
-using LoLNotes.Properties;
-using LoLNotes.Proxy;
-using LoLNotes.Storage;
-using LoLNotes.Util;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NotMissing.Logging;
 
 namespace LoLNotes.Gui
 {
@@ -685,7 +683,7 @@ namespace LoLNotes.Gui
                 control.DefaultGameTab = Settings.DefaultGameTab;
 				control.SetPlayer(ply.Player);
                 if (ply.Stats != null)
-				    control.SetStats(ply.Summoner, ply.Stats);
+				    control.SetStats(ply.Summoner, ply.LeagueInfo, ply.Stats);
                 if (ply.RecentChamps != null)
 				    control.SetChamps(ply.RecentChamps);
                 if (ply.Games != null)
@@ -753,6 +751,9 @@ namespace LoLNotes.Gui
 					if (summoner != null)
 					{
 						ply.Summoner = summoner;
+
+                        if ((Settings.LoadWhatData & LoadDataEnum.LeagueInfo) != 0)
+                            ply.LeagueInfo = cmd.getAllLeaguesForPlayer(summoner.SummonerId);
                         if ((Settings.LoadWhatData & LoadDataEnum.Stats) != 0)
 						    ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
                         if ((Settings.LoadWhatData & LoadDataEnum.TopChamps) != 0)
@@ -779,7 +780,7 @@ namespace LoLNotes.Gui
 			}
 			catch (Exception ex)
 			{
-				ply.LoadWait.Set(); //
+				ply.LoadWait.Set();
 				StaticLogger.Warning(ex);
 			}
 		}

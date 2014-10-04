@@ -142,6 +142,8 @@
     <Compile Include="Messages\Statistics\ChampionStatInfoList.cs" />
     <Compile Include="Messages\Statistics\FellowPlayerInfo.cs" />
     <Compile Include="Messages\Statistics\FellowPlayerInfoList.cs" />
+    <Compile Include="Messages\Statistics\LeagueItemDTO.cs" />
+    <Compile Include="Messages\Statistics\LeagueListDTO.cs" />
     <Compile Include="Messages\Statistics\PlayerGameStatsList.cs" />
     <Compile Include="Messages\Statistics\PlayerGameStats.cs" />
     <Compile Include="Messages\Statistics\PlayerLifetimeStats.cs" />
@@ -151,6 +153,7 @@
     <Compile Include="Messages\Statistics\RawStat.cs" />
     <Compile Include="Messages\Statistics\RawStatList.cs" />
     <Compile Include="Messages\Statistics\RecentGames.cs" />
+    <Compile Include="Messages\Statistics\SummonerLeaguesDTO.cs" />
     <Compile Include="Messages\Summoner\PublicSummoner.cs" />
     <Compile Include="Messages\Summoner\SlotEntry.cs" />
     <Compile Include="Messages\Summoner\SlotEntryList.cs" />

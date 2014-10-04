@@ -222,14 +222,14 @@ namespace LoLNotes.Gui.Controls
 			SetTitle(part);
 		}
 
-		public void SetStats(PublicSummoner summoner, PlayerLifetimeStats stats)
+        public void SetStats(PublicSummoner summoner, SummonerLeaguesDTO leagueInfo, PlayerLifetimeStats stats)
 		{
 			if (summoner == null || stats == null)
 				return;
 
 			if (InvokeRequired)
 			{
-				Invoke(new Action<PublicSummoner, PlayerLifetimeStats>(SetStats), summoner, stats);
+                Invoke(new Action<PublicSummoner, SummonerLeaguesDTO, PlayerLifetimeStats>(SetStats), summoner, leagueInfo, stats);
 				return;
 			}
 
@@ -239,7 +239,7 @@ namespace LoLNotes.Gui.Controls
 			foreach (var stat in stats.PlayerStatSummaries.PlayerStatSummarySet)
 			{
 				var sc = new StatsControl { Dock = DockStyle.Fill, Tag = "Stats" };
-				sc.SetStatSummary(stat);
+				sc.SetStatSummary(stat, leagueInfo);
 
 				var tab = new TabPage(MinifyStatType(stat.PlayerStatSummaryType))
 				{

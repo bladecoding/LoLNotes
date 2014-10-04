@@ -177,6 +177,15 @@ namespace LoLNotes.Messages.Commands
 			return (T)obj;
 		}
 
+        public SummonerLeaguesDTO getAllLeaguesForPlayer(Int64 summonerId)
+        {
+            return InvokeService<SummonerLeaguesDTO>(
+                "leaguesServiceProxy",
+                "getAllLeaguesForPlayer",
+                summonerId
+            );
+        }
+
 		public PublicSummoner GetPlayerByName(string name)
 		{
 			return InvokeService<PublicSummoner>(
@@ -191,8 +200,7 @@ namespace LoLNotes.Messages.Commands
 			return InvokeService<PlayerLifetimeStats>(
 				"playerStatsService",
 				"retrievePlayerStatsByAccountId",
-				acctid,
-				"CURRENT"
+				acctid
 			);
 		}
 
