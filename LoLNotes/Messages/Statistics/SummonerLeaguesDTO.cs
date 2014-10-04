@@ -18,6 +18,6 @@ namespace LoLNotes.Messages.Summoner
         }
 
         [InternalName("summonerLeagues")]
-        public FluorineFx.AMF3.ArrayCollection SummonerLeagues { get; set; }
+        public ArrayCollection SummonerLeagues { get; set; }
     }
 }

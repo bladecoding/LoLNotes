@@ -51,7 +51,7 @@ namespace LoLNotes.Messages.Summoner
         public String RequestorsRank { get; set; }
 
         [InternalName("entries")]
-        public List<LeagueItemDTO> Entries { get; set; }
+        public ArrayCollection Entries { get; set; }
 
         [InternalName("requestorsName")]
         public String RequestorsName { get; set; }
