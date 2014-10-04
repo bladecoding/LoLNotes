@@ -517,13 +517,9 @@ namespace LoLNotes.Gui.Controls
 			}
 
 			string url = null;
-			if (e.Button == MouseButtons.Left)
+			if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Middle)
 			{
 				url = string.Format("http://www.lolking.net/summoner/{0}/{1}", region, plr.Item1);
-			}
-			else if (e.Button == MouseButtons.Middle)
-			{
-				url = string.Format("http://bladecoding.com/lolnotes/leagueofstats.php?name={0}", plr.Item2);
 			}
 
 			if (url != null)
