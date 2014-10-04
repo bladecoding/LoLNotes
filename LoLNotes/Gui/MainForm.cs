@@ -405,12 +405,7 @@ namespace LoLNotes.Gui
 
 		void SetNews(JObject data)
 		{
-			if (data == null)
-				return;
-			NewsBrowser.Navigate("about:blank");
-			if (NewsBrowser.Document != null)
-				NewsBrowser.Document.Write(string.Empty);
-			NewsBrowser.DocumentText = data.Value<string>("html");
+			return;
 		}
 
 		void GetGeneral()
