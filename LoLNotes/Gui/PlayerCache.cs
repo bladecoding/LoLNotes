@@ -32,7 +32,7 @@ namespace LoLNotes.Gui
 {
 	public class PlayerCache
 	{
-        public SummonerLeaguesDTO LeagueInfo { get; set; }
+		public SummonerLeaguesDTO LeagueInfo { get; set; }
 		public PlayerEntry Player { get; set; }
 		public PublicSummoner Summoner { get; set; }
 		public PlayerLifetimeStats Stats { get; set; }

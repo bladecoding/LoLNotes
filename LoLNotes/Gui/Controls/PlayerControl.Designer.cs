@@ -1,33 +1,33 @@
 namespace LoLNotes.Gui.Controls
 {
-    partial class PlayerControl
-    {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+	partial class PlayerControl
+	{
+		/// <summary> 
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+		/// <summary> 
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-        #region Component Designer generated code
+		#region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
+		/// <summary> 
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerControl));
 			this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -73,8 +73,8 @@ namespace LoLNotes.Gui.Controls
 			// 
 			// InfoTabs
 			// 
-			this.InfoTabs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.InfoTabs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.InfoTabs.ItemSize = new System.Drawing.Size(0, 15);
 			this.InfoTabs.Location = new System.Drawing.Point(160, 6);
 			this.InfoTabs.Multiline = true;
@@ -133,9 +133,9 @@ namespace LoLNotes.Gui.Controls
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
-        }
+		}
 
-        #endregion
+		#endregion
 
 		private System.Windows.Forms.ToolTip ToolTip;
 		private System.Windows.Forms.Label LevelLabel;
@@ -145,5 +145,5 @@ namespace LoLNotes.Gui.Controls
 		private System.Windows.Forms.Label TeamLabel;
 		private System.Windows.Forms.LinkLabel NameLabel;
 		private System.Windows.Forms.Label SeenCountLabel;
-    }
+	}
 }

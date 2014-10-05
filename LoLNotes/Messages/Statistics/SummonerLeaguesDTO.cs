@@ -8,20 +8,20 @@ using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.Summoner
 {
-    [Message(".SummonerLeaguesDTO")]
-    public class SummonerLeaguesDTO : MessageObject
-    {
-        public SummonerLeaguesDTO(ASObject obj)
-            : base(obj)
-        {
-            BaseObject.SetFields(this, obj);
-        }
+	[Message(".SummonerLeaguesDTO")]
+	public class SummonerLeaguesDTO : MessageObject
+	{
+		public SummonerLeaguesDTO(ASObject obj)
+			: base(obj)
+		{
+			BaseObject.SetFields(this, obj);
+		}
 
-        [InternalName("summonerLeagues")]
-        public ArrayCollection SummonerLeagues { get; set; }
+		[InternalName("summonerLeagues")]
+		public ArrayCollection SummonerLeagues { get; set; }
 
-        public Dictionary<string, object> GetQueueByName(string queueName)
-        {
+		public Dictionary<string, object> GetQueueByName(string queueName)
+		{
 			foreach (Dictionary<string, object> queueInfo in this.SummonerLeagues.List)
 			{
 				if (queueInfo["queue"].ToString() == queueName)
@@ -31,7 +31,7 @@ namespace LoLNotes.Messages.Summoner
 			}
 
 			return null;
-        }
+		}
 
 		public static string GetRanking(Dictionary<string, object> queueInfo)
 		{
@@ -41,5 +41,5 @@ namespace LoLNotes.Messages.Summoner
 			}
 			return String.Format("{0}: {1}", queueInfo["tier"].ToString(), queueInfo["requestorsRank"].ToString());
 		}
-    }
+	}
 }

@@ -29,32 +29,32 @@ using LoLNotes.Flash;
 
 namespace LoLNotes.Messages.Summoner
 {
-    [Message(".LeagueListDTO")]
-    public class LeagueListDTO : MessageObject
-    {
-        public LeagueListDTO(ASObject obj)
-            : base(obj)
-        {
-            BaseObject.SetFields(this, obj);
-        }
+	[Message(".LeagueListDTO")]
+	public class LeagueListDTO : MessageObject
+	{
+		public LeagueListDTO(ASObject obj)
+			: base(obj)
+		{
+			BaseObject.SetFields(this, obj);
+		}
 
-        [InternalName("queue")]
-        public String Queue { get; set; }
+		[InternalName("queue")]
+		public String Queue { get; set; }
 
-        [InternalName("name")]
-        public String Name { get; set; }
+		[InternalName("name")]
+		public String Name { get; set; }
 
-        [InternalName("tier")]
-        public String Tier { get; set; }
+		[InternalName("tier")]
+		public String Tier { get; set; }
 
-        [InternalName("requestorsRank")]
-        public String RequestorsRank { get; set; }
+		[InternalName("requestorsRank")]
+		public String RequestorsRank { get; set; }
 
-        [InternalName("entries")]
-        public ArrayCollection Entries { get; set; }
+		[InternalName("entries")]
+		public ArrayCollection Entries { get; set; }
 
-        [InternalName("requestorsName")]
-        public String RequestorsName { get; set; }
+		[InternalName("requestorsName")]
+		public String RequestorsName { get; set; }
 
-    }
+	}
 }

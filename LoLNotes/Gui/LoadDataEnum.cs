@@ -25,15 +25,15 @@ using System.Linq;
 using System.Text;
 
 namespace LoLNotes.Gui
-{        
-    [Flags]
-    public enum LoadDataEnum : uint
-    {
-        None = 0,
-        RecentGames = 1,
-        Stats = 2,
-        TopChamps = 4,
-        LeagueInfo = 8,
-        All = LeagueInfo | TopChamps | Stats | RecentGames,
-    }
+{
+	[Flags]
+	public enum LoadDataEnum : uint
+	{
+		None = 0,
+		RecentGames = 1,
+		Stats = 2,
+		TopChamps = 4,
+		LeagueInfo = 8,
+		All = LeagueInfo | TopChamps | Stats | RecentGames,
+	}
 }

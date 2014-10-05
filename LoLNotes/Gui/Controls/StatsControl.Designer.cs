@@ -70,7 +70,7 @@
 			this.Ranking.Name = "Ranking";
 			this.Ranking.Size = new System.Drawing.Size(33, 13);
 			this.Ranking.TabIndex = 1;
-            this.Ranking.Text = "Ranking: ";
+			this.Ranking.Text = "Ranking: ";
 			// 
 			// Wins
 			// 
