@@ -43,32 +43,12 @@ namespace LoLNotes.Gui.Controls
 				Prepends.Add(control, control.Text);
 		}
 
-        public void SetStatSummary(PlayerStatSummary stat, SummonerLeaguesDTO leagueInfo)
+		public void SetStatSummary(PlayerStatSummary stat, string ranking)
 		{
-            string league = "Unranked";
-            var nameMap = new Dictionary<string, string>()
-            {
-                {"RankedSolo5x5", "RANKED_SOLO_5x5"},
-                {"RankedTeam5x5", "RANKED_TEAM_5x5"},
-                {"RankedTeam3x3", "RANKED_TEAM_3x3"}
-            };
-            if (leagueInfo.SummonerLeagues != null)
-            {
-                foreach (Dictionary<string, object> queueInfo in leagueInfo.SummonerLeagues.List)
-                {
-                    string queueName;
-                    if(nameMap.TryGetValue(stat.PlayerStatSummaryTypeString, out queueName)){
-                        if (queueName == queueInfo["queue"].ToString())
-                        {
-                            league = String.Format("{0}: {1}", queueInfo["tier"].ToString(), queueInfo["requestorsRank"].ToString());
-                        }
-                    }
-                }
-            }
 			var values = new Dictionary<Control, string>()
 			{
 				{GameType, stat.PlayerStatSummaryType},
-				{Ranking, league},
+				{Ranking, ranking},
 				{Wins, stat.Wins.ToString()},
 				{Losses, stat.Losses.ToString()},
 				{Leaves, stat.Leaves.ToString()}

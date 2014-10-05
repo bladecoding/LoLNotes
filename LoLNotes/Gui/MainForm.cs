@@ -677,6 +677,9 @@ namespace LoLNotes.Gui
 
                 control.DefaultGameTab = Settings.DefaultGameTab;
 				control.SetPlayer(ply.Player);
+				control.SetLeagueInfo(ply.LeagueInfo);
+				if (ply.Summoner != null)
+					control.SetLevel(ply.Summoner.SummonerLevel);
                 if (ply.Stats != null)
 				    control.SetStats(ply.Summoner, ply.LeagueInfo, ply.Stats);
                 if (ply.RecentChamps != null)

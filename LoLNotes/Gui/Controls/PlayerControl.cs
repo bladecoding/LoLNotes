@@ -41,9 +41,9 @@ namespace LoLNotes.Gui.Controls
 		public TeamControl Parent { get; set; }
 		public PlayerEntry Player { get; set; }
 
-        public string DefaultGameTab { get; set; }
+		public string DefaultGameTab { get; set; }
 
-        static protected Dictionary<string, string> LeagueRegions = new Dictionary<string, string>
+		static protected Dictionary<string, string> LeagueRegions = new Dictionary<string, string>
 		{
 			{"NA", "na"},
 			{"EUW", "euw"},
@@ -61,6 +61,7 @@ namespace LoLNotes.Gui.Controls
 
 			LoadingPicture.Visible = false;
 			LevelLabel.Text = "Level: ";
+			RankingLabel.Text = "Ranking: ";
 		}
 		public PlayerControl(TeamControl parent)
 			: this()
@@ -76,8 +77,8 @@ namespace LoLNotes.Gui.Controls
 
 		const int BorderSize = 5;
 		protected override void OnPaint(PaintEventArgs e)
-        {
-            e.Graphics.Clear(BackColor);
+		{
+			e.Graphics.Clear(BackColor);
 			base.OnPaint(e);
 			var pen = new Pen(Player != null && Player.NoteColor.A != 0 ? Player.NoteColor : Color.Green, BorderSize);
 			e.Graphics.DrawRectangle(pen, BorderSize, BorderSize, Width - BorderSize * 2, Height - BorderSize * 2);
@@ -96,15 +97,15 @@ namespace LoLNotes.Gui.Controls
 				BeginInvoke(new Action<bool>(SetLoading), loading);
 				return;
 			}
-            if (loading)
-            {
-                InfoTabs.TabPages.Clear();
-            }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(DefaultGameTab) && InfoTabs.TabPages[DefaultGameTab] != null)
-                    InfoTabs.SelectTab(DefaultGameTab);
-            }
+			if (loading)
+			{
+				InfoTabs.TabPages.Clear();
+			}
+			else
+			{
+				if (!string.IsNullOrWhiteSpace(DefaultGameTab) && InfoTabs.TabPages[DefaultGameTab] != null)
+					InfoTabs.SelectTab(DefaultGameTab);
+			}
 			LoadingPicture.Visible = loading;
 		}
 
@@ -137,7 +138,7 @@ namespace LoLNotes.Gui.Controls
 			}
 		}
 
-		void SetLevel(int level)
+		public void SetLevel(int level)
 		{
 			if (InvokeRequired)
 			{
@@ -146,6 +147,17 @@ namespace LoLNotes.Gui.Controls
 			}
 
 			LevelLabel.Text = "Level: " + (level != 0 ? Convert.ToString(level) : "?");
+		}
+
+		void SetRanking(string ranking)
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<string>(SetRanking), ranking);
+				return;
+			}
+
+			RankingLabel.Text = "Ranking: " + ranking;
 		}
 
 		void RemoveAll(Predicate<TabPage> find)
@@ -167,15 +179,16 @@ namespace LoLNotes.Gui.Controls
 			Player = null;
 			InfoTabs.TabPages.Clear();
 			SetLevel(0);
+			SetRanking("Loading...");
 			SetTeam(0);
 			SetSeen(0);
 			Invalidate(); //Force the border to redraw.
 		}
 
-        public void AddTab(TabPage page)
-        {
-            InfoTabs.TabPages.Add(page);
-        }
+		public void AddTab(TabPage page)
+		{
+			InfoTabs.TabPages.Add(page);
+		}
 
 		public void SetPlayer(PlayerEntry plr)
 		{
@@ -204,7 +217,7 @@ namespace LoLNotes.Gui.Controls
 					Text = plr.Note
 				};
 				tab.Controls.Add(lbl);
-                AddTab(tab);
+				AddTab(tab);
 
 				ResumeLayout();
 			}
@@ -222,24 +235,60 @@ namespace LoLNotes.Gui.Controls
 			SetTitle(part);
 		}
 
-        public void SetStats(PublicSummoner summoner, SummonerLeaguesDTO leagueInfo, PlayerLifetimeStats stats)
+		public void SetLeagueInfo(SummonerLeaguesDTO leagueInfo)
+		{
+			if (InvokeRequired)
+			{
+				Invoke(new Action<SummonerLeaguesDTO>(SetLeagueInfo), leagueInfo);
+				return;
+			}
+
+			if (leagueInfo == null)
+			{
+				SetRanking("???");
+			}
+			else
+			{
+				Dictionary<string, object> queueInfo = leagueInfo.GetQueueByName("RANKED_SOLO_5x5");
+				SetRanking(SummonerLeaguesDTO.GetRanking(queueInfo));
+			}
+		}
+
+		public void SetStats(PublicSummoner summoner, SummonerLeaguesDTO leagueInfo, PlayerLifetimeStats stats)
 		{
 			if (summoner == null || stats == null)
 				return;
 
 			if (InvokeRequired)
 			{
-                Invoke(new Action<PublicSummoner, SummonerLeaguesDTO, PlayerLifetimeStats>(SetStats), summoner, leagueInfo, stats);
+				Invoke(new Action<PublicSummoner, SummonerLeaguesDTO, PlayerLifetimeStats>(SetStats), summoner, leagueInfo, stats);
 				return;
 			}
 
-			SetLevel(summoner.SummonerLevel);
 			RemoveAll(p => (p.Tag as string) == "Stats");
 
 			foreach (var stat in stats.PlayerStatSummaries.PlayerStatSummarySet)
 			{
 				var sc = new StatsControl { Dock = DockStyle.Fill, Tag = "Stats" };
-				sc.SetStatSummary(stat, leagueInfo);
+
+				var nameMap = new Dictionary<string, string>()
+				{
+					{"RankedSolo5x5", "RANKED_SOLO_5x5"},
+					{"RankedTeam5x5", "RANKED_TEAM_5x5"},
+					{"RankedTeam3x3", "RANKED_TEAM_3x3"}
+				};
+
+				Dictionary<string, object> queueInfo = null;
+				if (leagueInfo != null)
+				{
+					string queueType;
+					if (nameMap.TryGetValue(stat.PlayerStatSummaryTypeString, out queueType))
+					{
+						queueInfo = leagueInfo.GetQueueByName(queueType);
+					}
+				}
+
+				sc.SetStatSummary(stat, SummonerLeaguesDTO.GetRanking(queueInfo));
 
 				var tab = new TabPage(MinifyStatType(stat.PlayerStatSummaryType))
 				{
@@ -247,7 +296,7 @@ namespace LoLNotes.Gui.Controls
 					Tag = "Stats"
 				};
 				tab.Controls.Add(sc);
-                AddTab(tab);
+				AddTab(tab);
 			}
 		}
 
@@ -303,7 +352,7 @@ namespace LoLNotes.Gui.Controls
 				Tag = "Champs"
 			};
 			tab.Controls.Add(layout);
-            AddTab(tab);
+			AddTab(tab);
 		}
 
 		public void SetSeen(int times)
@@ -402,7 +451,7 @@ namespace LoLNotes.Gui.Controls
 				Tag = "Recent"
 			};
 			tab.Controls.Add(layout);
-            AddTab(tab);
+			AddTab(tab);
 		}
 
 		static Label CreateLabel(string text)

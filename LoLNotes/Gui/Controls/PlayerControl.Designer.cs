@@ -32,6 +32,7 @@ namespace LoLNotes.Gui.Controls
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerControl));
 			this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.LevelLabel = new System.Windows.Forms.Label();
+			this.RankingLabel = new System.Windows.Forms.Label();
 			this.LoadingPicture = new System.Windows.Forms.PictureBox();
 			this.InfoTabs = new System.Windows.Forms.TabControl();
 			this.TeamLabel = new System.Windows.Forms.Label();
@@ -44,11 +45,21 @@ namespace LoLNotes.Gui.Controls
 			// 
 			this.LevelLabel.AutoSize = true;
 			this.LevelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.LevelLabel.Location = new System.Drawing.Point(10, 89);
+			this.LevelLabel.Location = new System.Drawing.Point(10, 74);
 			this.LevelLabel.Name = "LevelLabel";
 			this.LevelLabel.Size = new System.Drawing.Size(46, 13);
 			this.LevelLabel.TabIndex = 2;
 			this.LevelLabel.Text = "Level: ";
+			// 
+			// RankingLabel
+			// 
+			this.RankingLabel.AutoSize = true;
+			this.RankingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RankingLabel.Location = new System.Drawing.Point(10, 89);
+			this.RankingLabel.Name = "RankingLabel";
+			this.RankingLabel.Size = new System.Drawing.Size(62, 13);
+			this.RankingLabel.TabIndex = 2;
+			this.RankingLabel.Text = "Ranking: ";
 			// 
 			// LoadingPicture
 			// 
@@ -76,7 +87,7 @@ namespace LoLNotes.Gui.Controls
 			// 
 			this.TeamLabel.AutoSize = true;
 			this.TeamLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TeamLabel.Location = new System.Drawing.Point(10, 74);
+			this.TeamLabel.Location = new System.Drawing.Point(10, 60);
 			this.TeamLabel.Name = "TeamLabel";
 			this.TeamLabel.Size = new System.Drawing.Size(32, 13);
 			this.TeamLabel.TabIndex = 4;
@@ -115,6 +126,7 @@ namespace LoLNotes.Gui.Controls
 			this.Controls.Add(this.InfoTabs);
 			this.Controls.Add(this.LoadingPicture);
 			this.Controls.Add(this.LevelLabel);
+			this.Controls.Add(this.RankingLabel);
 			this.Name = "PlayerControl";
 			this.Size = new System.Drawing.Size(500, 150);
 			((System.ComponentModel.ISupportInitialize)(this.LoadingPicture)).EndInit();
@@ -127,6 +139,7 @@ namespace LoLNotes.Gui.Controls
 
 		private System.Windows.Forms.ToolTip ToolTip;
 		private System.Windows.Forms.Label LevelLabel;
+		private System.Windows.Forms.Label RankingLabel;
 		private System.Windows.Forms.PictureBox LoadingPicture;
 		public System.Windows.Forms.TabControl InfoTabs;
 		private System.Windows.Forms.Label TeamLabel;
