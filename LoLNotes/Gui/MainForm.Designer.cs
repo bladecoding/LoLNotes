@@ -88,6 +88,7 @@ namespace LoLNotes.Gui
             this.RecentGamesBox = new System.Windows.Forms.CheckBox();
             this.StatsBox = new System.Windows.Forms.CheckBox();
             this.TopChampsBox = new System.Windows.Forms.CheckBox();
+			this.LeagueInfoBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.NewsTab.SuspendLayout();
             this.GameTab.SuspendLayout();
@@ -344,7 +345,7 @@ namespace LoLNotes.Gui
             this.ModuleGroupBox.Controls.Add(this.MirrorRadio);
             this.ModuleGroupBox.Controls.Add(this.ToolHelpRadio);
             this.ModuleGroupBox.Controls.Add(this.ProcessRadio);
-            this.ModuleGroupBox.Location = new System.Drawing.Point(107, 159);
+            this.ModuleGroupBox.Location = new System.Drawing.Point(107, 182);
             this.ModuleGroupBox.Name = "ModuleGroupBox";
             this.ModuleGroupBox.Size = new System.Drawing.Size(125, 95);
             this.ModuleGroupBox.TabIndex = 8;
@@ -386,7 +387,7 @@ namespace LoLNotes.Gui
             // LeaveCheck
             // 
             this.LeaveCheck.AutoSize = true;
-            this.LeaveCheck.Location = new System.Drawing.Point(16, 345);
+            this.LeaveCheck.Location = new System.Drawing.Point(16, 368);
             this.LeaveCheck.Name = "LeaveCheck";
             this.LeaveCheck.Size = new System.Drawing.Size(120, 17);
             this.LeaveCheck.TabIndex = 7;
@@ -396,7 +397,7 @@ namespace LoLNotes.Gui
             // DevCheck
             // 
             this.DevCheck.AutoSize = true;
-            this.DevCheck.Location = new System.Drawing.Point(16, 322);
+            this.DevCheck.Location = new System.Drawing.Point(16, 345);
             this.DevCheck.Name = "DevCheck";
             this.DevCheck.Size = new System.Drawing.Size(76, 17);
             this.DevCheck.TabIndex = 6;
@@ -408,7 +409,7 @@ namespace LoLNotes.Gui
             // 
             this.LogGroupBox.Controls.Add(this.DebugCheck);
             this.LogGroupBox.Controls.Add(this.TraceCheck);
-            this.LogGroupBox.Location = new System.Drawing.Point(10, 247);
+            this.LogGroupBox.Location = new System.Drawing.Point(10, 270);
             this.LogGroupBox.Name = "LogGroupBox";
             this.LogGroupBox.Size = new System.Drawing.Size(91, 69);
             this.LogGroupBox.TabIndex = 5;
@@ -441,7 +442,7 @@ namespace LoLNotes.Gui
             // 
             this.DatabaseGroupBox.Controls.Add(this.ExportButton);
             this.DatabaseGroupBox.Controls.Add(this.ImportButton);
-            this.DatabaseGroupBox.Location = new System.Drawing.Point(11, 159);
+			this.DatabaseGroupBox.Location = new System.Drawing.Point(11, 182);
             this.DatabaseGroupBox.Name = "DatabaseGroupBox";
             this.DatabaseGroupBox.Size = new System.Drawing.Size(90, 82);
             this.DatabaseGroupBox.TabIndex = 4;
@@ -621,51 +622,52 @@ namespace LoLNotes.Gui
             this.groupBox5.Controls.Add(this.TopChampsBox);
             this.groupBox5.Controls.Add(this.StatsBox);
             this.groupBox5.Controls.Add(this.RecentGamesBox);
+			this.groupBox5.Controls.Add(this.LeagueInfoBox);
             this.groupBox5.Location = new System.Drawing.Point(172, 59);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(125, 94);
+            this.groupBox5.Size = new System.Drawing.Size(125, 117);
             this.groupBox5.TabIndex = 13;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Load What Stats";
-            // 
+            // Shared properties between checkboxes
+			System.Windows.Forms.CheckBox[] checkBoxes = { RecentGamesBox, StatsBox, TopChampsBox, LeagueInfoBox };
+			for(int i=0; i<checkBoxes.Length; i++)
+			{
+				checkBoxes[i].AutoSize = true;
+				checkBoxes[i].Checked = true;
+				checkBoxes[i].CheckState = System.Windows.Forms.CheckState.Checked;
+				checkBoxes[i].Location = new System.Drawing.Point(6, 19 + 23*i);
+				checkBoxes[i].UseVisualStyleBackColor = true;
+				checkBoxes[i].TabIndex = i;
+			}
+			// 
             // RecentGamesBox
-            // 
-            this.RecentGamesBox.AutoSize = true;
-            this.RecentGamesBox.Checked = true;
-            this.RecentGamesBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RecentGamesBox.Location = new System.Drawing.Point(6, 19);
+            //
             this.RecentGamesBox.Name = "RecentGamesBox";
             this.RecentGamesBox.Size = new System.Drawing.Size(97, 17);
-            this.RecentGamesBox.TabIndex = 0;
             this.RecentGamesBox.Text = "Recent Games";
-            this.RecentGamesBox.UseVisualStyleBackColor = true;
             this.RecentGamesBox.CheckedChanged += new System.EventHandler(this.RecentGamesBox_CheckedChanged);
             // 
             // StatsBox
             // 
-            this.StatsBox.AutoSize = true;
-            this.StatsBox.Checked = true;
-            this.StatsBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.StatsBox.Location = new System.Drawing.Point(6, 42);
             this.StatsBox.Name = "StatsBox";
             this.StatsBox.Size = new System.Drawing.Size(50, 17);
-            this.StatsBox.TabIndex = 1;
             this.StatsBox.Text = "Stats";
-            this.StatsBox.UseVisualStyleBackColor = true;
             this.StatsBox.CheckedChanged += new System.EventHandler(this.StatsBox_CheckedChanged);
             // 
             // TopChampsBox
             // 
-            this.TopChampsBox.AutoSize = true;
-            this.TopChampsBox.Checked = true;
-            this.TopChampsBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TopChampsBox.Location = new System.Drawing.Point(6, 65);
             this.TopChampsBox.Name = "TopChampsBox";
             this.TopChampsBox.Size = new System.Drawing.Size(86, 17);
-            this.TopChampsBox.TabIndex = 2;
             this.TopChampsBox.Text = "Top Champs";
-            this.TopChampsBox.UseVisualStyleBackColor = true;
             this.TopChampsBox.CheckedChanged += new System.EventHandler(this.TopChampsBox_CheckedChanged);
+			// 
+			// LeagueInfoBox
+			// 
+			this.LeagueInfoBox.Name = "LeagueInfoBox";
+			this.LeagueInfoBox.Size = new System.Drawing.Size(86, 17);
+			this.LeagueInfoBox.Text = "League Info";
+			this.LeagueInfoBox.CheckedChanged += new System.EventHandler(this.LeagueInfoBox_CheckedChanged);
             // 
             // MainForm
             // 
@@ -766,7 +768,7 @@ namespace LoLNotes.Gui
         private System.Windows.Forms.CheckBox TopChampsBox;
         private System.Windows.Forms.CheckBox StatsBox;
         private System.Windows.Forms.CheckBox RecentGamesBox;
-
+		private System.Windows.Forms.CheckBox LeagueInfoBox;
     }
 }
 

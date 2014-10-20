@@ -318,6 +318,7 @@ namespace LoLNotes.Gui
 			TopChampsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.TopChamps) != 0;
 			StatsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.Stats) != 0;
 			RecentGamesBox.Checked = (Settings.LoadWhatData & LoadDataEnum.RecentGames) != 0;
+			LeagueInfoBox.Checked = (Settings.LoadWhatData & LoadDataEnum.LeagueInfo) != 0;
 		}
 
 		readonly object settingslock = new object();
@@ -1356,6 +1357,14 @@ namespace LoLNotes.Gui
 				Settings.LoadWhatData |= LoadDataEnum.TopChamps;
 			else
 				Settings.LoadWhatData &= ~LoadDataEnum.TopChamps;
+		}
+
+		private void LeagueInfoBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (LeagueInfoBox.Checked)
+				Settings.LoadWhatData |= LoadDataEnum.LeagueInfo;
+			else
+				Settings.LoadWhatData &= ~LoadDataEnum.LeagueInfo;
 		}
 	}
 }
