@@ -565,6 +565,11 @@ namespace LoLNotes.Gui
 				return;
 			}
 
+			if (lobby.GameState == "TERMINATED")
+			{
+				return;
+			}
+
 			if (CurrentGame == null || CurrentGame.Id != lobby.Id)
 			{
 				CurrentGame = lobby;
