@@ -271,16 +271,16 @@ namespace LoLNotes.Gui.Controls
 			{
 				var sc = new StatsControl { Dock = DockStyle.Fill, Tag = "Stats" };
 
-				var nameMap = new Dictionary<string, string>()
-				{
-					{"RankedSolo5x5", "RANKED_SOLO_5x5"},
-					{"RankedTeam5x5", "RANKED_TEAM_5x5"},
-					{"RankedTeam3x3", "RANKED_TEAM_3x3"}
-				};
-
 				Dictionary<string, object> queueInfo = null;
 				if (leagueInfo != null)
 				{
+					var nameMap = new Dictionary<string, string>()
+					{
+						{"RankedSolo5x5", "RANKED_SOLO_5x5"},
+						{"RankedTeam5x5", "RANKED_TEAM_5x5"},
+						{"RankedTeam3x3", "RANKED_TEAM_3x3"}
+					};
+
 					string queueType;
 					if (nameMap.TryGetValue(stat.PlayerStatSummaryTypeString, out queueType))
 					{
