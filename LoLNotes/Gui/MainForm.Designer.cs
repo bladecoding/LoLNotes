@@ -630,16 +630,34 @@ namespace LoLNotes.Gui
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Load What Stats";
             // Shared properties between checkboxes
-			System.Windows.Forms.CheckBox[] checkBoxes = { RecentGamesBox, StatsBox, TopChampsBox, LeagueInfoBox };
-			for(int i=0; i<checkBoxes.Length; i++)
-			{
-				checkBoxes[i].AutoSize = true;
-				checkBoxes[i].Checked = true;
-				checkBoxes[i].CheckState = System.Windows.Forms.CheckState.Checked;
-				checkBoxes[i].Location = new System.Drawing.Point(6, 19 + 23*i);
-				checkBoxes[i].UseVisualStyleBackColor = true;
-				checkBoxes[i].TabIndex = i;
-			}
+
+			RecentGamesBox.AutoSize = true;
+			RecentGamesBox.Checked = true;
+			RecentGamesBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			RecentGamesBox.Location = new System.Drawing.Point(6, 42);
+			RecentGamesBox.UseVisualStyleBackColor = true;
+			RecentGamesBox.TabIndex = 0;
+
+			StatsBox.AutoSize = true;
+			StatsBox.Checked = true;
+			StatsBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			StatsBox.Location = new System.Drawing.Point(6, 65);
+			StatsBox.UseVisualStyleBackColor = true;
+			StatsBox.TabIndex = 1;
+
+			TopChampsBox.AutoSize = true;
+			TopChampsBox.Checked = true;
+			TopChampsBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			TopChampsBox.Location = new System.Drawing.Point(6, 88);
+			TopChampsBox.UseVisualStyleBackColor = true;
+			TopChampsBox.TabIndex = 2;
+
+			LeagueInfoBox.AutoSize = true;
+			LeagueInfoBox.Checked = true;
+			LeagueInfoBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			LeagueInfoBox.Location = new System.Drawing.Point(6, 111);
+			LeagueInfoBox.UseVisualStyleBackColor = true;
+			LeagueInfoBox.TabIndex = 3;
 			// 
             // RecentGamesBox
             //
