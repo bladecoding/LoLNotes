@@ -107,39 +107,44 @@ namespace LoLNotes.Util
 		{
 			while (CheckThread != null)
 			{
-				if (CurrentProcess == null || CurrentProcess.HasExited)
+				try
 				{
-					IsInjected = false;
-					CurrentProcess = Process.GetProcessesByName(ProcessName).FirstOrDefault();
-					if (CurrentProcess != null)
+					if (CurrentProcess == null || CurrentProcess.HasExited)
 					{
-						try
+						IsInjected = false;
+						CurrentProcess = Process.GetProcessesByName(ProcessName).FirstOrDefault();
+						if (CurrentProcess != null)
 						{
-							Inject();
-							IsInjected = true;
-						}
-						catch (FileNotFoundException fe)
-						{
-							//LoLClient does not have ws2_32 yet. Lets try again in 1 second.
-							StaticLogger.Trace(fe.Message);
-							CurrentProcess = null;
-							Thread.Sleep(1000);
-							continue;
-						}
-						catch (WarningException we)
-						{
-							IsInjected = true;
-							StaticLogger.Info(we.Message);
-						}
-						catch (NotSupportedException nse)
-						{
-							StaticLogger.Warning(nse);
-						}
-						catch (Exception ex)
-						{
-							StaticLogger.Error(new Exception(string.Format("{0} [{1}]", ex.Message, From), ex));
+							try
+							{
+								Inject();
+								IsInjected = true;
+							}
+							catch (FileNotFoundException fe)
+							{
+								//LoLClient does not have ws2_32 yet. Lets try again in 1 second.
+								StaticLogger.Trace(fe.Message);
+								CurrentProcess = null;
+								Thread.Sleep(1000);
+								continue;
+							}
+							catch (WarningException we)
+							{
+								IsInjected = true;
+								StaticLogger.Info(we.Message);
+							}
+							catch (NotSupportedException nse)
+							{
+								StaticLogger.Warning(nse);
+							}
+							catch (Exception ex)
+							{
+								StaticLogger.Error(new Exception(string.Format("{0} [{1}]", ex.Message, From), ex));
+							}
 						}
 					}
+				}catch(System.ComponentModel.Win32Exception ex){
+					StaticLogger.Error(new Exception(string.Format("Did not launch in administrator mode. {0} [{1}]", ex.Message, From), ex));
 				}
 				Thread.Sleep(500);
 			}
