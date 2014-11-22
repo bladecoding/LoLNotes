@@ -284,7 +284,7 @@
     <Content Include="Content\Certificates\EUN_prod.eun1.lol.riotgames.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Certificates\NA_prod.na1.lol.riotgames.com.p12">
+    <Content Include="Content\Certificates\NA_prod.na2.lol.riotgames.com.p12">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Certificates\SINGAPORE GARENA_prod.lol.garenanow.com.p12" />
