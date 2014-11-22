@@ -1,3 +1,3 @@
-[assembly: AssemblyCommit("commit c520ccd111c1eaaf2f73ff08d81e6bcc80dd21a2\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 22 05:10:49 2014 -0800\n\n    NA certificate change in csproj\n", "c520ccd111c1eaaf2f73ff08d81e6bcc80dd21a2", "SebastienGllmt", "  Sat Nov 22 05:10:49 2014 -0800", "NA certificate change in csproj", "SebastienGllmt@gmail.com")]
+[assembly: AssemblyCommit("commit 7ef731b52a99bd6769378da71c5f2e9d75998e6d\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 22 05:25:49 2014 -0800\n\n    Admin mode error message now appears in logs\n", "7ef731b52a99bd6769378da71c5f2e9d75998e6d", "SebastienGllmt", "  Sat Nov 22 05:25:49 2014 -0800", "Admin mode error message now appears in logs", "SebastienGllmt@gmail.com")]
 
 								
