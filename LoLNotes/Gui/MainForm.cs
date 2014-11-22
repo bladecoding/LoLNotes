@@ -172,6 +172,16 @@ namespace LoLNotes.Gui
 				var idx = nameNoExt.IndexOf('_');
 				var name = idx != -1 ? nameNoExt.Substring(0, idx) : nameNoExt;
 				var host = idx != -1 ? nameNoExt.Substring(idx + 1) : nameNoExt;
+
+				// We want to replace old NA certificates with the new one. 
+				// We do this by guaranteeing that if the new certificate exists, it will be placed in the dictionary and will not be replaced by any other element
+				if (ret.ContainsKey("NA"))
+				{
+					if (nameNoExt != "NA_prod.na2.lol.riotgames.com")
+					{
+						continue;
+					}
+				}
 				ret[name] = new CertificateHolder(host, File.ReadAllBytes(file.FullName));
 			}
 
