@@ -634,28 +634,28 @@ namespace LoLNotes.Gui
 			RecentGamesBox.AutoSize = true;
 			RecentGamesBox.Checked = true;
 			RecentGamesBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			RecentGamesBox.Location = new System.Drawing.Point(6, 42);
+			RecentGamesBox.Location = new System.Drawing.Point(6, 22);
 			RecentGamesBox.UseVisualStyleBackColor = true;
 			RecentGamesBox.TabIndex = 0;
 
 			StatsBox.AutoSize = true;
 			StatsBox.Checked = true;
 			StatsBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			StatsBox.Location = new System.Drawing.Point(6, 65);
+			StatsBox.Location = new System.Drawing.Point(6, 45);
 			StatsBox.UseVisualStyleBackColor = true;
 			StatsBox.TabIndex = 1;
 
 			TopChampsBox.AutoSize = true;
 			TopChampsBox.Checked = true;
 			TopChampsBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			TopChampsBox.Location = new System.Drawing.Point(6, 88);
+			TopChampsBox.Location = new System.Drawing.Point(6, 68);
 			TopChampsBox.UseVisualStyleBackColor = true;
 			TopChampsBox.TabIndex = 2;
 
 			LeagueInfoBox.AutoSize = true;
 			LeagueInfoBox.Checked = true;
 			LeagueInfoBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			LeagueInfoBox.Location = new System.Drawing.Point(6, 111);
+			LeagueInfoBox.Location = new System.Drawing.Point(6, 91);
 			LeagueInfoBox.UseVisualStyleBackColor = true;
 			LeagueInfoBox.TabIndex = 3;
 			// 
