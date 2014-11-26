@@ -64,6 +64,10 @@ namespace LoLNotes.Util
 		/// Called when the IsInjected status changes.
 		/// </summary>
 		public event EventHandler Injected;
+		/// <summary>
+		/// Called when an error occurrs in the process injection
+		/// </summary>
+		public event EventHandler ErrorOccurred;
 
 		bool isinjected;
 		public bool IsInjected
@@ -76,6 +80,32 @@ namespace LoLNotes.Util
 					isinjected = value;
 					if (Injected != null)
 						Injected(this, new EventArgs());
+				}
+			}
+		}
+
+
+		private string errorMessage;
+		private object errorLock = new object();
+		public string ErrorMessage
+		{
+			get {
+				lock (errorLock)
+				{
+					string msg = errorMessage;
+					errorMessage = "";
+					return msg;
+				}
+			}
+			protected set
+			{
+				lock (errorLock)
+				{
+					errorMessage = value;
+					if (!string.IsNullOrEmpty(value) && ErrorOccurred != null)
+					{
+						ErrorOccurred(this, new EventArgs());
+					}
 				}
 			}
 		}
@@ -105,46 +135,65 @@ namespace LoLNotes.Util
 
 		protected void CheckLoop()
 		{
+			bool showedError = false;
+
 			while (CheckThread != null)
 			{
-				try
+				if (CurrentProcess != null)
 				{
-					if (CurrentProcess == null || CurrentProcess.HasExited)
+					try
 					{
-						IsInjected = false;
-						CurrentProcess = Process.GetProcessesByName(ProcessName).FirstOrDefault();
-						if (CurrentProcess != null)
+						if (CurrentProcess.HasExited)
 						{
-							try
-							{
-								Inject();
-								IsInjected = true;
-							}
-							catch (FileNotFoundException fe)
-							{
-								//LoLClient does not have ws2_32 yet. Lets try again in 1 second.
-								StaticLogger.Trace(fe.Message);
-								CurrentProcess = null;
-								Thread.Sleep(1000);
-								continue;
-							}
-							catch (WarningException we)
-							{
-								IsInjected = true;
-								StaticLogger.Info(we.Message);
-							}
-							catch (NotSupportedException nse)
-							{
-								StaticLogger.Warning(nse);
-							}
-							catch (Exception ex)
-							{
-								StaticLogger.Error(new Exception(string.Format("{0} [{1}]", ex.Message, From), ex));
-							}
+							CurrentProcess = null;
+							IsInjected = false; // update icon
 						}
 					}
-				}catch(System.ComponentModel.Win32Exception ex){
-					StaticLogger.Error(new Exception(string.Format("Did not launch in administrator mode. {0} [{1}]", ex.Message, From), ex));
+					catch (Exception ex)
+					{
+						if (!showedError)
+						{
+							ErrorMessage = "Privilege of LoLNotes must be greater or equal to that of the LoLClient.\n\nSituations where LoLClient is run as admin and LoLNotes is not are no good.";
+							showedError = true;
+						}
+						StaticLogger.Error(ex);
+						CurrentProcess = null;
+						IsInjected = false; // update icon
+					}
+				}
+
+				if (CurrentProcess == null)
+				{
+					CurrentProcess = Process.GetProcessesByName(ProcessName).FirstOrDefault();
+					if (CurrentProcess != null)
+					{
+						try
+						{
+							Inject();
+							IsInjected = true;
+						}
+						catch (FileNotFoundException fe)
+						{
+							//LoLClient does not have ws2_32 yet. Lets try again in 1 second.
+							StaticLogger.Trace(fe.Message);
+							CurrentProcess = null;
+							Thread.Sleep(1000);
+							continue;
+						}
+						catch (WarningException we)
+						{
+							IsInjected = true;
+							StaticLogger.Info(we.Message);
+						}
+						catch (NotSupportedException nse)
+						{
+							StaticLogger.Warning(nse);
+						}
+						catch (Exception ex)
+						{
+							StaticLogger.Error(new Exception(string.Format("{0} [{1}]", ex.Message, From), ex));
+						}
+					}
 				}
 				Thread.Sleep(500);
 			}

@@ -1,3 +1,3 @@
-[assembly: AssemblyCommit("commit 7ef731b52a99bd6769378da71c5f2e9d75998e6d\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 22 05:25:49 2014 -0800\n\n    Admin mode error message now appears in logs\n", "7ef731b52a99bd6769378da71c5f2e9d75998e6d", "SebastienGllmt", "  Sat Nov 22 05:25:49 2014 -0800", "Admin mode error message now appears in logs", "SebastienGllmt@gmail.com")]
+[assembly: AssemblyCommit("commit daf6def0c8327a4f6b57aa6cc27e8195b0f3f809\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 22 14:02:23 2014 -0800\n\n    new screenshot\n", "daf6def0c8327a4f6b57aa6cc27e8195b0f3f809", "SebastienGllmt", "  Sat Nov 22 14:02:23 2014 -0800", "new screenshot", "SebastienGllmt@gmail.com")]
 
 								
