@@ -131,6 +131,7 @@ namespace LoLNotes.Gui
 
 			Connection.Connected += Connection_Connected;
 			Injector.Injected += Injector_Injected;
+			Injector.ErrorOccurred += Injector_ErrorOccurred;
 			Reader.ObjectRead += Reader_ObjectRead;
 
 			//Recorder must be initiated after Reader.ObjectRead as
@@ -306,6 +307,16 @@ namespace LoLNotes.Gui
 			catch (Exception ex)
 			{
 				StaticLogger.Warning(ex);
+			}
+		}
+
+		void Injector_ErrorOccurred(object sender, EventArgs e)
+		{
+			string err = Injector.ErrorMessage;
+
+			if (!string.IsNullOrEmpty(err))
+			{
+				MessageBox.Show(err);
 			}
 		}
 
