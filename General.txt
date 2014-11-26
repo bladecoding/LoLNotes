@@ -5,12 +5,19 @@
 	},
 	"Release":	
 	{
-		"ReleaseName": "o",
-		"Version": "1.1",
-		"Link": "https://github.com/bladecoding/LoLNotes/releases/tag/1.1o"
+		"ReleaseName": "",
+		"Version": "1.2",
+		"Link": "https://github.com/SebastienGllmt/LoLNotes/releases/tag/1.2"
 	},
 	"Changes":	
 	{
+		"1.2":
+		[
+			"Fixed certificate issue so that LoLNotes works on the new season.",
+			"Now shows ranking for players",
+			"Now get more feedback about whether or not the process is injected",
+			"No longer unloads enemy team at the end of the game",		
+		],
 		"1.1o":
 		[
 			"Fixed unicode broadcast messages breaking lolnotes.",
