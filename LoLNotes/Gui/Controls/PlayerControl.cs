@@ -267,6 +267,13 @@ namespace LoLNotes.Gui.Controls
 
 			RemoveAll(p => (p.Tag as string) == "Stats");
 
+			var nameMap = new Dictionary<string, string>()
+			{
+				{"RankedSolo5x5", "RANKED_SOLO_5x5"},
+				{"RankedTeam5x5", "RANKED_TEAM_5x5"},
+				{"RankedTeam3x3", "RANKED_TEAM_3x3"}
+			};
+
 			foreach (var stat in stats.PlayerStatSummaries.PlayerStatSummarySet)
 			{
 				var sc = new StatsControl { Dock = DockStyle.Fill, Tag = "Stats" };
@@ -274,13 +281,6 @@ namespace LoLNotes.Gui.Controls
 				Dictionary<string, object> queueInfo = null;
 				if (leagueInfo != null)
 				{
-					var nameMap = new Dictionary<string, string>()
-					{
-						{"RankedSolo5x5", "RANKED_SOLO_5x5"},
-						{"RankedTeam5x5", "RANKED_TEAM_5x5"},
-						{"RankedTeam3x3", "RANKED_TEAM_3x3"}
-					};
-
 					string queueType;
 					if (nameMap.TryGetValue(stat.PlayerStatSummaryTypeString, out queueType))
 					{
