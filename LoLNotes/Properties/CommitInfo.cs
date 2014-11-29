@@ -1,3 +1,3 @@
-[assembly: AssemblyCommit("commit daf6def0c8327a4f6b57aa6cc27e8195b0f3f809\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 22 14:02:23 2014 -0800\n\n    new screenshot\n", "daf6def0c8327a4f6b57aa6cc27e8195b0f3f809", "SebastienGllmt", "  Sat Nov 22 14:02:23 2014 -0800", "new screenshot", "SebastienGllmt@gmail.com")]
+[assembly: AssemblyCommit("commit 854bc8f0be8d37356ca7dc1dedc6c7d48a22d4d9\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 29 05:34:06 2014 -0800\n\n    Removed unused button\n", "854bc8f0be8d37356ca7dc1dedc6c7d48a22d4d9", "SebastienGllmt", "  Sat Nov 29 05:34:06 2014 -0800", "Removed unused button", "SebastienGllmt@gmail.com")]
 
 								

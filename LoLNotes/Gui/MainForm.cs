@@ -81,7 +81,7 @@ namespace LoLNotes.Gui
 		SummonerData SelfSummoner;
 
 		MainSettings Settings { get { return MainSettings.Instance; } }
-
+		
 		public MainForm()
 		{
 			InitializeComponent();
@@ -582,6 +582,8 @@ namespace LoLNotes.Gui
 				BeginInvoke(new Action<GameDTO>(UpdateLists), lobby);
 				return;
 			}
+
+			statusMask.Text = lobby.StatusOfParticipants;
 
 			if (lobby.GameState == "TERMINATED")
 			{
