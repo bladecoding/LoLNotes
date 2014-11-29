@@ -45,7 +45,6 @@ namespace LoLNotes.Gui
             this.GameTab = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -177,7 +176,6 @@ namespace LoLNotes.Gui
             this.splitContainer2.Panel1.AutoScroll = true;
             this.splitContainer2.Panel1.AutoScrollMinSize = new System.Drawing.Size(500, 836);
             this.splitContainer2.Panel1.Controls.Add(this.comboBox1);
-            this.splitContainer2.Panel1.Controls.Add(this.button1);
             this.splitContainer2.Panel1.Controls.Add(this.teamControl1);
             // 
             // splitContainer2.Panel2
@@ -203,17 +201,6 @@ namespace LoLNotes.Gui
             this.comboBox1.Sorted = true;
             this.comboBox1.TabIndex = 2;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(221, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // PlayerEditStrip
             // 
@@ -768,7 +755,6 @@ namespace LoLNotes.Gui
 		private System.Windows.Forms.ToolStripMenuItem dumpToolStripMenuItem;
 		private System.Windows.Forms.TreeView CallTree;
         private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.TabPage NewsTab;
 		private System.Windows.Forms.WebBrowser NewsBrowser;
 		private System.Windows.Forms.CheckBox LeaveCheck;

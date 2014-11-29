@@ -154,10 +154,6 @@ namespace LoLNotes.Gui
 			TrackingQueue.Process += TrackingQueue_Process;
 			launcher.ProcessFound += launcher_ProcessFound;
 
-#if DEBUG
-			button1.Visible = true;
-#endif
-
 			StaticLogger.Info("Startup Completed");
 		}
 
@@ -1313,47 +1309,6 @@ namespace LoLNotes.Gui
 				}
 			}
 			comboBox1.SelectedIndex = -1;
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			var cmd = new PlayerCommands(Connection);
-			var summoner = cmd.GetPlayerByName(SelfSummoner.Username);
-			if (summoner != null)
-			{
-				cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
-				cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
-				cmd.GetRecentGames(summoner.AccountId);
-			}
-
-
-			//var cmd = new PlayerCommands(Connection);
-			//var obj = cmd.InvokeServiceUnknown(
-			//    "gameService",
-			//    "quitGame"
-			//);
-
-			//if (Champions == null)
-			//    return;
-
-			//var sorted = Champions.OrderBy(c => ChampNames.Get(c.ChampionId)).ToList();
-
-			//var cmd = new PlayerCommands(Connection);
-			//for (int i = 0; i < sorted.Count; i++)
-			//{
-			//    if (sorted[i].FreeToPlay || sorted[i].Owned)
-			//    {
-			//        var id = sorted[i].ChampionId;
-			//        //ThreadPool.QueueUserWorkItem(delegate
-			//        //{
-			//        var obj = cmd.InvokeServiceUnknown(
-			//            "gameService",
-			//            "selectChampion",
-			//            id
-			//        );
-			//        //});
-			//    }
-			//}
 		}
 
 		private void RecentGamesBox_CheckedChanged(object sender, EventArgs e)
