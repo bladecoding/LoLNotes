@@ -40,6 +40,13 @@ namespace LoLNotes.Messages.GameLobby
             BaseObject.SetFields(this, obj);
         }
 
+		[InternalName("statusOfParticipants")]
+		public string StatusOfParticipants
+		{
+			get;
+			set;
+		}
+
         [InternalName("maxNumPlayers")]
         public int MaxPlayers
         {

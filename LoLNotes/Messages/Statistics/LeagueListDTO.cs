@@ -21,43 +21,40 @@ THE SOFTWARE.
 */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using LoLNotes.Messages.Statistics;
-using LoLNotes.Messages.Summoner;
+using FluorineFx;
+using FluorineFx.AMF3;
+using LoLNotes.Flash;
 
-namespace LoLNotes.Gui.Controls
+namespace LoLNotes.Messages.Summoner
 {
-	public partial class StatsControl : UserControl
+	[Message(".LeagueListDTO")]
+	public class LeagueListDTO : MessageObject
 	{
-		protected readonly Dictionary<Control, string> Prepends = new Dictionary<Control, string>();
-		public StatsControl()
+		public LeagueListDTO(ASObject obj)
+			: base(obj)
 		{
-			InitializeComponent();
-
-			foreach (Control control in flowLayoutPanel1.Controls)
-				Prepends.Add(control, control.Text);
+			BaseObject.SetFields(this, obj);
 		}
 
-		public void SetStatSummary(PlayerStatSummary stat, string ranking)
-		{
-			var values = new Dictionary<Control, string>()
-			{
-				{GameType, stat.PlayerStatSummaryType},
-				{Ranking, ranking},
-				{Wins, stat.Wins.ToString()},
-				{Losses, stat.Losses.ToString()},
-				{Leaves, stat.Leaves.ToString()}
-			};
+		[InternalName("queue")]
+		public String Queue { get; set; }
 
-			foreach (var label in values)
-			{
-				label.Key.Text = Prepends[label.Key] + label.Value;
-			}
-		}
+		[InternalName("name")]
+		public String Name { get; set; }
+
+		[InternalName("tier")]
+		public String Tier { get; set; }
+
+		[InternalName("requestorsRank")]
+		public String RequestorsRank { get; set; }
+
+		[InternalName("entries")]
+		public ArrayCollection Entries { get; set; }
+
+		[InternalName("requestorsName")]
+		public String RequestorsName { get; set; }
+
 	}
 }

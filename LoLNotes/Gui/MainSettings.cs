@@ -40,12 +40,12 @@ namespace LoLNotes.Gui
 				return _instance ?? (_instance = new MainSettings());
 			}
 		}
-	
+
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler Loaded;
 
-        string _region;
-        public string Region
+		string _region;
+		public string Region
 		{
 			get
 			{
@@ -109,48 +109,48 @@ namespace LoLNotes.Gui
 				OnPropertyChanged("DeleteLeaveBuster");
 			}
 		}
-        string _moduleresolver;
-        public string ModuleResolver
-        {
-            get
-            {
-                return _moduleresolver;
-            }
-            set
-            {
-                _moduleresolver = value;
-                OnPropertyChanged("ModuleResolver");
-            }
-        }
+		string _moduleresolver;
+		public string ModuleResolver
+		{
+			get
+			{
+				return _moduleresolver;
+			}
+			set
+			{
+				_moduleresolver = value;
+				OnPropertyChanged("ModuleResolver");
+			}
+		}
 
-        string _defaultgametab;
-        public string DefaultGameTab
-        {
-            get
-            {
-                return _defaultgametab;
-            }
-            set
-            {
-                _defaultgametab = value;
-                OnPropertyChanged("DefaultGameTab");
-            }
-        }
+		string _defaultgametab;
+		public string DefaultGameTab
+		{
+			get
+			{
+				return _defaultgametab;
+			}
+			set
+			{
+				_defaultgametab = value;
+				OnPropertyChanged("DefaultGameTab");
+			}
+		}
 
 
-        LoadDataEnum _loadwhatdata;
-        public LoadDataEnum LoadWhatData
-        {
-            get
-            {
-                return _loadwhatdata;
-            }
-            set
-            {
-                _loadwhatdata = value;
-                OnPropertyChanged("LoadWhatData");
-            }
-        }
+		LoadDataEnum _loadwhatdata;
+		public LoadDataEnum LoadWhatData
+		{
+			get
+			{
+				return _loadwhatdata;
+			}
+			set
+			{
+				_loadwhatdata = value;
+				OnPropertyChanged("LoadWhatData");
+			}
+		}
 
 		public MainSettings()
 		{
@@ -160,9 +160,9 @@ namespace LoLNotes.Gui
 			_devmode = false;
 			_deleteleavebuster = true;
 			_moduleresolver = "";
-            _defaultgametab = "Recent";
-            _loadwhatdata = LoadDataEnum.All;
-		}                 
+			_defaultgametab = "Recent";
+			_loadwhatdata = LoadDataEnum.LeagueInfo | LoadDataEnum.GrayUnranked | LoadDataEnum.RecentGames;
+		}
 
 		public bool Save(string file)
 		{

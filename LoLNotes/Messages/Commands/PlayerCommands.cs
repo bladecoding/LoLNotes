@@ -77,7 +77,7 @@ namespace LoLNotes.Messages.Commands
 				var errordetail = error != null && error.faultDetail != null ? string.Format(" [{0}]", error.faultDetail) : "";
 				var errorstr = error != null && error.faultString != null ? string.Format(", {0}", error.faultString) : "";
 				StaticLogger.Warning(string.Format(
-					"{0} returned an error{1}{2}", 
+					"{0} returned an error{1}{2}",
 					endpoint,
 					errorstr,
 					errordetail
@@ -177,6 +177,15 @@ namespace LoLNotes.Messages.Commands
 			return (T)obj;
 		}
 
+		public SummonerLeaguesDTO getAllLeaguesForPlayer(Int64 summonerId)
+		{
+			return InvokeService<SummonerLeaguesDTO>(
+				"leaguesServiceProxy",
+				"getAllLeaguesForPlayer",
+				summonerId
+			);
+		}
+
 		public PublicSummoner GetPlayerByName(string name)
 		{
 			return InvokeService<PublicSummoner>(
@@ -191,8 +200,7 @@ namespace LoLNotes.Messages.Commands
 			return InvokeService<PlayerLifetimeStats>(
 				"playerStatsService",
 				"retrievePlayerStatsByAccountId",
-				acctid,
-				"CURRENT"
+				acctid
 			);
 		}
 

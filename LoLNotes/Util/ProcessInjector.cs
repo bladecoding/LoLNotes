@@ -64,6 +64,10 @@ namespace LoLNotes.Util
 		/// Called when the IsInjected status changes.
 		/// </summary>
 		public event EventHandler Injected;
+		/// <summary>
+		/// Called when an error occurrs in the process injection
+		/// </summary>
+		public event EventHandler ErrorOccurred;
 
 		bool isinjected;
 		public bool IsInjected
@@ -76,6 +80,32 @@ namespace LoLNotes.Util
 					isinjected = value;
 					if (Injected != null)
 						Injected(this, new EventArgs());
+				}
+			}
+		}
+
+
+		private string errorMessage;
+		private object errorLock = new object();
+		public string ErrorMessage
+		{
+			get {
+				lock (errorLock)
+				{
+					string msg = errorMessage;
+					errorMessage = "";
+					return msg;
+				}
+			}
+			protected set
+			{
+				lock (errorLock)
+				{
+					errorMessage = value;
+					if (!string.IsNullOrEmpty(value) && ErrorOccurred != null)
+					{
+						ErrorOccurred(this, new EventArgs());
+					}
 				}
 			}
 		}
@@ -105,11 +135,35 @@ namespace LoLNotes.Util
 
 		protected void CheckLoop()
 		{
+			bool showedError = false;
+
 			while (CheckThread != null)
 			{
-				if (CurrentProcess == null || CurrentProcess.HasExited)
+				if (CurrentProcess != null)
 				{
-					IsInjected = false;
+					try
+					{
+						if (CurrentProcess.HasExited)
+						{
+							CurrentProcess = null;
+							IsInjected = false; // update icon
+						}
+					}
+					catch (Exception ex)
+					{
+						if (!showedError)
+						{
+							ErrorMessage = "Privilege of LoLNotes must be greater or equal to that of the LoLClient.\n\nSituations where LoLClient is run as admin and LoLNotes is not are no good.";
+							showedError = true;
+						}
+						StaticLogger.Error(ex);
+						CurrentProcess = null;
+						IsInjected = false; // update icon
+					}
+				}
+
+				if (CurrentProcess == null)
+				{
 					CurrentProcess = Process.GetProcessesByName(ProcessName).FirstOrDefault();
 					if (CurrentProcess != null)
 					{

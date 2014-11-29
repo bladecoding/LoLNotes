@@ -1,3 +1,3 @@
-[assembly: AssemblyCommit("commit 9471ae5aa9f9fc38b9e4ce46389895230e873771\nAuthor: Will <will@bladecoding.com>\nDate:   Sun Aug 19 01:04:24 2012 -0400\n\n    Changed GameIds/AccountIds/SummonerIds should be Int64s to prevent overflowing.\n", "9471ae5aa9f9fc38b9e4ce46389895230e873771", "Will", "  Sun Aug 19 01:04:24 2012 -0400", "Changed GameIds/AccountIds/SummonerIds should be Int64s to prevent overflowing.", "will@bladecoding.com")]
+[assembly: AssemblyCommit("commit 20444be5a0acead8c3fd59bb8416ea7f3e61f691\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 29 08:39:06 2014 -0800\n\n    Ability to gray out unranked games\n", "20444be5a0acead8c3fd59bb8416ea7f3e61f691", "SebastienGllmt", "  Sat Nov 29 08:39:06 2014 -0800", "Ability to gray out unranked games", "SebastienGllmt@gmail.com")]
 
 								

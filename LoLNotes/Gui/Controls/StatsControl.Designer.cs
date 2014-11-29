@@ -30,8 +30,7 @@
 		{
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.GameType = new System.Windows.Forms.Label();
-			this.MaxElo = new System.Windows.Forms.Label();
-			this.Elo = new System.Windows.Forms.Label();
+			this.Ranking = new System.Windows.Forms.Label();
 			this.Wins = new System.Windows.Forms.Label();
 			this.Losses = new System.Windows.Forms.Label();
 			this.Leaves = new System.Windows.Forms.Label();
@@ -42,8 +41,7 @@
 			// 
 			this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
 			this.flowLayoutPanel1.Controls.Add(this.GameType);
-			this.flowLayoutPanel1.Controls.Add(this.MaxElo);
-			this.flowLayoutPanel1.Controls.Add(this.Elo);
+			this.flowLayoutPanel1.Controls.Add(this.Ranking);
 			this.flowLayoutPanel1.Controls.Add(this.Wins);
 			this.flowLayoutPanel1.Controls.Add(this.Losses);
 			this.flowLayoutPanel1.Controls.Add(this.Leaves);
@@ -64,25 +62,15 @@
 			this.GameType.TabIndex = 5;
 			this.GameType.Text = "Type: ";
 			// 
-			// MaxElo
+			// Ranking
 			// 
-			this.MaxElo.AutoSize = true;
-			this.MaxElo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.MaxElo.Location = new System.Drawing.Point(3, 13);
-			this.MaxElo.Name = "MaxElo";
-			this.MaxElo.Size = new System.Drawing.Size(60, 13);
-			this.MaxElo.TabIndex = 0;
-			this.MaxElo.Text = "Max Elo: ";
-			// 
-			// Elo
-			// 
-			this.Elo.AutoSize = true;
-			this.Elo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Elo.Location = new System.Drawing.Point(3, 26);
-			this.Elo.Name = "Elo";
-			this.Elo.Size = new System.Drawing.Size(33, 13);
-			this.Elo.TabIndex = 1;
-			this.Elo.Text = "Elo: ";
+			this.Ranking.AutoSize = true;
+			this.Ranking.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Ranking.Location = new System.Drawing.Point(3, 26);
+			this.Ranking.Name = "Ranking";
+			this.Ranking.Size = new System.Drawing.Size(33, 13);
+			this.Ranking.TabIndex = 1;
+			this.Ranking.Text = "Ranking: ";
 			// 
 			// Wins
 			// 
@@ -131,8 +119,7 @@
 		#endregion
 
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-		private System.Windows.Forms.Label MaxElo;
-		private System.Windows.Forms.Label Elo;
+		private System.Windows.Forms.Label Ranking;
 		private System.Windows.Forms.Label Wins;
 		private System.Windows.Forms.Label Losses;
 		private System.Windows.Forms.Label Leaves;

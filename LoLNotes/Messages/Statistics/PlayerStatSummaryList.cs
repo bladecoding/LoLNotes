@@ -41,7 +41,7 @@ namespace LoLNotes.Messages.Statistics
 			if (obj == null)
 				return;
 
-			foreach(var ao in obj)
+			foreach (var ao in obj)
 				Add(new PlayerStatSummary(ao as ASObject));
 		}
 	}

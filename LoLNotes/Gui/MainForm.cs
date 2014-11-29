@@ -1,3 +1,26 @@
+using Db4objects.Db4o;
+using Db4objects.Db4o.Config;
+using Db4objects.Db4o.TA;
+using FluorineFx;
+using FluorineFx.AMF3;
+using FluorineFx.IO;
+using FluorineFx.Messaging.Messages;
+using FluorineFx.Messaging.Rtmp.Event;
+using LoLNotes.Gui.Controls;
+using LoLNotes.Messages.Account;
+using LoLNotes.Messages.Champion;
+using LoLNotes.Messages.Commands;
+using LoLNotes.Messages.GameLobby;
+using LoLNotes.Messages.GameLobby.Participants;
+using LoLNotes.Messages.GameStats;
+using LoLNotes.Messages.Readers;
+using LoLNotes.Properties;
+using LoLNotes.Proxy;
+using LoLNotes.Storage;
+using LoLNotes.Util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NotMissing.Logging;
 /*
 copyright (C) 2011-2012 by high828@gmail.com
 
@@ -32,31 +55,6 @@ using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Db4objects.Db4o;
-using Db4objects.Db4o.Config;
-using Db4objects.Db4o.TA;
-using FluorineFx;
-using FluorineFx.AMF3;
-using FluorineFx.IO;
-using FluorineFx.Messaging.Messages;
-using FluorineFx.Messaging.Rtmp.Event;
-using LoLNotes.Gui.Controls;
-using LoLNotes.Messages.Account;
-using LoLNotes.Messages.Champion;
-using LoLNotes.Messages.Commands;
-using LoLNotes.Messages.GameLobby;
-using LoLNotes.Messages.GameLobby.Participants;
-using LoLNotes.Messages.GameStats;
-using LoLNotes.Messages.Readers;
-using LoLNotes.Messages.Statistics;
-using LoLNotes.Messages.Summoner;
-using LoLNotes.Properties;
-using LoLNotes.Proxy;
-using LoLNotes.Storage;
-using LoLNotes.Util;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NotMissing.Logging;
 
 namespace LoLNotes.Gui
 {
@@ -66,7 +64,7 @@ namespace LoLNotes.Gui
 		const string SettingsFile = "settings.json";
 
 		readonly Dictionary<string, Icon> Icons;
-        readonly Dictionary<string, CertificateHolder> Certificates;
+		readonly Dictionary<string, CertificateHolder> Certificates;
 		readonly Dictionary<ProcessInjector.GetModuleFrom, RadioButton> ModuleResolvers;
 		readonly List<PlayerCache> PlayersCache = new List<PlayerCache>();
 		readonly ProcessQueue<string> TrackingQueue = new ProcessQueue<string>();
@@ -83,7 +81,7 @@ namespace LoLNotes.Gui
 		SummonerData SelfSummoner;
 
 		MainSettings Settings { get { return MainSettings.Instance; } }
-
+		
 		public MainForm()
 		{
 			InitializeComponent();
@@ -102,13 +100,13 @@ namespace LoLNotes.Gui
 				{"Green",  Icon.FromHandle(Resources.circle_green.GetHicon())},
 			};
 
-            Certificates = LoadCertificates(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Content/Certificates"));
-            if (Certificates.Count < 1)
-            {
-                MessageBox.Show("Unable to load any certificates");
-                Application.Exit();
-                return;
-            }
+			Certificates = LoadCertificates(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Content/Certificates"));
+			if (Certificates.Count < 1)
+			{
+				MessageBox.Show("Unable to load any certificates");
+				Application.Exit();
+				return;
+			}
 
 			ModuleResolvers = new Dictionary<ProcessInjector.GetModuleFrom, RadioButton>
 			{	 
@@ -133,6 +131,7 @@ namespace LoLNotes.Gui
 
 			Connection.Connected += Connection_Connected;
 			Injector.Injected += Injector_Injected;
+			Injector.ErrorOccurred += Injector_ErrorOccurred;
 			Reader.ObjectRead += Reader_ObjectRead;
 
 			//Recorder must be initiated after Reader.ObjectRead as
@@ -148,37 +147,43 @@ namespace LoLNotes.Gui
 			int idx = RegionList.Items.IndexOf(Settings.Region);
 			RegionList.SelectedIndex = idx != -1 ? idx : 0;	 //This ends up calling UpdateRegion so no reason to initialize the connection here.
 
-            DefaultGameTab.Text = Settings.DefaultGameTab;
+			DefaultGameTab.Text = Settings.DefaultGameTab;
 
 			Installer = new CertificateInstaller(Certificates.Select(c => c.Value.Certificate).ToArray());
 
 			TrackingQueue.Process += TrackingQueue_Process;
 			launcher.ProcessFound += launcher_ProcessFound;
 
-#if DEBUG
-			button1.Visible = true;
-#endif
-
 			StaticLogger.Info("Startup Completed");
 		}
 
-        Dictionary<string, CertificateHolder> LoadCertificates(string path)
-        {
-            var ret = new Dictionary<string, CertificateHolder>();
-            if (!Directory.Exists(path))
-                return ret;
+		Dictionary<string, CertificateHolder> LoadCertificates(string path)
+		{
+			var ret = new Dictionary<string, CertificateHolder>();
+			if (!Directory.Exists(path))
+				return ret;
 
-            foreach (var file in new DirectoryInfo(path).GetFiles("*.p12"))
-            {
-                var nameNoExt = Path.GetFileNameWithoutExtension(file.Name);
-                var idx = nameNoExt.IndexOf('_');
-                var name = idx != -1 ? nameNoExt.Substring(0, idx) : nameNoExt;
-                var host = idx != -1 ? nameNoExt.Substring(idx + 1) : nameNoExt;
-                ret[name] = new CertificateHolder(host, File.ReadAllBytes(file.FullName));
-            }
+			foreach (var file in new DirectoryInfo(path).GetFiles("*.p12"))
+			{
+				var nameNoExt = Path.GetFileNameWithoutExtension(file.Name);
+				var idx = nameNoExt.IndexOf('_');
+				var name = idx != -1 ? nameNoExt.Substring(0, idx) : nameNoExt;
+				var host = idx != -1 ? nameNoExt.Substring(idx + 1) : nameNoExt;
 
-            return ret;
-        }
+				// We want to replace old NA certificates with the new one. 
+				// We do this by guaranteeing that if the new certificate exists, it will be placed in the dictionary and will not be replaced by any other element
+				if (ret.ContainsKey("NA"))
+				{
+					if (nameNoExt != "NA_prod.na2.lol.riotgames.com")
+					{
+						continue;
+					}
+				}
+				ret[name] = new CertificateHolder(host, File.ReadAllBytes(file.FullName));
+			}
+
+			return ret;
+		}
 
 		void moduleresolvers_Click(object sender, EventArgs e)
 		{
@@ -241,7 +246,7 @@ namespace LoLNotes.Gui
 						}
 						catch (Exception ex)
 						{
-                            StaticLogger.Warning("LeaverBuster: Unable to read global.properties '" + filename + "'");
+							StaticLogger.Warning("LeaverBuster: Unable to read global.properties '" + filename + "'");
 							continue;
 						}
 					}
@@ -261,7 +266,7 @@ namespace LoLNotes.Gui
 							}
 							catch (Exception ex)
 							{
-                                StaticLogger.Warning("LeaverBuster: Unable to write global.properties '" + filename + "'");
+								StaticLogger.Warning("LeaverBuster: Unable to write global.properties '" + filename + "'");
 								continue;
 							}
 						}
@@ -301,6 +306,16 @@ namespace LoLNotes.Gui
 			}
 		}
 
+		void Injector_ErrorOccurred(object sender, EventArgs e)
+		{
+			string err = Injector.ErrorMessage;
+
+			if (!string.IsNullOrEmpty(err))
+			{
+				MessageBox.Show(err);
+			}
+		}
+
 		void Injector_Injected(object sender, EventArgs e)
 		{
 			if (Created)
@@ -317,9 +332,11 @@ namespace LoLNotes.Gui
 			if (mod.Value == null)
 				mod = ModuleResolvers.First();
 			mod.Value.Checked = true;
-            TopChampsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.TopChamps) != 0;
-            StatsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.Stats) != 0;
-            RecentGamesBox.Checked = (Settings.LoadWhatData & LoadDataEnum.RecentGames) != 0;
+			TopChampsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.TopChamps) != 0;
+			StatsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.Stats) != 0;
+			RecentGamesBox.Checked = (Settings.LoadWhatData & LoadDataEnum.RecentGames) != 0;
+			LeagueInfoBox.Checked = (Settings.LoadWhatData & LoadDataEnum.LeagueInfo) != 0;
+			GrayUnrankedBox.Checked = (Settings.LoadWhatData & LoadDataEnum.GrayUnranked) != 0;
 		}
 
 		readonly object settingslock = new object();
@@ -366,7 +383,7 @@ namespace LoLNotes.Gui
 			if (data == null)
 				return;
 			SetTitle(string.Format("v{0}{1}", data.Value<string>("Version"), data.Value<string>("ReleaseName")));
-            DownloadLink.Links.Add(0, DownloadLink.Text.Length + 1, data.Value<string>("Link"));
+			DownloadLink.Links.Add(0, DownloadLink.Text.Length + 1, data.Value<string>("Link"));
 		}
 
 		void SetChanges(JObject data)
@@ -407,12 +424,7 @@ namespace LoLNotes.Gui
 
 		void SetNews(JObject data)
 		{
-			if (data == null)
-				return;
-			NewsBrowser.Navigate("about:blank");
-			if (NewsBrowser.Document != null)
-				NewsBrowser.Document.Write(string.Empty);
-			NewsBrowser.DocumentText = data.Value<string>("html");
+			return;
 		}
 
 		void GetGeneral()
@@ -456,13 +468,13 @@ namespace LoLNotes.Gui
 
 		void LogException(Exception ex, bool track)
 		{
-            var log = string.Format(
-               "[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
-               Levels.Fatal.ToString().ToUpper(),
-               string.Format("{0} [{1}]", ex.Message, Parse.ToBase64(ex.ToString())),
-               DateTime.UtcNow);
-            LogToFile(log);
-            AddLogToList(log);
+			var log = string.Format(
+			   "[{0}] {1} ({2:MM/dd/yyyy HH:mm:ss.fff})",
+			   Levels.Fatal.ToString().ToUpper(),
+			   string.Format("{0} [{1}]", ex.Message, Parse.ToBase64(ex.ToString())),
+			   DateTime.UtcNow);
+			LogToFile(log);
+			AddLogToList(log);
 
 			if (track)
 				TrackingQueue.Enqueue(string.Format("error/{0}", Parse.ToBase64(ex.ToString())));
@@ -475,8 +487,8 @@ namespace LoLNotes.Gui
 					level.ToString().ToUpper(),
 					obj,
 					DateTime.UtcNow);
-            Task.Factory.StartNew(LogToFile, log, TaskCreationOptions.LongRunning);
-            AddLogToList(log);
+			Task.Factory.StartNew(LogToFile, log, TaskCreationOptions.LongRunning);
+			AddLogToList(log);
 		}
 
 		void OnLog(Levels level, object obj)
@@ -501,12 +513,12 @@ namespace LoLNotes.Gui
 		{
 			if (InvokeRequired)
 			{
-                BeginInvoke(new Action<string>(AddLogToList), log);
+				BeginInvoke(new Action<string>(AddLogToList), log);
 				return;
 			}
 			if (LogList.Items.Count > 1000)
 				LogList.Items.RemoveAt(0);
-            LogList.Items.Add(log);
+			LogList.Items.Add(log);
 			LogList.SelectedIndex = LogList.Items.Count - 1;
 			LogList.SelectedIndex = -1;
 		}
@@ -572,6 +584,13 @@ namespace LoLNotes.Gui
 				return;
 			}
 
+			statusMask.Text = lobby.StatusOfParticipants;
+
+			if (lobby.GameState == "TERMINATED")
+			{
+				return;
+			}
+
 			if (CurrentGame == null || CurrentGame.Id != lobby.Id)
 			{
 				CurrentGame = lobby;
@@ -604,12 +623,12 @@ namespace LoLNotes.Gui
 			var lists = new List<TeamControl> { teamControl1, teamControl2 };
 
 
-            //Load the opposite team first. Not currently useful with the way things are loaded.
-            if (SelfSummoner != null && lobby.TeamOne.Find(p => p is PlayerParticipant && ((PlayerParticipant)p).SummonerId == SelfSummoner.SummonerId) != null)
-            {
-                teams.Reverse();
-                lists.Reverse();
-            }
+			//Load the opposite team first. Not currently useful with the way things are loaded.
+			if (SelfSummoner != null && lobby.TeamOne.Find(p => p is PlayerParticipant && ((PlayerParticipant)p).SummonerId == SelfSummoner.SummonerId) != null)
+			{
+				teams.Reverse();
+				lists.Reverse();
+			}
 
 			for (int i = 0; i < lists.Count; i++)
 			{
@@ -641,7 +660,7 @@ namespace LoLNotes.Gui
 							plycontrol.SetLoading(true);
 							plycontrol.SetEmpty();
 							plycontrol.SetParticipant(ply);
-                            Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol), TaskCreationOptions.LongRunning);
+							Task.Factory.StartNew(() => LoadPlayer(ply, plycontrol), TaskCreationOptions.LongRunning);
 						}
 						else
 						{
@@ -682,14 +701,17 @@ namespace LoLNotes.Gui
 					return;
 
 
-                control.DefaultGameTab = Settings.DefaultGameTab;
+				control.DefaultGameTab = Settings.DefaultGameTab;
 				control.SetPlayer(ply.Player);
-                if (ply.Stats != null)
-				    control.SetStats(ply.Summoner, ply.Stats);
-                if (ply.RecentChamps != null)
-				    control.SetChamps(ply.RecentChamps);
-                if (ply.Games != null)
-				    control.SetGames(ply.Games);
+				control.SetLeagueInfo(ply.LeagueInfo);
+				if (ply.Summoner != null)
+					control.SetLevel(ply.Summoner.SummonerLevel);
+				if (ply.Stats != null)
+					control.SetStats(ply.Summoner, ply.LeagueInfo, ply.Stats);
+				if (ply.RecentChamps != null)
+					control.SetChamps(ply.RecentChamps);
+				if (ply.Games != null)
+					control.SetGames(ply.Games, ((Settings.LoadWhatData & LoadDataEnum.GrayUnranked) != 0));
 				control.SetSeen(ply.SeenCount);
 				control.SetLoading(false);
 
@@ -699,8 +721,8 @@ namespace LoLNotes.Gui
 					{
 						if (!comboBox1.Items.Contains(stat.PlayerStatSummaryType))
 							comboBox1.Items.Add(stat.PlayerStatSummaryType);
-                        if (!DefaultGameTab.Items.Contains(stat.PlayerStatSummaryType))
-                            DefaultGameTab.Items.Add(stat.PlayerStatSummaryType);
+						if (!DefaultGameTab.Items.Contains(stat.PlayerStatSummaryType))
+							DefaultGameTab.Items.Add(stat.PlayerStatSummaryType);
 					}
 				}
 			});
@@ -753,12 +775,15 @@ namespace LoLNotes.Gui
 					if (summoner != null)
 					{
 						ply.Summoner = summoner;
-                        if ((Settings.LoadWhatData & LoadDataEnum.Stats) != 0)
-						    ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
-                        if ((Settings.LoadWhatData & LoadDataEnum.TopChamps) != 0)
-                            ply.RecentChamps = cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
-                        if ((Settings.LoadWhatData & LoadDataEnum.RecentGames) != 0) 
-                            ply.Games = cmd.GetRecentGames(summoner.AccountId);
+
+						if ((Settings.LoadWhatData & LoadDataEnum.LeagueInfo) != 0)
+							ply.LeagueInfo = cmd.getAllLeaguesForPlayer(summoner.SummonerId);
+						if ((Settings.LoadWhatData & LoadDataEnum.Stats) != 0)
+							ply.Stats = cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
+						if ((Settings.LoadWhatData & LoadDataEnum.TopChamps) != 0)
+							ply.RecentChamps = cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
+						if ((Settings.LoadWhatData & LoadDataEnum.RecentGames) != 0)
+							ply.Games = cmd.GetRecentGames(summoner.AccountId);
 					}
 					else
 					{
@@ -779,7 +804,7 @@ namespace LoLNotes.Gui
 			}
 			catch (Exception ex)
 			{
-				ply.LoadWait.Set(); //
+				ply.LoadWait.Set();
 				StaticLogger.Warning(ex);
 			}
 		}
@@ -799,8 +824,8 @@ namespace LoLNotes.Gui
 					Installer.Uninstall();
 				}
 				else
-                {
-                    Installer.Uninstall();
+				{
+					Installer.Uninstall();
 					Installer.Install();
 				}
 			}
@@ -858,7 +883,7 @@ namespace LoLNotes.Gui
 				plrcontrol.Player.NoteColor = Color.FromName(form.ColorBox.Items[form.ColorBox.SelectedIndex].ToString());
 			plrcontrol.SetPlayer(plrcontrol.Player); //Forces the notes/color to update
 
-            Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player), TaskCreationOptions.LongRunning);
+			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player), TaskCreationOptions.LongRunning);
 		}
 
 		private void clearToolStripMenuItem_Click(object sender, EventArgs e)
@@ -882,7 +907,7 @@ namespace LoLNotes.Gui
 			plrcontrol.Player.NoteColor = default(Color);
 			plrcontrol.SetPlayer(plrcontrol.Player); //Forces the notes/color to update
 
-            Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player), TaskCreationOptions.LongRunning);
+			Task.Factory.StartNew(() => Recorder.CommitPlayer(plrcontrol.Player), TaskCreationOptions.LongRunning);
 		}
 
 		private void DownloadLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -893,7 +918,7 @@ namespace LoLNotes.Gui
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			SetTitle("(Checking)");
-            Task.Factory.StartNew(GetGeneral, TaskCreationOptions.LongRunning);
+			Task.Factory.StartNew(GetGeneral, TaskCreationOptions.LongRunning);
 			TrackingQueue.Enqueue("startup");
 
 			Settings_Loaded(this, new EventArgs());
@@ -948,10 +973,10 @@ namespace LoLNotes.Gui
 			Connection.ChangeRemote(cert.Domain, cert.Certificate);
 		}
 
-        private void DefaultGameTab_TextChanged(object sender, EventArgs e)
-        {
-            Settings.DefaultGameTab = DefaultGameTab.Text;
-        }
+		private void DefaultGameTab_TextChanged(object sender, EventArgs e)
+		{
+			Settings.DefaultGameTab = DefaultGameTab.Text;
+		}
 
 		private void ImportButton_Click(object sender, EventArgs e)
 		{
@@ -1289,69 +1314,44 @@ namespace LoLNotes.Gui
 			comboBox1.SelectedIndex = -1;
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void RecentGamesBox_CheckedChanged(object sender, EventArgs e)
 		{
-			var cmd = new PlayerCommands(Connection);
-			var summoner = cmd.GetPlayerByName(SelfSummoner.Username);
-			if (summoner != null)
-			{
-				cmd.RetrievePlayerStatsByAccountId(summoner.AccountId);
-				cmd.RetrieveTopPlayedChampions(summoner.AccountId, "CLASSIC");
-				cmd.GetRecentGames(summoner.AccountId);
-			}
+			if (RecentGamesBox.Checked)
+				Settings.LoadWhatData |= LoadDataEnum.RecentGames;
+			else
+				Settings.LoadWhatData &= ~LoadDataEnum.RecentGames;
+		}
 
+		private void StatsBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (StatsBox.Checked)
+				Settings.LoadWhatData |= LoadDataEnum.Stats;
+			else
+				Settings.LoadWhatData &= ~LoadDataEnum.Stats;
+		}
 
-			//var cmd = new PlayerCommands(Connection);
-			//var obj = cmd.InvokeServiceUnknown(
-			//    "gameService",
-			//    "quitGame"
-			//);
+		private void TopChampsBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (TopChampsBox.Checked)
+				Settings.LoadWhatData |= LoadDataEnum.TopChamps;
+			else
+				Settings.LoadWhatData &= ~LoadDataEnum.TopChamps;
+		}
 
-			//if (Champions == null)
-			//    return;
+		private void LeagueInfoBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (LeagueInfoBox.Checked)
+				Settings.LoadWhatData |= LoadDataEnum.LeagueInfo;
+			else
+				Settings.LoadWhatData &= ~LoadDataEnum.LeagueInfo;
+		}
 
-			//var sorted = Champions.OrderBy(c => ChampNames.Get(c.ChampionId)).ToList();
-
-			//var cmd = new PlayerCommands(Connection);
-			//for (int i = 0; i < sorted.Count; i++)
-			//{
-			//    if (sorted[i].FreeToPlay || sorted[i].Owned)
-			//    {
-			//        var id = sorted[i].ChampionId;
-			//        //ThreadPool.QueueUserWorkItem(delegate
-			//        //{
-			//        var obj = cmd.InvokeServiceUnknown(
-			//            "gameService",
-			//            "selectChampion",
-			//            id
-			//        );
-			//        //});
-			//    }
-			//}
-        }
-
-        private void RecentGamesBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (RecentGamesBox.Checked)
-                Settings.LoadWhatData |= LoadDataEnum.RecentGames;
-            else
-                Settings.LoadWhatData &= ~LoadDataEnum.RecentGames;
-        }
-
-        private void StatsBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (StatsBox.Checked)
-                Settings.LoadWhatData |= LoadDataEnum.Stats;
-            else
-                Settings.LoadWhatData &= ~LoadDataEnum.Stats;
-        }
-
-        private void TopChampsBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (TopChampsBox.Checked)
-                Settings.LoadWhatData |= LoadDataEnum.TopChamps;
-            else
-                Settings.LoadWhatData &= ~LoadDataEnum.TopChamps;
-        }
+		private void GrayUnrankedBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (GrayUnrankedBox.Checked)
+				Settings.LoadWhatData |= LoadDataEnum.GrayUnranked;
+			else
+				Settings.LoadWhatData &= ~LoadDataEnum.GrayUnranked;
+		}
 	}
 }
