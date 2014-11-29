@@ -44,13 +44,12 @@ namespace LoLNotes.Gui
 			this.NewsBrowser = new System.Windows.Forms.WebBrowser();
 			this.GameTab = new System.Windows.Forms.TabPage();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+			this.statusMask = new System.Windows.Forms.Label();
 			this.statusLabel = new System.Windows.Forms.Label();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
 			this.PlayerEditStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.SettingsTab = new System.Windows.Forms.TabPage();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
 			this.TopChampsBox = new System.Windows.Forms.CheckBox();
@@ -89,7 +88,9 @@ namespace LoLNotes.Gui
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.CallTree = new System.Windows.Forms.TreeView();
-			this.statusMask = new System.Windows.Forms.Label();
+			this.GrayUnrankedBox = new System.Windows.Forms.CheckBox();
+			this.teamControl1 = new LoLNotes.Gui.Controls.TeamControl();
+			this.teamControl2 = new LoLNotes.Gui.Controls.TeamControl();
 			this.tabControl1.SuspendLayout();
 			this.NewsTab.SuspendLayout();
 			this.GameTab.SuspendLayout();
@@ -192,6 +193,16 @@ namespace LoLNotes.Gui
 			this.splitContainer2.SplitterWidth = 1;
 			this.splitContainer2.TabIndex = 4;
 			// 
+			// statusMask
+			// 
+			this.statusMask.AutoSize = true;
+			this.statusMask.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.statusMask.Location = new System.Drawing.Point(287, 5);
+			this.statusMask.Name = "statusMask";
+			this.statusMask.Size = new System.Drawing.Size(99, 20);
+			this.statusMask.TabIndex = 4;
+			this.statusMask.Text = "0000000000";
+			// 
 			// statusLabel
 			// 
 			this.statusLabel.AutoSize = true;
@@ -216,19 +227,6 @@ namespace LoLNotes.Gui
 			this.comboBox1.TabIndex = 2;
 			this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
 			// 
-			// teamControl1
-			// 
-			this.teamControl1.BackColor = System.Drawing.Color.White;
-			this.teamControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.teamControl1.Location = new System.Drawing.Point(0, 0);
-			this.teamControl1.MinimumSize = new System.Drawing.Size(500, 836);
-			this.teamControl1.Name = "teamControl1";
-			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl1.Size = new System.Drawing.Size(575, 836);
-			this.teamControl1.TabIndex = 0;
-			this.teamControl1.TeamSize = 5;
-			this.teamControl1.Text = "Team 1";
-			// 
 			// PlayerEditStrip
 			// 
 			this.PlayerEditStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -251,19 +249,6 @@ namespace LoLNotes.Gui
 			this.clearToolStripMenuItem.Text = "Clear";
 			this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
 			// 
-			// teamControl2
-			// 
-			this.teamControl2.BackColor = System.Drawing.Color.White;
-			this.teamControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.teamControl2.Location = new System.Drawing.Point(0, 0);
-			this.teamControl2.MinimumSize = new System.Drawing.Size(500, 836);
-			this.teamControl2.Name = "teamControl2";
-			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
-			this.teamControl2.Size = new System.Drawing.Size(575, 836);
-			this.teamControl2.TabIndex = 1;
-			this.teamControl2.TeamSize = 5;
-			this.teamControl2.Text = "Team 2";
-			// 
 			// SettingsTab
 			// 
 			this.SettingsTab.Controls.Add(this.groupBox5);
@@ -285,13 +270,14 @@ namespace LoLNotes.Gui
 			// 
 			// groupBox5
 			// 
+			this.groupBox5.Controls.Add(this.GrayUnrankedBox);
 			this.groupBox5.Controls.Add(this.TopChampsBox);
 			this.groupBox5.Controls.Add(this.StatsBox);
 			this.groupBox5.Controls.Add(this.RecentGamesBox);
 			this.groupBox5.Controls.Add(this.LeagueInfoBox);
 			this.groupBox5.Location = new System.Drawing.Point(172, 59);
 			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(125, 117);
+			this.groupBox5.Size = new System.Drawing.Size(211, 94);
 			this.groupBox5.TabIndex = 13;
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "Load What Stats";
@@ -340,7 +326,7 @@ namespace LoLNotes.Gui
 			this.LeagueInfoBox.AutoSize = true;
 			this.LeagueInfoBox.Checked = true;
 			this.LeagueInfoBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.LeagueInfoBox.Location = new System.Drawing.Point(6, 91);
+			this.LeagueInfoBox.Location = new System.Drawing.Point(109, 19);
 			this.LeagueInfoBox.Name = "LeagueInfoBox";
 			this.LeagueInfoBox.Size = new System.Drawing.Size(83, 17);
 			this.LeagueInfoBox.TabIndex = 3;
@@ -683,15 +669,44 @@ namespace LoLNotes.Gui
 			this.CallTree.Size = new System.Drawing.Size(1157, 568);
 			this.CallTree.TabIndex = 0;
 			// 
-			// statusMask
+			// GrayUnrankedBox
 			// 
-			this.statusMask.AutoSize = true;
-			this.statusMask.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.statusMask.Location = new System.Drawing.Point(287, 5);
-			this.statusMask.Name = "statusMask";
-			this.statusMask.Size = new System.Drawing.Size(99, 20);
-			this.statusMask.TabIndex = 4;
-			this.statusMask.Text = "0000000000";
+			this.GrayUnrankedBox.AutoSize = true;
+			this.GrayUnrankedBox.Checked = true;
+			this.GrayUnrankedBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.GrayUnrankedBox.Location = new System.Drawing.Point(109, 42);
+			this.GrayUnrankedBox.Name = "GrayUnrankedBox";
+			this.GrayUnrankedBox.Size = new System.Drawing.Size(98, 17);
+			this.GrayUnrankedBox.TabIndex = 4;
+			this.GrayUnrankedBox.Text = "Gray Unranked";
+			this.GrayUnrankedBox.UseVisualStyleBackColor = true;
+			this.GrayUnrankedBox.CheckedChanged += new System.EventHandler(this.GrayUnrankedBox_CheckedChanged);
+			// 
+			// teamControl1
+			// 
+			this.teamControl1.BackColor = System.Drawing.Color.White;
+			this.teamControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.teamControl1.Location = new System.Drawing.Point(0, 0);
+			this.teamControl1.MinimumSize = new System.Drawing.Size(500, 836);
+			this.teamControl1.Name = "teamControl1";
+			this.teamControl1.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl1.Size = new System.Drawing.Size(575, 836);
+			this.teamControl1.TabIndex = 0;
+			this.teamControl1.TeamSize = 5;
+			this.teamControl1.Text = "Team 1";
+			// 
+			// teamControl2
+			// 
+			this.teamControl2.BackColor = System.Drawing.Color.White;
+			this.teamControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.teamControl2.Location = new System.Drawing.Point(0, 0);
+			this.teamControl2.MinimumSize = new System.Drawing.Size(500, 836);
+			this.teamControl2.Name = "teamControl2";
+			this.teamControl2.PlayerContextMenuStrip = this.PlayerEditStrip;
+			this.teamControl2.Size = new System.Drawing.Size(575, 836);
+			this.teamControl2.TabIndex = 1;
+			this.teamControl2.TeamSize = 5;
+			this.teamControl2.Text = "Team 2";
 			// 
 			// MainForm
 			// 
@@ -795,6 +810,7 @@ namespace LoLNotes.Gui
 		private System.Windows.Forms.CheckBox LeagueInfoBox;
 		private System.Windows.Forms.Label statusLabel;
 		private System.Windows.Forms.Label statusMask;
+		private System.Windows.Forms.CheckBox GrayUnrankedBox;
     }
 }
 

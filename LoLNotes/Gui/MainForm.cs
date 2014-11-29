@@ -336,6 +336,7 @@ namespace LoLNotes.Gui
 			StatsBox.Checked = (Settings.LoadWhatData & LoadDataEnum.Stats) != 0;
 			RecentGamesBox.Checked = (Settings.LoadWhatData & LoadDataEnum.RecentGames) != 0;
 			LeagueInfoBox.Checked = (Settings.LoadWhatData & LoadDataEnum.LeagueInfo) != 0;
+			GrayUnrankedBox.Checked = (Settings.LoadWhatData & LoadDataEnum.GrayUnranked) != 0;
 		}
 
 		readonly object settingslock = new object();
@@ -710,7 +711,7 @@ namespace LoLNotes.Gui
 				if (ply.RecentChamps != null)
 					control.SetChamps(ply.RecentChamps);
 				if (ply.Games != null)
-					control.SetGames(ply.Games);
+					control.SetGames(ply.Games, ((Settings.LoadWhatData & LoadDataEnum.GrayUnranked) != 0));
 				control.SetSeen(ply.SeenCount);
 				control.SetLoading(false);
 
@@ -1343,6 +1344,14 @@ namespace LoLNotes.Gui
 				Settings.LoadWhatData |= LoadDataEnum.LeagueInfo;
 			else
 				Settings.LoadWhatData &= ~LoadDataEnum.LeagueInfo;
+		}
+
+		private void GrayUnrankedBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (GrayUnrankedBox.Checked)
+				Settings.LoadWhatData |= LoadDataEnum.GrayUnranked;
+			else
+				Settings.LoadWhatData &= ~LoadDataEnum.GrayUnranked;
 		}
 	}
 }

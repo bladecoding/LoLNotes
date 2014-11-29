@@ -1,3 +1,3 @@
-[assembly: AssemblyCommit("commit 854bc8f0be8d37356ca7dc1dedc6c7d48a22d4d9\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 29 05:34:06 2014 -0800\n\n    Removed unused button\n", "854bc8f0be8d37356ca7dc1dedc6c7d48a22d4d9", "SebastienGllmt", "  Sat Nov 29 05:34:06 2014 -0800", "Removed unused button", "SebastienGllmt@gmail.com")]
+[assembly: AssemblyCommit("commit 7b38732b9b684fffcd63f765702696aea45d756f\nAuthor: SebastienGllmt <SebastienGllmt@gmail.com>\nDate:   Sat Nov 29 08:16:10 2014 -0800\n\n    Option to gray unranked games\n", "7b38732b9b684fffcd63f765702696aea45d756f", "SebastienGllmt", "  Sat Nov 29 08:16:10 2014 -0800", "Option to gray unranked games", "SebastienGllmt@gmail.com")]
 
 								

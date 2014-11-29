@@ -367,14 +367,14 @@ namespace LoLNotes.Gui.Controls
 			SeenCountLabel.Text = "Seen: " + times;
 		}
 
-		public void SetGames(RecentGames games)
+		public void SetGames(RecentGames games, bool grayUnranked)
 		{
 			if (games == null || games.GameStatistics.Count < 1)
 				return;
 
 			if (InvokeRequired)
 			{
-				Invoke(new Action<RecentGames>(SetGames), games);
+				Invoke(new Action<RecentGames, bool>(SetGames), games, grayUnranked);
 				return;
 			}
 
@@ -408,12 +408,20 @@ namespace LoLNotes.Gui.Controls
 					var assists = game.Statistics.GetInt(RawStat.ASSISTS);
 					var left = game.Leaver;
 					var botgame = game.QueueType == "BOT";
+					var unranked = game.QueueType != "RANKED_SOLO_5x5";
 
 					var wonlabel = CreateLabel(string.Format("{0}{1}", left ? "[L] " : "", won ? "Won" : "Lost"));
-					wonlabel.ForeColor = won ? Color.Green : Color.Red;
+					if (grayUnranked && unranked)
+					{
+						wonlabel.ForeColor = Color.Gray;
+					}
+					else
+					{
+						wonlabel.ForeColor = won ? Color.Green : Color.Red;
+					}
 
 					var kdrlbl = CreateLabel(string.Format("({0}/{1}/{2})", kills, deaths, assists));
-					kdrlbl.ForeColor = GetKdrColor(kills, deaths);
+					kdrlbl.ForeColor = GetKdrColor(kills, deaths, grayUnranked && unranked);
 
 					var champicon = new PictureBox
 					{
@@ -480,7 +488,7 @@ namespace LoLNotes.Gui.Controls
 			};
 		}
 
-		static Color GetKdrColor(int kills, int deaths)
+		static Color GetKdrColor(int kills, int deaths, bool gray)
 		{
 			if (deaths == 0)
 				deaths = 1;
@@ -507,7 +515,13 @@ namespace LoLNotes.Gui.Controls
 				ratio -= 0.5d;
 				ratio *= 2;
 			}
-			return Interpolate(top, bot, ratio);
+
+			var color = Interpolate(top, bot, ratio);
+			if (gray)
+			{
+				color = Interpolate(Color.Gray, color, 0.25);
+			}
+			return color;
 		}
 
 		static byte Interpolate(byte from, byte to, double step)
@@ -529,7 +543,7 @@ namespace LoLNotes.Gui.Controls
 		{
 			for (var i = 0; i < 10; i++)
 			{
-				var color = GetKdrColor(i, 10);
+				var color = GetKdrColor(i, 10, false);
 				Debug.WriteLine(string.Format("Color.FromArgb({0}, {1}, {2}, {3})", color.A, color.R, color.G, color.B));
 			}
 		}

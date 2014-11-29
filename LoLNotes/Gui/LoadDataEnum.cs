@@ -34,6 +34,7 @@ namespace LoLNotes.Gui
 		Stats = 2,
 		TopChamps = 4,
 		LeagueInfo = 8,
-		All = LeagueInfo | TopChamps | Stats | RecentGames,
+		GrayUnranked = 16,
+		All = LeagueInfo | TopChamps | Stats | RecentGames | GrayUnranked,
 	}
 }
