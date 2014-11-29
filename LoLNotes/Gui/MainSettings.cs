@@ -161,7 +161,7 @@ namespace LoLNotes.Gui
 			_deleteleavebuster = true;
 			_moduleresolver = "";
 			_defaultgametab = "Recent";
-			_loadwhatdata = LoadDataEnum.All;
+			_loadwhatdata = LoadDataEnum.LeagueInfo | LoadDataEnum.GrayUnranked | LoadDataEnum.RecentGames;
 		}
 
 		public bool Save(string file)
