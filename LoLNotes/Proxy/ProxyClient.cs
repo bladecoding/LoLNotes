@@ -151,8 +151,14 @@ namespace LoLNotes.Proxy
 			var ar = SourceStream.BeginWrite(e.Item.Item1, e.Item.Item2, e.Item.Item3, null, null);
 			using (ar.AsyncWaitHandle)
 			{
+			Retry:
+				try
+				{
 				if (ar.AsyncWaitHandle.WaitOne(-1))
 					SourceStream.EndWrite(ar);
+				}
+				catch 
+				{goto Retry;}
 			}
 		}
 		void RemoteQueue_Process(object sender, ProcessQueueEventArgs<Tuple<byte[], int, int>> e)
