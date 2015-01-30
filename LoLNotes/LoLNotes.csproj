@@ -88,25 +88,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="antlr.runtime">
-      <HintPath>H:\1fa8bf7c8b28be9c838de368296535a9\LOL\LoLNotes_1.1o\antlr.runtime.dll</HintPath>
+      <HintPath>..\Dependencies\antlr.runtime.dll</HintPath>
     </Reference>
     <Reference Include="Db4objects.Db4o">
-      <HintPath>H:\1fa8bf7c8b28be9c838de368296535a9\LOL\LoLNotes_1.1o\Db4objects.Db4o.dll</HintPath>
+      <HintPath>..\Dependencies\db4o\Db4objects.Db4o.dll</HintPath>
     </Reference>
     <Reference Include="Db4objects.Db4o.Linq">
-      <HintPath>H:\1fa8bf7c8b28be9c838de368296535a9\LOL\LoLNotes_1.1o\Db4objects.Db4o.Linq.dll</HintPath>
+      <HintPath>..\Dependencies\db4o\Db4objects.Db4o.Linq.dll</HintPath>
     </Reference>
     <Reference Include="FluorineFx">
-      <HintPath>H:\1fa8bf7c8b28be9c838de368296535a9\LOL\LoLNotes_1.1o\FluorineFx.dll</HintPath>
+      <HintPath>..\Dependencies\FluorineFx.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>H:\1fa8bf7c8b28be9c838de368296535a9\LOL\LoLNotes_1.1o\log4net.dll</HintPath>
+      <HintPath>..\Dependencies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Reflection">
-      <HintPath>H:\1fa8bf7c8b28be9c838de368296535a9\LOL\LoLNotes_1.1o\Mono.Reflection.dll</HintPath>
+      <HintPath>..\Dependencies\db4o\Mono.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="NotMissing">
-      <HintPath>H:\1fa8bf7c8b28be9c838de368296535a9\LOL\LoLNotes_1.1o\NotMissing.dll</HintPath>
+      <HintPath>..\NotMissing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -117,6 +117,9 @@
     <Reference Include="System.Security" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>

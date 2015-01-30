@@ -877,7 +877,7 @@ namespace LoLNotes.Gui
 
 		private void DownloadLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			Process.Start((string)e.Link.LinkData);
+			Process.Start("https://github.com/NitroXenon/LoLNotes/releases");
 		}
 
 		private void MainForm_Shown(object sender, EventArgs e)
