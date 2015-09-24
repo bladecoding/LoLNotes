@@ -44,6 +44,7 @@ namespace LoLNotes.Messages.Readers
 
 		void Flash_ProcessObject(object sender, object flashobj, Int64 timestamp)
 		{
+			
 			if (ObjectRead == null)
 				return;
 

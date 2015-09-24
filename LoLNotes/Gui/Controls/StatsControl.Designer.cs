@@ -60,9 +60,9 @@
 			this.GameType.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.GameType.Location = new System.Drawing.Point(3, 0);
 			this.GameType.Name = "GameType";
-			this.GameType.Size = new System.Drawing.Size(43, 13);
+			this.GameType.Size = new System.Drawing.Size(41, 13);
 			this.GameType.TabIndex = 5;
-			this.GameType.Text = "Type: ";
+			this.GameType.Text = "種類 :";
 			// 
 			// MaxElo
 			// 
@@ -70,9 +70,9 @@
 			this.MaxElo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.MaxElo.Location = new System.Drawing.Point(3, 13);
 			this.MaxElo.Name = "MaxElo";
-			this.MaxElo.Size = new System.Drawing.Size(60, 13);
+			this.MaxElo.Size = new System.Drawing.Size(63, 13);
 			this.MaxElo.TabIndex = 0;
-			this.MaxElo.Text = "Max Elo: ";
+			this.MaxElo.Text = "最高 Elo: ";
 			// 
 			// Elo
 			// 
@@ -90,9 +90,9 @@
 			this.Wins.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Wins.Location = new System.Drawing.Point(3, 39);
 			this.Wins.Name = "Wins";
-			this.Wins.Size = new System.Drawing.Size(43, 13);
+			this.Wins.Size = new System.Drawing.Size(41, 13);
 			this.Wins.TabIndex = 2;
-			this.Wins.Text = "Wins: ";
+			this.Wins.Text = "勝場 :";
 			// 
 			// Losses
 			// 
@@ -100,9 +100,9 @@
 			this.Losses.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Losses.Location = new System.Drawing.Point(3, 52);
 			this.Losses.Name = "Losses";
-			this.Losses.Size = new System.Drawing.Size(54, 13);
+			this.Losses.Size = new System.Drawing.Size(41, 13);
 			this.Losses.TabIndex = 3;
-			this.Losses.Text = "Losses: ";
+			this.Losses.Text = "敗場 :";
 			// 
 			// Leaves
 			// 
@@ -110,9 +110,9 @@
 			this.Leaves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Leaves.Location = new System.Drawing.Point(3, 65);
 			this.Leaves.Name = "Leaves";
-			this.Leaves.Size = new System.Drawing.Size(56, 13);
+			this.Leaves.Size = new System.Drawing.Size(41, 13);
 			this.Leaves.TabIndex = 4;
-			this.Leaves.Text = "Leaves: ";
+			this.Leaves.Text = "中離 :";
 			// 
 			// StatsControl
 			// 
@@ -125,7 +125,6 @@
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.flowLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);
-
 		}
 
 		#endregion

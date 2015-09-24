@@ -508,22 +508,13 @@ namespace LoLNotes.Gui.Controls
 		{
 			if (e.Link.LinkData == null)
 				return;
+			
 			var plr = (Tuple<Int64, string>)e.Link.LinkData;
-			string region;
-			if (!LeagueRegions.TryGetValue(MainSettings.Instance.Region, out region))
-			{
-				StaticLogger.Info("Region " + MainSettings.Instance.Region + " is not supported");
-				return;
-			}
 
 			string url = null;
 			if (e.Button == MouseButtons.Left)
 			{
-				url = string.Format("http://www.lolking.net/summoner/{0}/{1}", region, plr.Item1);
-			}
-			else if (e.Button == MouseButtons.Middle)
-			{
-				url = string.Format("http://bladecoding.com/lolnotes/leagueofstats.php?name={0}", plr.Item2);
+				url = String.Format("http://lol.moa.tw/summoner/show/{0}",NameLabel.Text.ToString().Replace(" ","_"));
 			}
 
 			if (url != null)

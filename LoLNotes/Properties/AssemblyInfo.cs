@@ -1,4 +1,4 @@
-/*
+﻿/*
 copyright (C) 2011-2012 by high828@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,10 +25,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LoLNotes")]
+[assembly: AssemblyTitle("LoLNotes-TW")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LoLNotes")]
+[assembly: AssemblyProduct("LoLNotes-TW")]
 [assembly: AssemblyCopyright("Copyright © high828@gmail.com 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

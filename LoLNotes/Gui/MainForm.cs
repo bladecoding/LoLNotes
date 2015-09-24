@@ -105,7 +105,7 @@ namespace LoLNotes.Gui
             Certificates = LoadCertificates(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Content/Certificates"));
             if (Certificates.Count < 1)
             {
-                MessageBox.Show("Unable to load any certificates");
+                MessageBox.Show("證書載入失敗! 按確定關閉 LoLNotes");
                 Application.Exit();
                 return;
             }
@@ -349,9 +349,10 @@ namespace LoLNotes.Gui
 		void SetTitle(string title)
 		{
 			Text = string.Format(
-					"LoLNotes v{0}{1}",
+					"LoLNotes v{0}{1} - {2}",
 					Version,
-					!string.IsNullOrEmpty(title) ? " - " + title : "");
+					!string.IsNullOrEmpty(title) ? " - " + title : "",
+					"NitroXenon 繁化 : nitroxenon.com");
 		}
 
 		//Allows for FInvoke(delegate {});
@@ -405,16 +406,6 @@ namespace LoLNotes.Gui
 			}
 		}
 
-		void SetNews(JObject data)
-		{
-			if (data == null)
-				return;
-			NewsBrowser.Navigate("about:blank");
-			if (NewsBrowser.Document != null)
-				NewsBrowser.Document.Write(string.Empty);
-			NewsBrowser.DocumentText = data.Value<string>("html");
-		}
-
 		void GetGeneral()
 		{
 			try
@@ -427,7 +418,6 @@ namespace LoLNotes.Gui
 					{
 						SetChanges(json["Changes"] as JObject);
 						SetRelease(json["Release"] as JObject);
-						SetNews(json["News"] as JObject);
 					});
 				}
 			}
@@ -788,7 +778,7 @@ namespace LoLNotes.Gui
 		{
 			if (!Wow.IsAdministrator)
 			{
-				MessageBox.Show("You must run LoLNotes as admin to install/uninstall it");
+				MessageBox.Show("請使用管理員身份執行 LoLNotes !");
 				return;
 			}
 			try
@@ -806,10 +796,10 @@ namespace LoLNotes.Gui
 			}
 			catch (UnauthorizedAccessException uaex)
 			{
-				MessageBox.Show("Unable to fully install/uninstall. Make sure LoL is not running.");
+				MessageBox.Show("安裝/解除安裝失敗! 請確認 LoL 已完全關閉!");
 				StaticLogger.Warning(uaex);
 			}
-			InstallButton.Text = Installer.IsInstalled ? "Uninstall" : "Install";
+			InstallButton.Text = Installer.IsInstalled ? "解除安裝" : "安裝";
 			UpdateIcon();
 		}
 
@@ -817,7 +807,7 @@ namespace LoLNotes.Gui
 		{
 			if (e.Action == TabControlAction.Selected && e.TabPage == SettingsTab)
 			{
-				InstallButton.Text = Installer.IsInstalled ? "Uninstall" : "Install";
+				InstallButton.Text = Installer.IsInstalled ? "解除安裝" : "安裝";
 			}
 		}
 
@@ -887,7 +877,7 @@ namespace LoLNotes.Gui
 
 		private void DownloadLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			Process.Start((string)e.Link.LinkData);
+			Process.Start("https://github.com/NitroXenon/LoLNotes/releases");
 		}
 
 		private void MainForm_Shown(object sender, EventArgs e)
@@ -950,7 +940,13 @@ namespace LoLNotes.Gui
 
         private void DefaultGameTab_TextChanged(object sender, EventArgs e)
         {
-            Settings.DefaultGameTab = DefaultGameTab.Text;
+            string txt = DefaultGameTab.Text;
+            if (txt == "最常使用英雄")
+            	Settings.DefaultGameTab = "Champs";
+            else if (txt == "對戰記錄")
+            	Settings.DefaultGameTab = "Recent";
+            else
+            	Settings.DefaultGameTab = "Recent";
         }
 
 		private void ImportButton_Click(object sender, EventArgs e)
@@ -1270,7 +1266,15 @@ namespace LoLNotes.Gui
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			var str = PlayerControl.MinifyStatType(comboBox1.SelectedItem as string);
+			var opt = comboBox1.SelectedItem as String;
+			string o;
+			if (opt == "對戰記錄")
+				o = "Recent";
+			else if (opt == "最常使用英雄")
+				o = "Champs";
+			else
+				o = "Recent";
+			var str = PlayerControl.MinifyStatType(o);
 			var teams = new List<TeamControl> { teamControl1, teamControl2 };
 			foreach (var team in teams)
 			{

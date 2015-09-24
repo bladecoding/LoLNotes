@@ -29,6 +29,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NoWin32Manifest>False</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -82,27 +83,43 @@
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="antlr.runtime, Version=2.7.6.2, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+    <Reference Include="antlr.runtime">
       <HintPath>..\Dependencies\antlr.runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Db4objects.Db4o, Version=8.0.184.15484, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
+    <Reference Include="Db4objects.Db4o">
       <HintPath>..\Dependencies\db4o\Db4objects.Db4o.dll</HintPath>
     </Reference>
-    <Reference Include="Db4objects.Db4o.Linq, Version=8.0.184.15484, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
+    <Reference Include="Db4objects.Db4o.Linq">
       <HintPath>..\Dependencies\db4o\Db4objects.Db4o.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+    <Reference Include="FluorineFx">
+      <HintPath>..\Dependencies\FluorineFx.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
       <HintPath>..\Dependencies\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Reflection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+    <Reference Include="Mono.Reflection">
       <HintPath>..\Dependencies\db4o\Mono.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="NotMissing">
+      <HintPath>..\NotMissing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -500,24 +517,7 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FluorineFx\FluorineFx-3.5.csproj">
-      <Project>{A9B8375B-579D-4F8A-B00C-F2828DB58F3A}</Project>
-      <Name>FluorineFx-3.5</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NotMissing\NotMissing\NotMissing.csproj">
-      <Project>{85D59D64-9158-42F7-BBBA-23F14E9F3E2A}</Project>
-      <Name>NotMissing</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>call "$(ProjectDir)db4otool\Db4oTool.exe" -debug -tp -nq "$(TargetPath)"
-XCOPY "$(ProjectDir)\Content" "$(TargetDir)Content\" /E /I /F /Y /D</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)\Properties\GitExport.exe" "$(SolutionDir)\" "$(ProjectDir)\"</PreBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
